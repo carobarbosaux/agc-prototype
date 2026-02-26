@@ -6,7 +6,9 @@ import { pipeline } from '../mockData'
 const ESTADO_CLICKABLE = ['aprobado', 'borrador', 'revision', 'comentarios']
 
 export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
-  const [temarioExpandido, setTemarioExpandido] = useState(true)
+  const [gruposExpandidos, setGruposExpandidos] = useState({ 'instrucciones-grupo': true, temario: true })
+
+  const toggleGrupo = (id) => setGruposExpandidos(prev => ({ ...prev, [id]: !prev[id] }))
 
   const handleClick = (id, estado) => {
     if (!ESTADO_CLICKABLE.includes(estado)) return
@@ -26,13 +28,14 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
         width: '240px',
         minWidth: '240px',
         background: '#FFFFFF',
-        borderRight: '1px solid #E2E8F0',
+        borderRight: '1px solid #E5E7EB',
+        fontFamily: "'Inter', 'Arial', sans-serif",
       }}
     >
       <div className="px-4 pt-5 pb-3">
         <p
-          className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3"
-          style={{ fontFamily: "'JetBrains Mono', monospace", letterSpacing: '0.08em' }}
+          className="text-xs font-semibold uppercase tracking-wider mb-3"
+          style={{ color: '#9CA3AF', fontFamily: "'Arial', sans-serif", letterSpacing: '0.08em' }}
         >
           Flujo de contenido
         </p>
@@ -42,26 +45,26 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
             if (etapa.tipo === 'grupo') {
               return (
                 <div key={etapa.id}>
-                  {/* Group header */}
                   <button
-                    onClick={() => setTemarioExpandido(!temarioExpandido)}
-                    className="w-full flex items-center justify-between px-2 py-2 rounded-lg hover:bg-slate-50 transition-colors group"
+                    onClick={() => toggleGrupo(etapa.id)}
+                    className="w-full flex items-center justify-between px-2 py-2 rounded-lg transition-colors"
+                    onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-slate-600">{etapa.label}</span>
+                      <span className="text-sm font-medium" style={{ color: '#374151' }}>{etapa.label}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <EstadoBadge estado={etapa.estado} size="sm" />
-                      {temarioExpandido
-                        ? <ChevronDown size={13} className="text-slate-400" />
-                        : <ChevronRight size={13} className="text-slate-400" />
+                      {gruposExpandidos[etapa.id]
+                        ? <ChevronDown size={13} style={{ color: '#9CA3AF' }} />
+                        : <ChevronRight size={13} style={{ color: '#9CA3AF' }} />
                       }
                     </div>
                   </button>
 
-                  {/* Temas */}
-                  {temarioExpandido && etapa.temas && (
-                    <div className="ml-3 mt-0.5 space-y-0.5 pl-2" style={{ borderLeft: '1.5px solid #E2E8F0' }}>
+                  {gruposExpandidos[etapa.id] && etapa.temas && (
+                    <div className="ml-3 mt-0.5 space-y-0.5 pl-2" style={{ borderLeft: '1.5px solid #E5E7EB' }}>
                       {etapa.temas.map(tema => {
                         const clickable = ESTADO_CLICKABLE.includes(tema.estado)
                         const activo = seccionActiva === tema.id
@@ -73,8 +76,8 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                             className="flex items-start gap-2 px-2 py-2 rounded-lg transition-all"
                             style={{
                               cursor: clickable ? 'pointer' : 'not-allowed',
-                              background: activo ? '#EEF2FF' : 'transparent',
-                              borderLeft: activo ? '2px solid #6366F1' : '2px solid transparent',
+                              background: activo ? '#E0F4FB' : 'transparent',
+                              borderLeft: activo ? '2px solid #0098CD' : '2px solid transparent',
                               marginLeft: '-2px',
                             }}
                             data-tooltip={!clickable ? 'Bloqueado hasta aprobar la etapa anterior' : undefined}
@@ -86,7 +89,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                                   className="w-1.5 h-1.5 rounded-full mt-1"
                                   style={{
                                     background:
-                                      tema.estado === 'borrador' ? '#3B82F6'
+                                      tema.estado === 'borrador' ? '#0098CD'
                                       : tema.estado === 'revision' ? '#F59E0B'
                                       : tema.estado === 'comentarios' ? '#F97316'
                                       : '#CBD5E1',
@@ -98,8 +101,8 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                               <p
                                 className="text-xs font-semibold leading-tight mb-0.5"
                                 style={{
-                                  color: activo ? '#6366F1' : clickable ? '#475569' : '#94A3B8',
-                                  fontFamily: "'JetBrains Mono', monospace",
+                                  color: activo ? '#0098CD' : clickable ? '#374151' : '#94A3B8',
+                                  fontFamily: "'Arial', sans-serif",
                                 }}
                               >
                                 {tema.label}
@@ -107,7 +110,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                               <p
                                 className="text-xs leading-tight"
                                 style={{
-                                  color: clickable ? '#94A3B8' : '#CBD5E1',
+                                  color: clickable ? '#9CA3AF' : '#CBD5E1',
                                   overflow: 'hidden',
                                   display: '-webkit-box',
                                   WebkitLineClamp: 2,
@@ -126,7 +129,6 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
               )
             }
 
-            // Regular section
             const clickable = ESTADO_CLICKABLE.includes(etapa.estado)
             const activo = seccionActiva === etapa.id
 
@@ -137,10 +139,12 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                 className="flex items-center justify-between px-2 py-2.5 rounded-lg transition-all"
                 style={{
                   cursor: clickable ? 'pointer' : 'not-allowed',
-                  background: activo ? '#EEF2FF' : 'transparent',
-                  borderLeft: activo ? '2px solid #6366F1' : '2px solid transparent',
+                  background: activo ? '#E0F4FB' : 'transparent',
+                  borderLeft: activo ? '2px solid #0098CD' : '2px solid transparent',
                 }}
                 data-tooltip={!clickable ? 'Bloqueado hasta aprobar la etapa anterior' : undefined}
+                onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F8F9FA' }}
+                onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
               >
                 <div className="flex items-center gap-2">
                   {renderEstadoIcon(etapa.estado)}
@@ -148,7 +152,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                     className="text-sm"
                     style={{
                       fontWeight: activo ? '600' : '500',
-                      color: activo ? '#6366F1' : clickable ? '#475569' : '#94A3B8',
+                      color: activo ? '#0098CD' : clickable ? '#374151' : '#94A3B8',
                     }}
                   >
                     {etapa.label}
@@ -161,19 +165,16 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
         </nav>
       </div>
 
-      {/* Progress indicator at bottom */}
+      {/* Progress indicator */}
       <div className="mt-auto px-4 py-4" style={{ borderTop: '1px solid #F1F5F9' }}>
         <div className="flex items-center justify-between mb-2">
-          <p className="text-xs text-slate-400">Progreso de la asignatura</p>
-          <p className="text-xs font-semibold text-slate-600">28%</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>Progreso de la asignatura</p>
+          <p className="text-xs font-semibold" style={{ color: '#374151' }}>28%</p>
         </div>
-        <div className="w-full h-1.5 rounded-full" style={{ background: '#E2E8F0' }}>
-          <div
-            className="h-full rounded-full transition-all"
-            style={{ width: '28%', background: '#6366F1' }}
-          />
+        <div className="w-full h-1.5 rounded-full" style={{ background: '#E5E7EB' }}>
+          <div className="h-full rounded-full transition-all" style={{ width: '28%', background: '#0098CD' }} />
         </div>
-        <p className="text-xs text-slate-400 mt-1.5">2 de 7 etapas aprobadas</p>
+        <p className="text-xs mt-1.5" style={{ color: '#9CA3AF' }}>2 de 7 etapas aprobadas</p>
       </div>
     </aside>
   )

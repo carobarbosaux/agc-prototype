@@ -206,7 +206,20 @@ export const miTrabajo = [
 
 export const pipeline = [
   { id: 'indice', label: 'Índice', estado: 'aprobado', tipo: 'seccion' },
-  { id: 'instrucciones', label: 'Instrucciones didácticas', estado: 'aprobado', tipo: 'seccion' },
+  {
+    id: 'instrucciones-grupo',
+    label: 'Instrucciones didácticas',
+    estado: 'aprobado',
+    tipo: 'grupo',
+    temas: [
+      { id: 'instrucciones-t1', label: 'Tema 1', labelCorto: 'Introducción al aprendizaje automático', estado: 'aprobado' },
+      { id: 'instrucciones-t2', label: 'Tema 2', labelCorto: 'Regresión y clasificación', estado: 'aprobado' },
+      { id: 'instrucciones-t3', label: 'Tema 3', labelCorto: 'Árboles de decisión y ensemble methods', estado: 'aprobado' },
+      { id: 'instrucciones-t4', label: 'Tema 4', labelCorto: 'Redes neuronales básicas', estado: 'aprobado' },
+      { id: 'instrucciones-t5', label: 'Tema 5', labelCorto: 'Evaluación y validación de modelos', estado: 'aprobado' },
+      { id: 'instrucciones-t6', label: 'Tema 6', labelCorto: 'Proyecto práctico final', estado: 'aprobado' },
+    ],
+  },
   {
     id: 'temario',
     label: 'Temario',
@@ -229,14 +242,14 @@ export const bloquesTema2 = [
   {
     id: 'b1',
     contenido:
-      'La regresión y la clasificación son las dos tareas supervisadas fundamentales del machine learning. En la regresión, el objetivo es predecir un valor numérico continuo, como el precio de una vivienda o la temperatura de mañana. En la clasificación, el objetivo es asignar una categoría discreta, como determinar si un email es spam o si una imagen contiene un gato.',
+      'La regresión y la clasificación son las dos tareas supervisadas fundamentales del machine learning. En la regresión, el objetivo es predecir un valor numérico continuo —como el precio de una vivienda, la temperatura de mañana o la demanda energética de una ciudad—. En la clasificación, el objetivo es asignar una categoría discreta: determinar si un email es spam, si una imagen contiene un tumor o si un cliente abandonará el servicio.',
     etiquetas: ['Machine Learning', 'Concepto'],
     comentarios: [],
   },
   {
     id: 'b2',
     contenido:
-      'Un ejemplo clásico de regresión lineal es predecir el precio de una vivienda en función de su superficie. Si representamos los datos en un gráfico, la regresión lineal encuentra la recta que mejor se ajusta a los puntos. La ecuación resultante, y = mx + b, nos permite estimar el precio de cualquier vivienda conociendo únicamente su tamaño.',
+      'Un ejemplo clásico de regresión lineal es predecir el precio de una vivienda en función de su superficie. Si representamos los datos en un gráfico, la regresión lineal encuentra la recta que minimiza el error cuadrático medio entre las predicciones y los valores reales. La ecuación resultante, ŷ = β₀ + β₁x, nos permite estimar el precio de cualquier vivienda conociendo su tamaño. Cuando intervienen múltiples variables —superficie, número de habitaciones, distancia al centro—, hablamos de regresión lineal múltiple.',
     etiquetas: ['Machine Learning', 'Ejemplo'],
     comentarios: [
       {
@@ -252,21 +265,42 @@ export const bloquesTema2 = [
       },
     ],
   },
+  {
+    id: 'b3',
+    contenido:
+      'La regresión logística, a pesar de su nombre, es un algoritmo de clasificación binaria. Transforma la salida de una regresión lineal mediante la función sigmoide σ(z) = 1 / (1 + e⁻ᶻ), produciendo una probabilidad entre 0 y 1. Si la probabilidad supera el umbral 0.5, el modelo predice la clase positiva. Es el punto de partida para comprender redes neuronales, ya que la neurona logística es su unidad básica.',
+    etiquetas: ['Clasificación', 'Algoritmo'],
+    comentarios: [],
+  },
+  {
+    id: 'b4',
+    contenido:
+      'Para evaluar un modelo de clasificación, la precisión global no siempre es suficiente. En datasets desbalanceados —donde una clase es mucho más frecuente que otra—, un modelo que siempre predice la clase mayoritaria puede tener 95% de precisión y ser inútil. Las métricas clave son: precisión (de los casos predichos positivos, ¿cuántos lo son realmente?), recall (de todos los casos positivos reales, ¿cuántos detectamos?) y F1-score, que combina ambas en una sola cifra. La matriz de confusión visualiza verdaderos positivos, falsos positivos, verdaderos negativos y falsos negativos.',
+    etiquetas: ['Clasificación', 'Evaluación'],
+    comentarios: [],
+  },
+  {
+    id: 'b5',
+    contenido:
+      'El algoritmo K-Nearest Neighbors (KNN) clasifica un nuevo punto basándose en los k puntos de entrenamiento más cercanos según una métrica de distancia, habitualmente la euclidiana. Es un método perezoso —no construye un modelo explícito durante el entrenamiento—, lo que lo hace simple pero costoso en inferencia para datasets grandes. La elección de k es crítica: valores pequeños generan modelos muy sensibles al ruido (sobreajuste), mientras que valores grandes producen fronteras de decisión demasiado suavizadas (infraajuste).',
+    etiquetas: ['KNN', 'Algoritmo'],
+    comentarios: [],
+  },
 ]
 
 export const bloquesTema1 = [
   {
     id: 'b1t1',
     contenido:
-      'El aprendizaje automático es una rama de la inteligencia artificial que permite a los sistemas aprender y mejorar a partir de la experiencia sin ser programados explícitamente. A través de algoritmos y modelos estadísticos, los sistemas identifican patrones en los datos para tomar decisiones con una mínima intervención humana.',
+      'El aprendizaje automático es una rama de la inteligencia artificial que permite a los sistemas aprender y mejorar a partir de la experiencia sin ser programados explícitamente para cada tarea. A través de algoritmos y modelos estadísticos, los sistemas identifican patrones en los datos y generalizan ese conocimiento para tomar decisiones sobre datos nuevos. La definición más citada es la de Tom Mitchell (1997): un programa aprende de la experiencia E con respecto a una clase de tareas T y una medida de rendimiento P, si su rendimiento en T medido con P mejora con la experiencia E.',
     etiquetas: ['Machine Learning', 'Concepto'],
     comentarios: [],
   },
   {
     id: 'b2t1',
     contenido:
-      'Existen tres paradigmas principales de aprendizaje: el aprendizaje supervisado, donde el modelo aprende de ejemplos etiquetados; el aprendizaje no supervisado, donde descubre patrones ocultos en datos sin etiquetar; y el aprendizaje por refuerzo, donde un agente aprende a tomar decisiones interactuando con un entorno.',
-    etiquetas: ['Machine Learning', 'Concepto'],
+      'Existen tres paradigmas principales de aprendizaje. En el aprendizaje supervisado, el modelo aprende de pares (entrada, etiqueta) y su objetivo es predecir la etiqueta correcta para entradas nuevas; es el más utilizado en aplicaciones industriales. En el aprendizaje no supervisado, los datos no tienen etiquetas y el algoritmo descubre estructura latente: agrupaciones, distribuciones o representaciones comprimidas. En el aprendizaje por refuerzo, un agente aprende a tomar decisiones interactuando con un entorno: recibe recompensas por acciones positivas y penalizaciones por negativas, buscando maximizar la recompensa acumulada.',
+    etiquetas: ['Machine Learning', 'Paradigmas'],
     comentarios: [
       {
         id: 'c1t1',
@@ -281,45 +315,240 @@ export const bloquesTema1 = [
       },
     ],
   },
+  {
+    id: 'b3t1',
+    contenido:
+      'El pipeline típico de un proyecto de machine learning sigue una secuencia bien definida: (1) definición del problema y recogida de datos, (2) exploración y análisis exploratorio (EDA), (3) preprocesamiento y limpieza, (4) selección e ingeniería de variables (feature engineering), (5) selección del algoritmo, (6) entrenamiento y validación cruzada, (7) optimización de hiperparámetros, (8) evaluación final sobre el conjunto de test, (9) despliegue y monitorización. Cada etapa puede consumir hasta el 80% del tiempo total del proyecto, siendo el preprocesamiento y la ingeniería de variables las más costosas.',
+    etiquetas: ['Machine Learning', 'Pipeline'],
+    comentarios: [],
+  },
+  {
+    id: 'b4t1',
+    contenido:
+      'El sobreajuste (overfitting) ocurre cuando el modelo memoriza el conjunto de entrenamiento y pierde capacidad de generalización. Se detecta porque el error de entrenamiento es bajo pero el error de validación es alto. El infraajuste (underfitting) ocurre cuando el modelo es demasiado simple para capturar la estructura real de los datos. La solución al sobreajuste incluye técnicas de regularización (L1, L2), dropout en redes neuronales, y el aumento de datos. El equilibrio entre sesgo y varianza —el bias-variance tradeoff— es uno de los conceptos más importantes del ML clásico.',
+    etiquetas: ['Overfitting', 'Generalización'],
+    comentarios: [],
+  },
 ]
 
 export const bloquesIndice = [
   {
     id: 'bi1',
     contenido:
-      'Tema 1: Introducción al aprendizaje automático — Historia, definición y aplicaciones reales del ML. Tipos de aprendizaje y paradigmas fundamentales.',
-    etiquetas: ['Machine Learning', 'Estructura'],
+      'Tema 1: Introducción al aprendizaje automático — Definición, historia y aplicaciones reales. Paradigmas de aprendizaje: supervisado, no supervisado y por refuerzo. Pipeline estándar de un proyecto ML. Conceptos de sobreajuste, infraajuste y bias-variance tradeoff.',
+    etiquetas: ['Índice', 'Tema 1'],
     comentarios: [],
   },
   {
     id: 'bi2',
     contenido:
-      'Tema 2: Regresión y clasificación — Algoritmos supervisados esenciales. Regresión lineal, logística y KNN. Métricas de evaluación y casos prácticos.',
-    etiquetas: ['Machine Learning', 'Estructura'],
+      'Tema 2: Regresión y clasificación — Regresión lineal simple y múltiple. Regresión logística y función sigmoide. Algoritmo KNN. Métricas de evaluación: MSE, RMSE, precisión, recall, F1-score. Matriz de confusión.',
+    etiquetas: ['Índice', 'Tema 2'],
     comentarios: [],
   },
   {
     id: 'bi3',
     contenido:
-      'Tema 3 al 6: Métodos avanzados — Árboles de decisión, redes neuronales, validación cruzada y proyecto final integrador.',
-    etiquetas: ['Machine Learning', 'Estructura'],
+      'Tema 3: Árboles de decisión y métodos ensemble — Árboles de decisión: criterios de división (Gini, entropía). Random Forest y bagging. Gradient Boosting y XGBoost. Interpretabilidad de modelos basados en árboles.',
+    etiquetas: ['Índice', 'Tema 3'],
+    comentarios: [],
+  },
+  {
+    id: 'bi4',
+    contenido:
+      'Tema 4: Redes neuronales básicas — Perceptrón y función de activación. Arquitectura de red feedforward. Retropropagación del error (backpropagation). Optimizadores: SGD, Adam. Introducción a frameworks: PyTorch y TensorFlow.',
+    etiquetas: ['Índice', 'Tema 4'],
+    comentarios: [],
+  },
+  {
+    id: 'bi5',
+    contenido:
+      'Tema 5: Evaluación y validación de modelos — Validación cruzada k-fold. Búsqueda de hiperparámetros: Grid Search, Random Search, Bayesian Optimization. Curvas ROC y AUC. Detección y corrección de data leakage.',
+    etiquetas: ['Índice', 'Tema 5'],
+    comentarios: [],
+  },
+  {
+    id: 'bi6',
+    contenido:
+      'Tema 6: Proyecto final integrador — Desarrollo end-to-end de un pipeline ML sobre un dataset real. Preprocesamiento, modelado, evaluación y presentación de resultados. Uso de MLflow para tracking de experimentos.',
+    etiquetas: ['Índice', 'Tema 6'],
     comentarios: [],
   },
 ]
 
+// Instrucciones didácticas generales (sección "Instrucciones" del pipeline)
 export const bloquesInstrucciones = [
   {
     id: 'bins1',
     contenido:
-      'Esta asignatura está diseñada para estudiantes con conocimientos básicos de programación en Python y estadística descriptiva. El enfoque es eminentemente práctico: cada concepto teórico va acompañado de código ejecutable y datasets reales.',
-    etiquetas: ['Instrucciones', 'Metodología'],
+      'Perfil del estudiante y prerrequisitos: Esta asignatura está diseñada para estudiantes del Máster en Inteligencia Artificial con conocimientos básicos de programación en Python (sintaxis, estructuras de datos, funciones) y estadística descriptiva (media, varianza, distribuciones). No se requiere experiencia previa en machine learning. Se recomienda haber completado previamente la asignatura de Fundamentos de Python del programa.',
+    etiquetas: ['Instrucciones', 'Prerrequisitos'],
     comentarios: [],
   },
   {
     id: 'bins2',
     contenido:
-      'El ritmo sugerido es de un tema por semana. Los ejercicios de autoevaluación al final de cada tema son obligatorios. Se recomienda usar Google Colab o Jupyter Notebook para seguir los ejemplos de código.',
-    etiquetas: ['Instrucciones', 'Logística'],
+      'Metodología por tema: Cada uno de los 6 temas sigue la misma estructura didáctica. Primero, una lectura conceptual con ejemplos contextualizados (este documento). Segundo, un notebook de práctica en Google Colab con código ejecutable y datasets reales —disponible en el aula virtual—. Tercero, un ejercicio de autoevaluación tipo test de 10 preguntas, obligatorio antes de avanzar al tema siguiente. El ritmo sugerido es un tema por semana, con una dedicación de 4 a 6 horas semanales.',
+    etiquetas: ['Instrucciones', 'Metodología'],
+    comentarios: [],
+  },
+  {
+    id: 'bins3',
+    contenido:
+      'Herramientas y entorno de trabajo: Los ejemplos de código están escritos en Python 3.10+ con NumPy, Pandas, Matplotlib, Seaborn y Scikit-learn para los Temas 1 al 5, y PyTorch para el Tema 4. Todos los notebooks están disponibles en Google Colab. Para trabajo local, el archivo environment.yml del repositorio del curso contiene el entorno Conda completo.',
+    etiquetas: ['Instrucciones', 'Herramientas'],
+    comentarios: [],
+  },
+  {
+    id: 'bins4',
+    contenido:
+      'Criterios de evaluación: El proyecto final del Tema 6 representa el 60% de la nota final. Los ejercicios de autoevaluación de los Temas 1 al 5 representan el 40% restante (8% cada uno). El proyecto se entrega en formato notebook (.ipynb) con un informe de resultados en PDF. Se valorará la claridad del análisis, la justificación de decisiones de modelado y la interpretación crítica de resultados.',
+    etiquetas: ['Instrucciones', 'Evaluación'],
+    comentarios: [],
+  },
+]
+
+// Instrucciones didácticas por tema
+export const instruccionesTema1 = [
+  {
+    id: 'it1-1',
+    contenido:
+      'Objetivo de aprendizaje: Al finalizar este tema, el estudiante será capaz de definir el aprendizaje automático y distinguirlo de la programación tradicional, identificar los tres paradigmas de aprendizaje (supervisado, no supervisado y por refuerzo) con ejemplos reales, y describir las etapas del pipeline estándar de un proyecto ML.',
+    etiquetas: ['Instrucciones', 'Objetivos', 'Tema 1'],
+    comentarios: [],
+  },
+  {
+    id: 'it1-2',
+    contenido:
+      'Cómo estudiar este tema: Comienza con la lectura completa antes de abrir el notebook. Los conceptos de sesgo y varianza (bias-variance tradeoff) son fundamentales para todos los temas siguientes —dedícales tiempo extra si es necesario—. El notebook del Tema 1 incluye un experimento interactivo donde puedes ajustar la complejidad del modelo y observar en tiempo real cómo cambia el sobreajuste.',
+    etiquetas: ['Instrucciones', 'Metodología', 'Tema 1'],
+    comentarios: [],
+  },
+  {
+    id: 'it1-3',
+    contenido:
+      'Autoevaluación y avance: El test de autoevaluación del Tema 1 cubre definiciones, paradigmas de aprendizaje y fases del pipeline. Debes obtener al menos 6/10 para desbloquear el Tema 2. Si no lo superas en el primer intento, revisa los bloques sobre paradigmas y pipeline antes de repetirlo. El test se puede repetir hasta tres veces.',
+    etiquetas: ['Instrucciones', 'Evaluación', 'Tema 1'],
+    comentarios: [],
+  },
+]
+
+export const instruccionesTema2 = [
+  {
+    id: 'it2-1',
+    contenido:
+      'Objetivo de aprendizaje: Al finalizar este tema, el estudiante será capaz de implementar regresión lineal y logística desde cero en Python, seleccionar la métrica de evaluación adecuada según el tipo de problema (MSE para regresión, F1-score para clasificación desbalanceada), y aplicar el algoritmo KNN explicando el efecto del hiperparámetro k sobre el modelo.',
+    etiquetas: ['Instrucciones', 'Objetivos', 'Tema 2'],
+    comentarios: [],
+  },
+  {
+    id: 'it2-2',
+    contenido:
+      'Cómo estudiar este tema: Este tema es el más matemático de la primera mitad del curso. Si la notación matricial te resulta nueva, el aula virtual incluye un repaso de álgebra lineal básica. Presta especial atención al bloque sobre métricas de evaluación: es el error más común en proyectos reales usar precisión global cuando el dataset está desbalanceado. El notebook incluye tres datasets de práctica: precios de vivienda (regresión), detección de spam (clasificación binaria) y clasificación de flores Iris (multiclase).',
+    etiquetas: ['Instrucciones', 'Metodología', 'Tema 2'],
+    comentarios: [],
+  },
+  {
+    id: 'it2-3',
+    contenido:
+      'Conexión con el Tema 3: Los conceptos de frontera de decisión y sobreajuste que introduces aquí son la base directa de los árboles de decisión del Tema 3. Cuando termines este tema, reflexiona sobre por qué KNN con k=1 sobreajusta siempre: esa intuición te ayudará a entender la profundidad de los árboles de decisión.',
+    etiquetas: ['Instrucciones', 'Conexión temática', 'Tema 2'],
+    comentarios: [],
+  },
+]
+
+export const instruccionesTema3 = [
+  {
+    id: 'it3-1',
+    contenido:
+      'Objetivo de aprendizaje: Al finalizar este tema, el estudiante será capaz de construir un árbol de decisión desde cero usando los criterios Gini y entropía, implementar un Random Forest explicando el mecanismo de bagging y la decorrelación de árboles, y comparar el rendimiento de Gradient Boosting frente a Random Forest en un dataset tabulado.',
+    etiquetas: ['Instrucciones', 'Objetivos', 'Tema 3'],
+    comentarios: [],
+  },
+  {
+    id: 'it3-2',
+    contenido:
+      'Cómo estudiar este tema: Este tema es clave para aplicaciones industriales — los métodos ensemble dominan competiciones de datos tabulados. Primero asegúrate de entender bien un árbol de decisión individual antes de pasar a Random Forest. El notebook incluye visualizaciones interactivas de las fronteras de decisión de un árbol vs. un ensemble. Dedica tiempo especial a XGBoost: es el algoritmo más usado en producción para datos estructurados.',
+    etiquetas: ['Instrucciones', 'Metodología', 'Tema 3'],
+    comentarios: [],
+  },
+  {
+    id: 'it3-3',
+    contenido:
+      'Autoevaluación y avance: El test del Tema 3 cubre criterios de división, hiperparámetros de Random Forest (n_estimators, max_depth) y diferencias entre bagging y boosting. Se requiere 6/10 para desbloquear el Tema 4. El notebook incluye un ejercicio práctico de tuning de hiperparámetros sobre el dataset UCI Adult.',
+    etiquetas: ['Instrucciones', 'Evaluación', 'Tema 3'],
+    comentarios: [],
+  },
+]
+
+export const instruccionesTema4 = [
+  {
+    id: 'it4-1',
+    contenido:
+      'Objetivo de aprendizaje: Al finalizar este tema, el estudiante será capaz de implementar un perceptrón multicapa (MLP) en PyTorch, explicar el algoritmo de retropropagación paso a paso con derivadas parciales, y entrenar una red feedforward sobre un dataset de clasificación eligiendo la función de activación y el optimizador correctos.',
+    etiquetas: ['Instrucciones', 'Objetivos', 'Tema 4'],
+    comentarios: [],
+  },
+  {
+    id: 'it4-2',
+    contenido:
+      'Cómo estudiar este tema: Este es el tema más denso matemáticamente del curso. Recomendamos repasar la regla de la cadena del cálculo diferencial antes de la sesión de backpropagation. El notebook incluye una implementación desde cero en NumPy (sin frameworks) para que entiendas cada operación, seguida de la versión equivalente en PyTorch. No avances a la práctica hasta entender bien el forward pass y el cálculo del gradiente.',
+    etiquetas: ['Instrucciones', 'Metodología', 'Tema 4'],
+    comentarios: [],
+  },
+  {
+    id: 'it4-3',
+    contenido:
+      'Conexión con temas anteriores y siguientes: La neurona logística del Tema 2 es literalmente la unidad básica de una red neuronal. Los conceptos de sobreajuste del Tema 1 aplican directamente: el dropout es la técnica de regularización específica de redes neuronales. El Tema 5 cubrirá cómo validar correctamente estos modelos, que son especialmente propensos a overfitting.',
+    etiquetas: ['Instrucciones', 'Conexión temática', 'Tema 4'],
+    comentarios: [],
+  },
+]
+
+export const instruccionesTema5 = [
+  {
+    id: 'it5-1',
+    contenido:
+      'Objetivo de aprendizaje: Al finalizar este tema, el estudiante será capaz de diseñar una estrategia de validación cruzada k-fold correcta evitando data leakage, implementar búsqueda de hiperparámetros con Grid Search y Random Search, e interpretar curvas ROC y AUC para comparar modelos de clasificación binaria.',
+    etiquetas: ['Instrucciones', 'Objetivos', 'Tema 5'],
+    comentarios: [],
+  },
+  {
+    id: 'it5-2',
+    contenido:
+      'Cómo estudiar este tema: La validación correcta de modelos es el tema más subestimado y el que genera más errores en proyectos reales. Presta atención especial al concepto de data leakage: es el error más costoso y difícil de detectar en producción. El notebook incluye tres casos de estudio de leakage real —uno en preprocesamiento, uno en feature engineering y uno en validación— extraídos de competiciones de Kaggle.',
+    etiquetas: ['Instrucciones', 'Metodología', 'Tema 5'],
+    comentarios: [],
+  },
+  {
+    id: 'it5-3',
+    contenido:
+      'Preparación para el proyecto final: Este tema cierra el ciclo técnico del curso. Después de completarlo, tendrás todas las herramientas para el Tema 6. Recomendamos revisar los temas 1 a 5 antes de comenzar el proyecto, con especial atención a las métricas de evaluación (Tema 2) y la validación cruzada (este tema). El proyecto requiere justificar todas las decisiones de modelado — empieza a documentar tus razonamientos desde el primer análisis exploratorio.',
+    etiquetas: ['Instrucciones', 'Proyecto final', 'Tema 5'],
+    comentarios: [],
+  },
+]
+
+export const instruccionesTema6 = [
+  {
+    id: 'it6-1',
+    contenido:
+      'Objetivo de aprendizaje: El Tema 6 es un proyecto integrador. El estudiante deberá desarrollar un pipeline ML completo sobre un dataset real a elegir de una lista propuesta, documentando cada decisión desde el análisis exploratorio hasta la evaluación final. Se valorará la capacidad de justificación crítica, no solo el rendimiento del modelo.',
+    etiquetas: ['Instrucciones', 'Objetivos', 'Tema 6'],
+    comentarios: [],
+  },
+  {
+    id: 'it6-2',
+    contenido:
+      'Estructura del entregable: El proyecto se entrega como notebook (.ipynb) con las siguientes secciones obligatorias: (1) Análisis exploratorio con al menos 5 visualizaciones comentadas, (2) Preprocesamiento y justificación de decisiones, (3) Selección y entrenamiento de al menos 2 modelos distintos, (4) Validación cruzada y comparación de métricas, (5) Análisis de errores e interpretabilidad, (6) Conclusiones y limitaciones del modelo.',
+    etiquetas: ['Instrucciones', 'Entregable', 'Tema 6'],
+    comentarios: [],
+  },
+  {
+    id: 'it6-3',
+    contenido:
+      'Criterios de evaluación del proyecto: Se distribuyen 100 puntos entre: calidad del EDA (20), correcta validación sin leakage (25), justificación de elección de modelos (20), análisis de métricas apropiadas al problema (20) y claridad de conclusiones (15). El uso de MLflow para tracking de experimentos suma hasta 10 puntos extra. La fecha límite de entrega es el último día de la semana 8.',
+    etiquetas: ['Instrucciones', 'Evaluación', 'Tema 6'],
     comentarios: [],
   },
 ]

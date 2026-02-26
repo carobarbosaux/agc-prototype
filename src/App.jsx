@@ -54,7 +54,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="min-h-screen" style={{ background: '#F8F9FA', fontFamily: "'Inter', 'Arial', sans-serif" }}>
       {pantalla !== 'herramientas' && (
         <Topbar
           breadcrumb={getBreadcrumb()}

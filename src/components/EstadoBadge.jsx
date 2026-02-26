@@ -16,17 +16,13 @@ export default function EstadoBadge({ estado, size = 'md' }) {
         background: cfg.bg,
         color: cfg.text,
         border: `1px solid ${cfg.border}`,
-        fontFamily: "'JetBrains Mono', monospace",
+        fontFamily: "'Arial', sans-serif",
         letterSpacing: '0.01em',
       }}
     >
       <span
         className="rounded-full flex-shrink-0"
-        style={{
-          width: '5px',
-          height: '5px',
-          background: cfg.dot,
-        }}
+        style={{ width: '5px', height: '5px', background: cfg.dot }}
       />
       {cfg.label}
     </span>

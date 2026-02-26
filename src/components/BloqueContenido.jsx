@@ -12,7 +12,6 @@ export default function BloqueContenido({
 }) {
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const [toolbarPos, setToolbarPos] = useState({ top: 0, left: 0 })
-  const [contenido, setContenido] = useState(bloque.contenido)
   const contenedorRef = useRef(null)
   const toolbarRef = useRef(null)
 
@@ -62,114 +61,122 @@ export default function BloqueContenido({
     <div
       className="group relative"
       ref={contenedorRef}
+      style={{ fontFamily: "'Inter', 'Arial', sans-serif" }}
     >
-      <div
-        className="relative rounded-xl transition-all"
-        style={{
-          background: '#FFFFFF',
-          border: tieneComentarioCritico ? '1px solid #FECACA' : '1px solid #E2E8F0',
-          boxShadow: tieneComentarioCritico
-            ? '0 0 0 3px rgba(239, 68, 68, 0.06)'
-            : '0 1px 3px rgba(0,0,0,0.04)',
-        }}
-      >
-        {/* Block number indicator */}
+      {/* Left accent for critical comments */}
+      {tieneComentarioCritico && (
         <div
-          className="absolute -left-8 top-4 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-          style={{ color: '#CBD5E1', fontFamily: "'JetBrains Mono', monospace" }}
-        >
-          {index + 1}
-        </div>
+          className="absolute left-0 top-0 bottom-0 rounded-full"
+          style={{ width: '3px', background: '#EF4444', left: '-16px' }}
+        />
+      )}
 
-        {/* Comment marker — right side */}
-        {comentariosActivos.length > 0 && (
-          <button
-            onClick={() => onComentarioClick?.(bloque)}
-            className="absolute -right-3 top-4 z-10 flex items-center justify-center w-6 h-6 rounded-full shadow-md transition-transform hover:scale-110"
-            style={{
-              background: gravedadConfig[comentariosActivos[0].gravedad]?.color || '#EF4444',
-            }}
-            title={`${comentariosActivos.length} comentario${comentariosActivos.length > 1 ? 's' : ''}`}
-          >
-            <MessageCircle size={11} className="text-white" />
-          </button>
-        )}
-
-        {/* Content */}
-        <div className="p-5">
-          {editable ? (
-            <div
-              contentEditable
-              suppressContentEditableWarning
-              onMouseUp={handleMouseUp}
-              onInput={e => {
-                setContenido(e.currentTarget.textContent)
-                onContenidoChange?.(bloque.id, e.currentTarget.textContent)
-              }}
-              className="text-sm leading-relaxed outline-none"
-              style={{ color: '#334155', minHeight: '60px' }}
-            >
-              {bloque.contenido}
-            </div>
-          ) : (
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: '#334155' }}
-            >
-              {bloque.contenido}
-            </p>
-          )}
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1.5 mt-4 pt-3" style={{ borderTop: '1px solid #F1F5F9' }}>
-            {bloque.etiquetas.map(tag => (
-              <EtiquetaBloque key={tag} label={tag} />
-            ))}
-            {!editable && comentariosActivos.length > 0 && (
-              <span
-                className="text-xs px-2 py-0.5 rounded font-medium"
-                style={{
-                  background: gravedadConfig[comentariosActivos[0].gravedad]?.bg,
-                  color: gravedadConfig[comentariosActivos[0].gravedad]?.color,
-                  border: `1px solid ${gravedadConfig[comentariosActivos[0].gravedad]?.border}`,
-                  fontFamily: "'JetBrains Mono', monospace",
-                }}
-              >
-                {gravedadConfig[comentariosActivos[0].gravedad]?.emoji} {comentariosActivos.length} comentario
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Inline toolbar */}
-        {toolbarVisible && editable && (
-          <div
-            ref={toolbarRef}
-            className="absolute z-50 flex items-center gap-0.5 p-1 rounded-lg shadow-2xl animate-fade-in"
-            style={{
-              top: `${toolbarPos.top}px`,
-              left: `${Math.max(0, toolbarPos.left)}px`,
-              background: '#0F172A',
-            }}
-          >
-            {toolbarActions.map(({ label, icon: Icon }) => (
-              <button
-                key={label}
-                onMouseDown={e => e.preventDefault()}
-                onClick={() => {
-                  setToolbarVisible(false)
-                  window.getSelection()?.removeAllRanges()
-                }}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-white hover:bg-white/10 transition-colors whitespace-nowrap"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                <Icon size={11} className="opacity-70" />
-                {label}
-              </button>
-            ))}
-          </div>
-        )}
+      {/* Block number in gutter */}
+      <div
+        className="absolute text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity select-none"
+        style={{ color: '#D1D5DB', top: '2px', left: '-32px', fontVariantNumeric: 'tabular-nums' }}
+      >
+        {index + 1}
       </div>
+
+      {/* Comment button in right gutter */}
+      {comentariosActivos.length > 0 && (
+        <button
+          onClick={() => onComentarioClick?.(bloque)}
+          className="absolute flex items-center gap-1 transition-all hover:scale-105"
+          style={{
+            right: '-44px',
+            top: '2px',
+            background: gravedadConfig[comentariosActivos[0].gravedad]?.bg,
+            color: gravedadConfig[comentariosActivos[0].gravedad]?.color,
+            border: `1px solid ${gravedadConfig[comentariosActivos[0].gravedad]?.border}`,
+            borderRadius: '6px',
+            padding: '2px 6px',
+            fontSize: '11px',
+            fontWeight: '500',
+            whiteSpace: 'nowrap',
+          }}
+          title={`${comentariosActivos.length} comentario${comentariosActivos.length > 1 ? 's' : ''}`}
+        >
+          <MessageCircle size={10} />
+          {comentariosActivos.length}
+        </button>
+      )}
+
+      {/* Content — markdown-style, no box */}
+      <div className="relative py-1">
+        {editable ? (
+          <div
+            contentEditable
+            suppressContentEditableWarning
+            onMouseUp={handleMouseUp}
+            onInput={e => onContenidoChange?.(bloque.id, e.currentTarget.textContent)}
+            className="text-base leading-8 outline-none"
+            style={{
+              color: '#1F2937',
+              caretColor: '#0098CD',
+            }}
+          >
+            {bloque.contenido}
+          </div>
+        ) : (
+          <p
+            className="text-base leading-8"
+            style={{ color: '#1F2937' }}
+          >
+            {bloque.contenido}
+          </p>
+        )}
+
+        {/* Tags — inline, subtle */}
+        <div className="flex flex-wrap gap-1.5 mt-2">
+          {bloque.etiquetas.map(tag => (
+            <EtiquetaBloque key={tag} label={tag} />
+          ))}
+          {!editable && comentariosActivos.length > 0 && (
+            <span
+              className="text-xs px-2 py-0.5 rounded font-medium"
+              style={{
+                background: gravedadConfig[comentariosActivos[0].gravedad]?.bg,
+                color: gravedadConfig[comentariosActivos[0].gravedad]?.color,
+                border: `1px solid ${gravedadConfig[comentariosActivos[0].gravedad]?.border}`,
+              }}
+            >
+              {gravedadConfig[comentariosActivos[0].gravedad]?.emoji} {comentariosActivos.length} comentario
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Inline AI toolbar on text selection */}
+      {toolbarVisible && editable && (
+        <div
+          ref={toolbarRef}
+          className="absolute z-50 flex items-center gap-0.5 p-1 rounded-lg shadow-2xl animate-fade-in"
+          style={{
+            top: `${toolbarPos.top}px`,
+            left: `${Math.max(0, toolbarPos.left)}px`,
+            background: '#073676',
+          }}
+        >
+          {toolbarActions.map(({ label, icon: Icon }) => (
+            <button
+              key={label}
+              onMouseDown={e => e.preventDefault()}
+              onClick={() => {
+                setToolbarVisible(false)
+                window.getSelection()?.removeAllRanges()
+              }}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-white whitespace-nowrap transition-colors"
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.12)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <Icon size={11} className="opacity-70" />
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

@@ -7,10 +7,10 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
   const rolActualLabel = roles.find(r => r.id === rolActivo)?.label || 'Autor'
 
   const rolColors = {
-    autor: { bg: '#EFF6FF', text: '#3B82F6', border: '#BFDBFE' },
+    autor: { bg: '#E0F4FB', text: '#0098CD', border: '#B3E0F2' },
     coordinador: { bg: '#F0FDF4', text: '#10B981', border: '#A7F3D0' },
     editor: { bg: '#FFFBEB', text: '#F59E0B', border: '#FDE68A' },
-    disenador: { bg: '#F5F3FF', text: '#8B5CF6', border: '#DDD6FE' },
+    disenador: { bg: '#EEF2FF', text: '#073676', border: '#C7D2FE' },
   }
   const rc = rolColors[rolActivo] || rolColors.autor
 
@@ -20,7 +20,8 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
       style={{
         height: '56px',
         background: '#FFFFFF',
-        borderBottom: '1px solid #E2E8F0',
+        borderBottom: '1px solid #E5E7EB',
+        fontFamily: "'Inter', 'Arial', sans-serif",
       }}
     >
       {/* Left: Logo + Breadcrumb */}
@@ -29,11 +30,11 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
         <div className="flex items-center gap-2 mr-3">
           <div
             className="w-7 h-7 rounded-lg flex items-center justify-center"
-            style={{ background: '#6366F1' }}
+            style={{ background: '#0098CD' }}
           >
-            <span className="text-white text-xs font-bold" style={{ fontFamily: "'JetBrains Mono', monospace" }}>A</span>
+            <span className="text-white text-xs font-bold" style={{ fontFamily: "'Arial', sans-serif" }}>A</span>
           </div>
-          <span className="text-sm font-semibold text-slate-800">AGC</span>
+          <span className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>AGC</span>
         </div>
 
         {/* Divider */}
@@ -47,12 +48,15 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
               {item.onClick ? (
                 <button
                   onClick={item.onClick}
-                  className="text-sm text-slate-400 hover:text-slate-600 transition-colors"
+                  className="text-sm transition-colors"
+                  style={{ color: '#6B7280' }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#1A1A1A'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}
                 >
                   {item.label}
                 </button>
               ) : (
-                <span className="text-sm font-medium text-slate-700">{item.label}</span>
+                <span className="text-sm font-medium" style={{ color: '#1A1A1A' }}>{item.label}</span>
               )}
             </div>
           ))}
@@ -70,7 +74,7 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
               background: rc.bg,
               color: rc.text,
               border: `1px solid ${rc.border}`,
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Arial', sans-serif",
             }}
           >
             <span>{rolActualLabel}</span>
@@ -79,10 +83,10 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
           {rolMenuAbierto && (
             <div
               className="absolute right-0 top-full mt-1 w-52 rounded-xl shadow-xl py-1 z-50 animate-fade-in"
-              style={{ background: '#FFFFFF', border: '1px solid #E2E8F0' }}
+              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
             >
               <div className="px-3 py-2 mb-1" style={{ borderBottom: '1px solid #F1F5F9' }}>
-                <p className="text-xs text-slate-400 font-medium">Vista de demo — cambiar rol</p>
+                <p className="text-xs font-medium" style={{ color: '#6B7280' }}>Vista de demo — cambiar rol</p>
               </div>
               {roles.map(rol => (
                 <button
@@ -91,11 +95,14 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
                     onRolChange(rol.id)
                     setRolMenuAbierto(false)
                   }}
-                  className="w-full text-left px-3 py-2 hover:bg-slate-50 transition-colors flex items-center justify-between"
+                  className="w-full text-left px-3 py-2 transition-colors flex items-center justify-between"
+                  style={{ fontFamily: "'Inter', 'Arial', sans-serif" }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                 >
                   <div>
-                    <p className="text-sm font-medium text-slate-700">{rol.label}</p>
-                    <p className="text-xs text-slate-400">{rol.description}</p>
+                    <p className="text-sm font-medium" style={{ color: '#1A1A1A' }}>{rol.label}</p>
+                    <p className="text-xs" style={{ color: '#6B7280' }}>{rol.description}</p>
                   </div>
                   {rolActivo === rol.id && (
                     <div className="w-1.5 h-1.5 rounded-full" style={{ background: rc.text }} />
@@ -109,9 +116,11 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
         {/* Bell */}
         <button
           onClick={onNotifClick}
-          className="relative p-2 rounded-lg hover:bg-slate-100 transition-colors"
+          className="relative p-2 rounded-lg transition-colors"
+          onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
+          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
-          <Bell size={18} className="text-slate-500" />
+          <Bell size={18} style={{ color: '#6B7280' }} />
           {notifCount > 0 && (
             <span
               className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-white"
@@ -125,7 +134,7 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
         {/* Avatar */}
         <div
           className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white"
-          style={{ background: '#6366F1' }}
+          style={{ background: '#073676' }}
           title="Ana Lucía Martínez"
         >
           AL

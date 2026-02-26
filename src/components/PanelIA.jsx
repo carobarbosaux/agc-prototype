@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, ChevronRight, Sparkles, X } from 'lucide-react'
+import { Send, ChevronRight, Sparkles } from 'lucide-react'
 import { respuestasIA } from '../mockData'
 
 export default function PanelIA({ historialInicial, onCerrar, temaLabel }) {
@@ -54,34 +54,34 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel }) {
         width: '320px',
         minWidth: '320px',
         background: '#FAFAFA',
-        borderLeft: '1px solid #E2E8F0',
+        borderLeft: '1px solid #E5E7EB',
+        fontFamily: "'Inter', 'Arial', sans-serif",
       }}
     >
-      {/* Panel header */}
+      {/* Header */}
       <div
         className="flex items-center justify-between px-4 py-3 flex-shrink-0"
-        style={{
-          background: '#FFFFFF',
-          borderBottom: '1px solid #E2E8F0',
-        }}
+        style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}
       >
         <div className="flex items-center gap-2">
           <div
             className="w-6 h-6 rounded-lg flex items-center justify-center"
-            style={{ background: '#EEF2FF' }}
+            style={{ background: '#E0F4FB' }}
           >
-            <Sparkles size={13} style={{ color: '#6366F1' }} />
+            <Sparkles size={13} style={{ color: '#0098CD' }} />
           </div>
           <div>
-            <p className="text-sm font-semibold text-slate-700">Asistente IA</p>
-            <p className="text-xs text-slate-400">{temaLabel}</p>
+            <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Asistente IA</p>
+            <p className="text-xs" style={{ color: '#6B7280' }}>{temaLabel}</p>
           </div>
         </div>
         <button
           onClick={onCerrar}
-          className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+          className="p-1.5 rounded-lg transition-colors"
+          onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
+          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
-          <ChevronRight size={16} className="text-slate-400" />
+          <ChevronRight size={16} style={{ color: '#9CA3AF' }} />
         </button>
       </div>
 
@@ -95,17 +95,17 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel }) {
             {msg.rol === 'ia' && (
               <div
                 className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mr-2 mt-0.5"
-                style={{ background: '#EEF2FF' }}
+                style={{ background: '#E0F4FB' }}
               >
-                <Sparkles size={11} style={{ color: '#6366F1' }} />
+                <Sparkles size={11} style={{ color: '#0098CD' }} />
               </div>
             )}
             <div
               className="max-w-[85%] rounded-xl px-3 py-2.5 text-sm leading-relaxed"
               style={{
-                background: msg.rol === 'usuario' ? '#6366F1' : '#FFFFFF',
-                color: msg.rol === 'usuario' ? '#FFFFFF' : '#334155',
-                border: msg.rol === 'ia' ? '1px solid #E2E8F0' : 'none',
+                background: msg.rol === 'usuario' ? '#0098CD' : '#FFFFFF',
+                color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151',
+                border: msg.rol === 'ia' ? '1px solid #E5E7EB' : 'none',
                 boxShadow: msg.rol === 'ia' ? '0 1px 2px rgba(0,0,0,0.04)' : 'none',
               }}
             >
@@ -117,24 +117,15 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel }) {
         {/* Typing indicator */}
         {esperando && (
           <div className="flex items-center gap-2 animate-fade-in">
-            <div
-              className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
-              style={{ background: '#EEF2FF' }}
-            >
-              <Sparkles size={11} style={{ color: '#6366F1' }} />
+            <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E0F4FB' }}>
+              <Sparkles size={11} style={{ color: '#0098CD' }} />
             </div>
-            <div
-              className="px-3 py-2.5 rounded-xl flex items-center gap-1"
-              style={{ background: '#FFFFFF', border: '1px solid #E2E8F0' }}
-            >
+            <div className="px-3 py-2.5 rounded-xl flex items-center gap-1" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
               {[0, 1, 2].map(i => (
                 <span
                   key={i}
                   className="w-1.5 h-1.5 rounded-full animate-pulse-dot"
-                  style={{
-                    background: '#6366F1',
-                    animationDelay: `${i * 0.2}s`,
-                  }}
+                  style={{ background: '#0098CD', animationDelay: `${i * 0.2}s` }}
                 />
               ))}
             </div>
@@ -149,12 +140,10 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel }) {
             <button
               key={s}
               onClick={() => setInput(s)}
-              className="text-xs px-2.5 py-1.5 rounded-lg transition-all hover:scale-[1.02]"
-              style={{
-                background: '#EEF2FF',
-                color: '#6366F1',
-                border: '1px solid #C7D2FE',
-              }}
+              className="text-xs px-2.5 py-1.5 rounded-lg transition-all"
+              style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2' }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
             >
               {s}
             </button>
@@ -163,13 +152,10 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel }) {
       )}
 
       {/* Input */}
-      <div
-        className="px-3 py-3 flex-shrink-0"
-        style={{ borderTop: '1px solid #E2E8F0', background: '#FFFFFF' }}
-      >
+      <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid #E5E7EB', background: '#FFFFFF' }}>
         <div
           className="flex items-end gap-2 rounded-xl px-3 py-2"
-          style={{ background: '#F8FAFC', border: '1px solid #E2E8F0' }}
+          style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}
         >
           <textarea
             value={input}
@@ -177,7 +163,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel }) {
             onKeyDown={handleKeyDown}
             placeholder="Escribe o pregunta algo..."
             className="flex-1 text-sm outline-none resize-none bg-transparent"
-            style={{ color: '#334155', minHeight: '20px', maxHeight: '80px', fontFamily: "'DM Sans', sans-serif" }}
+            style={{ color: '#374151', minHeight: '20px', maxHeight: '80px', fontFamily: "'Inter', 'Arial', sans-serif" }}
             rows={1}
           />
           <button
@@ -185,14 +171,14 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel }) {
             disabled={!input.trim() || esperando}
             className="p-1.5 rounded-lg transition-all flex-shrink-0"
             style={{
-              background: input.trim() && !esperando ? '#6366F1' : '#E2E8F0',
-              color: input.trim() && !esperando ? '#FFFFFF' : '#94A3B8',
+              background: input.trim() && !esperando ? '#0098CD' : '#E5E7EB',
+              color: input.trim() && !esperando ? '#FFFFFF' : '#9CA3AF',
             }}
           >
             <Send size={14} />
           </button>
         </div>
-        <p className="text-xs text-slate-300 mt-1.5 text-center">Enter para enviar · Shift+Enter para nueva línea</p>
+        <p className="text-xs mt-1.5 text-center" style={{ color: '#CBD5E1' }}>Enter para enviar · Shift+Enter para nueva línea</p>
       </div>
     </div>
   )
