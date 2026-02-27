@@ -15,7 +15,7 @@ Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación
 
 ### ✅ Construido y funcional
 
-**3 pantallas:**
+**5 pantallas:**
 
 1. **Herramientas** (`src/screens/PantallaHerramientas.jsx`)
    - Grid de 5 tools. Solo "Generación de Asignaturas" es clickeable → navega al Dashboard
@@ -24,13 +24,27 @@ Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación
 2. **Dashboard** (`src/screens/PantallaDashboard.jsx`)
    - **Dos vistas con toggle** (estilo Linear):
      - **"Mi trabajo"** — inbox de trabajo priorizado por urgencia. Filas agrupadas: Requieren atención → En progreso → Por comenzar. Cada fila = sección accionable con clic directo al canvas
-     - **"Por titulación"** — sidebar con 6 titulaciones (solo Máster en IA navegable, las demás con candado). Panel derecho con tabla de asignaturas
+     - **"Por titulación"** — sidebar con 6 titulaciones (todas navegables). Panel derecho con tabla de asignaturas
    - 3 stat cards clickeables que filtran ambas vistas
-   - 6 titulaciones en mockData, solo Máster en IA tiene asignaturas navegables
+   - 6 titulaciones en mockData, todas con asignaturas navegables
+   - **Botón "Crear nueva asignatura"** en el sidebar de titulaciones (solo Autor)
 
-3. **Canvas** (`src/screens/PantallaCanvas.jsx`)
+3. **Modal de creación de asignatura** (`src/components/ModalCrearAsignatura.jsx`) — NEW
+   - Paso 1: Seleccionar titulación (dropdown de todas las titulaciones)
+   - Paso 2: Responder 11 preguntas situacionales en forma de cuestionario
+   - Paso 3: IA genera resumen preliminar (editable) con sugerencias de tags
+   - Paso 4: Autor aprueba → se crea la asignatura en mockData y navega al Canvas en el Resumen
+
+4. **Canvas — Resumen de asignatura** (`src/screens/PantallaCanvas.jsx`) — NEW
+   - Primera sección del pipeline cuando se crea una asignatura
+   - Contenido editable: nombre, descripción, objetivos de aprendizaje, tags sugeridos
+   - Estado: `borrador`
+   - Barra de acciones: `Guardar · Enviar a revisión`
+   - Panel IA: chat activo para refinamientos
+
+5. **Canvas** (`src/screens/PantallaCanvas.jsx`)
    - Layout 3 columnas: Pipeline (240px) | Contenido (flexible) | Panel IA (320px)
-   - **Pipeline izquierdo**: etapas con estados, Temario expandible con 6 temas, progreso al fondo
+   - **Pipeline izquierdo**: etapas con estados. Resumen > Índice > Instrucciones > Temario (expandible con N temas) > Recursos a fondo > Tests
    - **Área central**: bloques editables (Tema 2) o solo lectura (Tema 1). Toolbar inline al seleccionar texto (Mejorar / Expandir / Resumir / Cambiar tono). Marcador rojo en bloque con comentario crítico
    - **Panel IA**: chat funcional con respuestas simuladas, suggestions rápidas, colapsable. Al colapsarse muestra un botón lateral fino
    - **Panel de comentarios**: se abre al hacer clic en el marcador rojo del bloque, reemplaza el panel IA. Muestra el hilo con gravedad tag, "Marcar como resuelto" y campo de respuesta
@@ -55,15 +69,17 @@ Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación
 
 ```
 App.jsx
-  pantalla: 'herramientas' | 'dashboard' | 'canvas'
+  pantalla: 'herramientas' | 'dashboard' | 'crearAsignatura' | 'canvas'
   rolActivo: 'autor' | 'coordinador' | 'editor' | 'disenador'
-  seccionActiva: 't1' | 't2' | 'indice' | 'instrucciones'
+  asignaturaActiva: { titulacionId, asignaturaId }
+  seccionActiva: 'resumen' | 't1' | 't2' | 'indice' | 'instrucciones'
   panelIAabierto: bool
   notifAbiertas: bool
 
 Flujo:
 herramientas → dashboard (click "Generación de Asignaturas")
-dashboard → canvas (click fila activa en cualquier vista)
+dashboard (sidebar) → crearAsignatura (click "Crear nueva asignatura")
+crearAsignatura → canvas (Resumen) (click "Aprobar resumen")
 canvas → canvas (click sección en pipeline)
 topbar 🔔 → panel notificaciones (overlay)
 notificación → canvas o dashboard (click en item)
@@ -75,11 +91,49 @@ notificación → canvas o dashboard (click en item)
 
 Todos los datos son hardcodeados. Nunca llamadas a API.
 
+**Estructura jerárquica:**
+```
+titulaciones[]
+  ├── id
+  ├── nombre
+  ├── navegable: true
+  └── asignaturas[]
+      ├── id
+      ├── nombre
+      ├── resumen
+      ├── objetivos[]
+      ├── tags[]
+      ├── etapaActual
+      ├── estado
+      ├── temas[]
+      │   ├── id
+      │   ├── label
+      │   ├── estado
+      │   └── bloques[]
+      │       ├── id
+      │       ├── contenido
+      │       ├── etiquetas[]
+      │       └── comentarios[]
+      └── preguntas (datos de creación)
+          ├── tipoEstudio
+          ├── areaConocimiento
+          ├── nivelEducativo
+          ├── creditos
+          ├── noBloques
+          ├── noTemasExtension
+          ├── tipoAsignatura
+          ├── enfoque
+          ├── competencias
+          ├── metodologia
+          └── temasObligatorios
+```
+
 **Entidades clave:**
 - `currentUser` — Ana Lucía Martínez, rol autor
-- `titulaciones` — 6 titulaciones, solo `master-ia` tiene `navegable: true`
+- `titulaciones` — 6 titulaciones, todas navegables
+- `preguntasCreacion` — 11 preguntas del formulario con tipos de respuesta
 - `miTrabajo` — array plano de secciones pendientes para la vista "Mi trabajo"
-- `pipeline` — etapas del flujo de contenido con estados
+- `pipeline` — etapas del flujo de contenido con estados (Resumen > Índice > Instrucciones > Temario > Recursos > Tests)
 - `bloquesTema2` — 2 bloques de contenido del Tema 2 (sin comentarios críticos aún)
 - `bloquesTema1` — 2 bloques del Tema 1 (bloque 2 tiene comentario 🔴 Crítico del Coordinador)
 - `chatHistorialTema2` / `chatHistorialTema1` — mensajes iniciales del panel IA
@@ -124,6 +178,8 @@ Action bar: 64px fijo en bottom
 ## Lo que falta por construir
 
 ### Inmediato (siguiente iteración)
+- [ ] **Modal de creación de asignatura** — wizard de 11 preguntas + generación de resumen preliminar
+- [ ] **Pantalla Resumen** en Canvas — sección inicial con contenido editable + tags sugeridos
 - [ ] **Vista del Coordinador** — misma pantalla canvas, mismo contenido, pero:
   - Área central: solo lectura
   - Barra de acciones: `Dejar comentario · Solicitar correcciones · ✓ Aprobar esta sección`

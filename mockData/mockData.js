@@ -1,10 +1,11 @@
-// mockData.js — All hardcoded data for AGC 2.0 prototype
+// mockData.js — All hardcoded data for AGC 2.0 prototype with subject creation
 // No API calls, no localStorage, no dynamic data
+// Hierarchical structure: titulaciones > asignaturas > temas > bloques
 
 export const currentUser = {
   id: 'user-001',
   name: 'Ana Lucía Martínez',
-  role: 'autor', // 'autor' | 'coordinador' | 'editor' | 'disenador'
+  role: 'autor',
   avatar: 'AL',
   email: 'ana.martinez@unir.edu',
 }
@@ -39,6 +40,97 @@ export const dashboardStats = {
   ],
 }
 
+// Preguntas para creación de asignatura
+export const preguntasCreacion = [
+  {
+    id: 'q1',
+    pregunta: 'Tipo de estudio',
+    descripcion: 'Desplegable: grado, posgrado, título propio...',
+    tipo: 'select',
+    opciones: ['Grado', 'Posgrado', 'Máster', 'Especialista', 'Diplomado', 'Título propio'],
+    paraAutor: true,
+  },
+  {
+    id: 'q2',
+    pregunta: 'Área de conocimiento',
+    descripcion: 'Desplegable: Educación, Empresa, Derecho...',
+    tipo: 'select',
+    opciones: ['Educación', 'Empresa', 'Derecho', 'Tecnología', 'Salud', 'Humanidades', 'Ciencias'],
+    paraAutor: true,
+  },
+  {
+    id: 'q3',
+    pregunta: 'Nivel educativo',
+    descripcion: 'Desplegable: inicial, intermedio, avanzado, experto',
+    tipo: 'select',
+    opciones: ['Inicial', 'Intermedio', 'Avanzado', 'Experto'],
+    paraAutor: true,
+  },
+  {
+    id: 'q4',
+    pregunta: 'Número de créditos',
+    descripcion: 'Input numérico: 1-12',
+    tipo: 'number',
+    min: 1,
+    max: 12,
+    paraAutor: true,
+  },
+  {
+    id: 'q5',
+    pregunta: 'Número de bloques',
+    descripcion: 'Input numérico',
+    tipo: 'number',
+    min: 1,
+    max: 20,
+    paraAutor: true,
+  },
+  {
+    id: 'q6',
+    pregunta: 'Número de temas y extensión',
+    descripcion: 'Ej: 6 temas, 15-20 minutos cada uno',
+    tipo: 'text',
+    paraAutor: true,
+  },
+  {
+    id: 'q7',
+    pregunta: 'Tipo de asignatura',
+    descripcion: 'Desplegable: cuantitativa, cualitativa...',
+    tipo: 'select',
+    opciones: ['Cuantitativa', 'Cualitativa', 'Mixta'],
+    paraAutor: true,
+  },
+  {
+    id: 'q8',
+    pregunta: 'Enfoque de la asignatura',
+    descripcion: 'Desplegable: teórico, práctico, teórico-práctico, basado en casos, basado en proyectos',
+    tipo: 'select',
+    opciones: ['Teórico', 'Práctico', 'Teórico-práctico', 'Basado en casos', 'Basado en proyectos'],
+    paraAutor: true,
+  },
+  {
+    id: 'q9',
+    pregunta: 'Competencias y resultados de aprendizaje',
+    descripcion: 'Campo abierto',
+    tipo: 'textarea',
+    paraAutor: true,
+  },
+  {
+    id: 'q10',
+    pregunta: 'Enfoque, metodología, aplicación profesional',
+    descripcion: 'Campo abierto largo',
+    tipo: 'textarea',
+    paraAutor: true,
+  },
+  {
+    id: 'q11',
+    pregunta: 'Temas que obligatoriamente deben aparecer',
+    descripcion: 'Campo abierto',
+    tipo: 'textarea',
+    paraAutor: true,
+  },
+]
+
+// Estructura jerárquica: titulaciones > asignaturas > temas > bloques
 export const titulaciones = [
   {
     id: 'master-ia',
@@ -48,85 +140,224 @@ export const titulaciones = [
       {
         id: 'fund-ml',
         nombre: 'Fundamentos de Machine Learning',
+        resumen: 'Introducción completa a los conceptos fundamentales del machine learning, desde la teoría hasta la aplicación práctica en contextos reales.',
+        objetivos: [
+          'Comprender los principios básicos del aprendizaje automático',
+          'Aplicar técnicas supervisadas y no supervisadas a problemas reales',
+          'Evaluar modelos usando métricas estándar de rendimiento',
+          'Identificar cuándo usar cada tipo de algoritmo',
+        ],
+        tags: ['Machine Learning', 'Concepto', 'Fundamentos'],
         etapaActual: 'Temario · Tema 2',
         estado: 'borrador',
         pendienteDe: 'tú',
         ultimaActividad: 'Hace 2 horas',
         activa: true,
+        preguntas: {
+          tipoEstudio: 'posgrado',
+          areaConocimiento: 'Tecnología',
+          nivelEducativo: 'intermedio',
+          creditos: 6,
+          noBloques: 4,
+          noTemasExtension: '6 temas, 15-20 minutos cada uno',
+          tipoAsignatura: 'cuantitativa',
+          enfoque: 'teórico-práctico',
+          competencias: 'Capacidad de análisis de datos, comprensión de algoritmos, pensamiento crítico en selección de modelos',
+          metodologia: 'Clases expositivas, ejercicios prácticos, casos de estudio reales, laboratorios computacionales',
+          temasObligatorios: 'Regresión, Clasificación, Evaluación y validación de modelos, Validación cruzada',
+        },
+        temas: [
+          { 
+            id: 't1', 
+            label: 'Tema 1: Introducción al aprendizaje automático', 
+            estado: 'revision',
+            bloques: [
+              {
+                id: 'b1-t1',
+                contenido: 'El aprendizaje automático es una rama de la inteligencia artificial que permite a los sistemas aprender de los datos sin ser programados explícitamente. En lugar de seguir un conjunto de instrucciones predefinidas, los sistemas de machine learning descubren patrones en los datos.',
+                etiquetas: ['Machine Learning', 'Concepto', 'Fundamentos'],
+                comentarios: [],
+              },
+              {
+                id: 'b2-t1',
+                contenido: 'Existen tres tipos principales de aprendizaje: supervisado, no supervisado y por refuerzo. El aprendizaje supervisado utiliza datos etiquetados. El aprendizaje no supervisado encuentra patrones sin etiquetar.',
+                etiquetas: ['Machine Learning', 'Tipos'],
+                comentarios: [
+                  {
+                    id: 'c1',
+                    autor: 'Carlos Mendoza',
+                    rol: 'coordinador',
+                    avatar: 'CM',
+                    gravedad: 'critico',
+                    texto: 'Necesitas una referencia académica para esta categorización. Sugiero citar Goodfellow et al. (2016).',
+                    resuelto: false,
+                    timestamp: '2026-02-26T10:30:00Z',
+                    respuestas: [],
+                  }
+                ],
+              },
+            ]
+          },
+          { 
+            id: 't2', 
+            label: 'Tema 2: Regresión y clasificación', 
+            estado: 'borrador', 
+            activo: true,
+            bloques: [
+              {
+                id: 'b1-t2',
+                contenido: 'La regresión y la clasificación son las dos tareas supervisadas fundamentales del machine learning. En la regresión, el objetivo es predecir un valor numérico continuo. En la clasificación, el objetivo es asignar una categoría discreta.',
+                etiquetas: ['Machine Learning', 'Concepto'],
+                comentarios: [],
+              },
+              {
+                id: 'b2-t2',
+                contenido: 'Un ejemplo clásico de regresión lineal es predecir el precio de una vivienda en función de su superficie. La ecuación resultante, y = mx + b, nos permite estimar el precio de cualquier vivienda.',
+                etiquetas: ['Machine Learning', 'Ejemplo'],
+                comentarios: [],
+              },
+            ]
+          },
+          { id: 't3', label: 'Tema 3: Árboles de decisión y ensemble methods', estado: 'bloqueado', bloques: [] },
+          { id: 't4', label: 'Tema 4: Redes neuronales básicas', estado: 'bloqueado', bloques: [] },
+          { id: 't5', label: 'Tema 5: Evaluación y validación de modelos', estado: 'bloqueado', bloques: [] },
+          { id: 't6', label: 'Tema 6: Proyecto práctico', estado: 'bloqueado', bloques: [] },
+        ]
       },
-      { id: 'deep-learning', nombre: 'Deep Learning y Redes Neuronales', etapaActual: 'Índice', estado: 'porComenzar', pendienteDe: 'tú', ultimaActividad: '—' },
-      { id: 'nlp', nombre: 'Procesamiento del Lenguaje Natural', etapaActual: 'Índice', estado: 'porComenzar', pendienteDe: 'tú', ultimaActividad: '—' },
-      { id: 'vision', nombre: 'Visión por Computador', etapaActual: 'Índice', estado: 'porComenzar', pendienteDe: 'tú', ultimaActividad: '—' },
-      { id: 'etica', nombre: 'IA Ética y Regulación', etapaActual: 'Índice', estado: 'porComenzar', pendienteDe: 'tú', ultimaActividad: '—' },
-      { id: 'mlops', nombre: 'MLOps y Despliegue de Modelos', etapaActual: 'Índice', estado: 'porComenzar', pendienteDe: 'tú', ultimaActividad: '—' },
-      { id: 'tfm', nombre: 'Proyecto Final de Máster', etapaActual: 'Índice', estado: 'porComenzar', pendienteDe: 'tú', ultimaActividad: '—' },
+      { 
+        id: 'deep-learning', 
+        nombre: 'Deep Learning y Redes Neuronales', 
+        resumen: 'Exploración avanzada de redes neuronales profundas y sus aplicaciones en visión y lenguaje.',
+        objetivos: ['Diseñar arquitecturas de redes neuronales', 'Entrenar modelos con datos grandes'],
+        tags: ['Deep Learning', 'Redes Neuronales', 'Avanzado'],
+        etapaActual: 'Índice', 
+        estado: 'porComenzar', 
+        pendienteDe: 'tú', 
+        ultimaActividad: '—',
+        temas: [],
+      },
+      { 
+        id: 'nlp', 
+        nombre: 'Procesamiento del Lenguaje Natural', 
+        resumen: 'Introducción a técnicas NLP para análisis de texto y comprensión del lenguaje.',
+        objetivos: ['Procesar y analizar texto', 'Construir modelos de lenguaje'],
+        tags: ['NLP', 'Lenguaje Natural', 'Intermedio'],
+        etapaActual: 'Índice', 
+        estado: 'porComenzar', 
+        pendienteDe: 'tú', 
+        ultimaActividad: '—',
+        temas: [],
+      },
+      { 
+        id: 'vision', 
+        nombre: 'Visión por Computador', 
+        resumen: 'Técnicas para procesamiento y análisis de imágenes digitales.',
+        objetivos: ['Analizar imágenes digitales', 'Detectar objetos y patrones'],
+        tags: ['Visión', 'Imágenes', 'Intermedio'],
+        etapaActual: 'Índice', 
+        estado: 'porComenzar', 
+        pendienteDe: 'tú', 
+        ultimaActividad: '—',
+        temas: [],
+      },
+      { 
+        id: 'etica', 
+        nombre: 'IA Ética y Regulación', 
+        resumen: 'Consideraciones éticas y regulatorias en sistemas de IA y GDPR.',
+        objetivos: ['Entender implicaciones éticas', 'Cumplir regulaciones'],
+        tags: ['Ética', 'Regulación', 'Fundamental'],
+        etapaActual: 'Índice', 
+        estado: 'porComenzar', 
+        pendienteDe: 'tú', 
+        ultimaActividad: '—',
+        temas: [],
+      },
+      { 
+        id: 'mlops', 
+        nombre: 'MLOps y Despliegue de Modelos', 
+        resumen: 'Operacionalización de modelos de machine learning en producción con DevOps.',
+        objetivos: ['Desplegar modelos', 'Monitorear en producción'],
+        tags: ['MLOps', 'Despliegue', 'Avanzado'],
+        etapaActual: 'Índice', 
+        estado: 'porComenzar', 
+        pendienteDe: 'tú', 
+        ultimaActividad: '—',
+        temas: [],
+      },
+      { 
+        id: 'tfm', 
+        nombre: 'Proyecto Final de Máster', 
+        resumen: 'Trabajo final aplicando todos los conocimientos adquiridos en el programa.',
+        objetivos: ['Aplicar conceptos integrados', 'Demostrar maestría del programa'],
+        tags: ['Proyecto', 'Integración', 'Final'],
+        etapaActual: 'Índice', 
+        estado: 'porComenzar', 
+        pendienteDe: 'tú', 
+        ultimaActividad: '—',
+        temas: [],
+      },
     ]
   },
-  { id: 'master-daa', nombre: 'Máster en Data Analytics Avanzado', navegable: false },
-  { id: 'master-ciberseguridad', nombre: 'Máster en Ciberseguridad', navegable: false },
-  { id: 'master-cloud', nombre: 'Máster en Cloud Computing', navegable: false },
-  { id: 'especialista-ia', nombre: 'Especialista en Inteligencia Artificial', navegable: false },
-  { id: 'diplomado-data', nombre: 'Diplomado en Data Science', navegable: false },
+  { 
+    id: 'master-daa', 
+    nombre: 'Máster en Data Analytics Avanzado', 
+    navegable: true,
+    asignaturas: [
+      { 
+        id: 'analytics-1', 
+        nombre: 'Fundamentos de Analytics', 
+        resumen: 'Base de datos y análisis descriptivo',
+        objetivos: [],
+        tags: [],
+        etapaActual: 'Índice', 
+        estado: 'porComenzar', 
+        pendienteDe: 'tú', 
+        ultimaActividad: '—',
+        temas: [],
+      },
+    ]
+  },
+  { 
+    id: 'master-ciberseguridad', 
+    nombre: 'Máster en Ciberseguridad', 
+    navegable: true,
+    asignaturas: [],
+  },
+  { 
+    id: 'master-cloud', 
+    nombre: 'Máster en Cloud Computing', 
+    navegable: true,
+    asignaturas: [],
+  },
+  { 
+    id: 'especialista-ia', 
+    nombre: 'Especialista en Inteligencia Artificial', 
+    navegable: true,
+    asignaturas: [],
+  },
+  { 
+    id: 'diplomado-data', 
+    nombre: 'Diplomado en Data Science', 
+    navegable: true,
+    asignaturas: [],
+  },
 ]
 
-export const pipeline = [
-  { id: 'indice', label: 'Índice', estado: 'aprobado', tipo: 'seccion' },
-  { id: 'instrucciones', label: 'Instrucciones didácticas', estado: 'aprobado', tipo: 'seccion' },
+// Pipeline structure for subject
+export const pipelineTemplate = [
+  { id: 'resumen', label: 'Resumen', estado: 'borrador', tipo: 'seccion' },
+  { id: 'indice', label: 'Índice', estado: 'porComenzar', tipo: 'seccion' },
+  { id: 'instrucciones', label: 'Instrucciones didácticas', estado: 'porComenzar', tipo: 'seccion' },
   {
-    id: 'temario', label: 'Temario', estado: 'borrador', tipo: 'grupo',
+    id: 'temario', label: 'Temario', estado: 'porComenzar', tipo: 'grupo',
     temas: [
-      { id: 't1', label: 'Tema 1: Introducción al aprendizaje automático', estado: 'revision' },
-      { id: 't2', label: 'Tema 2: Regresión y clasificación', estado: 'borrador', activo: true },
-      { id: 't3', label: 'Tema 3: Árboles de decisión y ensemble methods', estado: 'bloqueado' },
-      { id: 't4', label: 'Tema 4: Redes neuronales básicas', estado: 'bloqueado' },
-      { id: 't5', label: 'Tema 5: Evaluación y validación de modelos', estado: 'bloqueado' },
-      { id: 't6', label: 'Tema 6: Proyecto práctico', estado: 'bloqueado' },
+      { id: 't1', label: 'Tema 1', estado: 'porComenzar' },
+      { id: 't2', label: 'Tema 2', estado: 'porComenzar' },
+      { id: 't3', label: 'Tema 3', estado: 'bloqueado' },
     ]
   },
-  { id: 'recursos-t1', label: 'Recursos a fondo · Tema 1', estado: 'bloqueado', tipo: 'seccion' },
-  { id: 'test-t1', label: 'Test de evaluación · Tema 1', estado: 'bloqueado', tipo: 'seccion' },
-]
-
-export const bloquesTema2 = [
-  {
-    id: 'b1',
-    contenido: 'La regresión y la clasificación son las dos tareas supervisadas fundamentales del machine learning. En la regresión, el objetivo es predecir un valor numérico continuo, como el precio de una vivienda o la temperatura de mañana. En la clasificación, el objetivo es asignar una categoría discreta, como determinar si un email es spam o si una imagen contiene un gato.',
-    etiquetas: ['Machine Learning', 'Concepto'],
-    comentarios: [],
-  },
-  {
-    id: 'b2',
-    contenido: 'Un ejemplo clásico de regresión lineal es predecir el precio de una vivienda en función de su superficie. Si representamos los datos en un gráfico, la regresión lineal encuentra la recta que mejor se ajusta a los puntos. La ecuación resultante, y = mx + b, nos permite estimar el precio de cualquier vivienda conociendo únicamente su tamaño.',
-    etiquetas: ['Machine Learning', 'Ejemplo'],
-    comentarios: [],
-  },
-]
-
-export const bloquesTema1 = [
-  {
-    id: 'b1-t1',
-    contenido: 'El aprendizaje automático es una rama de la inteligencia artificial que permite a los sistemas aprender de los datos sin ser programados explícitamente. En lugar de seguir un conjunto de instrucciones predefinidas, los sistemas de machine learning descubren patrones en los datos y utilizan esos patrones para hacer predicciones o tomar decisiones.',
-    etiquetas: ['Machine Learning', 'Concepto', 'Fundamentos'],
-    comentarios: [],
-  },
-  {
-    id: 'b2-t1',
-    contenido: 'Existen tres tipos principales de aprendizaje: supervisado, no supervisado y por refuerzo. El aprendizaje supervisado utiliza datos etiquetados para entrenar el modelo. El aprendizaje no supervisado encuentra patrones en datos sin etiquetar. El aprendizaje por refuerzo entrena agentes a través de recompensas y castigos.',
-    etiquetas: ['Machine Learning', 'Tipos'],
-    comentarios: [
-      {
-        id: 'c1',
-        autor: 'Carlos Mendoza',
-        rol: 'coordinador',
-        avatar: 'CM',
-        gravedad: 'critico',
-        texto: 'Necesitas una referencia académica para esta categorización. Sugiero citar Goodfellow et al. (2016).',
-        resuelto: false,
-        timestamp: '2026-02-26T10:30:00Z',
-        respuestas: [],
-      }
-    ],
-  },
+  { id: 'recursos', label: 'Recursos a fondo', estado: 'bloqueado', tipo: 'seccion' },
+  { id: 'test', label: 'Test de evaluación', estado: 'bloqueado', tipo: 'seccion' },
 ]
 
 export const chatHistorialTema2 = [
@@ -136,7 +367,7 @@ export const chatHistorialTema2 = [
 
 export const chatHistorialTema1 = [
   { id: 'm1', autor: 'Ana Lucía', role: 'autor', texto: 'He añadido la referencia de Goodfellow. ¿Es suficiente?', timestamp: '2026-02-26T11:15:00Z' },
-  { id: 'm2', autor: 'AGC IA', role: 'ia', texto: 'Sí, esa referencia es perfecta. También te recomendaría añadir un ejemplo práctico de cómo funciona cada tipo de aprendizaje.', timestamp: '2026-02-26T11:16:00Z' },
+  { id: 'm2', autor: 'AGC IA', role: 'ia', texto: 'Sí, esa referencia es perfecta. También te recomendaría añadir un ejemplo práctico.', timestamp: '2026-02-26T11:16:00Z' },
 ]
 
 export const respuestasIA = [
@@ -318,3 +549,12 @@ export const herramientas = [
     clickeable: false,
   },
 ]
+
+// Sugerencias de tags según respuestas
+export const tagsSugerenciasPorArea = {
+  Tecnología: ['Machine Learning', 'Deep Learning', 'Algoritmo', 'Código', 'Fundamentos'],
+  Educación: ['Pedagogía', 'Métodos', 'Evaluación', 'Competencias'],
+  Empresa: ['Casos de uso', 'Aplicación profesional', 'ROI', 'Estrategia'],
+  Derecho: ['Regulación', 'Cumplimiento', 'Ética', 'Normativa'],
+  Salud: ['Práctica clínica', 'Evidencia', 'Casos clínicos', 'Protocolos'],
+}

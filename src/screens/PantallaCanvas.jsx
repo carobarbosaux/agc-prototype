@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronRight, Plus, Save, MessageSquare, Eye, Sparkles } from 'lucide-react'
+import { ChevronRight, Plus, Save, MessageSquare, Eye, Sparkles, X } from 'lucide-react'
 import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
@@ -85,6 +85,165 @@ const SECCION_CONFIG = {
   },
 }
 
+// ─── Resumen section component ────────────────────────────────────────────────
+
+function SeccionResumen({ asignatura, editable, onAccionIA }) {
+  const [nombre, setNombre] = useState(asignatura?.nombre || '')
+  const [descripcion, setDescripcion] = useState(asignatura?.descripcion || '')
+  const [objetivos, setObjetivos] = useState(asignatura?.objetivos || [])
+  const [tags, setTags] = useState(asignatura?.tags || [])
+  const [tagInput, setTagInput] = useState('')
+  const [unsaved, setUnsaved] = useState(false)
+
+  const markUnsaved = () => setUnsaved(true)
+
+  const removeTag = (tag) => { setTags(prev => prev.filter(t => t !== tag)); markUnsaved() }
+  const addTag = (tag) => {
+    const t = tag.trim()
+    if (t && !tags.includes(t)) { setTags(prev => [...prev, t]); markUnsaved() }
+    setTagInput('')
+  }
+  const updateObjetivo = (idx, val) => {
+    setObjetivos(prev => { const o = [...prev]; o[idx] = val; return o })
+    markUnsaved()
+  }
+  const removeObjetivo = (idx) => { setObjetivos(prev => prev.filter((_, i) => i !== idx)); markUnsaved() }
+  const addObjetivo = () => { setObjetivos(prev => [...prev, '']); markUnsaved() }
+
+  return (
+    <div className="max-w-2xl mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '64px' }}>
+      {/* Document header */}
+      <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
+        <p className="text-xs font-medium mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.05em' }}>
+          Nueva asignatura · En borrador
+        </p>
+        {editable ? (
+          <input
+            value={nombre}
+            onChange={e => { setNombre(e.target.value); markUnsaved() }}
+            className="w-full text-2xl font-semibold outline-none bg-transparent"
+            style={{ color: '#111827', caretColor: '#0098CD' }}
+            placeholder="Nombre de la asignatura"
+          />
+        ) : (
+          <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>{nombre}</h1>
+        )}
+        {unsaved && editable && (
+          <p className="text-xs mt-2 animate-fade-in" style={{ color: '#F59E0B' }}>● Sin guardar</p>
+        )}
+      </div>
+
+      {/* Descripción */}
+      <div className="mb-8" style={{ borderBottom: '1px solid #F3F4F6', paddingBottom: '28px' }}>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF' }}>Descripción</p>
+        {editable ? (
+          <textarea
+            value={descripcion}
+            onChange={e => { setDescripcion(e.target.value); markUnsaved() }}
+            onMouseUp={() => {
+              const sel = window.getSelection()?.toString().trim()
+              if (sel && sel.length > 3 && onAccionIA) {
+                // expose selection for inline toolbar via onAccionIA hook (same as BloqueContenido)
+              }
+            }}
+            rows={5}
+            className="w-full text-base leading-8 outline-none resize-none bg-transparent"
+            style={{ color: '#1F2937', caretColor: '#0098CD' }}
+            placeholder="Descripción de la asignatura…"
+          />
+        ) : (
+          <p className="text-base leading-8" style={{ color: '#1F2937' }}>{descripcion}</p>
+        )}
+      </div>
+
+      {/* Objetivos */}
+      <div className="mb-8" style={{ borderBottom: '1px solid #F3F4F6', paddingBottom: '28px' }}>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF' }}>Objetivos de aprendizaje</p>
+        <div className="space-y-2">
+          {objetivos.map((obj, idx) => (
+            <div key={idx} className="flex items-start gap-2 group">
+              <span className="text-sm font-medium mt-2.5 flex-shrink-0 w-5 text-right" style={{ color: '#CBD5E1' }}>{idx + 1}.</span>
+              {editable ? (
+                <>
+                  <input
+                    value={obj}
+                    onChange={e => updateObjetivo(idx, e.target.value)}
+                    className="flex-1 text-base leading-8 outline-none bg-transparent"
+                    style={{ color: '#1F2937', caretColor: '#0098CD' }}
+                    placeholder="Objetivo de aprendizaje…"
+                  />
+                  <button
+                    onClick={() => removeObjetivo(idx)}
+                    className="mt-2 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                    style={{ color: '#CBD5E1' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
+                  >
+                    <X size={13} />
+                  </button>
+                </>
+              ) : (
+                <p className="flex-1 text-base leading-8" style={{ color: '#1F2937' }}>{obj}</p>
+              )}
+            </div>
+          ))}
+          {editable && (
+            <button
+              onClick={addObjetivo}
+              className="flex items-center gap-2 text-sm mt-2 transition-all"
+              style={{ color: '#D1D5DB', paddingLeft: '28px' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#0098CD'}
+              onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
+            >
+              <Plus size={14} />
+              Agregar objetivo
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Tags */}
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF' }}>Etiquetas</p>
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {tags.map(tag => (
+            <span
+              key={tag}
+              className="inline-flex items-center gap-1 rounded-full text-xs font-medium"
+              style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2', padding: '4px 10px' }}
+            >
+              {tag}
+              {editable && (
+                <button
+                  onClick={() => removeTag(tag)}
+                  style={{ color: '#0098CD', lineHeight: 1 }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#0098CD'}
+                >
+                  <X size={10} />
+                </button>
+              )}
+            </span>
+          ))}
+        </div>
+        {editable && (
+          <input
+            value={tagInput}
+            onChange={e => setTagInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTag(tagInput) } }}
+            onBlur={() => { if (tagInput.trim()) addTag(tagInput) }}
+            placeholder="Añadir etiqueta y pulsar Enter…"
+            className="text-sm outline-none bg-transparent"
+            style={{ color: '#6B7280', caretColor: '#0098CD' }}
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ─── Main canvas ──────────────────────────────────────────────────────────────
+
 export default function PantallaCanvas({
   rolActivo,
   seccionActiva,
@@ -92,6 +251,8 @@ export default function PantallaCanvas({
   panelIAabierto,
   setPanelIAabierto,
   onNavigate,
+  asignaturaActiva,
+  titulaciones,
 }) {
   const [comentarioActivoBloque, setComentarioActivoBloque] = useState(null)
   const [quotePendiente, setQuotePendiente] = useState(null)
@@ -103,11 +264,19 @@ export default function PantallaCanvas({
   const [savedToast, setSavedToast] = useState(false)
   const [sentToast, setSentToast] = useState(false)
 
+  // Resolve active asignatura for resumen section
+  const asignaturaData = (() => {
+    if (!asignaturaActiva || !titulaciones) return null
+    const tit = titulaciones.find(t => t.id === asignaturaActiva.titulacionId)
+    return tit?.asignaturas?.find(a => a.id === asignaturaActiva.asignaturaId) || null
+  })()
+
+  const isResumen = seccionActiva === 'resumen'
   const seccion = SECCION_CONFIG[seccionActiva] || SECCION_CONFIG.t2
   const bloques = bloquesState[seccionActiva] || seccion.bloques
   const editable = rolActivo === 'autor'
 
-  const estadoMostrado = seccionActiva === 't1' && rolActivo === 'autor' ? 'comentarios' : seccion.estado
+  const estadoMostrado = isResumen ? 'borrador' : (seccionActiva === 't1' && rolActivo === 'autor' ? 'comentarios' : seccion.estado)
 
   const handleComentarioClick = (bloque) => {
     if (bloque.comentarios?.length > 0) {
@@ -200,13 +369,15 @@ export default function PantallaCanvas({
             <Save size={13} />
             Guardar borrador
           </button>
-          <button
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-            style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
-          >
-            <Eye size={13} />
-            Solicitar permiso de edición
-          </button>
+          {!isResumen && (
+            <button
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+              style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
+            >
+              <Eye size={13} />
+              Solicitar permiso de edición
+            </button>
+          )}
           <button
             onClick={showSentToast}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
@@ -214,7 +385,7 @@ export default function PantallaCanvas({
             onMouseEnter={e => e.currentTarget.style.background = '#00729A'}
             onMouseLeave={e => e.currentTarget.style.background = '#0098CD'}
           >
-            Enviar a revisión
+            {isResumen ? 'Enviar a revisión' : 'Enviar a revisión'}
             <ChevronRight size={13} />
           </button>
         </>
@@ -233,7 +404,9 @@ export default function PantallaCanvas({
         {/* Top row: title + right controls */}
         <div className="flex items-center justify-between px-5 py-3" style={{ minHeight: '52px' }}>
           <div className="flex items-center gap-3">
-            <h2 className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{seccion.label}</h2>
+            <h2 className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>
+              {isResumen ? (asignaturaData?.nombre || 'Resumen') : seccion.label}
+            </h2>
             <EstadoBadge estado={estadoMostrado} />
           </div>
           <div className="flex items-center gap-2">
@@ -310,62 +483,70 @@ export default function PantallaCanvas({
 
         {/* Content area */}
         <main className="flex-1 overflow-y-auto" style={{ background: '#FFFFFF' }}>
-          <div className="max-w-2xl mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '64px' }}>
+          {isResumen ? (
+            <SeccionResumen
+              asignatura={asignaturaData}
+              editable={editable}
+              onAccionIA={handleAccionIA}
+            />
+          ) : (
+            <div className="max-w-2xl mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '64px' }}>
 
-            {/* Document header */}
-            <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
-              <p className="text-xs font-medium mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.05em' }}>
-                Fundamentos de Machine Learning · Máster en IA
-              </p>
-              <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>
-                {seccion.label}
-              </h1>
-            </div>
-
-            {!editable && (
-              <div
-                className="flex items-center gap-2 mb-8 text-sm animate-fade-in"
-                style={{ color: '#9CA3AF' }}
-              >
-                <Eye size={13} />
-                <span>Solo lectura — el Autor puede editar este contenido</span>
+              {/* Document header */}
+              <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
+                <p className="text-xs font-medium mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.05em' }}>
+                  Fundamentos de Machine Learning · Máster en IA
+                </p>
+                <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>
+                  {seccion.label}
+                </h1>
               </div>
-            )}
 
-            {/* Blocks — document style */}
-            <div className="space-y-0">
-              {bloques.map((bloque, i) => (
+              {!editable && (
                 <div
-                  key={bloque.id}
-                  style={{
-                    paddingTop: i === 0 ? '0' : '20px',
-                    paddingBottom: '20px',
-                    borderBottom: i < bloques.length - 1 ? '1px solid #F3F4F6' : 'none',
-                  }}
+                  className="flex items-center gap-2 mb-8 text-sm animate-fade-in"
+                  style={{ color: '#9CA3AF' }}
                 >
-                  <BloqueContenido
-                    bloque={bloque}
-                    index={i}
-                    editable={editable}
-                    onComentarioClick={() => handleComentarioClick(bloque)}
-                    onAccionIA={handleAccionIA}
-                  />
+                  <Eye size={13} />
+                  <span>Solo lectura — el Autor puede editar este contenido</span>
                 </div>
-              ))}
-            </div>
+              )}
 
-            {editable && (
-              <button
-                className="mt-6 flex items-center gap-2 text-sm transition-all"
-                style={{ color: '#D1D5DB', paddingLeft: '0' }}
-                onMouseEnter={e => e.currentTarget.style.color = '#0098CD'}
-                onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
-              >
-                <Plus size={14} />
-                Añadir párrafo
-              </button>
-            )}
-          </div>
+              {/* Blocks — document style */}
+              <div className="space-y-0">
+                {bloques.map((bloque, i) => (
+                  <div
+                    key={bloque.id}
+                    style={{
+                      paddingTop: i === 0 ? '0' : '20px',
+                      paddingBottom: '20px',
+                      borderBottom: i < bloques.length - 1 ? '1px solid #F3F4F6' : 'none',
+                    }}
+                  >
+                    <BloqueContenido
+                      bloque={bloque}
+                      index={i}
+                      editable={editable}
+                      onComentarioClick={() => handleComentarioClick(bloque)}
+                      onAccionIA={handleAccionIA}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {editable && (
+                <button
+                  className="mt-6 flex items-center gap-2 text-sm transition-all"
+                  style={{ color: '#D1D5DB', paddingLeft: '0' }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#0098CD'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
+                >
+                  <Plus size={14} />
+                  Añadir párrafo
+                </button>
+              )}
+            </div>
+          )}
         </main>
 
         {/* Right panel: Comentarios */}

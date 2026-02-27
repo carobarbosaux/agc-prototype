@@ -4,7 +4,9 @@ import PantallaHerramientas from './screens/PantallaHerramientas'
 import PantallaDashboard from './screens/PantallaDashboard'
 import PantallaCanvas from './screens/PantallaCanvas'
 import PanelNotificaciones from './components/PanelNotificaciones'
+import ModalCrearAsignatura from './components/ModalCrearAsignatura'
 import Topbar from './components/Topbar'
+import { titulaciones as titulacionesIniciales } from './mockData'
 
 export default function App() {
   const [pantalla, setPantalla] = useState('herramientas')
@@ -12,10 +14,14 @@ export default function App() {
   const [seccionActiva, setSeccionActiva] = useState('t2')
   const [panelIAabierto, setPanelIAabierto] = useState(false)
   const [notifAbiertas, setNotifAbiertas] = useState(false)
+  const [titulaciones, setTitulaciones] = useState(titulacionesIniciales)
+  const [asignaturaActiva, setAsignaturaActiva] = useState({ titulacionId: 'master-ia', asignaturaId: 'fund-ml' })
+  const [mostrarModalCrear, setMostrarModalCrear] = useState(false)
 
   const navigate = (destino, params = {}) => {
     if (destino === 'canvas') {
       if (params.seccion) setSeccionActiva(params.seccion)
+      if (params.titulacionId) setAsignaturaActiva({ titulacionId: params.titulacionId, asignaturaId: params.asignaturaId })
       setPantalla('canvas')
     } else if (destino === 'canvas-t1') {
       setSeccionActiva('t1')
@@ -27,8 +33,21 @@ export default function App() {
       setPantalla('dashboard')
     } else if (destino === 'herramientas') {
       setPantalla('herramientas')
+    } else if (destino === 'crearAsignatura') {
+      setMostrarModalCrear(true)
     }
     setNotifAbiertas(false)
+  }
+
+  const handleCrearAsignatura = (titulacionId, nuevaAsig) => {
+    setTitulaciones(prev => prev.map(t => {
+      if (t.id !== titulacionId) return t
+      return { ...t, asignaturas: [...(t.asignaturas || []), nuevaAsig], asignaturas_count: (t.asignaturas_count || 0) + 1 }
+    }))
+    setMostrarModalCrear(false)
+    setAsignaturaActiva({ titulacionId, asignaturaId: nuevaAsig.id })
+    setSeccionActiva('resumen')
+    setPantalla('canvas')
   }
 
   const getBreadcrumb = () => {
@@ -43,6 +62,7 @@ export default function App() {
         : seccionActiva === 't2' ? 'Tema 2'
         : seccionActiva === 'indice' ? 'Índice'
         : seccionActiva === 'instrucciones' ? 'Instrucciones'
+        : seccionActiva === 'resumen' ? 'Resumen'
         : seccionActiva
       return [
         { label: 'Generación de Asignaturas', onClick: () => setPantalla('herramientas') },
@@ -80,6 +100,7 @@ export default function App() {
           <PantallaDashboard
             rolActivo={rolActivo}
             onNavigate={navigate}
+            titulaciones={titulaciones}
           />
         )}
         {pantalla === 'canvas' && (
@@ -90,6 +111,8 @@ export default function App() {
             panelIAabierto={panelIAabierto}
             setPanelIAabierto={setPanelIAabierto}
             onNavigate={navigate}
+            asignaturaActiva={asignaturaActiva}
+            titulaciones={titulaciones}
           />
         )}
       </div>
@@ -98,6 +121,14 @@ export default function App() {
         <PanelNotificaciones
           onClose={() => setNotifAbiertas(false)}
           onNavigate={navigate}
+        />
+      )}
+
+      {mostrarModalCrear && (
+        <ModalCrearAsignatura
+          titulaciones={titulaciones}
+          onCrearAsignatura={handleCrearAsignatura}
+          onCancel={() => setMostrarModalCrear(false)}
         />
       )}
     </div>

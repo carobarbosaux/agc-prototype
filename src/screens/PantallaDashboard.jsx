@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import {
   ArrowRight, List, LayoutGrid,
-  AlertCircle, BookOpen, Lock, Clock
+  AlertCircle, BookOpen, Lock, Clock, Plus
 } from 'lucide-react'
 import EstadoBadge from '../components/EstadoBadge'
-import { titulaciones, dashboardStats, miTrabajo, estadoConfig } from '../mockData'
+import { dashboardStats, miTrabajo, estadoConfig } from '../mockData'
 
 // "tú" means the current user's role is responsible — map to the role label
 const rolLabel = {
@@ -205,7 +205,7 @@ function VistaMiTrabajo({ rolActivo, filtroActivo, onNavigate }) {
 
 // ─── View: Por titulación ─────────────────────────────────────────────────────
 
-function VistaPorTitulacion({ rolActivo, filtroActivo, onNavigate }) {
+function VistaPorTitulacion({ rolActivo, filtroActivo, onNavigate, titulaciones }) {
   const [titulacionSeleccionada, setTitulacionSeleccionada] = useState('master-ia')
 
   const titulacion = titulaciones.find(t => t.id === titulacionSeleccionada)
@@ -391,7 +391,7 @@ const VISTAS = [
   { id: 'titulacion', label: 'Por titulación', icon: LayoutGrid },
 ]
 
-export default function PantallaDashboard({ rolActivo, onNavigate }) {
+export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones }) {
   const [vistaActiva, setVistaActiva] = useState('trabajo')
   const [filtroActivo, setFiltroActivo] = useState(null)
 
@@ -416,6 +416,19 @@ export default function PantallaDashboard({ rolActivo, onNavigate }) {
             </p>
           </div>
 
+          <div className="flex items-center gap-3">
+          {rolActivo === 'autor' && (
+            <button
+              onClick={() => onNavigate('crearAsignatura')}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all"
+              style={{ background: '#0098CD' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#00729A'}
+              onMouseLeave={e => e.currentTarget.style.background = '#0098CD'}
+            >
+              <Plus size={14} />
+              Nueva asignatura
+            </button>
+          )}
           <div
             className="flex items-center p-1 rounded-xl"
             style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
@@ -434,6 +447,7 @@ export default function PantallaDashboard({ rolActivo, onNavigate }) {
                 {label}
               </button>
             ))}
+          </div>
           </div>
         </div>
 
@@ -460,7 +474,7 @@ export default function PantallaDashboard({ rolActivo, onNavigate }) {
             <VistaMiTrabajo rolActivo={rolActivo} filtroActivo={filtroActivo} onNavigate={onNavigate} />
           )}
           {vistaActiva === 'titulacion' && (
-            <VistaPorTitulacion rolActivo={rolActivo} filtroActivo={filtroActivo} onNavigate={onNavigate} />
+            <VistaPorTitulacion rolActivo={rolActivo} filtroActivo={filtroActivo} onNavigate={onNavigate} titulaciones={titulaciones} />
           )}
         </div>
       </div>

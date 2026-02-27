@@ -205,6 +205,7 @@ export const miTrabajo = [
 ]
 
 export const pipeline = [
+  { id: 'resumen', label: 'Resumen', estado: 'borrador', tipo: 'seccion' },
   { id: 'indice', label: 'Índice', estado: 'aprobado', tipo: 'seccion' },
   {
     id: 'instrucciones-grupo',
@@ -634,4 +635,123 @@ export const roles = [
   { id: 'coordinador', label: 'Coordinador', description: 'Revisa y aprueba' },
   { id: 'editor', label: 'Editor de contenido', description: 'Revisa y comenta' },
   { id: 'disenador', label: 'Diseñador instruccional', description: 'Sugiere mejoras de formato' },
+]
+
+export const preguntasCreacion = [
+  {
+    id: 'q1',
+    pregunta: '¿Cuál es el nombre provisional de la asignatura?',
+    descripcion: 'Un título descriptivo que identifique el contenido. Se puede editar después.',
+    tipo: 'text',
+    placeholder: 'Ej. Fundamentos de Machine Learning',
+  },
+  {
+    id: 'q2',
+    pregunta: '¿A qué área de conocimiento pertenece?',
+    descripcion: 'El área temática principal de la asignatura.',
+    tipo: 'select',
+    opciones: [
+      'Inteligencia Artificial',
+      'Ciencia de Datos',
+      'Ingeniería de Software',
+      'Ciberseguridad',
+      'Redes y Comunicaciones',
+      'Matemáticas y Estadística',
+      'Gestión Empresarial',
+      'Diseño y UX',
+      'Derecho y Regulación',
+      'Otra',
+    ],
+  },
+  {
+    id: 'q3',
+    pregunta: '¿Cuál es el nivel del estudiante al que va dirigida?',
+    descripcion: 'El nivel académico y de conocimiento previo esperado.',
+    tipo: 'select',
+    opciones: ['Básico', 'Intermedio', 'Avanzado', 'Experto'],
+  },
+  {
+    id: 'q4',
+    pregunta: '¿Cuántos temas tendrá la asignatura?',
+    descripcion: 'Número de temas o unidades didácticas principales.',
+    tipo: 'number',
+    min: 1,
+    max: 20,
+    placeholder: '6',
+  },
+  {
+    id: 'q5',
+    pregunta: '¿Cuántas horas de estudio se estiman en total?',
+    descripcion: 'Incluye lectura, práctica y evaluación.',
+    tipo: 'number',
+    min: 10,
+    max: 300,
+    placeholder: '40',
+  },
+  {
+    id: 'q6',
+    pregunta: '¿Qué tipo de contenido predominará?',
+    descripcion: 'Define el enfoque didáctico principal.',
+    tipo: 'select',
+    opciones: ['Teórico-conceptual', 'Práctico-aplicado', 'Mixto', 'Basado en casos reales', 'Basado en proyectos'],
+  },
+  {
+    id: 'q7',
+    pregunta: '¿Cuáles son los conocimientos previos necesarios?',
+    descripcion: 'Especifica los prerrequisitos mínimos que deben cumplir los estudiantes.',
+    tipo: 'textarea',
+    placeholder: 'Ej. Conocimientos básicos de Python, estadística descriptiva...',
+  },
+  {
+    id: 'q8',
+    pregunta: '¿Cuál es el objetivo principal de aprendizaje?',
+    descripcion: 'Describe qué será capaz de hacer el estudiante al finalizar la asignatura.',
+    tipo: 'textarea',
+    placeholder: 'Ej. El estudiante será capaz de implementar modelos de ML y evaluar su rendimiento...',
+  },
+  {
+    id: 'q9',
+    pregunta: '¿Qué herramientas o tecnologías se utilizarán?',
+    descripcion: 'Software, lenguajes, frameworks o plataformas principales.',
+    tipo: 'text',
+    placeholder: 'Ej. Python, Scikit-learn, TensorFlow, Google Colab',
+  },
+  {
+    id: 'q10',
+    pregunta: '¿Cómo se evaluará al estudiante?',
+    descripcion: 'Método de evaluación principal.',
+    tipo: 'select',
+    opciones: ['Proyecto final', 'Examen teórico', 'Ejercicios prácticos', 'Mixto (proyecto + test)', 'Portafolio', 'Otro'],
+  },
+  {
+    id: 'q11',
+    pregunta: '¿Hay algún contexto adicional relevante?',
+    descripcion: 'Requisitos especiales, enfoque institucional, normativa o cualquier información que el generador de contenido deba considerar.',
+    tipo: 'textarea',
+    placeholder: 'Ej. La asignatura debe alinearse con la certificación AWS ML Specialty...',
+  },
+]
+
+export const tagsSugerenciasPorArea = {
+  'Inteligencia Artificial': ['Machine Learning', 'Deep Learning', 'IA', 'Algoritmos', 'Redes Neuronales', 'NLP', 'Visión por Computador'],
+  'Ciencia de Datos': ['Data Science', 'Análisis de Datos', 'Visualización', 'Python', 'Estadística', 'Big Data'],
+  'Ingeniería de Software': ['Desarrollo', 'Arquitectura', 'Testing', 'DevOps', 'APIs', 'Software'],
+  'Ciberseguridad': ['Seguridad', 'Criptografía', 'Pentesting', 'Redes', 'GDPR', 'Ethical Hacking'],
+  'Redes y Comunicaciones': ['Redes', 'Protocolos', 'TCP/IP', 'Cloud', 'IoT', 'Telecomunicaciones'],
+  'Matemáticas y Estadística': ['Matemáticas', 'Estadística', 'Álgebra', 'Cálculo', 'Probabilidad'],
+  'Gestión Empresarial': ['Gestión', 'Estrategia', 'Liderazgo', 'Innovación', 'Negocio'],
+  'Diseño y UX': ['UX', 'Diseño', 'Prototipado', 'Usabilidad', 'Figma', 'Producto'],
+  'Derecho y Regulación': ['Derecho', 'Regulación', 'GDPR', 'Compliance', 'Ética', 'Normativa'],
+  'Otra': ['Concepto', 'Fundamentos', 'Práctica', 'Evaluación'],
+}
+
+export const etiquetasDisponibles = [
+  'Machine Learning', 'Deep Learning', 'IA', 'Algoritmos', 'Redes Neuronales', 'NLP',
+  'Visión por Computador', 'Data Science', 'Análisis de Datos', 'Visualización', 'Python',
+  'Estadística', 'Big Data', 'Desarrollo', 'Arquitectura', 'Testing', 'DevOps', 'APIs',
+  'Seguridad', 'Criptografía', 'Cloud', 'IoT', 'Matemáticas', 'Álgebra', 'Cálculo',
+  'Probabilidad', 'Gestión', 'Estrategia', 'UX', 'Diseño', 'Usabilidad', 'Derecho',
+  'Regulación', 'GDPR', 'Compliance', 'Ética', 'Concepto', 'Fundamentos', 'Práctica',
+  'Evaluación', 'Proyecto', 'Clasificación', 'Regresión', 'Ejemplo', 'Pipeline',
+  'Overfitting', 'Generalización', 'Paradigmas', 'Objetivos', 'Metodología', 'Herramientas',
 ]
