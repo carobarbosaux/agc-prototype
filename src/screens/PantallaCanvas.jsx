@@ -94,6 +94,7 @@ export default function PantallaCanvas({
   onNavigate,
 }) {
   const [comentarioActivoBloque, setComentarioActivoBloque] = useState(null)
+  const [quotePendiente, setQuotePendiente] = useState(null)
   const [bloquesState, setBloquesState] = useState({
     t2: bloquesTema2.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
     t1: bloquesTema1.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
@@ -168,36 +169,25 @@ export default function PantallaCanvas({
     setTimeout(() => setSentToast(false), 2500)
   }
 
+  const handleAccionIA = (texto, accion) => {
+    setComentarioActivoBloque(null)
+    setPanelIAabierto(true)
+    setQuotePendiente({ texto, accion })
+  }
+
+  const tieneComentariosActivos = bloques.some(b => b.comentarios?.some(c => !c.resuelto))
+
   const getActionBar = () => {
     if (rolActivo === 'autor') {
       if (seccionActiva === 't1') {
         return (
-          <>
-            <button
-              onClick={() => {
-                const bloqueConComentario = bloques.find(b => b.comentarios?.some(c => !c.resuelto))
-                if (bloqueConComentario) handleComentarioClick(bloqueConComentario)
-              }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-              style={{ background: '#FEF2F2', color: '#EF4444', border: '1px solid #FECACA' }}
-            >
-              <MessageSquare size={13} />
-              Ver comentarios
-              {totalComentariosCriticos > 0 && (
-                <span className="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold text-white"
-                  style={{ background: '#EF4444', fontSize: '10px' }}>
-                  {totalComentariosCriticos}
-                </span>
-              )}
-            </button>
-            <button
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-              style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
-            >
-              <Eye size={13} />
-              Solicitar permiso de edición
-            </button>
-          </>
+          <button
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
+          >
+            <Eye size={13} />
+            Solicitar permiso de edición
+          </button>
         )
       }
       return (
@@ -240,7 +230,7 @@ export default function PantallaCanvas({
         className="flex-shrink-0"
         style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}
       >
-        {/* Top row: title + IA toggle */}
+        {/* Top row: title + right controls */}
         <div className="flex items-center justify-between px-5 py-3" style={{ minHeight: '52px' }}>
           <div className="flex items-center gap-3">
             <h2 className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{seccion.label}</h2>
@@ -249,8 +239,41 @@ export default function PantallaCanvas({
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
-                setComentarioActivoBloque(null)
-                setPanelIAabierto(!panelIAabierto)
+                if (comentarioActivoBloque) {
+                  setComentarioActivoBloque(null)
+                  setPanelIAabierto(true)
+                } else {
+                  const bloqueConComentario = bloques.find(b => b.comentarios?.some(c => !c.resuelto))
+                  if (bloqueConComentario) handleComentarioClick(bloqueConComentario)
+                }
+              }}
+              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
+              style={{
+                background: comentarioActivoBloque ? '#FEF2F2' : '#F8F9FA',
+                color: comentarioActivoBloque ? '#EF4444' : tieneComentariosActivos ? '#6B7280' : '#CBD5E1',
+                border: comentarioActivoBloque ? '1px solid #FECACA' : '1px solid #E5E7EB',
+                cursor: tieneComentariosActivos ? 'pointer' : 'default',
+              }}
+            >
+              <MessageSquare size={12} />
+              Ver comentarios
+              {totalComentariosCriticos > 0 && (
+                <span
+                  className="w-4 h-4 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
+                  style={{ background: '#EF4444', fontSize: '10px' }}
+                >
+                  {totalComentariosCriticos}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                if (panelIAabierto && !comentarioActivoBloque) {
+                  setPanelIAabierto(false)
+                } else {
+                  setComentarioActivoBloque(null)
+                  setPanelIAabierto(true)
+                }
               }}
               className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
               style={{
@@ -325,6 +348,7 @@ export default function PantallaCanvas({
                     index={i}
                     editable={editable}
                     onComentarioClick={() => handleComentarioClick(bloque)}
+                    onAccionIA={handleAccionIA}
                   />
                 </div>
               ))}
@@ -400,6 +424,8 @@ export default function PantallaCanvas({
           <PanelIA
             historialInicial={seccion.chat}
             temaLabel={seccion.labelCorto}
+            quotePendiente={quotePendiente}
+            onQuoteConsumed={() => setQuotePendiente(null)}
             onCerrar={() => setPanelIAabierto(false)}
           />
         )}

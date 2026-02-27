@@ -10,7 +10,7 @@ export default function App() {
   const [pantalla, setPantalla] = useState('herramientas')
   const [rolActivo, setRolActivo] = useState('autor')
   const [seccionActiva, setSeccionActiva] = useState('t2')
-  const [panelIAabierto, setPanelIAabierto] = useState(true)
+  const [panelIAabierto, setPanelIAabierto] = useState(false)
   const [notifAbiertas, setNotifAbiertas] = useState(false)
 
   const navigate = (destino, params = {}) => {

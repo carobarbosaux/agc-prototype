@@ -9,6 +9,7 @@ export default function BloqueContenido({
   editable = true,
   onComentarioClick,
   onContenidoChange,
+  onAccionIA,
 }) {
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const [toolbarPos, setToolbarPos] = useState({ top: 0, left: 0 })
@@ -164,8 +165,10 @@ export default function BloqueContenido({
               key={label}
               onMouseDown={e => e.preventDefault()}
               onClick={() => {
+                const texto = window.getSelection()?.toString().trim() || ''
                 setToolbarVisible(false)
                 window.getSelection()?.removeAllRanges()
+                if (texto && onAccionIA) onAccionIA(texto, label)
               }}
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-white whitespace-nowrap transition-colors"
               onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.12)'}
