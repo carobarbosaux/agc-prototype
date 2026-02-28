@@ -4,7 +4,7 @@ import PantallaHerramientas from './screens/PantallaHerramientas'
 import PantallaDashboard from './screens/PantallaDashboard'
 import PantallaCanvas from './screens/PantallaCanvas'
 import PanelNotificaciones from './components/PanelNotificaciones'
-import ModalCrearAsignatura from './components/ModalCrearAsignatura'
+import PantallaCrearAsignatura from './screens/PantallaCrearAsignatura'
 import Topbar from './components/Topbar'
 import { titulaciones as titulacionesIniciales } from './mockData'
 
@@ -16,7 +16,6 @@ export default function App() {
   const [notifAbiertas, setNotifAbiertas] = useState(false)
   const [titulaciones, setTitulaciones] = useState(titulacionesIniciales)
   const [asignaturaActiva, setAsignaturaActiva] = useState({ titulacionId: 'master-ia', asignaturaId: 'fund-ml' })
-  const [mostrarModalCrear, setMostrarModalCrear] = useState(false)
 
   const navigate = (destino, params = {}) => {
     if (destino === 'canvas') {
@@ -34,7 +33,7 @@ export default function App() {
     } else if (destino === 'herramientas') {
       setPantalla('herramientas')
     } else if (destino === 'crearAsignatura') {
-      setMostrarModalCrear(true)
+      setPantalla('crearAsignatura')
     }
     setNotifAbiertas(false)
   }
@@ -44,7 +43,6 @@ export default function App() {
       if (t.id !== titulacionId) return t
       return { ...t, asignaturas: [...(t.asignaturas || []), nuevaAsig], asignaturas_count: (t.asignaturas_count || 0) + 1 }
     }))
-    setMostrarModalCrear(false)
     setAsignaturaActiva({ titulacionId, asignaturaId: nuevaAsig.id })
     setSeccionActiva('resumen')
     setPantalla('canvas')
@@ -71,6 +69,17 @@ export default function App() {
       ]
     }
     return []
+  }
+
+  // Full-page screens that manage their own layout
+  if (pantalla === 'crearAsignatura') {
+    return (
+      <PantallaCrearAsignatura
+        titulaciones={titulaciones}
+        onCrearAsignatura={handleCrearAsignatura}
+        onCancel={() => setPantalla('dashboard')}
+      />
+    )
   }
 
   return (
@@ -121,14 +130,6 @@ export default function App() {
         <PanelNotificaciones
           onClose={() => setNotifAbiertas(false)}
           onNavigate={navigate}
-        />
-      )}
-
-      {mostrarModalCrear && (
-        <ModalCrearAsignatura
-          titulaciones={titulaciones}
-          onCrearAsignatura={handleCrearAsignatura}
-          onCancel={() => setMostrarModalCrear(false)}
         />
       )}
     </div>

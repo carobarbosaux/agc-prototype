@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { X, ChevronRight, ChevronLeft, Sparkles, Plus, RefreshCw, Check, BookOpen } from 'lucide-react'
-import { preguntasCreacion, tagsSugerenciasPorArea, etiquetasDisponibles, titulaciones as titulacionesBase } from '../mockData'
+import { ChevronRight, ChevronLeft, Sparkles, Plus, RefreshCw, Check, BookOpen, X, ArrowLeft, Search, Save } from 'lucide-react'
+import { preguntasCreacion, tagsSugerenciasPorArea, etiquetasDisponibles } from '../mockData'
 
 // ─── Resumen generation helpers ───────────────────────────────────────────────
 
@@ -47,7 +47,7 @@ function generarResumen(respuestas, seed = 0) {
   const shuffled = [...objetivosPool].sort(() => (seed % 2 === 0 ? 0.5 : -0.5) - 0.3)
   const objetivos = shuffled.slice(0, Math.min(4, shuffled.length))
 
-  const tagsBase = tagsSugerenciasPorArea[area] || tagsSugerenciasPorArea.default || []
+  const tagsBase = tagsSugerenciasPorArea[area] || []
   const tags = tagsBase.slice(0, 5)
 
   return { nombre, descripcion, objetivos, tags }
@@ -56,16 +56,54 @@ function generarResumen(respuestas, seed = 0) {
 // ─── Step components ───────────────────────────────────────────────────────────
 
 function PasoSelectorTitulacion({ titulaciones, titulacionSeleccionada, onSelect }) {
+  const [busqueda, setBusqueda] = useState('')
+
+  const titulacionesFiltradas = busqueda.trim()
+    ? titulaciones.filter(t =>
+        t.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+        t.codigo.toLowerCase().includes(busqueda.toLowerCase())
+      )
+    : titulaciones
+
   return (
     <div>
-      <h3 className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
+      <h3 className="text-base font-semibold mb-1" style={{ color: '#1A1A1A' }}>
         Selecciona la titulación
       </h3>
       <p className="text-sm mb-5" style={{ color: '#6B7280' }}>
         La asignatura se creará dentro de esta titulación.
       </p>
-      <div className="space-y-2">
-        {titulaciones.map(t => {
+
+      {/* Search input */}
+      <div
+        className="flex items-center gap-2 px-3 py-2 rounded-lg mb-4"
+        style={{ background: '#F8F9FA', border: '1.5px solid #E5E7EB' }}
+        onFocus={() => {}}
+      >
+        <Search size={14} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+        <input
+          type="text"
+          value={busqueda}
+          onChange={e => setBusqueda(e.target.value)}
+          placeholder="Buscar por nombre o código…"
+          className="flex-1 text-sm outline-none bg-transparent"
+          style={{ color: '#374151' }}
+          onFocus={e => e.currentTarget.parentElement.style.borderColor = '#0098CD'}
+          onBlur={e => e.currentTarget.parentElement.style.borderColor = '#E5E7EB'}
+        />
+        {busqueda && (
+          <button onClick={() => setBusqueda('')} style={{ color: '#9CA3AF', lineHeight: 1 }}>
+            <X size={13} />
+          </button>
+        )}
+      </div>
+
+      <div className="space-y-3">
+        {titulacionesFiltradas.length === 0 ? (
+          <p className="text-sm text-center py-6" style={{ color: '#9CA3AF' }}>
+            No se encontraron titulaciones para "{busqueda}"
+          </p>
+        ) : titulacionesFiltradas.map(t => {
           const selected = titulacionSeleccionada === t.id
           return (
             <button
@@ -76,6 +114,8 @@ function PasoSelectorTitulacion({ titulaciones, titulacionSeleccionada, onSelect
                 background: selected ? '#E0F4FB' : '#F8F9FA',
                 border: selected ? '2px solid #0098CD' : '2px solid transparent',
               }}
+              onMouseEnter={e => { if (!selected) e.currentTarget.style.background = '#F1F5F9' }}
+              onMouseLeave={e => { if (!selected) e.currentTarget.style.background = '#F8F9FA' }}
             >
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -100,6 +140,7 @@ function PasoSelectorTitulacion({ titulaciones, titulacionSeleccionada, onSelect
   )
 }
 
+
 function CampoPreguntas({ pregunta, valor, onChange, error }) {
   return (
     <div>
@@ -119,9 +160,8 @@ function CampoPreguntas({ pregunta, valor, onChange, error }) {
             border: error ? '1.5px solid #EF4444' : '1.5px solid #E5E7EB',
             background: '#FFFFFF',
             color: valor ? '#1A1A1A' : '#9CA3AF',
-            boxShadow: error ? '0 0 0 3px rgba(239,68,68,0.08)' : undefined,
           }}
-          onFocus={e => { if (!error) e.target.style.borderColor = '#0098CD'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
+          onFocus={e => { e.target.style.borderColor = '#0098CD'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
           onBlur={e => { e.target.style.borderColor = error ? '#EF4444' : '#E5E7EB'; e.target.style.boxShadow = 'none' }}
         >
           <option value="">Selecciona una opción</option>
@@ -192,7 +232,6 @@ function CampoPreguntas({ pregunta, valor, onChange, error }) {
   )
 }
 
-// Questions split: [0-3], [4-7], [8-10]
 const GRUPOS_PREGUNTAS = [
   [0, 1, 2, 3],
   [4, 5, 6, 7],
@@ -202,17 +241,16 @@ const GRUPOS_PREGUNTAS = [
 function PasoFormulario({ grupoIdx, respuestas, onChange, errores }) {
   const indices = GRUPOS_PREGUNTAS[grupoIdx]
   const preguntas = indices.map(i => preguntasCreacion[i])
-  const grupoPaso = grupoIdx + 2 // paso 2, 3, 4
 
   return (
     <div>
-      <h3 className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
+      <h3 className="text-base font-semibold mb-1" style={{ color: '#1A1A1A' }}>
         Preguntas {indices[0] + 1}–{indices[indices.length - 1] + 1} de {preguntasCreacion.length}
       </h3>
-      <p className="text-xs mb-5" style={{ color: '#9CA3AF' }}>
+      <p className="text-xs mb-6" style={{ color: '#9CA3AF' }}>
         La IA usará estas respuestas para generar el resumen inicial.
       </p>
-      <div className="space-y-5">
+      <div className="space-y-6">
         {preguntas.map(p => (
           <CampoPreguntas
             key={p.id}
@@ -227,7 +265,7 @@ function PasoFormulario({ grupoIdx, respuestas, onChange, errores }) {
   )
 }
 
-function TagChip({ label, onRemove, small = false }) {
+function TagChip({ label, onRemove }) {
   return (
     <span
       className="inline-flex items-center gap-1 rounded-full"
@@ -235,9 +273,9 @@ function TagChip({ label, onRemove, small = false }) {
         background: '#E0F4FB',
         color: '#0098CD',
         border: '1px solid #B3E0F2',
-        fontSize: small ? '11px' : '12px',
+        fontSize: '12px',
         fontWeight: '500',
-        padding: small ? '2px 8px' : '4px 10px',
+        padding: '4px 10px',
       }}
     >
       {label}
@@ -299,11 +337,11 @@ function PasoResumen({ resumen, setResumen, regenerando, onRegenerar }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-1">
-        <h3 className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Resumen generado</h3>
+        <h3 className="text-base font-semibold" style={{ color: '#1A1A1A' }}>Resumen generado</h3>
         <button
           onClick={onRegenerar}
           disabled={regenerando}
-          className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-all"
+          className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
           style={{
             background: regenerando ? '#F1F5F9' : '#F8F9FA',
             color: regenerando ? '#9CA3AF' : '#6B7280',
@@ -314,25 +352,25 @@ function PasoResumen({ resumen, setResumen, regenerando, onRegenerar }) {
           {regenerando ? 'Regenerando…' : 'Regenerar'}
         </button>
       </div>
-      <p className="text-xs mb-5" style={{ color: '#9CA3AF' }}>
+      <p className="text-sm mb-6" style={{ color: '#9CA3AF' }}>
         Revisa y edita el contenido antes de crear la asignatura.
       </p>
 
       {regenerando ? (
-        <div className="flex flex-col items-center justify-center py-12 gap-3">
+        <div className="flex flex-col items-center justify-center py-16 gap-3">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center animate-pulse"
+            className="w-12 h-12 rounded-xl flex items-center justify-center animate-pulse"
             style={{ background: '#E0F4FB' }}
           >
-            <Sparkles size={18} style={{ color: '#0098CD' }} />
+            <Sparkles size={20} style={{ color: '#0098CD' }} />
           </div>
           <p className="text-sm" style={{ color: '#9CA3AF' }}>La IA está generando un nuevo resumen…</p>
         </div>
       ) : (
-        <div className="space-y-5">
+        <div className="space-y-6">
           {/* Nombre */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#9CA3AF' }}>
+            <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
               Nombre de la asignatura
             </label>
             <input
@@ -348,7 +386,7 @@ function PasoResumen({ resumen, setResumen, regenerando, onRegenerar }) {
 
           {/* Descripción */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#9CA3AF' }}>
+            <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
               Descripción
             </label>
             <textarea
@@ -364,13 +402,13 @@ function PasoResumen({ resumen, setResumen, regenerando, onRegenerar }) {
 
           {/* Objetivos */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#9CA3AF' }}>
+            <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
               Objetivos de aprendizaje
             </label>
             <div className="space-y-2">
               {resumen.objetivos.map((obj, idx) => (
                 <div key={idx} className="flex items-start gap-2">
-                  <span className="text-xs font-medium mt-2.5 flex-shrink-0" style={{ color: '#CBD5E1' }}>{idx + 1}.</span>
+                  <span className="text-xs font-medium mt-2.5 flex-shrink-0 w-5 text-right" style={{ color: '#CBD5E1' }}>{idx + 1}.</span>
                   <input
                     type="text"
                     value={obj}
@@ -396,7 +434,7 @@ function PasoResumen({ resumen, setResumen, regenerando, onRegenerar }) {
               <button
                 onClick={addObjetivo}
                 className="flex items-center gap-1.5 text-xs font-medium transition-colors mt-1"
-                style={{ color: '#CBD5E1' }}
+                style={{ color: '#CBD5E1', paddingLeft: '28px' }}
                 onMouseEnter={e => e.currentTarget.style.color = '#0098CD'}
                 onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
               >
@@ -408,10 +446,10 @@ function PasoResumen({ resumen, setResumen, regenerando, onRegenerar }) {
 
           {/* Tags */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#9CA3AF' }}>
+            <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
               Etiquetas
             </label>
-            <div className="flex flex-wrap gap-1.5 mb-2.5">
+            <div className="flex flex-wrap gap-1.5 mb-3">
               {resumen.tags.map(tag => (
                 <TagChip key={tag} label={tag} onRemove={() => removeTag(tag)} />
               ))}
@@ -427,9 +465,7 @@ function PasoResumen({ resumen, setResumen, regenerando, onRegenerar }) {
                 className="w-full px-3 py-2 rounded-lg text-sm outline-none transition-all"
                 style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#374151' }}
                 onKeyDown={e => {
-                  if (e.key === 'Enter' && tagInput.trim()) {
-                    addTag(tagInput.trim())
-                  }
+                  if (e.key === 'Enter' && tagInput.trim()) addTag(tagInput.trim())
                 }}
               />
               {tagDropdownOpen && filtrados.length > 0 && (
@@ -461,25 +497,26 @@ function PasoResumen({ resumen, setResumen, regenerando, onRegenerar }) {
   )
 }
 
-// ─── Main component ────────────────────────────────────────────────────────────
+// ─── Main screen ────────────────────────────────────────────────────────────────
 
-const TOTAL_PASOS = 5 // 1: titulación, 2-4: preguntas, 5: resumen
+const TOTAL_PASOS = 5
+const PASO_LABELS = ['', 'Titulación', 'Información básica', 'Contexto académico', 'Evaluación y detalles', 'Revisión del resumen']
 
-export default function ModalCrearAsignatura({ titulaciones, onCrearAsignatura, onCancel }) {
+export default function PantallaCrearAsignatura({ titulaciones, onCrearAsignatura, onCancel }) {
   const [paso, setPaso] = useState(1)
-  const [titulacionSeleccionada, setTitulacionSeleccionada] = useState('master-ia')
+  const [titulacionSeleccionada, setTitulacionSeleccionada] = useState(titulaciones[0]?.id || '')
   const [respuestas, setRespuestas] = useState({})
   const [errores, setErrores] = useState({})
   const [resumen, setResumen] = useState(null)
   const [regenerando, setRegenerando] = useState(false)
   const [regenerarSeed, setRegenerarSeed] = useState(0)
+  const [borradorGuardado, setBorradorGuardado] = useState(false)
 
   const actualizarRespuesta = (id, valor) => {
     setRespuestas(prev => ({ ...prev, [id]: valor }))
     if (errores[id]) setErrores(prev => ({ ...prev, [id]: false }))
   }
 
-  // Validate current paso's questions
   const validarPasoFormulario = (grupoIdx) => {
     const indices = GRUPOS_PREGUNTAS[grupoIdx]
     const nuevosErrores = {}
@@ -501,14 +538,10 @@ export default function ModalCrearAsignatura({ titulaciones, onCrearAsignatura, 
       setPaso(2)
       return
     }
-
-    // pasos 2, 3, 4 → formularios de preguntas
     if (paso >= 2 && paso <= 4) {
       const grupoIdx = paso - 2
       if (!validarPasoFormulario(grupoIdx)) return
-
       if (paso === 4) {
-        // Generate resumen
         const generado = generarResumen(respuestas, regenerarSeed)
         setResumen(generado)
         setPaso(5)
@@ -535,7 +568,6 @@ export default function ModalCrearAsignatura({ titulaciones, onCrearAsignatura, 
 
   const handleCrear = () => {
     if (!resumen || !resumen.nombre.trim() || !resumen.descripcion.trim() || resumen.objetivos.length === 0) return
-
     const nuevaAsig = {
       id: `asig-${Date.now()}`,
       nombre: resumen.nombre.trim(),
@@ -552,170 +584,197 @@ export default function ModalCrearAsignatura({ titulaciones, onCrearAsignatura, 
     onCrearAsignatura(titulacionSeleccionada, nuevaAsig)
   }
 
-  const pasoLabel = [
-    '', // index 0 unused
-    'Titulación',
-    'Información básica',
-    'Contexto académico',
-    'Evaluación y detalles',
-    'Revisión del resumen',
-  ]
+  const handleGuardarBorrador = () => {
+    setBorradorGuardado(true)
+    setTimeout(() => setBorradorGuardado(false), 2500)
+  }
 
   const puedeAvanzar = paso === 1 ? !!titulacionSeleccionada : true
   const esUltimoPaso = paso === TOTAL_PASOS
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: 'rgba(17,24,39,0.45)', backdropFilter: 'blur(4px)' }}
-    >
+    <div className="min-h-screen flex flex-col" style={{ background: '#F8F9FA', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+
+      {/* Top bar */}
       <div
-        className="flex flex-col relative animate-fade-in"
-        style={{
-          width: '620px',
-          maxWidth: 'calc(100vw - 48px)',
-          maxHeight: 'calc(100vh - 80px)',
-          background: '#FFFFFF',
-          borderRadius: '20px',
-          boxShadow: '0 24px 64px rgba(0,0,0,0.18)',
-          fontFamily: "'Inter', 'Arial', sans-serif",
-          overflow: 'hidden',
-        }}
+        className="flex items-center justify-between px-6 py-3 flex-shrink-0"
+        style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB', height: '56px' }}
       >
-        {/* Header */}
-        <div
-          className="flex items-center justify-between px-6 py-4 flex-shrink-0"
-          style={{ borderBottom: '1px solid #F1F5F9' }}
-        >
-          <div className="flex items-center gap-3">
-            <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center"
-              style={{ background: '#E0F4FB' }}
-            >
-              <Sparkles size={15} style={{ color: '#0098CD' }} />
-            </div>
-            <div>
-              <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Crear nueva asignatura</p>
-              <p className="text-xs" style={{ color: '#9CA3AF' }}>{pasoLabel[paso]}</p>
-            </div>
-          </div>
+        <div className="flex items-center gap-3">
           <button
             onClick={onCancel}
-            className="p-1.5 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg transition-all"
+            style={{ color: '#6B7280' }}
             onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
-            <X size={16} style={{ color: '#9CA3AF' }} />
+            <ArrowLeft size={14} />
+            Cancelar
           </button>
-        </div>
-
-        {/* Progress bar */}
-        <div className="flex-shrink-0 px-6 py-3" style={{ borderBottom: '1px solid #F8F9FA' }}>
-          <div className="flex items-center gap-2 mb-2">
-            {Array.from({ length: TOTAL_PASOS }, (_, i) => i + 1).map(n => (
-              <div
-                key={n}
-                className="flex items-center gap-2"
-              >
-                <div
-                  className="flex items-center justify-center rounded-full flex-shrink-0 transition-all"
-                  style={{
-                    width: n < paso ? '20px' : '20px',
-                    height: '20px',
-                    background: n < paso ? '#10B981' : n === paso ? '#0098CD' : '#F1F5F9',
-                    border: n === paso ? '2px solid #0098CD' : 'none',
-                  }}
-                >
-                  {n < paso
-                    ? <Check size={11} style={{ color: '#FFFFFF' }} />
-                    : <span style={{ fontSize: '10px', fontWeight: '600', color: n === paso ? '#FFFFFF' : '#CBD5E1' }}>{n}</span>
-                  }
-                </div>
-                {n < TOTAL_PASOS && (
-                  <div
-                    className="flex-1 h-0.5 rounded-full transition-all"
-                    style={{
-                      width: '32px',
-                      background: n < paso ? '#10B981' : '#F1F5F9',
-                    }}
-                  />
-                )}
-              </div>
-            ))}
-            <span className="ml-auto text-xs font-medium" style={{ color: '#9CA3AF' }}>
-              Paso {paso} de {TOTAL_PASOS}
-            </span>
+          <span style={{ color: '#E5E7EB' }}>·</span>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-6 h-6 rounded-lg flex items-center justify-center"
+              style={{ background: '#E0F4FB' }}
+            >
+              <Sparkles size={12} style={{ color: '#0098CD' }} />
+            </div>
+            <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Crear nueva asignatura</p>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-5">
-          {paso === 1 && (
-            <PasoSelectorTitulacion
-              titulaciones={titulaciones}
-              titulacionSeleccionada={titulacionSeleccionada}
-              onSelect={setTitulacionSeleccionada}
-            />
-          )}
-          {paso >= 2 && paso <= 4 && (
-            <PasoFormulario
-              grupoIdx={paso - 2}
-              respuestas={respuestas}
-              onChange={actualizarRespuesta}
-              errores={errores}
-            />
-          )}
-          {paso === 5 && resumen && (
-            <PasoResumen
-              resumen={resumen}
-              setResumen={setResumen}
-              regenerando={regenerando}
-              onRegenerar={handleRegenerar}
-            />
-          )}
+        {/* Step indicator in topbar */}
+        <p className="text-xs font-medium" style={{ color: '#9CA3AF' }}>
+          Paso {paso} de {TOTAL_PASOS} · {PASO_LABELS[paso]}
+        </p>
+      </div>
+
+      {/* Progress bar — full width */}
+      <div className="flex-shrink-0" style={{ background: '#FFFFFF', borderBottom: '1px solid #F1F5F9' }}>
+        <div className="h-1 transition-all" style={{ background: '#E5E7EB' }}>
+          <div
+            className="h-full rounded-r-full transition-all"
+            style={{ width: `${(paso / TOTAL_PASOS) * 100}%`, background: '#0098CD' }}
+          />
         </div>
+        {/* Step dots */}
+        <div className="flex items-center justify-center gap-3 py-4">
+          {Array.from({ length: TOTAL_PASOS }, (_, i) => i + 1).map(n => (
+            <div key={n} className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <div
+                  className="flex items-center justify-center rounded-full flex-shrink-0 transition-all"
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                    background: n < paso ? '#10B981' : n === paso ? '#0098CD' : '#F1F5F9',
+                  }}
+                >
+                  {n < paso
+                    ? <Check size={12} style={{ color: '#FFFFFF' }} />
+                    : <span style={{ fontSize: '11px', fontWeight: '600', color: n === paso ? '#FFFFFF' : '#CBD5E1' }}>{n}</span>
+                  }
+                </div>
+                <span
+                  className="text-xs font-medium hidden sm:block"
+                  style={{ color: n === paso ? '#0098CD' : n < paso ? '#10B981' : '#CBD5E1' }}
+                >
+                  {PASO_LABELS[n]}
+                </span>
+              </div>
+              {n < TOTAL_PASOS && (
+                <div
+                  className="h-px transition-all"
+                  style={{ width: '40px', background: n < paso ? '#10B981' : '#E5E7EB' }}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
 
-        {/* Footer */}
+      {/* Main content — centered card */}
+      <div className="flex-1 overflow-y-auto py-10 px-4">
         <div
-          className="flex items-center justify-between px-6 py-4 flex-shrink-0"
-          style={{ borderTop: '1px solid #F1F5F9', background: '#FAFAFA' }}
+          className="mx-auto animate-fade-in"
+          style={{
+            maxWidth: '640px',
+            background: '#FFFFFF',
+            borderRadius: '16px',
+            border: '1px solid #E5E7EB',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+          }}
         >
-          <button
-            onClick={paso === 1 ? onCancel : retroceder}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
-            style={{ color: '#6B7280', background: '#F1F5F9', border: 'none' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
-            onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
-          >
-            <ChevronLeft size={14} />
-            {paso === 1 ? 'Cancelar' : 'Atrás'}
-          </button>
+          <div className="px-8 py-8">
+            {paso === 1 && (
+              <PasoSelectorTitulacion
+                titulaciones={titulaciones}
+                titulacionSeleccionada={titulacionSeleccionada}
+                onSelect={setTitulacionSeleccionada}
+              />
+            )}
+            {paso >= 2 && paso <= 4 && (
+              <PasoFormulario
+                grupoIdx={paso - 2}
+                respuestas={respuestas}
+                onChange={actualizarRespuesta}
+                errores={errores}
+              />
+            )}
+            {paso === 5 && resumen && (
+              <PasoResumen
+                resumen={resumen}
+                setResumen={setResumen}
+                regenerando={regenerando}
+                onRegenerar={handleRegenerar}
+              />
+            )}
+          </div>
 
-          {esUltimoPaso ? (
+          {/* Footer inside card */}
+          <div
+            className="flex items-center justify-between px-8 py-5"
+            style={{ borderTop: '1px solid #F1F5F9', background: '#FAFAFA', borderRadius: '0 0 16px 16px' }}
+          >
             <button
-              onClick={handleCrear}
-              disabled={regenerando}
-              className="flex items-center gap-1.5 px-5 py-2 rounded-lg text-sm font-semibold text-white transition-all"
-              style={{ background: regenerando ? '#9CA3AF' : '#0098CD' }}
-              onMouseEnter={e => { if (!regenerando) e.currentTarget.style.background = '#00729A' }}
-              onMouseLeave={e => { if (!regenerando) e.currentTarget.style.background = '#0098CD' }}
+              onClick={paso === 1 ? onCancel : retroceder}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              style={{ color: '#6B7280', background: '#F1F5F9' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+              onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
             >
-              <Sparkles size={13} />
-              Crear asignatura
+              <ChevronLeft size={14} />
+              {paso === 1 ? 'Cancelar' : 'Atrás'}
             </button>
-          ) : (
-            <button
-              onClick={avanzar}
-              disabled={!puedeAvanzar}
-              className="flex items-center gap-1.5 px-5 py-2 rounded-lg text-sm font-semibold text-white transition-all"
-              style={{ background: puedeAvanzar ? '#0098CD' : '#E5E7EB', color: puedeAvanzar ? '#FFFFFF' : '#9CA3AF' }}
-              onMouseEnter={e => { if (puedeAvanzar) e.currentTarget.style.background = '#00729A' }}
-              onMouseLeave={e => { if (puedeAvanzar) e.currentTarget.style.background = '#0098CD' }}
-            >
-              {paso === 4 ? 'Generar resumen' : 'Siguiente'}
-              <ChevronRight size={14} />
-            </button>
-          )}
+
+            <div className="flex items-center gap-2">
+              {(
+                <button
+                  onClick={handleGuardarBorrador}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                  style={{
+                    background: borradorGuardado ? '#F0FDF4' : '#F8F9FA',
+                    color: borradorGuardado ? '#10B981' : '#6B7280',
+                    border: borradorGuardado ? '1px solid #A7F3D0' : '1px solid #E5E7EB',
+                  }}
+                  onMouseEnter={e => { if (!borradorGuardado) { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.borderColor = '#D1D5DB' } }}
+                  onMouseLeave={e => { if (!borradorGuardado) { e.currentTarget.style.background = '#F8F9FA'; e.currentTarget.style.borderColor = '#E5E7EB' } }}
+                >
+                  {borradorGuardado ? <Check size={13} /> : <Save size={13} />}
+                  {borradorGuardado ? 'Borrador guardado' : 'Guardar borrador'}
+                </button>
+              )}
+
+              {esUltimoPaso ? (
+                <button
+                  onClick={handleCrear}
+                  disabled={regenerando}
+                  className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold text-white transition-all"
+                  style={{ background: regenerando ? '#9CA3AF' : '#0098CD' }}
+                  onMouseEnter={e => { if (!regenerando) e.currentTarget.style.background = '#00729A' }}
+                  onMouseLeave={e => { if (!regenerando) e.currentTarget.style.background = '#0098CD' }}
+                >
+                  <Sparkles size={13} />
+                  Crear asignatura
+                </button>
+              ) : (
+                <button
+                  onClick={avanzar}
+                  disabled={!puedeAvanzar}
+                  className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold transition-all"
+                  style={{
+                    background: puedeAvanzar ? '#0098CD' : '#E5E7EB',
+                    color: puedeAvanzar ? '#FFFFFF' : '#9CA3AF',
+                  }}
+                  onMouseEnter={e => { if (puedeAvanzar) e.currentTarget.style.background = '#00729A' }}
+                  onMouseLeave={e => { if (puedeAvanzar) e.currentTarget.style.background = puedeAvanzar ? '#0098CD' : '#E5E7EB' }}
+                >
+                  {paso === 4 ? 'Generar resumen' : 'Siguiente'}
+                  <ChevronRight size={14} />
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
