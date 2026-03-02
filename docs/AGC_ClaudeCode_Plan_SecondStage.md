@@ -118,12 +118,63 @@ Usuario click en card "Generación de Asignaturas" → ModalCrearAsignatura abre
 
 ### FRENTE B: Canvas + Sistema Inteligente (MANTENER TODO)
 
-#### Pantalla 3-5: Canvas (SIN CAMBIOS)
+#### Pantalla 3: Modal Creación Asignatura (OPTIMIZADO)
+
+**Flujo nuevo: 7 pasos progresivos** (basado en "Propuesta nuevo Flujo PEDUCA"):
+
+**Paso 1: Contexto académico**
+- Seleccionar titulación (dropdown)
+- Nivel de estudio (select)
+- Público objetivo (textarea)
+- Número de créditos (number)
+- Temas a tratar (textarea)
+- Botón: "Siguiente" → Paso 2
+
+**Paso 2: Definición temática**
+- Área de conocimiento (select) — determina tags sugeridos
+- Tipo de asignatura (select: cuantitativa, cualitativa, mixta)
+- Enfoque (select: teórico, práctico, etc.)
+- Botón: "Siguiente" → Paso 3 (IA genera índice)
+
+**Paso 3: Generación automática (Índice)**
+- IA genera índice provisional basado en respuestas
+- Mostrar: "Generando índice de temas..." (loading)
+- Preview del índice generado (solo lectura)
+- Botón: "Siguiente" → Paso 4 (IA genera resumen)
+
+**Paso 4: Resumen preliminar**
+- IA genera: nombre, descripción, objetivos
+- Todo editable (input nombre, textarea descripción, lista objetivos)
+- Botón: "Siguiente" → Paso 5 (IA genera Tema 1)
+
+**Paso 5: Previsualización Tema 1**
+- IA genera estructura del Tema 1: Introducción, Objetivos, Estructura, Extensión
+- Preview (solo lectura)
+- Mostrar: "Generando contenido del primer tema..." (loading)
+- Botón: "Siguiente" → Paso 6 (confirmación)
+
+**Paso 6: Confirmación y tags**
+- Mostrar resumen de lo generado
+- Tags sugeridos (basados en área conocimiento)
+- Usuario puede editar tags (agregar/remover con X)
+- Botón: "Crear asignatura" (verde, destacado)
+
+**Paso 7: Crear**
+- Guardar en `titulaciones[X].asignaturas[]`
+- Navegar a Canvas en sección Resumen
+- El Tema 1 generado se guarda en el pipeline
+
+**Características del flujo:**
+- Solo 7 preguntas en total (4 en paso 1, 3 en paso 2)
+- IA genera 3 cosas automáticamente (Índice, Resumen, Tema 1)
+- Flujo lineal, sin retrocesos
+- Cada paso muestra loading + generación simulada
+
+#### Pantalla 4-6: Canvas (SIN CAMBIOS)
 
 **Todo se mantiene IGUAL:**
 
-1. **Modal Creación Asignatura** (ya existe)
-   - 5 pasos: Titulación → 11 preguntas → Resumen → Crear
+1. **Canvas Resumen** (ya existe)
    - Accesible vía chatbar `/generar-asignatura` O botón "Nueva"
 
 2. **Canvas — Sección Resumen** (ya existe)

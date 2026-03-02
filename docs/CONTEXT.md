@@ -33,10 +33,17 @@ Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación
    - **Botón "Crear nueva asignatura"** en el sidebar de titulaciones (solo Autor)
 
 3. **Modal de creación de asignatura** (`src/components/ModalCrearAsignatura.jsx`)
-   - Paso 1: Seleccionar titulación (dropdown de todas las titulaciones)
-   - Paso 2: Responder 11 preguntas situacionales en forma de cuestionario
-   - Paso 3: IA genera resumen preliminar (editable) con sugerencias de tags
-   - Paso 4: Autor aprueba → se crea la asignatura en mockData y navega al Canvas en el Resumen
+   - **Flujo optimizado de 7 pasos progresivos** (basado en "Propuesta nuevo Flujo"):
+     1. **Contexto académico:** Seleccionar titulación + Nivel estudio + Público objetivo + Créditos + Temas a tratar
+     2. **Definición temática:** Área conocimiento + Tipo asignatura + Enfoque (3 preguntas clave)
+     3. **Generación automática:** IA genera Índice provisional de la asignatura
+     4. **Resumen preliminar:** IA genera nombre, descripción, objetivos (editable)
+     5. **Previsualización Tema 1:** IA genera estructura y contenido del primer tema (preview)
+     6. **Confirmación y tags:** Usuario valida/edita resumen + tags sugeridos automáticamente
+     7. **Crear asignatura:** Se guarda y abre Canvas en sección Resumen
+   - Flujo lineal, sin retrocesos (solo avanza)
+   - Cada paso genera contenido automáticamente basado en respuestas anteriores
+   - Accesible vía chatbar `/generar-asignatura` O botón "Nueva asignatura"
 
 4. **Canvas — Resumen de asignatura** (primera sección)
    - Primera sección del pipeline cuando se crea una asignatura
