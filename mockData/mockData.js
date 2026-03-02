@@ -558,3 +558,175 @@ export const tagsSugerenciasPorArea = {
   Derecho: ['Regulación', 'Cumplimiento', 'Ética', 'Normativa'],
   Salud: ['Práctica clínica', 'Evidencia', 'Casos clínicos', 'Protocolos'],
 }
+
+// Comandos con shortcuts para el chatbar
+export const shortcutsComandos = [
+  { 
+    comando: '/generar-asignatura', 
+    label: 'Generar asignatura', 
+    descripcion: 'Crea una nueva asignatura con wizard guiado',
+    icono: 'BookOpen',
+  },
+  { 
+    comando: '/mejora-rúbricas', 
+    label: 'Mejora de rúbricas', 
+    descripcion: 'Optimiza y enriquece tus rúbricas de evaluación',
+    icono: 'CheckCircle2',
+  },
+  { 
+    comando: '/diseñador-actividades', 
+    label: 'Diseñador de actividades', 
+    descripcion: 'Genera actividades prácticas y ejercicios',
+    icono: 'Lightbulb',
+  },
+  { 
+    comando: '/crear-test', 
+    label: 'Crear test', 
+    descripcion: 'Tests adaptativos basados en el contenido',
+    icono: 'HelpCircle',
+  },
+  { 
+    comando: '/corregir-actividades', 
+    label: 'Corregir actividades', 
+    descripcion: 'Revisa y mejora la calidad de las actividades',
+    icono: 'Sparkles',
+  },
+]
+
+// Respuestas simuladas del chatbar para mensajes generales
+export const respuestasIAChatbar = [
+  'Puedo ayudarte a generar una asignatura con `/generar-asignatura`',
+  '¿Necesitas mejorar alguna rúbrica? Usa `/mejora-rúbricas` para optimizarlas',
+  '¿Quieres crear actividades? Intenta `/diseñador-actividades`',
+  'Veo que tienes trabajo pendiente. ¿Te ayudo a generar contenido nuevo?',
+  'Usa `/` para ver los comandos disponibles y crear contenido más rápido',
+]
+
+// Mis pendientes en el dashboard
+export const misPendientes = [
+  { 
+    id: 'p1', 
+    gravedad: 'critico', 
+    nombre: 'Revisar Tema 1', 
+    asignatura: 'Fundamentos ML', 
+    asignaturaId: 'fund-ml', 
+    seccion: 't1',
+    timestamp: '2026-02-26T10:30:00Z',
+  },
+  { 
+    id: 'p2', 
+    gravedad: 'importante', 
+    nombre: 'Responder comentarios', 
+    asignatura: 'Fundamentos ML', 
+    asignaturaId: 'fund-ml', 
+    seccion: 't2',
+    timestamp: '2026-02-26T14:00:00Z',
+  },
+  { 
+    id: 'p3', 
+    gravedad: 'sugerencia', 
+    nombre: 'Mejorar descripción del resumen', 
+    asignatura: 'Deep Learning', 
+    asignaturaId: 'deep-learning', 
+    seccion: 'resumen',
+    timestamp: '2026-02-25T09:15:00Z',
+  },
+]
+
+// Tags para filtros rápidos en dashboard
+export const tagsFiltrabledashboard = [
+  { id: 'todos', label: 'Todos', filter: null },
+  { id: 'pendientes', label: 'Pendientes de acción', filter: 'pendiente' },
+  { id: 'revision', label: 'En revisión', filter: 'revision' },
+  { id: 'aprobadas', label: 'Aprobadas', filter: 'aprobado' },
+  { id: 'borrador', label: 'En borrador', filter: 'borrador' },
+]
+
+// Indicadores de Calidad de Contenidos para Dashboard
+export const calidadContenidosIndicadores = {
+  alertasNormativas: 6,
+  revisionProfunda: 21,
+  iseMediaPonderado: 3.9,
+  asignaturasEstadoCritico: 3,
+  estables: 62,
+  enRiesgo: 41,
+}
+
+// Detalles de alertas normativas por asignatura
+export const alertasNormativasPorAsignatura = {
+  'fund-ml': {
+    totalAlertas: 2,
+    alertas: [
+      {
+        id: 'a1',
+        tipo: 'Citación incorrecta',
+        norma: 'APA',
+        bloques: ['b2-t2'],
+        severidad: 'critico',
+      },
+      {
+        id: 'a2',
+        tipo: 'Contenido desactualizado',
+        norma: 'Estándar actualización anual',
+        bloques: ['b1-t1'],
+        severidad: 'importante',
+      },
+    ],
+  },
+  'deep-learning': {
+    totalAlertas: 1,
+    alertas: [
+      {
+        id: 'a3',
+        tipo: 'Falta referencia académica',
+        norma: 'Estándar UNIR',
+        bloques: [],
+        severidad: 'importante',
+      },
+    ],
+  },
+}
+
+// Tags de gravedad para comentarios (ahora con Alerta normativa)
+export const gravedadConfig = {
+  critico: {
+    color: '#EF4444',
+    bgColor: 'bg-red-50',
+    textColor: 'text-red-700',
+    label: 'Crítico',
+    icon: '🔴',
+    bloqueaAprobacion: true,
+  },
+  importante: {
+    color: '#F97316',
+    bgColor: 'bg-orange-50',
+    textColor: 'text-orange-700',
+    label: 'Importante',
+    icon: '🟠',
+    bloqueaAprobacion: false,
+  },
+  sugerencia: {
+    color: '#EAB308',
+    bgColor: 'bg-yellow-50',
+    textColor: 'text-yellow-700',
+    label: 'Sugerencia',
+    icon: '🟡',
+    bloqueaAprobacion: false,
+  },
+  nota: {
+    color: '#3B82F6',
+    bgColor: 'bg-blue-50',
+    textColor: 'text-blue-700',
+    label: 'Nota',
+    icon: '🔵',
+    bloqueaAprobacion: false,
+  },
+  alertaNormativa: {
+    color: '#DC2626',
+    bgColor: 'bg-red-100',
+    textColor: 'text-red-900',
+    label: 'Alerta normativa',
+    icon: '🔺',
+    bloqueaAprobacion: true,
+  },
+}

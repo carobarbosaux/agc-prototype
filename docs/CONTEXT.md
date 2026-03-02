@@ -1,19 +1,22 @@
 # AGC 2.0 — Contexto de sesión para Cursor
-*Última actualización: 2026-02-26*
+*Última actualización: 2026-03-02*
+*Fase 2: Agregando dual input conversacional (chatbar) + workspace rediseñado*
 
 ---
 
 ## Qué es este proyecto
 
-Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación de contenido educativo para UNIR. Fase 2 de 4 del producto (ver plan global en `AGC_ClaudeCode_Plan_SecondStage.md`).
+Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación de contenido educativo para UNIR. Fase 2 de 4 del producto.
 
 **No es un producto funcional.** Es una demo con datos hardcodeados que simula el flujo real de trabajo de un Autor. Stack: React + Vite + Tailwind CSS v4 + lucide-react.
+
+**CONSTRUCCIÓN:** Directa con Claude Code + Cursor (sin vendor). Estamos agregando capacidades conversacionales (chatbar, dual input) manteniendo TODA la funcionalidad original.
 
 ---
 
 ## Estado actual del prototipo
 
-### ✅ Construido y funcional
+### ✅ Funcionalidad ORIGINAL (mantener):
 
 **5 pantallas:**
 
@@ -29,17 +32,17 @@ Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación
    - 6 titulaciones en mockData, todas con asignaturas navegables
    - **Botón "Crear nueva asignatura"** en el sidebar de titulaciones (solo Autor)
 
-3. **Modal de creación de asignatura** (`src/components/ModalCrearAsignatura.jsx`) — NEW
+3. **Modal de creación de asignatura** (`src/components/ModalCrearAsignatura.jsx`)
    - Paso 1: Seleccionar titulación (dropdown de todas las titulaciones)
    - Paso 2: Responder 11 preguntas situacionales en forma de cuestionario
    - Paso 3: IA genera resumen preliminar (editable) con sugerencias de tags
    - Paso 4: Autor aprueba → se crea la asignatura en mockData y navega al Canvas en el Resumen
 
-4. **Canvas — Resumen de asignatura** (`src/screens/PantallaCanvas.jsx`) — NEW
+4. **Canvas — Resumen de asignatura** (primera sección)
    - Primera sección del pipeline cuando se crea una asignatura
    - Contenido editable: nombre, descripción, objetivos de aprendizaje, tags sugeridos
    - Estado: `borrador`
-   - Barra de acciones: `Guardar · Enviar a revisión`
+   - Barra de acciones: `Guardar borrador · Enviar a revisión`
    - Panel IA: chat activo para refinamientos
 
 5. **Canvas** (`src/screens/PantallaCanvas.jsx`)
@@ -63,9 +66,82 @@ Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación
 - `GravedadTag` — tag de severidad de comentario (🔴🟠🟡🔵)
 - `EtiquetaBloque` — chip de etiqueta temática (índigo)
 
+### ✨ NUEVA FUNCIONALIDAD (AGREGAR):
+
+**Chatbar conversacional** (`src/components/Chatbar.jsx`)
+- Input conversacional con soporte para shortcuts (`/comando`)
+- Dropdown de sugerencias automáticas al escribir `/`
+- Respuestas simuladas para preguntas genéricas
+- Historial de chat (opcional, colapsable)
+- **Accesible en:** Herramientas + Dashboard (NO en Canvas)
+
+**Pantalla Herramientas rediseñada**
+- Agregar Chatbar superior (full width)
+- Mantener grid de tools debajo (igual al actual)
+- Dual input: usuario puede `/generar-asignatura` en chat OR click en card
+- Ambas rutas abren el MISMO modal ModalCrearAsignatura
+
+**Dashboard rediseñada a Workspace**
+- Agregar Chatbar superior (persiste en top)
+- Agregar barra de acciones rápidas: tags filtrables + CTA "Nueva asignatura"
+- Reemplazar toggle "Mi trabajo" vs "Por titulación" con **Layout 3 columnas compacto:**
+  - **Izquierda (240px):** Sidebar de titulaciones (todas navegables, click filtra tabla)
+  - **Centro (flexible):** Tabla asignaturas (nombre | estado | pendiente de | actividad). Filas clickeables → Canvas
+  - **Derecha (280px):** "Mis pendientes" (tareas con gravedad, items clickeables → Canvas en esa sección)
+- Interfaz limpia, profesional (Notion + Linear style)
+- Mantener funcionalidad de roles (cada rol ve datos diferentes)
+
+**Sistema de Shortcuts conversacionales**
+- `/generar-asignatura` → Abre ModalCrearAsignatura
+- `/mejora-rúbricas` → Modal/panel mejora (placeholder por ahora)
+- `/diseñador-actividades` → Modal/panel diseño (placeholder por ahora)
+- `/crear-test` → Modal/panel test (placeholder por ahora)
+- `/corregir-actividades` → Modal/panel corrección (placeholder por ahora)
+
+**Respuestas conversacionales simuladas**
+- Pool de respuestas en `mockData.respuestasIAChatbar`
+- Chatbar detecta mensajes sin `/` → responde con sugerencia contextual
+- Ejemplo: "¿Quieres generar una asignatura? Usa `/generar-asignatura`"
+
+**NUEVA: Sección "Calidad de Contenidos" en Dashboard**
+- Ubicación: Arriba de la tabla principal (como cards de métricas)
+- Indicadores a mostrar:
+  - **Alertas normativas:** número (rojo, prominente)
+  - **Revisión profunda:** número (naranja)
+  - **ISE medio ponderado:** score (amarillo/dorado)
+  - **Asignaturas en estado crítico:** número (rojo)
+- Cards similares al mockup que compartiste (dark theme con colores by status)
+- Click en card → filtra tabla por ese criterio (ej: click "Alertas" → muestra solo asignaturas con alertas)
+
+**NUEVA: "Alertas normativas" como categoría de comentarios**
+- Tag obligatorio en comentarios: 🔴 Crítico / 🟠 Importante / 🟡 Sugerencia / 🔵 Nota / 🔺 **Alerta normativa** (NUEVO)
+- Alerta normativa = comentario que señala incumplimiento de normas, regulaciones, estándares institucionales
+- Ejemplo: "Incumple norma APA en citación" o "Contenido fuera de estándar institucional"
+- Alertas normativas bloquean aprobación (como Críticos)
+- Visible en Dashboard ("Alertas normativas" card muestra cantidad)
+
+**NUEVA: Función IA "Revisar calidad de contenidos"**
+- Botón en Canvas (al lado de "Enviar a revisión" O en Panel IA)
+- Acción: IA analiza el bloque/sección contra:
+  - Estándares institucionales UNIR
+  - Normas de citación (APA, MLA, etc.)
+  - Coherencia curricular
+  - Completitud de contenido
+  - Actualizacion de información
+- Genera sugerencias + posibles alertas normativas
+- Simula respuesta tipo: "Detecté 2 incumplimientos: Citación incorrecta (APA) y concepto desactualizado en IA"
+- Usuario decide si crear alertas normativas basado en hallazgos
+
 ---
 
-## Arquitectura de navegación
+**ACTUALIZACIÓN: Sistema de comentarios**
+- Agregar tag "Alerta normativa" a los gravedad tags existentes
+- Alertas normativas = bloquean aprobación
+- Visible en Dashboard y Mis Pendientes
+
+---
+
+## Arquitectura de navegación (ACTUALIZADA)
 
 ```
 App.jsx
@@ -75,23 +151,34 @@ App.jsx
   seccionActiva: 'resumen' | 't1' | 't2' | 'indice' | 'instrucciones'
   panelIAabierto: bool
   notifAbiertas: bool
+  chatHistorial: [] (para Herramientas + Dashboard)
 
-Flujo:
-herramientas → dashboard (click "Generación de Asignaturas")
-dashboard (sidebar) → crearAsignatura (click "Crear nueva asignatura")
-crearAsignatura → canvas (Resumen) (click "Aprobar resumen")
-canvas → canvas (click sección en pipeline)
-topbar 🔔 → panel notificaciones (overlay)
-notificación → canvas o dashboard (click en item)
+Flujo DUAL INPUT:
+
+Vía Chatbar:
+  herramientas → chatbar `/generar-asignatura` → dropdown suggestion → ModalCrearAsignatura
+
+Vía Tradicional:
+  herramientas → click "Generación de Asignaturas" → ModalCrearAsignatura
+  dashboard → click "Nueva asignatura" → ModalCrearAsignatura
+
+Canvas:
+  crearAsignatura → (5 pasos wizard) → canvas (Resumen)
+  canvas → canvas (click sección en pipeline)
+  topbar 🔔 → panel notificaciones (overlay)
+  notificación → canvas o dashboard (click en item)
+
+Dashboard:
+  dashboard → (click titulación en sidebar) → filtra tabla
+  dashboard → (click fila tabla) → canvas
+  dashboard → (click item "Mis pendientes") → canvas en esa sección
 ```
 
 ---
 
 ## Datos (src/mockData.js)
 
-Todos los datos son hardcodeados. Nunca llamadas a API.
-
-**Estructura jerárquica:**
+**Estructura jerárquica (MANTENER):**
 ```
 titulaciones[]
   ├── id
@@ -103,119 +190,88 @@ titulaciones[]
       ├── resumen
       ├── objetivos[]
       ├── tags[]
-      ├── etapaActual
-      ├── estado
       ├── temas[]
-      │   ├── id
-      │   ├── label
-      │   ├── estado
       │   └── bloques[]
-      │       ├── id
-      │       ├── contenido
-      │       ├── etiquetas[]
-      │       └── comentarios[]
-      └── preguntas (datos de creación)
-          ├── tipoEstudio
-          ├── areaConocimiento
-          ├── nivelEducativo
-          ├── creditos
-          ├── noBloques
-          ├── noTemasExtension
-          ├── tipoAsignatura
-          ├── enfoque
-          ├── competencias
-          ├── metodologia
-          └── temasObligatorios
+      └── preguntas (datos creación)
 ```
 
-**Entidades clave:**
+**Entidades existentes (MANTENER TODAS):**
 - `currentUser` — Ana Lucía Martínez, rol autor
 - `titulaciones` — 6 titulaciones, todas navegables
-- `preguntasCreacion` — 11 preguntas del formulario con tipos de respuesta
-- `miTrabajo` — array plano de secciones pendientes para la vista "Mi trabajo"
-- `pipeline` — etapas del flujo de contenido con estados (Resumen > Índice > Instrucciones > Temario > Recursos > Tests)
-- `bloquesTema2` — 2 bloques de contenido del Tema 2 (sin comentarios críticos aún)
-- `bloquesTema1` — 2 bloques del Tema 1 (bloque 2 tiene comentario 🔴 Crítico del Coordinador)
-- `chatHistorialTema2` / `chatHistorialTema1` — mensajes iniciales del panel IA
-- `respuestasIA` — array de 5 respuestas simuladas que rotan
-- `notificaciones` — 3 notificaciones (1 con acción requerida)
-- `estadoConfig` — colores bg/text/border/dot por estado del pipeline
+- `preguntasCreacion` — 11 preguntas del formulario
+- `pipeline` — etapas del flujo de contenido
+- `bloquesTema2`, `bloquesTema1` — bloques de contenido con comentarios
+- `chatHistorialTema2`, `chatHistorialTema1` — mensajes iniciales del panel IA
+- `respuestasIA` — respuestas simuladas que rotan
+- `notificaciones` — 3 notificaciones
+- `estadoConfig` — colores bg/text/border por estado
 - `gravedadConfig` — colores por severidad de comentario
-- `dashboardStats` — stats por rol (autor/coordinador/editor/disenador)
+- `etiquetasDisponibles`, `tagsSugerenciasPorArea`
+- `dashboardStats` — stats por rol
 - `roles` — 4 roles con label y description
+- `herramientas` — grid de tools
+
+**Entidades nuevas (AGREGAR):**
+- `shortcutsComandos` — array de `/comando` con label y descripción
+- `respuestasIAChatbar` — pool de respuestas conversacionales
+- `misPendientes` — array de tareas para panel derecho dashboard
+- `tagsFiltrabledashboard` — tags filtrables en dashboard (Todos / Pendientes / etc.)
 
 ---
 
-## Tokens de diseño
+## Componentes (ACTUALIZAR)
 
-```js
-// Pipeline states
-porComenzar:  { bg: '#F8FAFC', text: '#94A3B8', border: '#E2E8F0' }
-bloqueado:    { bg: '#F1F5F9', text: '#94A3B8', border: '#CBD5E1' }
-borrador:     { bg: '#EFF6FF', text: '#3B82F6', border: '#BFDBFE' }
-revision:     { bg: '#FFFBEB', text: '#F59E0B', border: '#FDE68A' }
-comentarios:  { bg: '#FFF7ED', text: '#F97316', border: '#FED7AA' }
-aprobado:     { bg: '#F0FDF4', text: '#10B981', border: '#A7F3D0' }
+### Nuevos:
+1. **`src/components/Chatbar.jsx`** — input conversacional + suggestions
+2. **`src/components/TablaAsignaturas.jsx`** — tabla principal workspace
+3. **`src/components/PanelMisPendientes.jsx`** — lista tareas lado derecho
+4. **`src/components/SidebarTitulaciones.jsx`** — navegación izquierda
+5. **`src/components/BarraAccionesDashboard.jsx`** — tags + CTA "Nueva"
+6. **`src/components/ShortcutsDropdown.jsx`** — dropdown inteligente `/`
 
-// AI layer
-primary: #6366F1 (índigo)
-light:   #EEF2FF
-accent:  #8B5CF6
+### Modificar:
+1. **`src/App.jsx`** — agregar estados `chatHistorial`, pantalla `crearAsignatura`, rutas
+2. **`src/screens/PantallaHerramientas.jsx`** — agregar Chatbar + mantener grid
+3. **`src/screens/PantallaDashboard.jsx`** — REDISEÑAR workspace (mantener funcionalidad de roles)
+4. **`src/screens/PantallaCanvas.jsx`** — mantener IGUAL (Panel IA es conversacional aquí)
+5. **`src/components/Topbar.jsx`** — pequeños ajustes layout (no cambios de lógica)
+6. **`src/components/ModalCrearAsignatura.jsx`** — mantener IGUAL (ya existe)
 
-// Tipografía
-UI:    'DM Sans' (300, 400, 500, 600, 700)
-Mono:  'JetBrains Mono' (400, 500) — para tags, badges, códigos
-
-// Layout canvas
-Topbar: 56px fijo
-Pipeline sidebar: 240px
-Panel IA: 320px (colapsable)
-Action bar: 64px fijo en bottom
-```
+### Reutilizar (NO tocar):
+- `PipelineSidebar`, `BloqueContenido`, `PanelIA`, `PanelNotificaciones`, `EstadoBadge`, `GravedadTag`, `EtiquetaBloque`
+- Toda la lógica de comentarios, etiquetas, toolbar IA, notificaciones
 
 ---
 
 ## Lo que falta por construir
 
-### Inmediato (siguiente iteración)
-- [ ] **Modal de creación de asignatura** — wizard de 11 preguntas + generación de resumen preliminar
-- [ ] **Pantalla Resumen** en Canvas — sección inicial con contenido editable + tags sugeridos
-- [ ] **Vista del Coordinador** — misma pantalla canvas, mismo contenido, pero:
-  - Área central: solo lectura
-  - Barra de acciones: `Dejar comentario · Solicitar correcciones · ✓ Aprobar esta sección`
-  - Panel derecho: hilo de comentario editable (el Coordinador crea los comentarios)
-  - Dashboard del Coordinador: asignaturas reordenadas por urgencia, "Tema 1 · En revisión · pendiente de ti"
+### Inmediato (Dual Input + Workspace)
+- [ ] **Chatbar** — componente reutilizable (Herramientas + Dashboard)
+- [ ] **Herramientas rediseñada** — agregar Chatbar + mantener grid
+- [ ] **Dashboard rediseñada** — layout workspace 3 columnas + Chatbar
+- [ ] **Sistema de shortcuts** — detectar `/`, dropdown, respuestas
+- [ ] **Panel Mis Pendientes** — nueva columna derecha dashboard
 
-### Futuro
+### Futuro (ya planeado)
+- [ ] Vista del Coordinador — misma pantalla canvas, papel diferente
 - [ ] Vista del Editor de contenido
 - [ ] Vista del Diseñador instruccional
 - [ ] Fase 3 del producto: generación de variantes adaptativas
 
 ---
 
-## Cómo arrancar
+## Decisiones de diseño (CONSOLIDADAS)
 
-```bash
-cd /Users/jccruzb-local/agc-prototype
-npm run dev
-# → http://localhost:5174/
-```
-
-## Repositorio
-
-**GitHub:** https://github.com/carobarbosaux/agc-prototype (privado)
-
----
-
-## Decisiones de diseño tomadas en sesión
-
-1. **Dashboard = gestor de trabajo** (no solo lista de asignaturas) — modelo Linear: inbox primero, estructura segundo
-2. **Selector de rol en topbar** — siempre visible, cambio instantáneo, sin navegación. Es el mecanismo de demo central
-3. **Panel IA como colaborador** — no chatbot añadido. Comparte espacio con el panel de comentarios (uno sustituye al otro)
-4. **3 pantallas, no una por rol** — el rol reconfigura la misma pantalla: permisos, acciones y barra de acciones cambian; el contenido y pipeline son siempre los mismos
-5. **Notificaciones como overlay** — panel lateral desde cualquier pantalla, no pantalla separada
-6. **Toggle Mi trabajo / Por titulación** — Linear-style, en topbar del dashboard. Las stat cards filtran ambas vistas
+1. **Dashboard = workspace, no toggle** — 3 columnas siempre visible, más eficiente
+2. **Selector de rol en topbar** — siempre visible, cambio instantáneo, sin navegación
+3. **Panel IA como colaborador** — no chatbot añadido. Canvas lo usa. Chatbar es para crear
+4. **3 pantallas, no una por rol** — el rol reconfigura: permisos, acciones, barra de acciones cambian; el contenido y pipeline son siempre los mismos
+5. **Notificaciones como overlay** — panel lateral desde cualquier pantalla
+6. **Dual input complementario** — chat AND botones, usuario elige qué usar
+7. **Chatbar solo en Herramientas + Dashboard** — Canvas usa Panel IA (más contextual)
+8. **Interfaz conversacional moderna** — estilo Perplexity/Canva, pero complementa (no reemplaza) interfaz tradicional
 
 ---
 
-*Plan completo del producto: `AGC_ClaudeCode_Plan_SecondStage.md`*
+*Documentación de construcción: Fase 2 agrega chatbar + workspace manteniendo TODA la funcionalidad original*
+*Construcción: Claude Code + Cursor (desarrollo directo, sin vendor)*

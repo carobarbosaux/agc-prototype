@@ -16,6 +16,7 @@ export default function App() {
   const [notifAbiertas, setNotifAbiertas] = useState(false)
   const [titulaciones, setTitulaciones] = useState(titulacionesIniciales)
   const [asignaturaActiva, setAsignaturaActiva] = useState({ titulacionId: 'master-ia', asignaturaId: 'fund-ml' })
+  const [chatHistorial, setChatHistorial] = useState([])
 
   const navigate = (destino, params = {}) => {
     if (destino === 'canvas') {
@@ -103,6 +104,8 @@ export default function App() {
             onRolChange={setRolActivo}
             onNotifClick={() => setNotifAbiertas(true)}
             notifCount={1}
+            chatHistorial={chatHistorial}
+            setChatHistorial={setChatHistorial}
           />
         )}
         {pantalla === 'dashboard' && (
@@ -110,6 +113,8 @@ export default function App() {
             rolActivo={rolActivo}
             onNavigate={navigate}
             titulaciones={titulaciones}
+            chatHistorial={chatHistorial}
+            setChatHistorial={setChatHistorial}
           />
         )}
         {pantalla === 'canvas' && (

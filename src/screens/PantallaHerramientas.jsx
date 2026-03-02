@@ -1,6 +1,7 @@
 import { Bell, ChevronDown, Sparkles, BookOpen, Edit3, ClipboardCheck, FlaskConical, CheckSquare } from 'lucide-react'
 import { useState } from 'react'
 import { roles } from '../mockData'
+import Chatbar from '../components/Chatbar'
 
 const herramientas = [
   {
@@ -46,7 +47,7 @@ const herramientas = [
   },
 ]
 
-export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChange, onNotifClick, notifCount }) {
+export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChange, onNotifClick, notifCount, chatHistorial, setChatHistorial }) {
   const [rolMenuAbierto, setRolMenuAbierto] = useState(false)
   const rolActualLabel = roles.find(r => r.id === rolActivo)?.label || 'Autor'
 
@@ -133,9 +134,15 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
 
       {/* Page content */}
       <div className="pt-14 px-8 pb-8 max-w-5xl mx-auto">
-        <div className="pt-10 pb-8">
+        <div className="pt-10 pb-6">
           <h1 className="text-2xl font-semibold mb-1" style={{ color: '#1A1A1A' }}>Herramientas</h1>
-          <p className="text-sm" style={{ color: '#6B7280' }}>Selecciona una herramienta para empezar a trabajar</p>
+          <p className="text-sm mb-6" style={{ color: '#6B7280' }}>Selecciona una herramienta o usa el asistente para empezar</p>
+          <Chatbar
+            onNavigate={onNavigate}
+            placeholder="Pregunta qué necesitas o usa /generar-asignatura…"
+            chatHistorial={chatHistorial}
+            setChatHistorial={setChatHistorial}
+          />
         </div>
 
         {/* Tools grid */}

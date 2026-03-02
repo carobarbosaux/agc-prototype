@@ -745,6 +745,133 @@ export const tagsSugerenciasPorArea = {
   'Otra': ['Concepto', 'Fundamentos', 'Práctica', 'Evaluación'],
 }
 
+// ─── Chatbar & Shortcuts ───────────────────────────────────────────────────
+
+export const shortcutsComandos = [
+  {
+    id: 'generar-asignatura',
+    comando: '/generar-asignatura',
+    descripcion: 'Crear nueva asignatura con IA',
+    accion: 'crearAsignatura',
+    icon: 'BookOpen',
+  },
+  {
+    id: 'mejora-rubricas',
+    comando: '/mejora-rúbricas',
+    descripcion: 'Mejorar rúbricas de evaluación',
+    accion: 'placeholder',
+    icon: 'ClipboardCheck',
+  },
+  {
+    id: 'disenador-actividades',
+    comando: '/diseñador-actividades',
+    descripcion: 'Diseñar actividades de aprendizaje',
+    accion: 'placeholder',
+    icon: 'Edit3',
+  },
+  {
+    id: 'crear-test',
+    comando: '/crear-test',
+    descripcion: 'Generar test de evaluación',
+    accion: 'placeholder',
+    icon: 'FlaskConical',
+  },
+  {
+    id: 'corregir-actividades',
+    comando: '/corregir-actividades',
+    descripcion: 'Corregir entregas de actividades',
+    accion: 'placeholder',
+    icon: 'CheckSquare',
+  },
+]
+
+export const respuestasIAChatbar = [
+  'Veo que tienes 2 asignaturas en borrador. ¿Quieres continuar con Fundamentos de ML o crear una nueva?',
+  'Tengo acceso al contexto de tus asignaturas. Puedo ayudarte a mejorar contenido, buscar referencias o generar nuevas secciones.',
+  'Para crear una nueva asignatura, usa el comando /generar-asignatura o haz clic en el botón "Nueva asignatura".',
+  'Hay 1 comentario crítico pendiente en Fundamentos de ML · Tema 1. ¿Quieres ir directamente a resolverlo?',
+  'Puedo ayudarte a revisar el pipeline de cualquier asignatura. ¿Con cuál quieres trabajar?',
+]
+
+// ─── Dashboard: Mis pendientes (panel derecho) ────────────────────────────────
+
+export const misPendientes = [
+  {
+    id: 'p1',
+    titulo: 'Añadir referencia académica',
+    asignatura: 'Fundamentos de ML',
+    seccion: 'Tema 1 · Bloque 2',
+    gravedad: 'critico',
+    tiempo: 'Hace 1 hora',
+    canvasDestino: 't1',
+    activo: true,
+  },
+  {
+    id: 'p2',
+    titulo: 'Completar redacción',
+    asignatura: 'Fundamentos de ML',
+    seccion: 'Tema 2 · Bloque 5',
+    gravedad: 'importante',
+    tiempo: 'Hace 2 horas',
+    canvasDestino: 't2',
+    activo: true,
+  },
+  {
+    id: 'p3',
+    titulo: 'Revisar objetivos de aprendizaje',
+    asignatura: 'Deep Learning',
+    seccion: 'Índice',
+    gravedad: 'sugerencia',
+    tiempo: 'Ayer',
+    canvasDestino: null,
+    activo: false,
+  },
+  {
+    id: 'p4',
+    titulo: 'Comenzar redacción inicial',
+    asignatura: 'NLP',
+    seccion: 'Índice',
+    gravedad: 'nota',
+    tiempo: 'Hace 1 semana',
+    canvasDestino: null,
+    activo: false,
+  },
+]
+
+export const tagsFiltrablesDashboard = [
+  { id: 'todos', label: 'Todos' },
+  { id: 'pendientes', label: 'Pendientes de mí' },
+  { id: 'borrador', label: 'En borrador' },
+  { id: 'revision', label: 'En revisión' },
+  { id: 'comentarios', label: 'Con comentarios' },
+  { id: 'aprobado', label: 'Aprobados' },
+]
+
+// ─── Calidad de Contenidos ─────────────────────────────────────────────────
+
+export const calidadContenidosIndicadores = {
+  alertasNormativas: 6,
+  revisionProfunda: 21,
+  iseMediaPonderado: 3.9,
+  asignaturasEstadoCritico: 3,
+}
+
+export const alertasNormativasPorAsignatura = {
+  'fund-ml': {
+    totalAlertas: 2,
+    alertas: [
+      { id: 'a1', tipo: 'normativa', descripcion: 'Actualizar referencias a normativa EU AI Act 2024', seccion: 'Tema 1', gravedad: 'importante' },
+      { id: 'a2', tipo: 'contenido', descripcion: 'Revisar métricas según última versión de scikit-learn', seccion: 'Tema 2', gravedad: 'sugerencia' },
+    ],
+  },
+  'deep-learning': {
+    totalAlertas: 1,
+    alertas: [
+      { id: 'a3', tipo: 'normativa', descripcion: 'Incorporar nuevas arquitecturas transformer (2024)', seccion: 'Índice', gravedad: 'importante' },
+    ],
+  },
+}
+
 export const etiquetasDisponibles = [
   'Machine Learning', 'Deep Learning', 'IA', 'Algoritmos', 'Redes Neuronales', 'NLP',
   'Visión por Computador', 'Data Science', 'Análisis de Datos', 'Visualización', 'Python',

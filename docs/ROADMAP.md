@@ -1,24 +1,24 @@
 # AGC — Plan de Producto
 ### Roadmap de las 4 fases de desarrollo
-*Para revisión y aprobación antes de crear el brief para Base44*
+*UNIR 2026 · Fase 2 en construcción con Claude Code + Cursor*
 
 ---
 
 ## Posicionamiento del producto
 
-AGC nace como un asistente de autor básico y evoluciona hacia un motor de aprendizaje adaptativo. Cada fase eleva el nivel del producto y amplía su ventaja competitiva.
+AGC evoluciona desde un asistente básico hacia un motor de aprendizaje adaptativo. Cada fase eleva el nivel y amplía la ventaja competitiva.
 
-| Fase | Nivel de producto | Estado |
-|---|---|---|
-| Fase 1 | Nivel 1 — Asistente de autor | ✅ Lanzado (versión actual) |
-| Fase 2 | Nivel 2 — Plataforma de contenido inteligente | 🔨 A construir (Base44) |
-| Fase 3 | Nivel 3 — Integración LMS + variantes adaptativas | 📋 Planificado |
-| Fase 4 | Nivel 4 — LMS Agéntico | 🔭 Visión |
+| Fase | Nivel | Estado | Construcción |
+|---|---|---|---|
+| Fase 1 | Asistente de autor | ✅ Lanzado | Código legado (versión actual) |
+| **Fase 2** | **Plataforma de contenido inteligente** | 🔨 **EN CONSTRUCCIÓN** | **Claude Code + Cursor (desarrollo directo)** |
+| Fase 3 | LMS + variantes adaptativas | 📋 Planificado | Futuro |
+| Fase 4 | LMS Agéntico | 🔭 Visión | Futuro |
 
 ---
 
 ## Fase 1 — Asistente de autor ✅ LANZADO
-**Nivel 1 del producto · Estado actual**
+**Nivel 1 · Estado actual de producción**
 
 ### Qué es
 El profesor pide, la IA produce. Flujo lineal de generación: índice → instrucciones didácticas → temario → recursos a fondo → tests de evaluación. El profesor y el coordinador supervisan en cada paso.
@@ -43,12 +43,20 @@ Hay decenas de competidores en este nivel (Khanmigo, Magic School AI, etc.). Es 
 ---
 
 ## Fase 2 — Plataforma de contenido inteligente 🔨 EN CONSTRUCCIÓN
-**Nivel 2 del producto · Scope de Base44**
+**Nivel 2 del producto · Construcción: Claude Code + Cursor (desarrollo directo, sin vendor)**
 
 ### Qué es
 La herramienta deja de generar documentos sueltos y empieza a gestionar un **banco de contenido estructurado**: etiquetado, metadatos, taxonomías de competencias y versiones. Los profesores pasan de ser autores a ser **curadores de conocimiento experto**.
 
+**NOVEDAD en Fase 2:** Dual input — el usuario puede crear contenido de DOS formas:
+- **Vía interfaz tradicional:** Botones, formularios, modals, grid de herramientas (lo que existe en Fase 1)
+- **Vía interfaz conversacional:** Chatbar con shortcuts (`/comando`) estilo Perplexity/Canva (NUEVO)
+
+Ambas rutas llevan al MISMO canvas de edición. El usuario elige cómo crear.
+
 ### Qué se construye
+
+#### ORIGINAL (mantener):
 
 **Rediseño completo del canvas**
 - Layout desde cero: sidebar izquierdo como pipeline de etapas con estados, área central de contenido, panel IA a la derecha, barra de acciones fija por rol
@@ -100,14 +108,52 @@ La herramienta deja de generar documentos sueltos y empieza a gestionar un **ban
 - Editor de contenido: comenta
 - Diseñador instruccional: comenta y sugiere enriquecimiento de formato
 
+#### AGREGADO (NUEVO):
+
+**Pantalla Herramientas con Chatbar conversacional**
+- Chatbar superior (input + botón enviar) que soporta shortcuts con `/`
+- Grid de herramientas visual debajo (5 tools, preview)
+- Usuario puede usar `/generar-asignatura` en chat O hacer clic en card "Generación de Asignaturas"
+- Ambas rutas abren el mismo modal de creación
+- Respuestas conversacionales simuladas
+
+**Pantalla Dashboard rediseñada como Workspace**
+- Chatbar conversacional persiste en top (mismo que Herramientas)
+- Barra de acciones rápidas: tags filtrables (Todos / Pendientes / Revisión / Aprobadas) + CTA "Nueva asignatura"
+- Layout 3 columnas compacto:
+  - **Izquierda (240px):** Sidebar de titulaciones navegable (todas habilitadas)
+  - **Centro (flexible):** Tabla principal de asignaturas (nombre | estado | pendiente de | última actividad)
+  - **Derecha (280px):** "Mis pendientes" — lista de tareas con gravedad/estado, items clickeables → Canvas
+- Workspace profesional, eficiente (estilo Notion + Linear)
+
+**Sistema de Chatbar Inteligente (Herramientas + Dashboard)**
+- Shortcuts con `/` para acceso rápido:
+  - `/generar-asignatura` → Modal creación asignatura
+  - `/mejora-rúbricas` → Panel mejora rúbricas
+  - `/diseñador-actividades` → Panel diseño actividades
+  - etc.
+- Sugerencias dropdown automáticas al escribir `/`
+- Respuestas conversacionales para preguntas genéricas
+- Historial de chat (opcional, colapsable)
+
+**Modo de creación dual:**
+- Interfaz tradicional: botones, formularios, navegación UI (Fase 1 + mejoras)
+- Interfaz conversacional: chatbar, shortcuts, respuestas naturales (NUEVO)
+- AMBAS llevan al mismo canvas de edición
+- Usuario elige qué le gusta usar
+
 ### Lo que NO se construye en esta fase
+- Llamadas reales a OpenAI/Claude API (todo simulado)
 - Generación de variantes (Fase 3)
 - Integración con LMS (Fase 3)
 - Capa de datos del alumno (Fase 3)
 - Motor adaptativo (Fase 4)
 
 ### Por qué es el salto competitivo clave
-El etiquetado estructurado de Fase 2 es la infraestructura que hace posible todo lo que viene después. Sin contenido etiquetado y estructurado como objetos independientes, el motor adaptativo de Fase 3 no tiene materia prima con qué trabajar.
+1. **Contenido estructurado:** El etiquetado automático es la infraestructura que Fase 3 necesita
+2. **Dual input:** Interfaz moderna (conversacional) + eficiencia (tradicional) = accesibilidad
+3. **Workspace inteligente:** Dashboard rediseñado es funcional, no sobrecargado
+4. **Control granular:** Sistema de comentarios + roles + notificaciones = governance completo
 
 ---
 
@@ -115,7 +161,7 @@ El etiquetado estructurado de Fase 2 es la infraestructura que hace posible todo
 **Nivel 3 del producto**
 
 ### Qué es
-Una vez que el Coordinador aprueba el contenido master, la IA genera automáticamente **variantes adaptadas al tipo de aprendizaje del alumno**. Estas variantes se integran con el LMS y se sirven según el comportamiento y comprensión demostrada de cada alumno.
+Una vez que el Coordinador aprueba el contenido master en Fase 2, la IA genera automáticamente **variantes adaptadas al tipo de aprendizaje del alumno**. Estas variantes se integran con el LMS y se sirven según el comportamiento y comprensión demostrada de cada alumno.
 
 ### Qué se construye
 
@@ -183,7 +229,7 @@ Fase 1 (hoy)          Fase 2                Fase 3                Fase 4
 ─────────────         ──────────────        ──────────────        ──────────────
 Documento suelto  →   Objeto etiquetado →   Variante adaptada →   Ruta personalizada
                                                     ↑
-                                         Datos del alumno
+                                         Datos del alumno (LMS)
 ```
 
 El contenido creado en Fase 1 es la materia prima de Fase 2.
@@ -194,5 +240,42 @@ Las variantes aprobadas de Fase 3 son los nodos del motor de Fase 4.
 
 ---
 
-*Documento preparado por: Equipo UX & Producto — UNIR 2026*
-*Pendiente de aprobación antes de generar brief para Base44*
+## Fase 2 — Detalles de construcción actual (Claude Code + Cursor)
+
+### Stack tecnológico
+- **Framework:** React (Vite)
+- **Estilos:** Tailwind CSS v4 (utilidades únicamente)
+- **Iconos:** lucide-react
+- **Estado:** useState / useReducer (sin backend)
+- **Datos:** mockData.js (hardcodeados, sin API)
+- **Routing:** estado interno (sin react-router)
+
+### Pantallas
+
+1. **Herramientas (Rediseñada)**
+   - Chatbar conversacional + grid de tools
+   - Dual input: `/generar-asignatura` OR click en card
+
+2. **Dashboard → Workspace (Rediseñada)**
+   - Chatbar + layout 3 columnas (Sidebar | Tabla | Mis Pendientes)
+   - Interfaz limpia, funcional
+
+3. **Modal Creación Asignatura**
+   - 5 pasos: Titulación → 11 preguntas → Resumen → Crear
+   - Accesible vía chat O botón
+
+4. **Canvas (Rediseñado)**
+   - 3 columnas: Pipeline | Contenido | Panel IA
+   - Resumen como sección primera (nueva)
+   - Sistema comentarios + etiquetas + toolbar IA
+   - 4 roles diferenciados
+
+### Construcción sin vendor
+- Desarrollo directo con Claude Code en Cursor
+- No es un prototipo externo
+- Es el código real que evoluciona
+
+---
+
+*Documento de producto actualizado: Fase 2 agreg nuevas capacidades conversacionales mantiene TODO lo anterior*
+*Construcción: Claude Code + Cursor (desarrollo propio)*
