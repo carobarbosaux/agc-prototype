@@ -54,10 +54,29 @@ Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación
 
 5. **Canvas** (`src/screens/PantallaCanvas.jsx`)
    - Layout 3 columnas: Pipeline (240px) | Contenido (flexible) | Panel IA (320px)
-   - **Pipeline izquierdo**: etapas con estados. Resumen > Índice > Instrucciones > Temario (expandible con N temas) > Recursos a fondo > Tests
-   - **Área central**: bloques editables (Tema 2) o solo lectura (Tema 1). Toolbar inline al seleccionar texto (Mejorar / Expandir / Resumir / Cambiar tono). Marcador rojo en bloque con comentario crítico
-   - **Panel IA**: chat funcional con respuestas simuladas, suggestions rápidas, colapsable. Al colapsarse muestra un botón lateral fino
-   - **Panel de comentarios**: se abre al hacer clic en el marcador rojo del bloque, reemplaza el panel IA. Muestra el hilo con gravedad tag, "Marcar como resuelto" y campo de respuesta
+   - **Pipeline izquierdo**: navegación jerárquica guiada por temas. Estructura:
+     - Resumen (asignatura global)
+     - Índice (asignatura global)
+     - Tema 1
+       - Instrucciones didácticas
+       - Temario
+       - Recursos a fondo
+       - Tests
+     - Tema 2
+       - Instrucciones didácticas
+       - Temario
+       - Recursos a fondo
+       - Tests
+     - Tema N...
+   - **Flujo de creación por tema** (no global):
+     - Las Instrucciones didácticas de cada tema se crean/editan primero
+     - Una vez aprobadas las Instrucciones, la IA genera automáticamente el Temario de ese tema
+     - Después, el autor puede editar el contenido generado
+     - Cada tema tiene su propio ciclo independiente
+   - **Estados contextuales**: No existe un estado único para todo el canvas. Cada tema (o bloque dentro de un tema) tiene su propio estado de edición/revisión independiente. Ejemplo: Tema 1 > Tests puede estar aprobado, mientras Tema 2 > Temario está en edición y Tema 3 > Instrucciones didácticas está en revisión
+   - **Área central**: muestra contenido del tema/bloque seleccionado. Bloques editables o solo lectura según rol y estado contextual. Toolbar inline al seleccionar texto (Mejorar / Expandir / Resumir / Cambiar tono). Marcador rojo en bloque con comentario crítico
+   - **Panel IA**: chat funcional con respuestas contextuales al tema/bloque actual. Suggestions rápidas, colapsable. Al colapsarse muestra un botón lateral fino
+   - **Panel de comentarios**: se abre al hacer clic en el marcador de comentario. Muestra hilo con gravedad tag, "Marcar como resuelto" y campo de respuesta
 
 **1 panel overlay:**
 - **Notificaciones** (`src/components/PanelNotificaciones.jsx`) — accesible desde el 🔔 del topbar desde cualquier pantalla. Panel lateral con backdrop, 3 notificaciones agrupadas por asignatura, filtros funcionales, navegación al hacer clic
@@ -155,7 +174,9 @@ App.jsx
   pantalla: 'herramientas' | 'dashboard' | 'crearAsignatura' | 'canvas'
   rolActivo: 'autor' | 'coordinador' | 'editor' | 'disenador'
   asignaturaActiva: { titulacionId, asignaturaId }
-  seccionActiva: 'resumen' | 't1' | 't2' | 'indice' | 'instrucciones'
+  temaActivo: 't1' | 't2' | 't3'... | null (null = Resumen o Índice globales)
+  bloqueActivo: bloqueId en tema actual (contextual, no global)
+  estadoContextual: { temaId, bloqueId, estado } (edición/revisión por tema, no global)
   panelIAabierto: bool
   notifAbiertas: bool
   chatHistorial: [] (para Herramientas + Dashboard)
@@ -163,27 +184,100 @@ App.jsx
 Flujo DUAL INPUT:
 
 Vía Chatbar:
-  herramientas → chatbar `/generar-asignatura` → dropdown suggestion → ModalCrearAsignatura
+  herramientas → chatbar `/generar-asignatura` → ModalCrearAsignatura
 
 Vía Tradicional:
-  herramientas → click "Generación de Asignaturas" → ModalCrearAsignatura
+  herramientas → click "Generación" → ModalCrearAsignatura
   dashboard → click "Nueva asignatura" → ModalCrearAsignatura
 
-Canvas:
-  crearAsignatura → (5 pasos wizard) → canvas (Resumen)
-  canvas → canvas (click sección en pipeline)
-  topbar 🔔 → panel notificaciones (overlay)
-  notificación → canvas o dashboard (click en item)
+Canvas — Navegación por tema (flujos paralelos independientes):
+  crearAsignatura → (7 pasos) → canvas (Resumen asignatura)
+  canvas (Resumen/Índice) → click Tema 1 → Tema 1 > Instrucciones didácticas
+  Tema 1 > Instrucciones (aprobadas) → IA genera Tema 1 > Temario automáticamente
+  Tema 1 > Temario → autor edita independientemente
+  Tema 1 → click Tema 2 → Tema 2 > Instrucciones [flujo paralelo, completamente independiente]
+  Cualquier tema → topbar 🔔 → panel notificaciones
 
 Dashboard:
-  dashboard → (click titulación en sidebar) → filtra tabla
-  dashboard → (click fila tabla) → canvas
-  dashboard → (click item "Mis pendientes") → canvas en esa sección
+  dashboard → click titulación → filtra tabla
+  dashboard → click fila tabla → canvas (Resumen de esa asignatura)
+  dashboard → click pendiente → canvas (en tema/bloque específico)
 ```
+
+**Nota:** Estructura jerárquica. Cada Tema contiene sus propias subsecciones (Instrucciones > Temario > Recursos > Tests). Los estados de edición/revisión son contextuales por tema, no globales para el canvas.
 
 ---
 
-## Datos (src/mockData.js)
+## Modelo de creación: Flujos paralelos por tema (CLAVE)
+
+Este es el principio fundamental del canvas:
+
+**La creación es secuencial DENTRO de cada tema, pero independiente ENTRE temas.**
+
+### Ciclo de cada tema (secuencial)
+
+Para cada tema N:
+
+1. **Instrucciones didácticas del tema N** — autor crea/edita primero
+2. Autor solicita aprobación del Coordinador
+3. Coordinador revisa y aprueba
+4. Al aprobarse las Instrucciones → **IA genera automáticamente el Temario del tema N**
+5. Autor puede editar el Temario generado
+6. Flujo de revisión/aprobación del Temario (igual al anterior)
+7. Una vez aprobado el Temario → se desbloquean "Recursos a fondo" y "Tests"
+8. Autor completa esas secciones con el mismo flujo
+
+### Independencia entre temas
+
+Mientras el autor está en el paso 5 del Tema 1 (editando Temario), simultáneamente puede:
+
+- Trabajar en Tema 2 > Instrucciones didácticas (paso 1 del ciclo de Tema 2)
+- O estar revisando comentarios en Tema 3 > Temario
+- O esperando aprobación en Tema 1 > Tests
+
+**No hay un único bloqueante global.** Cada tema progresa a su ritmo.
+
+### Estados contextuales (no globales)
+
+No existe "el estado del canvas". Existe:
+
+- Estado de Tema 1 > Instrucciones: "en edición" (Autor)
+- Estado de Tema 1 > Temario: "aprobado"
+- Estado de Tema 1 > Tests: "bloqueado" (espera aprobación de Temario)
+- Estado de Tema 2 > Instrucciones: "revisión" (Coordinador)
+- Estado de Tema 3 > Temario: "en edición" (Autor)
+
+Cada uno es independiente.
+
+### Implicación para la interfaz
+
+El Pipeline sidebar debe reflejar esta jerarquía:
+
+```
+Resumen
+Índice
+┣ Tema 1
+┃ ┣ Instrucciones didácticas [aprobado]
+┃ ┣ Temario [en edición]
+┃ ┣ Recursos a fondo [bloqueado]
+┃ ┗ Tests [bloqueado]
+┣ Tema 2
+┃ ┣ Instrucciones didácticas [revisión]
+┃ ┣ Temario [por comenzar]
+┃ ┣ Recursos a fondo [bloqueado]
+┃ ┗ Tests [bloqueado]
+┣ Tema 3
+┃ ┣ Instrucciones didácticas [en edición]
+...
+```
+
+La barra de acciones (botones) debe cambiar según:
+- El rol actual
+- El tema seleccionado
+- El bloque/sección actual dentro del tema
+- El estado contextual de esa sección específica
+
+---
 
 **Estructura jerárquica (MANTENER):**
 ```
@@ -226,7 +320,52 @@ titulaciones[]
 
 ---
 
-## Componentes (ACTUALIZAR)
+## Sistema de botones por rol y contexto (NO global)
+
+Los botones visibles dependen de:
+1. **Rol actual** (Autor / Coordinador / Editor / Diseñador)
+2. **Tema/bloque en foco** (cuál está seleccionado)
+3. **Estado contextual** de ese tema/bloque específico (edición, revisión, aprobado, etc.)
+
+**NO existe una barra de acciones única fija para todo el canvas.**
+
+### Sistema de botones por rol y por fase dentro del canvas
+
+La visibilidad de botones depende del rol y del estado del contenido en foco
+(tema o bloque en contexto), no de un estado global único del canvas.
+
++------------------------+------------------------------+----------------------------------------------+
+| Rol                    | Estado del contenido en foco | Botones disponibles                          |
++------------------------+------------------------------+----------------------------------------------+
+| Autor                  | Editando por autor           | Guardar borrador; Enviar a revisión          |
+| Autor                  | Revisando por coordinador    | Solicitar permiso de edición                 |
+| Autor                  | Corrigiendo por autor        | Guardar borrador; Enviar a revisión          |
+| Autor                  | Aprobado                     | Solicitar permiso de edición                 |
++------------------------+------------------------------+----------------------------------------------+
+| Coordinador            | Editando por autor           | —                                            |
+| Coordinador            | Revisando por coordinador    | Enviar correcciones; Aprobar contenido       |
+| Coordinador            | Corrigiendo por autor        | Enviar correcciones; Aprobar contenido       |
+| Coordinador            | Aprobado                     | Comprobar actualizaciones                    |
++------------------------+------------------------------+----------------------------------------------+
+| Editor de contenidos   | Editando por autor           | —                                            |
+| Editor de contenidos   | Revisando por coordinador    | Enviar correcciones                          |
+| Editor de contenidos   | Corrigiendo por autor        | —                                            |
+| Editor de contenidos   | Aprobado                     | Comprobar actualizaciones                    |
++------------------------+------------------------------+----------------------------------------------+
+| Diseñador instruccional| Editando por autor           | —                                            |
+| Diseñador instruccional| Revisando por coordinador    | —                                            |
+| Diseñador instruccional| Corrigiendo por autor        | —                                            |
+| Diseñador instruccional| Aprobado                     | Solicitar permiso de edición                 |
++------------------------+------------------------------+----------------------------------------------+
+
+### Regla de comportamiento
+- Los botones se calculan según el rol del usuario.
+- También dependen del estado del bloque o tema que se está visualizando o editando.
+- No todos los roles tienen acciones disponibles en todas las fases.
+- Esta lógica debe aplicarse de forma contextual por tema o subsección,
+  no como una única barra de acciones global para todo el canvas.
+
+---
 
 ### Nuevos:
 1. **`src/components/Chatbar.jsx`** — input conversacional + suggestions
