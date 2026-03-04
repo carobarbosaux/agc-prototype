@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Sparkles, Check, BookOpen, X, ArrowLeft, Search, ChevronRight } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { Sparkles, Check, BookOpen, X, ArrowLeft, Search, ChevronRight, Send, RotateCcw } from 'lucide-react'
 import { tagsSugerenciasPorArea } from '../mockData'
 
 // ─── Mock generation helpers ───────────────────────────────────────────────────
@@ -323,73 +323,242 @@ function PasoDefinicionTematica({ datos, onChange }) {
       >
         <Sparkles size={12} style={{ color: '#6366F1', flexShrink: 0, marginTop: '2px' }} />
         <p className="text-xs" style={{ color: '#4338CA', lineHeight: '1.5' }}>
-          Al hacer clic en <strong>Generar índice</strong>, la IA creará el índice de temas directamente en el Canvas donde podrás revisarlo y continuar con la generación del resumen.
+          Al hacer clic en <strong>Ver vista previa</strong>, la IA generará un resumen preliminar de la asignatura que podrás revisar y ajustar antes de continuar.
         </p>
       </div>
     </div>
   )
 }
 
-// ─── Step 3: Preview resumen (read-only) ──────────────────────────────────────
+// ─── Mock IA responses for resumen refinement ──────────────────────────────────
 
-function PasoPreviewResumen({ resumenPreview }) {
+const RESPUESTAS_IA_RESUMEN = [
+  (msg) => ({
+    tipo: 'regenerado',
+    texto: 'He actualizado el resumen teniendo en cuenta tu indicación. Revisa los cambios y dime si quieres ajustar algo más.',
+  }),
+  (msg) => ({
+    tipo: 'regenerado',
+    texto: 'Listo, he reformulado la descripción y ajustado los objetivos. ¿Quieres que modifique algún aspecto adicional?',
+  }),
+  (msg) => ({
+    tipo: 'regenerado',
+    texto: 'He aplicado los cambios solicitados. El resumen ahora refleja mejor el enfoque que describes.',
+  }),
+]
+
+let _iaRespIdx = 0
+function mockIARespuesta() {
+  const fn = RESPUESTAS_IA_RESUMEN[_iaRespIdx % RESPUESTAS_IA_RESUMEN.length]
+  _iaRespIdx++
+  return fn()
+}
+
+function mockRegenerarResumen(resumenActual, instruccion) {
+  // Simulate IA modifying the summary based on user instruction
+  const variantes = {
+    descripcion: [
+      `${resumenActual.descripcion} Se pone especial énfasis en la aplicación práctica y en el desarrollo de competencias transferibles al entorno profesional.`,
+      resumenActual.descripcion.replace('introduce', 'profundiza en').replace('fundamentos', 'aspectos avanzados'),
+      `Esta asignatura proporciona una visión completa e integrada de ${resumenActual.nombre.toLowerCase()}, combinando marcos teóricos sólidos con casos de uso reales del sector.`,
+    ],
+    objetivos: [
+      [...resumenActual.objetivos, 'Comunicar resultados de manera clara y rigurosa a audiencias técnicas y no técnicas'],
+      resumenActual.objetivos.map(o => o.replace('Comprender', 'Analizar y dominar').replace('Aplicar', 'Diseñar e implementar')),
+      [...resumenActual.objetivos.slice(0, 3), 'Integrar los conocimientos adquiridos en proyectos multidisciplinares reales'],
+    ],
+  }
+  const idx = _iaRespIdx % 3
+  return {
+    ...resumenActual,
+    descripcion: variantes.descripcion[idx],
+    objetivos: variantes.objetivos[idx],
+  }
+}
+
+// ─── Step 3: Preview resumen con chat IA ───────────────────────────────────────
+
+function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
+  const [chatMensajes, setChatMensajes] = useState([
+    {
+      id: 1,
+      rol: 'ia',
+      texto: 'He generado el resumen preliminar de la asignatura. Puedes pedirme que modifique la descripción, ajuste los objetivos, cambie el enfoque o cualquier otro aspecto antes de continuar.',
+    },
+  ])
+  const [inputChat, setInputChat] = useState('')
+  const [cargandoIA, setCargandoIA] = useState(false)
+  const chatEndRef = useRef(null)
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [chatMensajes])
+
+  const enviarMensaje = () => {
+    const texto = inputChat.trim()
+    if (!texto || cargandoIA) return
+
+    const mensajeUsuario = { id: Date.now(), rol: 'usuario', texto }
+    setChatMensajes(prev => [...prev, mensajeUsuario])
+    setInputChat('')
+    setCargandoIA(true)
+
+    setTimeout(() => {
+      const nuevoResumen = mockRegenerarResumen(resumenPreview, texto)
+      const respIA = mockIARespuesta()
+      onResumenChange(nuevoResumen)
+      setChatMensajes(prev => [...prev, { id: Date.now() + 1, rol: 'ia', texto: respIA.texto }])
+      setCargandoIA(false)
+    }, 1400)
+  }
+
   return (
-    <div className="space-y-5">
-      <div>
-        <h3 className="text-base font-semibold mb-1" style={{ color: '#1A1A1A' }}>Vista previa generada por IA</h3>
-        <p className="text-sm" style={{ color: '#6B7280' }}>
-          Revisa el resumen que la IA generará para esta asignatura. Si estás de acuerdo, acepta para continuar.
-        </p>
-      </div>
+    <div className="flex gap-0" style={{ minHeight: '520px' }}>
 
-      {/* Read-only badge */}
-      <div
-        className="flex items-center gap-2 px-3 py-2 rounded-lg"
-        style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}
-      >
-        <span style={{ fontSize: '13px' }}>👁</span>
-        <p className="text-xs font-medium" style={{ color: '#B45309' }}>
-          Solo lectura — no puedes editar este resumen. Acéptalo o vuelve atrás.
-        </p>
-      </div>
+      {/* ── Left: resumen display ── */}
+      <div className="flex-1 min-w-0 pr-6 overflow-y-auto space-y-5" style={{ borderRight: '1px solid #F1F5F9' }}>
+        <div>
+          <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Resumen preliminar</h3>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>Generado por IA · Puedes ajustarlo con el asistente →</p>
+        </div>
 
-      {/* Nombre */}
-      <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#9CA3AF' }}>Nombre</p>
-        <p className="text-lg font-semibold" style={{ color: '#111827' }}>{resumenPreview.nombre}</p>
-      </div>
+        {/* Nombre */}
+        <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: '#9CA3AF' }}>Asignatura</p>
+          <p className="text-base font-semibold" style={{ color: '#111827' }}>{resumenPreview.nombre}</p>
+        </div>
 
-      {/* Descripción */}
-      <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#9CA3AF' }}>Descripción</p>
-        <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{resumenPreview.descripcion}</p>
-      </div>
+        {/* Descripción */}
+        <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#9CA3AF' }}>Descripción</p>
+          <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{resumenPreview.descripcion}</p>
+        </div>
 
-      {/* Objetivos */}
-      <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Objetivos de aprendizaje</p>
-        <div className="space-y-1.5">
-          {resumenPreview.objetivos.map((obj, i) => (
-            <div key={i} className="flex items-start gap-2">
-              <span className="text-xs font-bold mt-0.5 flex-shrink-0" style={{ color: '#CBD5E1' }}>{i + 1}.</span>
-              <p className="text-sm" style={{ color: '#374151' }}>{obj}</p>
-            </div>
-          ))}
+        {/* Objetivos */}
+        <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Objetivos de aprendizaje</p>
+          <div className="space-y-1.5">
+            {resumenPreview.objetivos.map((obj, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <span className="text-xs font-bold mt-0.5 flex-shrink-0" style={{ color: '#CBD5E1' }}>{i + 1}.</span>
+                <p className="text-sm" style={{ color: '#374151' }}>{obj}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tags */}
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Etiquetas sugeridas</p>
+          <div className="flex flex-wrap gap-1.5">
+            {resumenPreview.tags.map(tag => (
+              <span
+                key={tag}
+                className="inline-flex items-center rounded-full text-xs font-medium"
+                style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2', padding: '3px 10px' }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Tags */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Etiquetas sugeridas</p>
-        <div className="flex flex-wrap gap-1.5">
-          {resumenPreview.tags.map(tag => (
-            <span
-              key={tag}
-              className="inline-flex items-center rounded-full text-xs font-medium"
-              style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2', padding: '3px 10px' }}
+      {/* ── Right: IA chat ── */}
+      <div className="flex flex-col pl-6" style={{ width: '280px', flexShrink: 0 }}>
+        {/* Chat header */}
+        <div className="flex items-center gap-2 mb-3 pb-3" style={{ borderBottom: '1px solid #F1F5F9' }}>
+          <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#EEF2FF' }}>
+            <Sparkles size={11} style={{ color: '#6366F1' }} />
+          </div>
+          <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Asistente IA</p>
+          <p className="text-xs ml-auto" style={{ color: '#9CA3AF' }}>Ajusta el resumen</p>
+        </div>
+
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto space-y-3 mb-3" style={{ maxHeight: '340px' }}>
+          {chatMensajes.map(msg => (
+            <div key={msg.id} className={`flex ${msg.rol === 'usuario' ? 'justify-end' : 'justify-start'}`}>
+              {msg.rol === 'ia' && (
+                <div
+                  className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5"
+                  style={{ background: '#EEF2FF' }}
+                >
+                  <Sparkles size={9} style={{ color: '#6366F1' }} />
+                </div>
+              )}
+              <div
+                className="px-3 py-2 rounded-xl text-xs leading-relaxed"
+                style={{
+                  maxWidth: '200px',
+                  background: msg.rol === 'usuario' ? '#0098CD' : '#F8F9FA',
+                  color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151',
+                  borderRadius: msg.rol === 'usuario' ? '12px 12px 4px 12px' : '4px 12px 12px 12px',
+                }}
+              >
+                {msg.texto}
+              </div>
+            </div>
+          ))}
+          {cargandoIA && (
+            <div className="flex justify-start">
+              <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#EEF2FF' }}>
+                <Sparkles size={9} style={{ color: '#6366F1' }} />
+              </div>
+              <div className="px-3 py-2 rounded-xl" style={{ background: '#F8F9FA', borderRadius: '4px 12px 12px 12px' }}>
+                <div className="flex gap-1">
+                  {[0, 1, 2].map(i => (
+                    <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#6366F1', animationDelay: `${i * 0.15}s` }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+          <div ref={chatEndRef} />
+        </div>
+
+        {/* Input */}
+        <div
+          className="flex items-end gap-2 px-3 py-2 rounded-xl"
+          style={{ background: '#F8F9FA', border: '1.5px solid #E5E7EB' }}
+        >
+          <textarea
+            value={inputChat}
+            onChange={e => setInputChat(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarMensaje() } }}
+            placeholder="Pide cambios al asistente…"
+            rows={2}
+            disabled={cargandoIA}
+            className="flex-1 text-xs outline-none resize-none bg-transparent"
+            style={{ color: '#374151', lineHeight: '1.5' }}
+          />
+          <button
+            onClick={enviarMensaje}
+            disabled={!inputChat.trim() || cargandoIA}
+            className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+            style={{
+              background: inputChat.trim() && !cargandoIA ? '#6366F1' : '#E5E7EB',
+              color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#9CA3AF',
+            }}
+          >
+            <Send size={12} />
+          </button>
+        </div>
+
+        {/* Suggestions */}
+        <div className="mt-2 space-y-1">
+          {['Hazla más práctica', 'Añade más objetivos', 'Simplifica la descripción'].map(sugerencia => (
+            <button
+              key={sugerencia}
+              onClick={() => { setInputChat(sugerencia); }}
+              disabled={cargandoIA}
+              className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-all"
+              style={{ background: '#F1F5F9', color: '#6B7280' }}
+              onMouseEnter={e => { if (!cargandoIA) e.currentTarget.style.background = '#E5E7EB' }}
+              onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
             >
-              {tag}
-            </span>
+              {sugerencia}
+            </button>
           ))}
         </div>
       </div>
@@ -538,11 +707,12 @@ export default function PantallaCrearAsignatura({ titulaciones, onCrearAsignatur
         <div
           className="mx-auto"
           style={{
-            maxWidth: '640px',
+            maxWidth: paso === 3 ? '960px' : '640px',
             background: '#FFFFFF',
             borderRadius: '16px',
             border: '1px solid #E5E7EB',
             boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+            transition: 'max-width 300ms ease',
           }}
         >
           <div className="px-8 py-8">
@@ -574,7 +744,12 @@ export default function PantallaCrearAsignatura({ titulaciones, onCrearAsignatur
               <>
                 {paso === 1 && <PasoContextoAcademico datos={datos} onChange={updateDatos} />}
                 {paso === 2 && <PasoDefinicionTematica datos={datos} onChange={updateDatos} />}
-                {paso === 3 && resumenPreview && <PasoPreviewResumen resumenPreview={resumenPreview} />}
+                {paso === 3 && resumenPreview && (
+                  <PasoPreviewResumen
+                    resumenPreview={resumenPreview}
+                    onResumenChange={setResumenPreview}
+                  />
+                )}
               </>
             )}
           </div>

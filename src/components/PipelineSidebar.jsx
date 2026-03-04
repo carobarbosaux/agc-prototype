@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CheckCircle2, ChevronDown, ChevronRight, Lock } from 'lucide-react'
+import { CheckCircle2, ChevronDown, ChevronRight, Lock, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { pipeline } from '../mockData'
 
 const ESTADO_CLICKABLE = ['aprobado', 'borrador', 'revision', 'comentarios']
@@ -13,8 +13,8 @@ const estadoDot = {
 }
 
 export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
-  // Start with Tema 1 and 2 expanded since they have active sections
   const [temasExpandidos, setTemasExpandidos] = useState({ 'tema-1': true, 'tema-2': true })
+  const [collapsed, setCollapsed] = useState(false)
 
   const toggleTema = (id) => setTemasExpandidos(prev => ({ ...prev, [id]: !prev[id] }))
 
@@ -40,6 +40,34 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
   const total = allSecciones.length
   const pct = Math.round((aprobadas / total) * 100)
 
+  if (collapsed) {
+    return (
+      <aside
+        className="flex flex-col items-center h-full flex-shrink-0"
+        style={{ width: '40px', minWidth: '40px', background: '#FFFFFF', borderRight: '1px solid #E5E7EB' }}
+      >
+        <button
+          onClick={() => setCollapsed(false)}
+          className="w-full flex items-center justify-center py-3 transition-colors"
+          style={{ color: '#9CA3AF' }}
+          title="Expandir flujo de contenido"
+          onMouseEnter={e => { e.currentTarget.style.color = '#374151'; e.currentTarget.style.background = '#F8F9FA' }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' }}
+        >
+          <PanelLeftOpen size={15} />
+        </button>
+        <div
+          className="flex-1 flex items-center justify-center"
+          style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+        >
+          <span className="text-xs font-semibold uppercase tracking-wider select-none" style={{ color: '#CBD5E1', letterSpacing: '0.08em' }}>
+            Flujo de contenido
+          </span>
+        </div>
+      </aside>
+    )
+  }
+
   return (
     <aside
       className="flex flex-col h-full overflow-y-auto"
@@ -52,12 +80,24 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
       }}
     >
       <div className="px-4 pt-5 pb-3 flex-1">
-        <p
-          className="text-xs font-semibold uppercase tracking-wider mb-3"
-          style={{ color: '#9CA3AF', fontFamily: "'Arial', sans-serif", letterSpacing: '0.08em' }}
-        >
-          Flujo de contenido
-        </p>
+        <div className="flex items-center justify-between mb-3">
+          <p
+            className="text-xs font-semibold uppercase tracking-wider"
+            style={{ color: '#9CA3AF', fontFamily: "'Arial', sans-serif", letterSpacing: '0.08em' }}
+          >
+            Flujo de contenido
+          </p>
+          <button
+            onClick={() => setCollapsed(true)}
+            className="p-1 rounded transition-colors"
+            style={{ color: '#CBD5E1' }}
+            title="Colapsar"
+            onMouseEnter={e => { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = '#F3F4F6' }}
+            onMouseLeave={e => { e.currentTarget.style.color = '#CBD5E1'; e.currentTarget.style.background = 'transparent' }}
+          >
+            <PanelLeftClose size={14} />
+          </button>
+        </div>
 
         <nav className="space-y-0.5">
           {pipeline.map((etapa) => {

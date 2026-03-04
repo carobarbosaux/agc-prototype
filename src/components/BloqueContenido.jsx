@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { Wand2, ZoomIn, Minimize2, Palette, MessageCircle } from 'lucide-react'
-import EtiquetaBloque from './EtiquetaBloque'
+import { ZoomIn, Minimize2, RefreshCw, Search, BookMarked, MessageSquare, StickyNote, MessageCircle } from 'lucide-react'
 import { gravedadConfig } from '../mockData'
 
 export default function BloqueContenido({
@@ -33,8 +32,8 @@ export default function BloqueContenido({
       if (!containerRect) return
 
       setToolbarPos({
-        top: rect.top - containerRect.top - 44,
-        left: rect.left - containerRect.left + rect.width / 2 - 100,
+        top: rect.bottom - containerRect.top + 8,
+        left: rect.left - containerRect.left,
       })
       setToolbarVisible(true)
     }, 10)
@@ -51,11 +50,17 @@ export default function BloqueContenido({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [handleClickOutside])
 
-  const toolbarActions = [
-    { label: 'Mejorar', icon: Wand2 },
+  const toolbarActionsIA = [
+    { label: 'Buscar fuentes bibliográficas', icon: BookMarked },
     { label: 'Expandir', icon: ZoomIn },
     { label: 'Resumir', icon: Minimize2 },
-    { label: 'Cambiar tono', icon: Palette },
+    { label: 'Regenerar', icon: RefreshCw },
+    { label: 'Realizar investigación profunda', icon: Search },
+  ]
+
+  const toolbarActionsAnotaciones = [
+    { label: 'Añadir comentario', icon: MessageSquare },
+    { label: 'Añadir nota', icon: StickyNote },
   ]
 
   return (
@@ -129,12 +134,8 @@ export default function BloqueContenido({
           </p>
         )}
 
-        {/* Tags — inline, subtle */}
-        <div className="flex flex-wrap gap-1.5 mt-2">
-          {bloque.etiquetas.map(tag => (
-            <EtiquetaBloque key={tag} label={tag} />
-          ))}
-          {!editable && comentariosActivos.length > 0 && (
+        {!editable && comentariosActivos.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-2">
             <span
               className="text-xs px-2 py-0.5 rounded font-medium"
               style={{
@@ -145,39 +146,80 @@ export default function BloqueContenido({
             >
               {gravedadConfig[comentariosActivos[0].gravedad]?.emoji} {comentariosActivos.length} comentario
             </span>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
-      {/* Inline AI toolbar on text selection */}
+      {/* Inline context menu on text selection — Notion style */}
       {toolbarVisible && editable && (
         <div
           ref={toolbarRef}
-          className="absolute z-50 flex items-center gap-0.5 p-1 rounded-lg shadow-2xl animate-fade-in"
+          className="absolute z-50 animate-fade-in"
           style={{
             top: `${toolbarPos.top}px`,
             left: `${Math.max(0, toolbarPos.left)}px`,
-            background: '#073676',
+            width: '196px',
+            background: '#FFFFFF',
+            border: '1px solid #E5E7EB',
+            borderRadius: '8px',
+            boxShadow: '0 8px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)',
+            overflow: 'hidden',
           }}
         >
-          {toolbarActions.map(({ label, icon: Icon }) => (
-            <button
-              key={label}
-              onMouseDown={e => e.preventDefault()}
-              onClick={() => {
-                const texto = window.getSelection()?.toString().trim() || ''
-                setToolbarVisible(false)
-                window.getSelection()?.removeAllRanges()
-                if (texto && onAccionIA) onAccionIA(texto, label)
-              }}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-white whitespace-nowrap transition-colors"
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.12)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          {/* IA actions section */}
+          <div style={{ padding: '3px' }}>
+            <p
+              className="px-2 pt-1.5 pb-0.5 text-xs font-semibold uppercase tracking-wider"
+              style={{ color: '#9CA3AF' }}
             >
-              <Icon size={11} className="opacity-70" />
-              {label}
-            </button>
-          ))}
+              Asistente IA
+            </p>
+            {toolbarActionsIA.map(({ label, icon: Icon }) => (
+              <button
+                key={label}
+                onMouseDown={e => e.preventDefault()}
+                onClick={() => {
+                  const texto = window.getSelection()?.toString().trim() || ''
+                  setToolbarVisible(false)
+                  window.getSelection()?.removeAllRanges()
+                  if (texto && onAccionIA) onAccionIA(texto, label, bloque)
+                }}
+                className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs transition-colors text-left"
+                style={{ color: '#374151' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+              >
+                <Icon size={13} style={{ color: '#6B7280', flexShrink: 0 }} />
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Separator */}
+          <div style={{ height: '1px', background: '#F3F4F6', margin: '0 3px' }} />
+
+          {/* Annotation section */}
+          <div style={{ padding: '3px' }}>
+            {toolbarActionsAnotaciones.map(({ label, icon: Icon }) => (
+              <button
+                key={label}
+                onMouseDown={e => e.preventDefault()}
+                onClick={() => {
+                  const texto = window.getSelection()?.toString().trim() || ''
+                  setToolbarVisible(false)
+                  window.getSelection()?.removeAllRanges()
+                  if (texto && onAccionIA) onAccionIA(texto, label, bloque)
+                }}
+                className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs transition-colors text-left"
+                style={{ color: '#374151' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+              >
+                <Icon size={13} style={{ color: '#6B7280', flexShrink: 0 }} />
+                <span className="font-medium">{label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </div>

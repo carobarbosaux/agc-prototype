@@ -5,6 +5,7 @@ import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
 import ComentarioHilo from '../components/ComentarioHilo'
 import EstadoBadge from '../components/EstadoBadge'
+import EtiquetaBloque from '../components/EtiquetaBloque'
 import {
   bloquesTema2,
   bloquesTema1,
@@ -513,6 +514,8 @@ export default function PantallaCanvas({
 }) {
   const [resumenPrefill, setResumenPrefill] = useState(null)
   const [comentarioActivoBloque, setComentarioActivoBloque] = useState(null)
+  const [nuevoComentarioTexto, setNuevoComentarioTexto] = useState('')
+  const [nuevoComentarioAnchor, setNuevoComentarioAnchor] = useState(null)
   const [quotePendiente, setQuotePendiente] = useState(null)
   const [bloquesState, setBloquesState] = useState({
     t2: bloquesTema2.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
@@ -605,6 +608,36 @@ export default function PantallaCanvas({
     }))
   }
 
+  const handleAddComentario = () => {
+    if (!nuevoComentarioTexto.trim() || !comentarioActivoBloque) return
+    const nuevoC = {
+      id: `c-${Date.now()}`,
+      autor: 'Ana Lucía M.',
+      rol: rolActivo === 'coordinador' ? 'Coordinador' : 'Autor',
+      avatar: 'AL',
+      gravedad: 'sugerencia',
+      texto: nuevoComentarioTexto.trim(),
+      anchor: nuevoComentarioAnchor,
+      resuelto: false,
+      respuestas: [],
+    }
+    setBloquesState(prev => ({
+      ...prev,
+      [seccionActiva]: (prev[seccionActiva] || []).map(b =>
+        b.id === comentarioActivoBloque.id
+          ? { ...b, comentarios: [...(b.comentarios || []), nuevoC] }
+          : b
+      ),
+    }))
+    // Update the active bloque reference so panel reflects new comment
+    setComentarioActivoBloque(prev => ({
+      ...prev,
+      comentarios: [...(prev.comentarios || []), nuevoC],
+    }))
+    setNuevoComentarioTexto('')
+    setNuevoComentarioAnchor(null)
+  }
+
   const totalComentariosCriticos = bloques.reduce((acc, b) => {
     return acc + (b.comentarios?.filter(c => c.gravedad === 'critico' && !c.resuelto).length || 0)
   }, 0)
@@ -656,7 +689,24 @@ export default function PantallaCanvas({
     else setSelectionAnchor(null)
   }
 
-  const handleAccionIA = (texto, accion) => {
+  const handleAccionIA = (texto, accion, bloque) => {
+    if (accion === 'Añadir comentario') {
+      setComentarioActivoBloque(bloque)
+      setNuevoComentarioAnchor(texto)
+      setNuevoComentarioTexto('')
+      setPanelIAabierto(false)
+      setPanelNotasAbierto(false)
+      return
+    }
+    if (accion === 'Añadir nota') {
+      const snippet = texto.length > 60 ? texto.slice(0, 60) + '…' : texto
+      setSelectionAnchor(texto)
+      setNuevaNotaTexto(`Nota sobre: "${snippet}"`)
+      setPanelNotasAbierto(true)
+      setPanelIAabierto(false)
+      setComentarioActivoBloque(null)
+      return
+    }
     setComentarioActivoBloque(null)
     setPanelIAabierto(true)
     setQuotePendiente({ texto, accion })
@@ -957,6 +1007,7 @@ export default function PantallaCanvas({
             {getActionBar()}
           </div>
         </div>
+
       </div>
 
       {/* Main layout */}
@@ -989,6 +1040,14 @@ export default function PantallaCanvas({
                 <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>
                   {seccion.label}
                 </h1>
+                {rolActivo === 'coordinador' && (() => {
+                  const tags = [...new Set(bloques.flatMap(b => b.etiquetas || []))]
+                  return tags.length > 0 ? (
+                    <div className="flex flex-wrap gap-1.5 mt-3">
+                      {tags.map(tag => <EtiquetaBloque key={tag} label={tag} />)}
+                    </div>
+                  ) : null
+                })()}
               </div>
 
               {/* Índice section: AI generation flow */}
@@ -1066,77 +1125,64 @@ export default function PantallaCanvas({
           )}
         </main>
 
-        {/* Utilities strip — comments + notas + IA toggle */}
-        {!comentarioActivoBloque && !panelIAabierto && (
-          <div
-            className="flex-shrink-0 flex flex-col items-center py-3 gap-2"
-            style={{ width: '44px', background: '#F8F9FA', borderLeft: '1px solid #E5E7EB' }}
+        {/* Utilities strip — always visible */}
+        <div
+          className="flex-shrink-0 flex flex-col items-center pt-3 pb-4 gap-1"
+          style={{ width: '60px', background: '#F8F9FA', borderLeft: '1px solid #E5E7EB' }}
+        >
+          {/* Comments */}
+          <button
+            onClick={() => {
+              const first = bloques.find(b => b.comentarios?.some(c => !c.resuelto))
+              if (first) { setComentarioActivoBloque(first); setPanelIAabierto(false); setPanelNotasAbierto(false) }
+            }}
+            className="relative flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
+            style={{ color: comentarioActivoBloque ? '#EF4444' : tieneComentariosActivos ? '#6B7280' : '#CBD5E1', cursor: tieneComentariosActivos ? 'pointer' : 'default' }}
+            onMouseEnter={e => { if (tieneComentariosActivos) e.currentTarget.style.background = '#F1F5F9' }}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
-            {/* Comments badge */}
-            <button
-              onClick={() => {
-                const bloqueConComentario = bloques.find(b => b.comentarios?.some(c => !c.resuelto))
-                if (bloqueConComentario) handleComentarioClick(bloqueConComentario)
-              }}
-              className="relative w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
-              style={{
-                background: tieneComentariosActivos ? '#FFFFFF' : 'transparent',
-                border: tieneComentariosActivos ? '1px solid #E5E7EB' : '1px solid transparent',
-                cursor: tieneComentariosActivos ? 'pointer' : 'default',
-                color: tieneComentariosActivos ? '#6B7280' : '#CBD5E1',
-              }}
-              title="Ver comentarios"
-              onMouseEnter={e => { if (tieneComentariosActivos) e.currentTarget.style.background = '#F1F5F9' }}
-              onMouseLeave={e => { if (tieneComentariosActivos) e.currentTarget.style.background = '#FFFFFF' }}
-            >
-              <MessageSquare size={14} />
+            <div className="relative">
+              <MessageSquare size={15} />
               {totalComentariosCriticos > 0 && (
-                <span
-                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center font-bold text-white"
-                  style={{ background: '#EF4444', fontSize: '9px' }}
-                >
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#EF4444', fontSize: '8px' }}>
                   {totalComentariosCriticos}
                 </span>
               )}
-            </button>
+            </div>
+            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: comentarioActivoBloque ? '600' : '500' }}>Comentarios</span>
+          </button>
 
-            {/* Notas toggle */}
-            <button
-              onClick={() => { setPanelNotasAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false) }}
-              className="relative w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
-              style={{
-                background: panelNotasAbierto ? '#FEF9C3' : '#FFFFFF',
-                border: panelNotasAbierto ? '1px solid #FDE68A' : '1px solid #E5E7EB',
-                color: panelNotasAbierto ? '#D97706' : '#9CA3AF',
-              }}
-              title="Notas"
-              onMouseEnter={e => { if (!panelNotasAbierto) { e.currentTarget.style.background = '#FEF9C3'; e.currentTarget.style.borderColor = '#FDE68A'; e.currentTarget.style.color = '#D97706' } }}
-              onMouseLeave={e => { if (!panelNotasAbierto) { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.color = '#9CA3AF' } }}
-            >
-              <StickyNote size={13} />
+          {/* Notas */}
+          <button
+            onClick={() => { setPanelNotasAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false) }}
+            className="relative flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
+            style={{ color: panelNotasAbierto ? '#D97706' : '#9CA3AF' }}
+            onMouseEnter={e => { if (!panelNotasAbierto) e.currentTarget.style.background = '#F1F5F9' }}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <div className="relative">
+              <StickyNote size={15} />
               {notasState.length > 0 && (
-                <span
-                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center font-bold text-white"
-                  style={{ background: '#D97706', fontSize: '9px' }}
-                >
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#D97706', fontSize: '8px' }}>
                   {notasState.length}
                 </span>
               )}
-            </button>
+            </div>
+            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelNotasAbierto ? '600' : '500' }}>Notas</span>
+          </button>
 
-            {/* IA toggle */}
-            <button
-              onClick={() => setPanelIAabierto(true)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
-              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', color: '#0098CD' }}
-              title="Asistente IA"
-              onMouseEnter={e => { e.currentTarget.style.background = '#E0F4FB'; e.currentTarget.style.borderColor = '#B3E0F2' }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.borderColor = '#E5E7EB' }}
-            >
-              <Sparkles size={14} />
-            </button>
-          </div>
-        )}
+          {/* IA */}
+          <button
+            onClick={() => { setPanelIAabierto(true); setComentarioActivoBloque(null); setPanelNotasAbierto(false) }}
+            className="flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
+            style={{ color: panelIAabierto ? '#0098CD' : '#9CA3AF' }}
+            onMouseEnter={e => { if (!panelIAabierto) e.currentTarget.style.background = '#F1F5F9' }}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <Sparkles size={15} />
+            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelIAabierto ? '600' : '500' }}>Asistente IA</span>
+          </button>
+        </div>
 
         {/* Right panel: Comentarios */}
         {comentarioActivoBloque && (
@@ -1157,7 +1203,7 @@ export default function PantallaCanvas({
                 </div>
               </div>
               <button
-                onClick={() => { setComentarioActivoBloque(null); setPanelIAabierto(true) }}
+                onClick={() => setComentarioActivoBloque(null)}
                 className="p-1.5 rounded-lg transition-colors text-xs"
                 style={{ color: '#9CA3AF' }}
                 onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
@@ -1177,6 +1223,9 @@ export default function PantallaCanvas({
               {comentarioActivoBloque.contenido.substring(0, 120)}...
             </div>
             <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
+              {comentarioActivoBloque.comentarios?.filter(c => !c.resuelto).length === 0 && (
+                <p className="text-xs text-center py-4" style={{ color: '#9CA3AF' }}>No hay comentarios activos</p>
+              )}
               {comentarioActivoBloque.comentarios?.map(comentario => (
                 <ComentarioHilo
                   key={comentario.id}
@@ -1185,6 +1234,34 @@ export default function PantallaCanvas({
                   onResponder={(cid, texto) => handleResponder(comentarioActivoBloque.id, cid, texto)}
                 />
               ))}
+            </div>
+            {/* New comment compose */}
+            <div className="px-3 pb-3 flex-shrink-0" style={{ borderTop: '1px solid #E5E7EB', paddingTop: '10px' }}>
+              {nuevoComentarioAnchor && (
+                <p className="text-xs mb-1.5 truncate" style={{ color: '#9CA3AF' }}>
+                  Sobre: <span className="italic">"{nuevoComentarioAnchor.slice(0, 50)}{nuevoComentarioAnchor.length > 50 ? '…' : ''}"</span>
+                </p>
+              )}
+              <textarea
+                rows={3}
+                placeholder="Escribe un comentario..."
+                value={nuevoComentarioTexto}
+                onChange={e => setNuevoComentarioTexto(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleAddComentario() }}
+                className="w-full resize-none rounded-lg text-xs p-2.5 outline-none"
+                style={{ border: '1px solid #E5E7EB', background: '#F9FAFB', color: '#1F2937' }}
+              />
+              <button
+                onClick={handleAddComentario}
+                disabled={!nuevoComentarioTexto.trim()}
+                className="w-full mt-1.5 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                style={{
+                  background: nuevoComentarioTexto.trim() ? '#EF4444' : '#E5E7EB',
+                  color: nuevoComentarioTexto.trim() ? '#FFFFFF' : '#9CA3AF',
+                }}
+              >
+                Añadir comentario
+              </button>
             </div>
           </div>
         )}
