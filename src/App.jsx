@@ -17,6 +17,7 @@ export default function App() {
   const [titulaciones, setTitulaciones] = useState(titulacionesIniciales)
   const [asignaturaActiva, setAsignaturaActiva] = useState({ titulacionId: 'master-ia', asignaturaId: 'fund-ml' })
   const [chatHistorial, setChatHistorial] = useState([])
+  const [creacionData, setCreacionData] = useState(null)
 
   const navigate = (destino, params = {}) => {
     if (destino === 'canvas') {
@@ -39,13 +40,14 @@ export default function App() {
     setNotifAbiertas(false)
   }
 
-  const handleCrearAsignatura = (titulacionId, nuevaAsig) => {
+  const handleCrearAsignatura = (titulacionId, nuevaAsig, generados = {}) => {
     setTitulaciones(prev => prev.map(t => {
       if (t.id !== titulacionId) return t
       return { ...t, asignaturas: [...(t.asignaturas || []), nuevaAsig], asignaturas_count: (t.asignaturas_count || 0) + 1 }
     }))
     setAsignaturaActiva({ titulacionId, asignaturaId: nuevaAsig.id })
-    setSeccionActiva('resumen')
+    setCreacionData(generados)
+    setSeccionActiva('indice')
     setPantalla('canvas')
   }
 
@@ -56,13 +58,27 @@ export default function App() {
       { label: 'Dashboard', onClick: null },
     ]
     if (pantalla === 'canvas') {
-      const temaLabel =
-        seccionActiva === 't1' ? 'Tema 1'
-        : seccionActiva === 't2' ? 'Tema 2'
-        : seccionActiva === 'indice' ? 'Índice'
-        : seccionActiva === 'instrucciones' ? 'Instrucciones'
-        : seccionActiva === 'resumen' ? 'Resumen'
-        : seccionActiva
+      const temaLabelMap = {
+        resumen: 'Resumen',
+        indice: 'Índice',
+        'instrucciones-t1': 'Instrucciones T1',
+        t1: 'Temario T1',
+        'recursos-t1': 'Recursos T1',
+        'test-t1': 'Tests T1',
+        'instrucciones-t2': 'Instrucciones T2',
+        t2: 'Temario T2',
+        'recursos-t2': 'Recursos T2',
+        'test-t2': 'Tests T2',
+        'instrucciones-t3': 'Instrucciones T3',
+        t3: 'Temario T3',
+        'instrucciones-t4': 'Instrucciones T4',
+        t4: 'Temario T4',
+        'instrucciones-t5': 'Instrucciones T5',
+        t5: 'Temario T5',
+        'instrucciones-t6': 'Instrucciones T6',
+        t6: 'Temario T6',
+      }
+      const temaLabel = temaLabelMap[seccionActiva] || seccionActiva
       return [
         { label: 'Generación de Asignaturas', onClick: () => setPantalla('herramientas') },
         { label: 'Fundamentos de ML', onClick: () => setPantalla('dashboard') },
@@ -127,6 +143,8 @@ export default function App() {
             onNavigate={navigate}
             asignaturaActiva={asignaturaActiva}
             titulaciones={titulaciones}
+            creacionData={creacionData}
+            onCreacionDataConsumed={() => setCreacionData(null)}
           />
         )}
       </div>

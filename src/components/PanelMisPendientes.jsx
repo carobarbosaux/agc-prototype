@@ -1,4 +1,4 @@
-import { ArrowRight, AlertCircle, AlertTriangle, Lightbulb, Info } from 'lucide-react'
+import { ArrowRight, AlertCircle, AlertTriangle, Lightbulb, Info, ShieldAlert } from 'lucide-react'
 import { misPendientes, gravedadConfig } from '../mockData'
 
 const gravedadIcon = {
@@ -6,6 +6,7 @@ const gravedadIcon = {
   importante: AlertTriangle,
   sugerencia: Lightbulb,
   nota: Info,
+  alertaNormativa: ShieldAlert,
 }
 
 export default function PanelMisPendientes({ rolActivo, onNavigate }) {

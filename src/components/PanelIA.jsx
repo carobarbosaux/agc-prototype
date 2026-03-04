@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send, ChevronRight, Sparkles, X, SquarePen, History } from 'lucide-react'
-import { respuestasIA } from '../mockData'
+import { respuestasIA, respuestasCalidadIA } from '../mockData'
 
 const historialConversaciones = [
   {
@@ -49,10 +49,23 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
 
   useEffect(() => {
     if (quotePendiente) {
-      setQuote(quotePendiente)
       setVistaHistorial(false)
       onQuoteConsumed?.()
-      setTimeout(() => inputRef.current?.focus(), 50)
+      if (quotePendiente.accion === 'Revisar calidad') {
+        // Auto-send: inject user request + IA analysis without manual send
+        const userMsg = { id: Date.now(), rol: 'usuario', mensaje: `Revisar calidad de contenidos — ${quotePendiente.texto.replace('[Revisar calidad] ', '')}` }
+        setMensajes(prev => [...prev, userMsg])
+        setEsperando(true)
+        setTimeout(() => {
+          const idx = Math.floor(Math.random() * respuestasCalidadIA.length)
+          const iaMsg = { id: Date.now() + 1, rol: 'ia', mensaje: respuestasCalidadIA[idx] }
+          setMensajes(prev => [...prev, iaMsg])
+          setEsperando(false)
+        }, 1400)
+      } else {
+        setQuote(quotePendiente)
+        setTimeout(() => inputRef.current?.focus(), 50)
+      }
     }
   }, [quotePendiente])
 

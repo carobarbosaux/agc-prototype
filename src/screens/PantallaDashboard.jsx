@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight, AlertCircle, Clock, Plus, BookOpen, Lock } from 'lucide-react'
+import { ArrowRight, AlertCircle, Clock, Plus, BookOpen, Lock, Filter, Globe } from 'lucide-react'
 import EstadoBadge from '../components/EstadoBadge'
 import Chatbar from '../components/Chatbar'
 import CalidadContenidosCards from '../components/CalidadContenidosCards'
@@ -13,7 +13,14 @@ const rolLabel = {
   disenador: 'Diseñador',
 }
 
-// ─── Sidebar Titulaciones ────────────────────────────────────────────────────
+const obsolescenciaConfig = {
+  ok: { label: 'OK', bg: '#DCFCE7', color: '#16A34A', border: '#BBF7D0' },
+  requiereRevision: { label: 'Requiere revisión', bg: '#FFFBEB', color: '#D97706', border: '#FDE68A' },
+  mantenimiento: { label: 'Mantenimiento', bg: '#FFF7ED', color: '#EA580C', border: '#FED7AA' },
+  obsoleta: { label: 'Obsoleta', bg: '#FEF2F2', color: '#DC2626', border: '#FECACA' },
+}
+
+// ─── Sidebar Titulaciones ─────────────────────────────────────────────────────
 
 function SidebarTitulaciones({ titulaciones, seleccionada, onSelect }) {
   return (
@@ -69,14 +76,12 @@ function SidebarTitulaciones({ titulaciones, seleccionada, onSelect }) {
   )
 }
 
-// ─── Tabla Asignaturas ────────────────────────────────────────────────────────
+// ─── Tabla Asignaturas — Author (reducida) ────────────────────────────────────
 
-function TablaAsignaturas({ rolActivo, titulaciones, titulacionSeleccionada, filtroTag, onNavigate }) {
+function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo, onNavigate }) {
   const titulacion = titulaciones.find(t => t.id === titulacionSeleccionada)
-
   let asignaturas = titulacion?.asignaturas || []
 
-  // Apply tag filter
   if (filtroTag && filtroTag !== 'todos') {
     if (filtroTag === 'pendientes') {
       asignaturas = asignaturas.filter(a => {
@@ -102,7 +107,6 @@ function TablaAsignaturas({ rolActivo, titulaciones, titulacionSeleccionada, fil
 
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
-      {/* Header */}
       <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #F1F5F9', background: '#F8F9FA' }}>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{titulacion?.nombre}</p>
@@ -110,24 +114,14 @@ function TablaAsignaturas({ rolActivo, titulaciones, titulacionSeleccionada, fil
             {asignaturas.length} de {titulacion?.asignaturas_count} asignaturas
           </p>
         </div>
-        <span
-          className="text-xs px-2 py-0.5 rounded-md font-medium"
-          style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2', fontFamily: "'Arial', sans-serif" }}
-        >
+        <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2' }}>
           Activa
         </span>
       </div>
 
-      {/* Column headers */}
-      <div
-        className="grid px-5 py-2.5"
-        style={{
-          gridTemplateColumns: '2fr 1.4fr 0.9fr 0.9fr 1fr',
-          borderBottom: '1px solid #E5E7EB',
-          gap: '12px',
-        }}
-      >
-        {['Asignatura', 'Etapa actual', 'Estado', 'Pendiente de', 'Última actividad'].map(col => (
+      {/* Column headers — author: 5 cols */}
+      <div className="grid px-5 py-2.5" style={{ gridTemplateColumns: '2fr 1.2fr 0.9fr 0.9fr 1fr', borderBottom: '1px solid #E5E7EB', gap: '12px' }}>
+        {['Asignatura', 'Estado', 'Etapa', 'Pendiente de', 'Última actividad'].map(col => (
           <span key={col} className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>{col}</span>
         ))}
       </div>
@@ -139,31 +133,170 @@ function TablaAsignaturas({ rolActivo, titulaciones, titulacionSeleccionada, fil
       ) : (
         asignaturas.map((asig, i) => {
           const clickable = asig.activa
-          const pendienteRaw = typeof asig.pendienteDe === 'object'
-            ? asig.pendienteDe[rolActivo] || '—'
-            : asig.pendienteDe
+          const pendienteRaw = typeof asig.pendienteDe === 'object' ? asig.pendienteDe[rolActivo] || '—' : asig.pendienteDe
           const esPropio = pendienteRaw === 'tú'
-          const pendienteDisplay = esPropio
-            ? rolLabel[rolActivo] || pendienteRaw
-            : pendienteRaw
+          const pendienteDisplay = esPropio ? rolLabel[rolActivo] || pendienteRaw : pendienteRaw
 
           return (
             <div
               key={asig.id}
-              onClick={() => clickable && onNavigate('canvas', { seccion: 't2' })}
+              onClick={() => {
+                if (!clickable) return
+                if (asig.crearAsignatura) return // autor can't create
+                onNavigate('canvas', { seccion: 't2', titulacionId: 'master-ia', asignaturaId: asig.id })
+              }}
               className="grid px-5 py-3.5 transition-all group"
               style={{
-                gridTemplateColumns: '2fr 1.4fr 0.9fr 0.9fr 1fr',
+                gridTemplateColumns: '2fr 1.2fr 0.9fr 0.9fr 1fr',
+                borderBottom: i < asignaturas.length - 1 ? '1px solid #F8F9FA' : 'none',
+                cursor: (clickable && !asig.crearAsignatura) ? 'pointer' : 'default',
+                gap: '12px',
+              }}
+              onMouseEnter={e => { if (clickable && !asig.crearAsignatura) e.currentTarget.style.background = '#F8F9FA' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                {clickable && !asig.crearAsignatura && (
+                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#0098CD' }} />
+                )}
+                <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#94A3B8' }}>
+                  {asig.nombre}
+                </span>
+                {clickable && !asig.crearAsignatura && (
+                  <ArrowRight size={12} style={{ color: '#CBD5E1', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                )}
+              </div>
+
+              <div className="flex items-center">
+                <EstadoBadge estado={asig.estado} size="sm" />
+              </div>
+
+              <span className="text-sm flex items-center truncate" style={{ color: clickable ? '#6B7280' : '#CBD5E1' }}>
+                {asig.etapaActual}
+              </span>
+
+              <div className="flex items-center">
+                <span className="text-sm" style={{ color: esPropio ? '#0098CD' : '#9CA3AF', fontWeight: esPropio ? '500' : '400' }}>
+                  {pendienteDisplay}
+                </span>
+              </div>
+
+              <span className="text-sm flex items-center" style={{ color: '#9CA3AF' }}>{asig.ultimaActividad}</span>
+            </div>
+          )
+        })
+      )}
+    </div>
+  )
+}
+
+// ─── Tabla Asignaturas — Coordinator (completa) ───────────────────────────────
+
+function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, filtroFilial, rolActivo, onNavigate }) {
+  const titulacion = titulaciones.find(t => t.id === titulacionSeleccionada)
+  let asignaturas = titulacion?.asignaturas || []
+
+  if (filtroTag && filtroTag !== 'todos') {
+    if (filtroTag === 'pendientes') {
+      asignaturas = asignaturas.filter(a => {
+        const pd = typeof a.pendienteDe === 'object' ? a.pendienteDe[rolActivo] : a.pendienteDe
+        return pd === 'tú'
+      })
+    } else {
+      asignaturas = asignaturas.filter(a => a.estado === filtroTag)
+    }
+  }
+
+  if (filtroFilial) {
+    asignaturas = asignaturas.filter(a => a.filial === filtroFilial)
+  }
+
+  const filialesDisponibles = [...new Set((titulacion?.asignaturas || []).map(a => a.filial).filter(Boolean))]
+
+  if (!titulacion?.navegable) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#F1F5F9' }}>
+          <Lock size={20} style={{ color: '#CBD5E1' }} />
+        </div>
+        <p className="text-sm font-medium" style={{ color: '#9CA3AF' }}>Titulación no disponible en el prototipo</p>
+        <p className="text-xs mt-1" style={{ color: '#CBD5E1' }}>Selecciona el Máster en IA para navegar</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+      {/* Header with filial filter */}
+      <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #F1F5F9', background: '#F8F9FA' }}>
+        <div>
+          <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{titulacion?.nombre}</p>
+          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+            {asignaturas.length} de {titulacion?.asignaturas_count} asignaturas
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          {/* Filial filter */}
+          <div className="flex items-center gap-1.5">
+            <Globe size={12} style={{ color: '#9CA3AF' }} />
+            <select
+              className="text-xs outline-none rounded-md px-2 py-1"
+              style={{ border: '1px solid #E5E7EB', background: '#FFFFFF', color: '#6B7280' }}
+              onChange={e => {/* handled via prop */}}
+            >
+              <option value="">Todas las filiales</option>
+              {filialesDisponibles.map(f => <option key={f} value={f}>{f}</option>)}
+            </select>
+          </div>
+          <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2' }}>
+            Activa
+          </span>
+        </div>
+      </div>
+
+      {/* Column headers — coordinator: 7 cols */}
+      <div className="grid px-5 py-2.5" style={{ gridTemplateColumns: '1.8fr 0.8fr 0.9fr 0.7fr 0.8fr 0.9fr 0.8fr', borderBottom: '1px solid #E5E7EB', gap: '10px' }}>
+        {['Asignatura', 'Estado', 'Responsable', 'Filial', 'Obsolescencia', 'Última actividad', 'Fecha objetivo'].map(col => (
+          <span key={col} className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>{col}</span>
+        ))}
+      </div>
+
+      {asignaturas.length === 0 ? (
+        <div className="px-5 py-10 text-center">
+          <p className="text-sm" style={{ color: '#9CA3AF' }}>No hay asignaturas con este filtro</p>
+        </div>
+      ) : (
+        asignaturas.map((asig, i) => {
+          const clickable = asig.activa
+          const pendienteRaw = typeof asig.pendienteDe === 'object' ? asig.pendienteDe[rolActivo] || '—' : asig.pendienteDe
+          const esPropio = pendienteRaw === 'tú'
+          const pendienteDisplay = esPropio ? rolLabel[rolActivo] || pendienteRaw : pendienteRaw
+          const obs = obsolescenciaConfig[asig.obsolescencia] || obsolescenciaConfig.ok
+
+          return (
+            <div
+              key={asig.id}
+              onClick={() => {
+                if (!clickable) return
+                if (asig.crearAsignatura) onNavigate('crearAsignatura')
+                else onNavigate('canvas', { seccion: 't2', titulacionId: 'master-ia', asignaturaId: asig.id })
+              }}
+              className="grid px-5 py-3 transition-all group"
+              style={{
+                gridTemplateColumns: '1.8fr 0.8fr 0.9fr 0.7fr 0.8fr 0.9fr 0.8fr',
                 borderBottom: i < asignaturas.length - 1 ? '1px solid #F8F9FA' : 'none',
                 cursor: clickable ? 'pointer' : 'default',
-                gap: '12px',
+                gap: '10px',
               }}
               onMouseEnter={e => { if (clickable) e.currentTarget.style.background = '#F8F9FA' }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
             >
               <div className="flex items-center gap-2 min-w-0">
-                {clickable && (
+                {clickable && !asig.crearAsignatura && (
                   <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#0098CD' }} />
+                )}
+                {clickable && asig.crearAsignatura && (
+                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#9CA3AF' }} />
                 )}
                 <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#94A3B8' }}>
                   {asig.nombre}
@@ -173,23 +306,33 @@ function TablaAsignaturas({ rolActivo, titulaciones, titulacionSeleccionada, fil
                 )}
               </div>
 
-              <span className="text-sm flex items-center truncate" style={{ color: clickable ? '#6B7280' : '#CBD5E1' }}>
-                {asig.etapaActual}
-              </span>
-
               <div className="flex items-center">
                 <EstadoBadge estado={asig.estado} size="sm" />
               </div>
 
               <div className="flex items-center">
-                <span className="text-sm" style={{ color: esPropio ? '#0098CD' : '#9CA3AF', fontWeight: esPropio ? '500' : '400' }}>
+                <span className="text-xs" style={{ color: esPropio ? '#0098CD' : '#9CA3AF', fontWeight: esPropio ? '500' : '400' }}>
                   {pendienteDisplay}
                 </span>
               </div>
 
-              <span className="text-sm flex items-center" style={{ color: '#9CA3AF' }}>
-                {asig.ultimaActividad}
+              <span className="text-xs flex items-center" style={{ color: '#6B7280' }}>
+                {asig.filial || '—'}
               </span>
+
+              <div className="flex items-center">
+                {asig.obsolescencia ? (
+                  <span
+                    className="text-xs px-1.5 py-0.5 rounded-md font-medium"
+                    style={{ background: obs.bg, color: obs.color, border: `1px solid ${obs.border}`, whiteSpace: 'nowrap' }}
+                  >
+                    {obs.label}
+                  </span>
+                ) : <span style={{ color: '#CBD5E1' }}>—</span>}
+              </div>
+
+              <span className="text-xs flex items-center" style={{ color: '#9CA3AF' }}>{asig.ultimaActividad}</span>
+              <span className="text-xs flex items-center" style={{ color: '#9CA3AF' }}>{asig.fechaObjetivo || '—'}</span>
             </div>
           )
         })
@@ -223,7 +366,8 @@ function BarraAccionesDashboard({ rolActivo, filtroTag, onFiltroChange, onNuevaA
         })}
       </div>
 
-      {rolActivo === 'autor' && (
+      {/* Only Coordinator can create new asignaturas */}
+      {rolActivo === 'coordinador' && (
         <button
           onClick={onNuevaAsignatura}
           className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all flex-shrink-0"
@@ -244,10 +388,13 @@ function BarraAccionesDashboard({ rolActivo, filtroTag, onFiltroChange, onNuevaA
 export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones, chatHistorial, setChatHistorial }) {
   const [titulacionSeleccionada, setTitulacionSeleccionada] = useState('master-ia')
   const [filtroTag, setFiltroTag] = useState(null)
+  const [filtroFilial, setFiltroFilial] = useState(null)
+
+  const esCoordinador = rolActivo === 'coordinador' || rolActivo === 'editor' || rolActivo === 'disenador'
 
   const subtitulo = {
     autor: 'Tu trabajo como autor en todas las titulaciones asignadas',
-    coordinador: 'Contenido pendiente de revisión y aprobación',
+    coordinador: 'Seguimiento completo de asignaturas por titulación, filial y estado',
     editor: 'Asignaturas con revisiones activas',
     disenador: 'Asignaturas disponibles para enriquecimiento',
   }
@@ -274,7 +421,10 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
 
         {/* Calidad de Contenidos */}
         <div className="mb-6">
-          <CalidadContenidosCards />
+          <CalidadContenidosCards onCardClick={id => {
+            const map = { alertas: 'comentarios', revision: 'revision', ise: null, critico: 'comentarios' }
+            setFiltroTag(map[id] ?? null)
+          }} />
         </div>
 
         {/* Barra de acciones + tags */}
@@ -294,21 +444,34 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
             onSelect={setTitulacionSeleccionada}
           />
 
-          {/* Center: Tabla */}
+          {/* Center: Tabla (role-differentiated) */}
           <div className="flex-1 min-w-0">
-            <TablaAsignaturas
-              rolActivo={rolActivo}
-              titulaciones={titulaciones}
-              titulacionSeleccionada={titulacionSeleccionada}
-              filtroTag={filtroTag}
-              onNavigate={onNavigate}
-            />
+            {esCoordinador ? (
+              <TablaCoordinador
+                titulaciones={titulaciones}
+                titulacionSeleccionada={titulacionSeleccionada}
+                filtroTag={filtroTag}
+                filtroFilial={filtroFilial}
+                rolActivo={rolActivo}
+                onNavigate={onNavigate}
+              />
+            ) : (
+              <TablaAutor
+                titulaciones={titulaciones}
+                titulacionSeleccionada={titulacionSeleccionada}
+                filtroTag={filtroTag}
+                rolActivo={rolActivo}
+                onNavigate={onNavigate}
+              />
+            )}
           </div>
 
-          {/* Right: Mis pendientes */}
-          <div style={{ width: '264px', flexShrink: 0 }}>
-            <PanelMisPendientes rolActivo={rolActivo} onNavigate={onNavigate} />
-          </div>
+          {/* Right: Mis pendientes — only for coordinator/editor/disenador */}
+          {esCoordinador && (
+            <div style={{ width: '264px', flexShrink: 0 }}>
+              <PanelMisPendientes rolActivo={rolActivo} onNavigate={onNavigate} />
+            </div>
+          )}
         </div>
       </div>
     </div>

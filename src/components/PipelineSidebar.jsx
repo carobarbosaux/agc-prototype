@@ -1,25 +1,44 @@
 import { useState } from 'react'
 import { CheckCircle2, ChevronDown, ChevronRight, Lock } from 'lucide-react'
-import EstadoBadge from './EstadoBadge'
 import { pipeline } from '../mockData'
 
 const ESTADO_CLICKABLE = ['aprobado', 'borrador', 'revision', 'comentarios']
 
-export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
-  const [gruposExpandidos, setGruposExpandidos] = useState({ 'instrucciones-grupo': true, temario: true })
+const estadoDot = {
+  borrador: '#3B82F6',
+  revision: '#F59E0B',
+  comentarios: '#F97316',
+  aprobado: '#10B981',
+  bloqueado: '#CBD5E1',
+}
 
-  const toggleGrupo = (id) => setGruposExpandidos(prev => ({ ...prev, [id]: !prev[id] }))
+export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
+  // Start with Tema 1 and 2 expanded since they have active sections
+  const [temasExpandidos, setTemasExpandidos] = useState({ 'tema-1': true, 'tema-2': true })
+
+  const toggleTema = (id) => setTemasExpandidos(prev => ({ ...prev, [id]: !prev[id] }))
 
   const handleClick = (id, estado) => {
     if (!ESTADO_CLICKABLE.includes(estado)) return
     onSeccionChange(id)
   }
 
-  const renderEstadoIcon = (estado) => {
-    if (estado === 'aprobado') return <CheckCircle2 size={13} style={{ color: '#10B981' }} />
-    if (estado === 'bloqueado') return <Lock size={12} style={{ color: '#CBD5E1' }} />
-    return null
+  const renderSeccionIcon = (estado) => {
+    if (estado === 'aprobado') return <CheckCircle2 size={12} style={{ color: '#10B981', flexShrink: 0 }} />
+    if (estado === 'bloqueado') return <Lock size={11} style={{ color: '#CBD5E1', flexShrink: 0 }} />
+    return (
+      <div
+        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+        style={{ background: estadoDot[estado] || '#CBD5E1', marginTop: '1px' }}
+      />
+    )
   }
+
+  // Count approved sections for progress
+  const allSecciones = pipeline.flatMap(e => e.tipo === 'tema' ? e.secciones : [e])
+  const aprobadas = allSecciones.filter(s => s.estado === 'aprobado').length
+  const total = allSecciones.length
+  const pct = Math.round((aprobadas / total) * 100)
 
   return (
     <aside
@@ -32,7 +51,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
         fontFamily: "'Inter', 'Arial', sans-serif",
       }}
     >
-      <div className="px-4 pt-5 pb-3">
+      <div className="px-4 pt-5 pb-3 flex-1">
         <p
           className="text-xs font-semibold uppercase tracking-wider mb-3"
           style={{ color: '#9CA3AF', fontFamily: "'Arial', sans-serif", letterSpacing: '0.08em' }}
@@ -42,84 +61,112 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
 
         <nav className="space-y-0.5">
           {pipeline.map((etapa) => {
-            if (etapa.tipo === 'grupo') {
+            // ─ Flat sections (Resumen, Índice) ─
+            if (etapa.tipo === 'seccion') {
+              const clickable = ESTADO_CLICKABLE.includes(etapa.estado)
+              const activo = seccionActiva === etapa.id
+              return (
+                <div
+                  key={etapa.id}
+                  onClick={() => handleClick(etapa.id, etapa.estado)}
+                  className="flex items-center justify-between px-2 py-2 rounded-lg transition-all"
+                  style={{
+                    cursor: clickable ? 'pointer' : 'default',
+                    background: activo ? '#E0F4FB' : 'transparent',
+                    borderLeft: activo ? '2px solid #0098CD' : '2px solid transparent',
+                  }}
+                  onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F8F9FA' }}
+                  onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
+                >
+                  <div className="flex items-center gap-2">
+                    {renderSeccionIcon(etapa.estado)}
+                    <span
+                      className="text-sm"
+                      style={{
+                        fontWeight: activo ? '600' : '500',
+                        color: activo ? '#0098CD' : clickable ? '#374151' : '#94A3B8',
+                      }}
+                    >
+                      {etapa.label}
+                    </span>
+                  </div>
+                </div>
+              )
+            }
+
+            // ─ Tema groups ─
+            if (etapa.tipo === 'tema') {
+              const expandido = !!temasExpandidos[etapa.id]
+              const tieneActivo = etapa.secciones.some(s => s.id === seccionActiva)
+              const estadoTema = etapa.secciones.some(s => s.estado === 'comentarios') ? 'comentarios'
+                : etapa.secciones.some(s => s.estado === 'revision') ? 'revision'
+                : etapa.secciones.some(s => s.estado === 'borrador') ? 'borrador'
+                : etapa.secciones.every(s => s.estado === 'aprobado') ? 'aprobado'
+                : 'bloqueado'
+
               return (
                 <div key={etapa.id}>
+                  {/* Tema header */}
                   <button
-                    onClick={() => toggleGrupo(etapa.id)}
+                    onClick={() => toggleTema(etapa.id)}
                     className="w-full flex items-center justify-between px-2 py-2 rounded-lg transition-colors"
+                    style={{
+                      background: tieneActivo && !expandido ? '#F0F9FF' : 'transparent',
+                    }}
                     onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    onMouseLeave={e => e.currentTarget.style.background = tieneActivo && !expandido ? '#F0F9FF' : 'transparent'}
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium" style={{ color: '#374151' }}>{etapa.label}</span>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ background: estadoDot[estadoTema] || '#CBD5E1' }}
+                      />
+                      <div className="min-w-0 text-left">
+                        <p className="text-sm font-medium leading-tight" style={{ color: '#374151' }}>
+                          {etapa.label}
+                        </p>
+                        <p className="text-xs leading-tight truncate" style={{ color: '#9CA3AF', maxWidth: '140px' }}>
+                          {etapa.labelCorto}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <EstadoBadge estado={etapa.estado} size="sm" />
-                      {gruposExpandidos[etapa.id]
-                        ? <ChevronDown size={13} style={{ color: '#9CA3AF' }} />
-                        : <ChevronRight size={13} style={{ color: '#9CA3AF' }} />
-                      }
-                    </div>
+                    {expandido
+                      ? <ChevronDown size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+                      : <ChevronRight size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+                    }
                   </button>
 
-                  {gruposExpandidos[etapa.id] && etapa.temas && (
-                    <div className="ml-3 mt-0.5 space-y-0.5 pl-2" style={{ borderLeft: '1.5px solid #E5E7EB' }}>
-                      {etapa.temas.map(tema => {
-                        const clickable = ESTADO_CLICKABLE.includes(tema.estado)
-                        const activo = seccionActiva === tema.id
-
+                  {/* Subsections */}
+                  {expandido && (
+                    <div className="mt-0.5 mb-1 ml-4 space-y-0.5 pl-2.5" style={{ borderLeft: '1.5px solid #E5E7EB' }}>
+                      {etapa.secciones.map(sec => {
+                        const clickable = ESTADO_CLICKABLE.includes(sec.estado)
+                        const activo = seccionActiva === sec.id
                         return (
                           <div
-                            key={tema.id}
-                            onClick={() => handleClick(tema.id, tema.estado)}
-                            className="flex items-start gap-2 px-2 py-2 rounded-lg transition-all"
+                            key={sec.id}
+                            onClick={() => handleClick(sec.id, sec.estado)}
+                            className="flex items-center gap-2 px-2 py-1.5 rounded-md transition-all"
                             style={{
-                              cursor: clickable ? 'pointer' : 'not-allowed',
+                              cursor: clickable ? 'pointer' : 'default',
                               background: activo ? '#E0F4FB' : 'transparent',
                               borderLeft: activo ? '2px solid #0098CD' : '2px solid transparent',
                               marginLeft: '-2px',
                             }}
-                            data-tooltip={!clickable ? 'Bloqueado hasta aprobar la etapa anterior' : undefined}
+                            title={!clickable ? 'Bloqueado hasta aprobar la etapa anterior' : undefined}
+                            onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F8F9FA' }}
+                            onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
                           >
-                            <div className="mt-0.5 flex-shrink-0">
-                              {renderEstadoIcon(tema.estado)}
-                              {!renderEstadoIcon(tema.estado) && (
-                                <div
-                                  className="w-1.5 h-1.5 rounded-full mt-1"
-                                  style={{
-                                    background:
-                                      tema.estado === 'borrador' ? '#0098CD'
-                                      : tema.estado === 'revision' ? '#F59E0B'
-                                      : tema.estado === 'comentarios' ? '#F97316'
-                                      : '#CBD5E1',
-                                  }}
-                                />
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p
-                                className="text-xs font-semibold leading-tight mb-0.5"
-                                style={{
-                                  color: activo ? '#0098CD' : clickable ? '#374151' : '#94A3B8',
-                                  fontFamily: "'Arial', sans-serif",
-                                }}
-                              >
-                                {tema.label}
-                              </p>
-                              <p
-                                className="text-xs leading-tight"
-                                style={{
-                                  color: clickable ? '#9CA3AF' : '#CBD5E1',
-                                  overflow: 'hidden',
-                                  display: '-webkit-box',
-                                  WebkitLineClamp: 2,
-                                  WebkitBoxOrient: 'vertical',
-                                }}
-                              >
-                                {tema.labelCorto}
-                              </p>
-                            </div>
+                            {renderSeccionIcon(sec.estado)}
+                            <span
+                              className="text-xs"
+                              style={{
+                                fontWeight: activo ? '600' : '400',
+                                color: activo ? '#0098CD' : clickable ? '#4B5563' : '#CBD5E1',
+                              }}
+                            >
+                              {sec.label}
+                            </span>
                           </div>
                         )
                       })}
@@ -129,52 +176,21 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
               )
             }
 
-            const clickable = ESTADO_CLICKABLE.includes(etapa.estado)
-            const activo = seccionActiva === etapa.id
-
-            return (
-              <div
-                key={etapa.id}
-                onClick={() => handleClick(etapa.id, etapa.estado)}
-                className="flex items-center justify-between px-2 py-2.5 rounded-lg transition-all"
-                style={{
-                  cursor: clickable ? 'pointer' : 'not-allowed',
-                  background: activo ? '#E0F4FB' : 'transparent',
-                  borderLeft: activo ? '2px solid #0098CD' : '2px solid transparent',
-                }}
-                data-tooltip={!clickable ? 'Bloqueado hasta aprobar la etapa anterior' : undefined}
-                onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F8F9FA' }}
-                onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
-              >
-                <div className="flex items-center gap-2">
-                  {renderEstadoIcon(etapa.estado)}
-                  <span
-                    className="text-sm"
-                    style={{
-                      fontWeight: activo ? '600' : '500',
-                      color: activo ? '#0098CD' : clickable ? '#374151' : '#94A3B8',
-                    }}
-                  >
-                    {etapa.label}
-                  </span>
-                </div>
-                <EstadoBadge estado={etapa.estado} size="sm" />
-              </div>
-            )
+            return null
           })}
         </nav>
       </div>
 
       {/* Progress indicator */}
-      <div className="mt-auto px-4 py-4" style={{ borderTop: '1px solid #F1F5F9' }}>
+      <div className="px-4 py-4 flex-shrink-0" style={{ borderTop: '1px solid #F1F5F9' }}>
         <div className="flex items-center justify-between mb-2">
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Progreso de la asignatura</p>
-          <p className="text-xs font-semibold" style={{ color: '#374151' }}>28%</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>Progreso</p>
+          <p className="text-xs font-semibold" style={{ color: '#374151' }}>{pct}%</p>
         </div>
         <div className="w-full h-1.5 rounded-full" style={{ background: '#E5E7EB' }}>
-          <div className="h-full rounded-full transition-all" style={{ width: '28%', background: '#0098CD' }} />
+          <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#0098CD' }} />
         </div>
-        <p className="text-xs mt-1.5" style={{ color: '#9CA3AF' }}>2 de 7 etapas aprobadas</p>
+        <p className="text-xs mt-1.5" style={{ color: '#9CA3AF' }}>{aprobadas} de {total} secciones aprobadas</p>
       </div>
     </aside>
   )

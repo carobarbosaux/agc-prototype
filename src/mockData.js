@@ -45,15 +45,22 @@ export const titulaciones = [
         pendienteDe: { autor: 'tú', coordinador: 'Ana Lucía M.', editor: 'tú', disenador: 'tú' },
         ultimaActividad: 'Hace 2 horas',
         activa: true,
+        filial: 'Colombia',
+        obsolescencia: 'ok',
+        fechaObjetivo: '15 mar 2026',
       },
       {
         id: 'deep-learning',
         nombre: 'Deep Learning y Redes Neuronales',
-        etapaActual: 'Índice',
+        etapaActual: 'Sin comenzar',
         estado: 'porComenzar',
-        pendienteDe: { autor: 'tú', coordinador: 'Ana Lucía M.', editor: '—', disenador: '—' },
+        pendienteDe: { autor: 'tú', coordinador: '—', editor: '—', disenador: '—' },
         ultimaActividad: '—',
-        activa: false,
+        activa: true,
+        crearAsignatura: true,
+        filial: 'México',
+        obsolescencia: 'requiereRevision',
+        fechaObjetivo: '30 mar 2026',
       },
       {
         id: 'nlp',
@@ -63,6 +70,9 @@ export const titulaciones = [
         pendienteDe: { autor: 'tú', coordinador: 'Ana Lucía M.', editor: '—', disenador: '—' },
         ultimaActividad: '—',
         activa: false,
+        filial: 'Colombia',
+        obsolescencia: 'ok',
+        fechaObjetivo: '—',
       },
       {
         id: 'vision',
@@ -72,6 +82,9 @@ export const titulaciones = [
         pendienteDe: { autor: 'tú', coordinador: '—', editor: '—', disenador: '—' },
         ultimaActividad: '—',
         activa: false,
+        filial: 'España',
+        obsolescencia: 'mantenimiento',
+        fechaObjetivo: '—',
       },
       {
         id: 'etica',
@@ -81,6 +94,9 @@ export const titulaciones = [
         pendienteDe: { autor: 'tú', coordinador: '—', editor: '—', disenador: '—' },
         ultimaActividad: '—',
         activa: false,
+        filial: 'España',
+        obsolescencia: 'obsoleta',
+        fechaObjetivo: '—',
       },
       {
         id: 'mlops',
@@ -90,6 +106,9 @@ export const titulaciones = [
         pendienteDe: { autor: 'tú', coordinador: '—', editor: '—', disenador: '—' },
         ultimaActividad: '—',
         activa: false,
+        filial: 'México',
+        obsolescencia: 'ok',
+        fechaObjetivo: '—',
       },
       {
         id: 'tfm',
@@ -99,6 +118,9 @@ export const titulaciones = [
         pendienteDe: { autor: 'tú', coordinador: '—', editor: '—', disenador: '—' },
         ultimaActividad: '—',
         activa: false,
+        filial: 'Colombia',
+        obsolescencia: 'ok',
+        fechaObjetivo: '—',
       },
     ],
   },
@@ -208,35 +230,77 @@ export const pipeline = [
   { id: 'resumen', label: 'Resumen', estado: 'borrador', tipo: 'seccion' },
   { id: 'indice', label: 'Índice', estado: 'aprobado', tipo: 'seccion' },
   {
-    id: 'instrucciones-grupo',
-    label: 'Instrucciones didácticas',
-    estado: 'aprobado',
-    tipo: 'grupo',
-    temas: [
-      { id: 'instrucciones-t1', label: 'Tema 1', labelCorto: 'Introducción al aprendizaje automático', estado: 'aprobado' },
-      { id: 'instrucciones-t2', label: 'Tema 2', labelCorto: 'Regresión y clasificación', estado: 'aprobado' },
-      { id: 'instrucciones-t3', label: 'Tema 3', labelCorto: 'Árboles de decisión y ensemble methods', estado: 'aprobado' },
-      { id: 'instrucciones-t4', label: 'Tema 4', labelCorto: 'Redes neuronales básicas', estado: 'aprobado' },
-      { id: 'instrucciones-t5', label: 'Tema 5', labelCorto: 'Evaluación y validación de modelos', estado: 'aprobado' },
-      { id: 'instrucciones-t6', label: 'Tema 6', labelCorto: 'Proyecto práctico final', estado: 'aprobado' },
+    id: 'tema-1',
+    label: 'Tema 1',
+    labelCorto: 'Introducción al aprendizaje automático',
+    tipo: 'tema',
+    secciones: [
+      { id: 'instrucciones-t1', label: 'Instrucciones didácticas', estado: 'aprobado' },
+      { id: 't1', label: 'Temario', estado: 'revision' },
+      { id: 'recursos-t1', label: 'Recursos a fondo', estado: 'bloqueado' },
+      { id: 'test-t1', label: 'Tests', estado: 'bloqueado' },
     ],
   },
   {
-    id: 'temario',
-    label: 'Temario',
-    estado: 'borrador',
-    tipo: 'grupo',
-    temas: [
-      { id: 't1', label: 'Tema 1', labelCorto: 'Introducción al aprendizaje automático', estado: 'revision' },
-      { id: 't2', label: 'Tema 2', labelCorto: 'Regresión y clasificación', estado: 'borrador', activo: true },
-      { id: 't3', label: 'Tema 3', labelCorto: 'Árboles de decisión y ensemble methods', estado: 'bloqueado' },
-      { id: 't4', label: 'Tema 4', labelCorto: 'Redes neuronales básicas', estado: 'bloqueado' },
-      { id: 't5', label: 'Tema 5', labelCorto: 'Evaluación y validación de modelos', estado: 'bloqueado' },
-      { id: 't6', label: 'Tema 6', labelCorto: 'Proyecto práctico', estado: 'bloqueado' },
+    id: 'tema-2',
+    label: 'Tema 2',
+    labelCorto: 'Regresión y clasificación',
+    tipo: 'tema',
+    secciones: [
+      { id: 'instrucciones-t2', label: 'Instrucciones didácticas', estado: 'aprobado' },
+      { id: 't2', label: 'Temario', estado: 'borrador' },
+      { id: 'recursos-t2', label: 'Recursos a fondo', estado: 'bloqueado' },
+      { id: 'test-t2', label: 'Tests', estado: 'bloqueado' },
     ],
   },
-  { id: 'recursos-t1', label: 'Recursos a fondo · Tema 1', estado: 'bloqueado', tipo: 'seccion' },
-  { id: 'test-t1', label: 'Test de evaluación · Tema 1', estado: 'bloqueado', tipo: 'seccion' },
+  {
+    id: 'tema-3',
+    label: 'Tema 3',
+    labelCorto: 'Árboles de decisión y ensemble methods',
+    tipo: 'tema',
+    secciones: [
+      { id: 'instrucciones-t3', label: 'Instrucciones didácticas', estado: 'aprobado' },
+      { id: 't3', label: 'Temario', estado: 'bloqueado' },
+      { id: 'recursos-t3', label: 'Recursos a fondo', estado: 'bloqueado' },
+      { id: 'test-t3', label: 'Tests', estado: 'bloqueado' },
+    ],
+  },
+  {
+    id: 'tema-4',
+    label: 'Tema 4',
+    labelCorto: 'Redes neuronales básicas',
+    tipo: 'tema',
+    secciones: [
+      { id: 'instrucciones-t4', label: 'Instrucciones didácticas', estado: 'aprobado' },
+      { id: 't4', label: 'Temario', estado: 'bloqueado' },
+      { id: 'recursos-t4', label: 'Recursos a fondo', estado: 'bloqueado' },
+      { id: 'test-t4', label: 'Tests', estado: 'bloqueado' },
+    ],
+  },
+  {
+    id: 'tema-5',
+    label: 'Tema 5',
+    labelCorto: 'Evaluación y validación de modelos',
+    tipo: 'tema',
+    secciones: [
+      { id: 'instrucciones-t5', label: 'Instrucciones didácticas', estado: 'aprobado' },
+      { id: 't5', label: 'Temario', estado: 'bloqueado' },
+      { id: 'recursos-t5', label: 'Recursos a fondo', estado: 'bloqueado' },
+      { id: 'test-t5', label: 'Tests', estado: 'bloqueado' },
+    ],
+  },
+  {
+    id: 'tema-6',
+    label: 'Tema 6',
+    labelCorto: 'Proyecto práctico final',
+    tipo: 'tema',
+    secciones: [
+      { id: 'instrucciones-t6', label: 'Instrucciones didácticas', estado: 'aprobado' },
+      { id: 't6', label: 'Temario', estado: 'bloqueado' },
+      { id: 'recursos-t6', label: 'Recursos a fondo', estado: 'bloqueado' },
+      { id: 'test-t6', label: 'Tests', estado: 'bloqueado' },
+    ],
+  },
 ]
 
 export const bloquesTema2 = [
@@ -613,6 +677,12 @@ export const respuestasIA = [
   'Revisando el contexto del bloque: el tono es correcto para el nivel del Máster. Sugiero añadir un ejemplo visual — una tabla comparativa entre regresión y clasificación funcionaría muy bien aquí.',
 ]
 
+export const respuestasCalidadIA = [
+  'He analizado el contenido contra los estándares institucionales UNIR. Detecté 2 incumplimientos:\n\n🔺 Citación incorrecta (APA): La referencia de Bishop (2006) en el Bloque 2 no sigue el formato APA 7ª edición. Falta el DOI.\n\n🔺 Concepto desactualizado: La definición de "aprendizaje profundo" en el Bloque 3 no refleja avances post-2022 (transformers, LLMs). Recomiendo actualizar.\n\n¿Quieres que cree alertas normativas para estos hallazgos?',
+  'Revisión de calidad completada. Encontré 1 incumplimiento:\n\n🔺 Coherencia curricular: Los objetivos declarados en el Resumen mencionan "evaluación de modelos" pero ningún bloque del tema aborda métricas de evaluación explícitamente. Se recomienda añadir un bloque de evaluación o ajustar los objetivos.\n\nEl resto del contenido cumple con los estándares UNIR y las normas de citación están correctas.',
+  'Análisis de calidad completado. El contenido está en buen estado:\n\n✓ Citaciones en formato APA correcto\n✓ Coherencia con los objetivos de aprendizaje\n✓ Nivel de complejidad adecuado para el perfil del estudiante\n\n⚠️ Sugerencia menor: El Bloque 4 podría beneficiarse de un ejemplo práctico adicional para reforzar la teoría. No es un incumplimiento normativo, pero mejoraría la experiencia de aprendizaje.',
+]
+
 export const estadoConfig = {
   porComenzar: { bg: '#F8FAFC', text: '#94A3B8', border: '#E2E8F0', label: 'Por comenzar', dot: '#CBD5E1' },
   bloqueado: { bg: '#F1F5F9', text: '#94A3B8', border: '#CBD5E1', label: 'Bloqueado', dot: '#CBD5E1' },
@@ -628,6 +698,7 @@ export const gravedadConfig = {
   importante: { color: '#F97316', bg: '#FFF7ED', border: '#FED7AA', label: '🟠 Importante', emoji: '🟠' },
   sugerencia: { color: '#EAB308', bg: '#FEFCE8', border: '#FEF08A', label: '🟡 Sugerencia', emoji: '🟡' },
   nota: { color: '#3B82F6', bg: '#EFF6FF', border: '#BFDBFE', label: '🔵 Nota', emoji: '🔵' },
+  alertaNormativa: { color: '#7C3AED', bg: '#F5F3FF', border: '#DDD6FE', label: '🔺 Alerta normativa', emoji: '🔺' },
 }
 
 export const roles = [
@@ -796,6 +867,16 @@ export const respuestasIAChatbar = [
 // ─── Dashboard: Mis pendientes (panel derecho) ────────────────────────────────
 
 export const misPendientes = [
+  {
+    id: 'p0',
+    titulo: 'Incumplimiento norma APA en citación',
+    asignatura: 'Fundamentos de ML',
+    seccion: 'Tema 2 · Bloque 3',
+    gravedad: 'alertaNormativa',
+    tiempo: 'Hace 30 min',
+    canvasDestino: 't2',
+    activo: true,
+  },
   {
     id: 'p1',
     titulo: 'Añadir referencia académica',

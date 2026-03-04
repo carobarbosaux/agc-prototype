@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { ChevronRight, Plus, Save, MessageSquare, Eye, Sparkles, X } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { ChevronRight, ChevronDown, Plus, MessageSquare, Eye, Sparkles, X, Lock, Wand2, ShieldCheck, BookOpenCheck, Check, ToggleLeft, ToggleRight, StickyNote, Pencil, Trash2 } from 'lucide-react'
 import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
@@ -20,20 +20,7 @@ import {
 } from '../mockData'
 
 const SECCION_CONFIG = {
-  t2: {
-    label: 'Tema 2: Regresión y clasificación',
-    labelCorto: 'Tema 2',
-    estado: 'borrador',
-    bloques: bloquesTema2,
-    chat: chatHistorialTema2,
-  },
-  t1: {
-    label: 'Tema 1: Introducción al aprendizaje automático',
-    labelCorto: 'Tema 1',
-    estado: 'revision',
-    bloques: bloquesTema1,
-    chat: chatHistorialTema1,
-  },
+  // ─ Global ─
   indice: {
     label: 'Índice',
     labelCorto: 'Índice',
@@ -41,6 +28,7 @@ const SECCION_CONFIG = {
     bloques: bloquesIndice,
     chat: chatHistorialTema2,
   },
+  // ─ Tema 1 ─
   'instrucciones-t1': {
     label: 'Instrucciones didácticas · Tema 1',
     labelCorto: 'Instrucciones T1',
@@ -48,6 +36,28 @@ const SECCION_CONFIG = {
     bloques: instruccionesTema1,
     chat: chatHistorialTema1,
   },
+  t1: {
+    label: 'Temario · Tema 1',
+    labelCorto: 'Temario T1',
+    estado: 'revision',
+    bloques: bloquesTema1,
+    chat: chatHistorialTema1,
+  },
+  'recursos-t1': {
+    label: 'Recursos a fondo · Tema 1',
+    labelCorto: 'Recursos T1',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema1,
+  },
+  'test-t1': {
+    label: 'Tests · Tema 1',
+    labelCorto: 'Tests T1',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema1,
+  },
+  // ─ Tema 2 ─
   'instrucciones-t2': {
     label: 'Instrucciones didácticas · Tema 2',
     labelCorto: 'Instrucciones T2',
@@ -55,6 +65,28 @@ const SECCION_CONFIG = {
     bloques: instruccionesTema2,
     chat: chatHistorialTema2,
   },
+  t2: {
+    label: 'Temario · Tema 2',
+    labelCorto: 'Temario T2',
+    estado: 'borrador',
+    bloques: bloquesTema2,
+    chat: chatHistorialTema2,
+  },
+  'recursos-t2': {
+    label: 'Recursos a fondo · Tema 2',
+    labelCorto: 'Recursos T2',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'test-t2': {
+    label: 'Tests · Tema 2',
+    labelCorto: 'Tests T2',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  // ─ Temas 3-6 (instrucciones only — temarios blocked) ─
   'instrucciones-t3': {
     label: 'Instrucciones didácticas · Tema 3',
     labelCorto: 'Instrucciones T3',
@@ -83,15 +115,238 @@ const SECCION_CONFIG = {
     bloques: instruccionesTema6,
     chat: chatHistorialTema2,
   },
+  // ─ Temas 3-6 (temarios and subsections — all blocked) ─
+  t3: {
+    label: 'Temario · Tema 3',
+    labelCorto: 'Temario T3',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'recursos-t3': {
+    label: 'Recursos a fondo · Tema 3',
+    labelCorto: 'Recursos T3',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'test-t3': {
+    label: 'Tests · Tema 3',
+    labelCorto: 'Tests T3',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  t4: {
+    label: 'Temario · Tema 4',
+    labelCorto: 'Temario T4',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'recursos-t4': {
+    label: 'Recursos a fondo · Tema 4',
+    labelCorto: 'Recursos T4',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'test-t4': {
+    label: 'Tests · Tema 4',
+    labelCorto: 'Tests T4',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  t5: {
+    label: 'Temario · Tema 5',
+    labelCorto: 'Temario T5',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'recursos-t5': {
+    label: 'Recursos a fondo · Tema 5',
+    labelCorto: 'Recursos T5',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'test-t5': {
+    label: 'Tests · Tema 5',
+    labelCorto: 'Tests T5',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  t6: {
+    label: 'Temario · Tema 6',
+    labelCorto: 'Temario T6',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'recursos-t6': {
+    label: 'Recursos a fondo · Tema 6',
+    labelCorto: 'Recursos T6',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'test-t6': {
+    label: 'Tests · Tema 6',
+    labelCorto: 'Tests T6',
+    estado: 'bloqueado',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
+}
+
+// ─── Índice section component (AI-generation flow) ────────────────────────────
+
+function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenerarResumen }) {
+  const [generando, setGenerando] = useState(!!creacionData?.indice)
+  const [indice, setIndice] = useState(creacionData?.indice || null)
+  const [generandoResumen, setGenerandoResumen] = useState(false)
+
+  // Play spinner then reveal index
+  useEffect(() => {
+    if (creacionData?.indice) {
+      const t = setTimeout(() => {
+        setGenerando(false)
+        onCreacionDataConsumed()
+      }, 1400)
+      return () => clearTimeout(t)
+    }
+  }, [])
+
+  const handleGenerarResumen = () => {
+    setGenerandoResumen(true)
+    setTimeout(() => {
+      setGenerandoResumen(false)
+      onGenerarResumen()
+    }, 1200)
+  }
+
+  // If no creation data and not generating, show normal blocks
+  if (!indice && !generando) {
+    return null // caller handles normal block rendering
+  }
+
+  if (generando) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 gap-4">
+        <div
+          className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse"
+          style={{ background: '#EEF2FF' }}
+        >
+          <Sparkles size={24} style={{ color: '#6366F1' }} />
+        </div>
+        <div className="text-center">
+          <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando índice de temas…</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está creando la estructura del curso…</p>
+        </div>
+        <div className="flex gap-1.5 mt-2">
+          {[0, 1, 2].map(i => (
+            <div
+              key={i}
+              className="w-1.5 h-1.5 rounded-full animate-bounce"
+              style={{ background: '#6366F1', animationDelay: `${i * 0.15}s` }}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (generandoResumen) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 gap-4">
+        <div
+          className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse"
+          style={{ background: '#EEF2FF' }}
+        >
+          <Sparkles size={24} style={{ color: '#6366F1' }} />
+        </div>
+        <div className="text-center">
+          <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando resumen preliminar…</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está procesando tu solicitud…</p>
+        </div>
+        <div className="flex gap-1.5 mt-2">
+          {[0, 1, 2].map(i => (
+            <div
+              key={i}
+              className="w-1.5 h-1.5 rounded-full animate-bounce"
+              style={{ background: '#6366F1', animationDelay: `${i * 0.15}s` }}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      {/* AI-generated index */}
+      <div
+        className="rounded-xl p-4 mb-5"
+        style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}
+      >
+        <div className="flex items-center gap-2 mb-3 pb-3" style={{ borderBottom: '1px solid #E5E7EB' }}>
+          <div className="w-5 h-5 rounded flex items-center justify-center" style={{ background: '#EEF2FF' }}>
+            <Sparkles size={11} style={{ color: '#6366F1' }} />
+          </div>
+          <span className="text-xs font-semibold" style={{ color: '#6366F1' }}>Índice generado por IA · Solo lectura</span>
+        </div>
+        <div className="space-y-2">
+          {indice.map((tema, i) => (
+            <div key={i} className="flex items-start gap-3 py-1.5">
+              <div
+                className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5"
+                style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
+              >
+                <span style={{ fontSize: '10px', fontWeight: '700', color: '#9CA3AF' }}>{i + 1}</span>
+              </div>
+              <span className="text-sm" style={{ color: '#374151' }}>{tema.replace(/^Tema \d+: /, '')}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* AI hint */}
+      <div
+        className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg mb-6"
+        style={{ background: '#EEF2FF', border: '1px solid #C7D2FE' }}
+      >
+        <Sparkles size={12} style={{ color: '#6366F1', flexShrink: 0, marginTop: '2px' }} />
+        <p className="text-xs" style={{ color: '#4338CA', lineHeight: '1.5' }}>
+          El índice se ha generado en base al área temática y los contenidos indicados. Podrás reorganizar y editar los temas desde el Canvas.
+        </p>
+      </div>
+
+      {/* Next step CTA */}
+      <button
+        onClick={handleGenerarResumen}
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all"
+        style={{ background: '#6366F1', color: '#FFFFFF' }}
+        onMouseEnter={e => e.currentTarget.style.background = '#4F46E5'}
+        onMouseLeave={e => e.currentTarget.style.background = '#6366F1'}
+      >
+        <Sparkles size={14} />
+        Generar resumen de la asignatura
+        <ChevronRight size={14} />
+      </button>
+    </div>
+  )
 }
 
 // ─── Resumen section component ────────────────────────────────────────────────
 
-function SeccionResumen({ asignatura, editable, onAccionIA }) {
-  const [nombre, setNombre] = useState(asignatura?.nombre || '')
-  const [descripcion, setDescripcion] = useState(asignatura?.descripcion || '')
-  const [objetivos, setObjetivos] = useState(asignatura?.objetivos || [])
-  const [tags, setTags] = useState(asignatura?.tags || [])
+function SeccionResumen({ asignatura, resumenPrefill, editable, onAccionIA }) {
+  const [nombre, setNombre] = useState(resumenPrefill?.nombre || asignatura?.nombre || '')
+  const [descripcion, setDescripcion] = useState(resumenPrefill?.descripcion || asignatura?.descripcion || '')
+  const [objetivos, setObjetivos] = useState(resumenPrefill?.objetivos || asignatura?.objetivos || [])
+  const [tags, setTags] = useState(resumenPrefill?.tags || asignatura?.tags || [])
   const [tagInput, setTagInput] = useState('')
   const [unsaved, setUnsaved] = useState(false)
 
@@ -250,10 +505,13 @@ export default function PantallaCanvas({
   setSeccionActiva,
   panelIAabierto,
   setPanelIAabierto,
-  onNavigate,
+  onNavigate: _onNavigate,
   asignaturaActiva,
   titulaciones,
+  creacionData,
+  onCreacionDataConsumed,
 }) {
+  const [resumenPrefill, setResumenPrefill] = useState(null)
   const [comentarioActivoBloque, setComentarioActivoBloque] = useState(null)
   const [quotePendiente, setQuotePendiente] = useState(null)
   const [bloquesState, setBloquesState] = useState({
@@ -263,6 +521,29 @@ export default function PantallaCanvas({
   })
   const [savedToast, setSavedToast] = useState(false)
   const [sentToast, setSentToast] = useState(false)
+  const [revisandoCalidad, setRevisandoCalidad] = useState(false)
+  // Autosave
+  const [autosaveOn, setAutosaveOn] = useState(true)
+  const [autosaveStatus, setAutosaveStatus] = useState('saved') // 'saved' | 'saving' | 'unsaved'
+  // Notes
+  const [notasState, setNotasState] = useState([])
+  const [panelNotasAbierto, setPanelNotasAbierto] = useState(false)
+  const [notaEditandoId, setNotaEditandoId] = useState(null)
+  const [notaEditandoTexto, setNotaEditandoTexto] = useState('')
+  const [selectionAnchor, setSelectionAnchor] = useState(null)
+  const [nuevaNotaTexto, setNuevaNotaTexto] = useState('')
+  const [herramientasMenuAbierto, setHerramientasMenuAbierto] = useState(false)
+  const herramientasMenuRef = useRef(null)
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (herramientasMenuRef.current && !herramientasMenuRef.current.contains(e.target)) {
+        setHerramientasMenuAbierto(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
 
   // Resolve active asignatura for resumen section
   const asignaturaData = (() => {
@@ -276,7 +557,7 @@ export default function PantallaCanvas({
   const bloques = bloquesState[seccionActiva] || seccion.bloques
   const editable = rolActivo === 'autor'
 
-  const estadoMostrado = isResumen ? 'borrador' : (seccionActiva === 't1' && rolActivo === 'autor' ? 'comentarios' : seccion.estado)
+  const estadoMostrado = isResumen ? 'borrador' : seccion.estado
 
   const handleComentarioClick = (bloque) => {
     if (bloque.comentarios?.length > 0) {
@@ -338,137 +619,344 @@ export default function PantallaCanvas({
     setTimeout(() => setSentToast(false), 2500)
   }
 
+  const toggleAutosave = () => {
+    const next = !autosaveOn
+    setAutosaveOn(next)
+    if (next) {
+      setAutosaveStatus('saving')
+      setTimeout(() => setAutosaveStatus('saved'), 900)
+    } else {
+      setAutosaveStatus('unsaved')
+    }
+  }
+
+  const handleAddNota = () => {
+    if (!nuevaNotaTexto.trim() || !selectionAnchor) return
+    setNotasState(prev => [
+      ...prev,
+      { id: `nota-${Date.now()}`, anchor: selectionAnchor, contenido: nuevaNotaTexto.trim(), bloqueId: seccionActiva },
+    ])
+    setNuevaNotaTexto('')
+    setSelectionAnchor(null)
+    setPanelNotasAbierto(true)
+  }
+
+  const handleDeleteNota = (id) => setNotasState(prev => prev.filter(n => n.id !== id))
+
+  const handleSaveEditNota = (id) => {
+    setNotasState(prev => prev.map(n => n.id === id ? { ...n, contenido: notaEditandoTexto } : n))
+    setNotaEditandoId(null)
+    setNotaEditandoTexto('')
+  }
+
+  // Detect text selection for "Añadir nota" mini-toolbar
+  const handleTextSelection = () => {
+    const sel = window.getSelection()?.toString().trim()
+    if (sel && sel.length > 2) setSelectionAnchor(sel)
+    else setSelectionAnchor(null)
+  }
+
   const handleAccionIA = (texto, accion) => {
     setComentarioActivoBloque(null)
     setPanelIAabierto(true)
     setQuotePendiente({ texto, accion })
   }
 
+  const handleRevisarCalidad = () => {
+    setRevisandoCalidad(true)
+    setComentarioActivoBloque(null)
+    setPanelIAabierto(true)
+    setTimeout(() => {
+      setRevisandoCalidad(false)
+      setQuotePendiente({
+        texto: `[Revisar calidad] ${isResumen ? 'Resumen de asignatura' : seccion.label}`,
+        accion: 'Revisar calidad',
+      })
+    }, 1800)
+  }
+
   const tieneComentariosActivos = bloques.some(b => b.comentarios?.some(c => !c.resuelto))
 
   const getActionBar = () => {
+    const estado = isResumen ? 'borrador' : seccion.estado
+
+    // ─ Autor ─
     if (rolActivo === 'autor') {
-      if (seccionActiva === 't1') {
+      // Editando (borrador) o Corrigiendo (comentarios) → full bar
+      if (estado === 'borrador' || estado === 'comentarios') {
+        return (
+          <>
+            {/* Herramientas IA dropdown */}
+            <div className="relative" ref={herramientasMenuRef}>
+              <button
+                onClick={() => setHerramientasMenuAbierto(v => !v)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                style={{
+                  background: herramientasMenuAbierto ? '#EEF2FF' : '#F8F9FA',
+                  color: herramientasMenuAbierto ? '#6366F1' : '#6B7280',
+                  border: herramientasMenuAbierto ? '1px solid #C7D2FE' : '1px solid #E5E7EB',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#EEF2FF'; e.currentTarget.style.color = '#6366F1'; e.currentTarget.style.borderColor = '#C7D2FE' }}
+                onMouseLeave={e => {
+                  if (!herramientasMenuAbierto) {
+                    e.currentTarget.style.background = '#F8F9FA'; e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.borderColor = '#E5E7EB'
+                  }
+                }}
+              >
+                <Sparkles size={13} />
+                Herramientas IA
+                <ChevronDown size={11} />
+              </button>
+
+              {herramientasMenuAbierto && (
+                <div
+                  className="absolute left-0 top-full mt-1 rounded-xl overflow-hidden"
+                  style={{
+                    background: '#FFFFFF',
+                    border: '1px solid #E5E7EB',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
+                    width: '210px',
+                    zIndex: 50,
+                  }}
+                >
+                  <div className="px-3 py-2" style={{ borderBottom: '1px solid #F1F5F9' }}>
+                    <span className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>Asistente de contenido</span>
+                  </div>
+                  {/* Revisar calidad — active */}
+                  <button
+                    onClick={() => { setHerramientasMenuAbierto(false); handleRevisarCalidad() }}
+                    disabled={revisandoCalidad}
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm transition-colors"
+                    style={{ color: revisandoCalidad ? '#9CA3AF' : '#374151', cursor: revisandoCalidad ? 'default' : 'pointer' }}
+                    onMouseEnter={e => { if (!revisandoCalidad) e.currentTarget.style.background = '#F8F9FA' }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+                  >
+                    <Wand2 size={14} style={{ color: revisandoCalidad ? '#CBD5E1' : '#6366F1' }} />
+                    <div className="text-left">
+                      <p className="text-xs font-medium" style={{ color: revisandoCalidad ? '#9CA3AF' : '#374151' }}>
+                        {revisandoCalidad ? 'Analizando…' : 'Revisar calidad'}
+                      </p>
+                      <p className="text-xs" style={{ color: '#9CA3AF' }}>Detectar incumplimientos normativos</p>
+                    </div>
+                  </button>
+                  {/* Future tools — disabled */}
+                  {[
+                    { icon: ShieldCheck, label: 'Verificar coherencia', desc: 'Comprobar coherencia curricular' },
+                    { icon: BookOpenCheck, label: 'Sugerir referencias', desc: 'Buscar fuentes académicas' },
+                  ].map(({ icon: Icon, label, desc }) => (
+                    <button
+                      key={label}
+                      disabled
+                      className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm"
+                      style={{ color: '#CBD5E1', cursor: 'default' }}
+                    >
+                      <Icon size={14} style={{ color: '#E2E8F0' }} />
+                      <div className="text-left">
+                        <p className="text-xs font-medium" style={{ color: '#CBD5E1' }}>{label}</p>
+                        <p className="text-xs" style={{ color: '#E2E8F0' }}>{desc}</p>
+                      </div>
+                      <span className="ml-auto text-xs px-1.5 py-0.5 rounded" style={{ background: '#F1F5F9', color: '#CBD5E1', fontFamily: "'Arial', sans-serif" }}>
+                        Próx.
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Autosave toggle */}
+            <button
+              onClick={toggleAutosave}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+              style={{
+                background: autosaveOn ? '#F0FDF4' : '#F8F9FA',
+                color: autosaveOn ? '#16A34A' : '#9CA3AF',
+                border: `1px solid ${autosaveOn ? '#BBF7D0' : '#E5E7EB'}`,
+              }}
+              title={autosaveOn ? 'Desactivar guardado automático' : 'Activar guardado automático'}
+            >
+              {autosaveOn ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
+              {autosaveStatus === 'saving' ? 'Guardando…' : autosaveOn ? 'Autoguardado' : 'Sin guardar'}
+              {autosaveStatus === 'saved' && autosaveOn && <Check size={11} />}
+            </button>
+            <button
+              onClick={showSentToast}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+              style={{ background: '#0098CD' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#00729A'}
+              onMouseLeave={e => e.currentTarget.style.background = '#0098CD'}
+            >
+              Enviar a revisión
+              <ChevronRight size={13} />
+            </button>
+          </>
+        )
+      }
+      // Revisando por coordinador → solo pedir permiso (amber)
+      if (estado === 'revision') {
         return (
           <button
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-            style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
+            style={{ background: '#FFFBEB', color: '#F59E0B', border: '1px solid #FDE68A' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#FEF3C7'}
+            onMouseLeave={e => e.currentTarget.style.background = '#FFFBEB'}
           >
             <Eye size={13} />
             Solicitar permiso de edición
           </button>
         )
       }
-      return (
-        <>
+      // Aprobado → pedir permiso (gray)
+      if (estado === 'aprobado') {
+        return (
+          <button
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
+            onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
+          >
+            <Eye size={13} />
+            Solicitar permiso de edición
+          </button>
+        )
+      }
+      // Bloqueado → sin acciones
+      return null
+    }
+
+    // ─ Coordinador ─
+    if (rolActivo === 'coordinador') {
+      // Revisando o Corrigiendo → puede enviar correcciones o aprobar
+      if (estado === 'revision' || estado === 'comentarios') {
+        return (
+          <>
+            <button
+              onClick={showSavedToast}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+              style={{ background: '#FFF7ED', color: '#F97316', border: '1px solid #FED7AA' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#FFEDD5'}
+              onMouseLeave={e => e.currentTarget.style.background = '#FFF7ED'}
+            >
+              <MessageSquare size={13} />
+              Enviar correcciones
+            </button>
+            <button
+              onClick={showSentToast}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+              style={{ background: '#10B981' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#059669'}
+              onMouseLeave={e => e.currentTarget.style.background = '#10B981'}
+            >
+              <ChevronRight size={13} />
+              Aprobar contenido
+            </button>
+          </>
+        )
+      }
+      // Aprobado → comprobar actualizaciones
+      if (estado === 'aprobado') {
+        return (
           <button
             onClick={showSavedToast}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
             style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
+            onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
           >
-            <Save size={13} />
-            Guardar borrador
+            <Eye size={13} />
+            Comprobar actualizaciones
           </button>
-          {!isResumen && (
-            <button
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-              style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
-            >
-              <Eye size={13} />
-              Solicitar permiso de edición
-            </button>
-          )}
-          <button
-            onClick={showSentToast}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
-            style={{ background: '#0098CD' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#00729A'}
-            onMouseLeave={e => e.currentTarget.style.background = '#0098CD'}
-          >
-            {isResumen ? 'Enviar a revisión' : 'Enviar a revisión'}
-            <ChevronRight size={13} />
-          </button>
-        </>
-      )
+        )
+      }
+      // Editando por autor o bloqueado → sin acciones
+      return null
     }
+
+    // ─ Editor ─
+    if (rolActivo === 'editor') {
+      // Solo durante revisión por coordinador → puede enviar correcciones
+      if (estado === 'revision') {
+        return (
+          <button
+            onClick={showSavedToast}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            style={{ background: '#FFF7ED', color: '#F97316', border: '1px solid #FED7AA' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#FFEDD5'}
+            onMouseLeave={e => e.currentTarget.style.background = '#FFF7ED'}
+          >
+            <MessageSquare size={13} />
+            Enviar correcciones
+          </button>
+        )
+      }
+      // Aprobado → comprobar actualizaciones
+      if (estado === 'aprobado') {
+        return (
+          <button
+            onClick={showSavedToast}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
+            onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
+          >
+            <Eye size={13} />
+            Comprobar actualizaciones
+          </button>
+        )
+      }
+      // Editando, corrigiendo o bloqueado → sin acciones
+      return null
+    }
+
+    // ─ Diseñador ─
+    if (rolActivo === 'disenador') {
+      // Solo cuando aprobado → puede solicitar permiso para sugerir enriquecimiento
+      if (estado === 'aprobado') {
+        return (
+          <button
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
+            onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
+          >
+            <Eye size={13} />
+            Solicitar permiso de edición
+          </button>
+        )
+      }
+      // Cualquier otro estado → sin acciones
+      return null
+    }
+
     return null
   }
 
   return (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 56px)', fontFamily: "'Inter', 'Arial', sans-serif" }}>
-      {/* Section header bar */}
-      <div
-        className="flex-shrink-0"
-        style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}
-      >
-        {/* Top row: title + right controls */}
-        <div className="flex items-center justify-between px-5 py-3" style={{ minHeight: '52px' }}>
-          <div className="flex items-center gap-3">
-            <h2 className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>
-              {isResumen ? (asignaturaData?.nombre || 'Resumen') : seccion.label}
-            </h2>
-            <EstadoBadge estado={estadoMostrado} />
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                if (comentarioActivoBloque) {
-                  setComentarioActivoBloque(null)
-                  setPanelIAabierto(true)
-                } else {
-                  const bloqueConComentario = bloques.find(b => b.comentarios?.some(c => !c.resuelto))
-                  if (bloqueConComentario) handleComentarioClick(bloqueConComentario)
-                }
-              }}
-              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
-              style={{
-                background: comentarioActivoBloque ? '#FEF2F2' : '#F8F9FA',
-                color: comentarioActivoBloque ? '#EF4444' : tieneComentariosActivos ? '#6B7280' : '#CBD5E1',
-                border: comentarioActivoBloque ? '1px solid #FECACA' : '1px solid #E5E7EB',
-                cursor: tieneComentariosActivos ? 'pointer' : 'default',
-              }}
-            >
-              <MessageSquare size={12} />
-              Ver comentarios
-              {totalComentariosCriticos > 0 && (
-                <span
-                  className="w-4 h-4 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                  style={{ background: '#EF4444', fontSize: '10px' }}
-                >
-                  {totalComentariosCriticos}
-                </span>
-              )}
-            </button>
-            <button
-              onClick={() => {
-                if (panelIAabierto && !comentarioActivoBloque) {
-                  setPanelIAabierto(false)
-                } else {
-                  setComentarioActivoBloque(null)
-                  setPanelIAabierto(true)
-                }
-              }}
-              className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
-              style={{
-                background: panelIAabierto && !comentarioActivoBloque ? '#E0F4FB' : '#F8F9FA',
-                color: panelIAabierto && !comentarioActivoBloque ? '#0098CD' : '#9CA3AF',
-                border: panelIAabierto && !comentarioActivoBloque ? '1px solid #B3E0F2' : '1px solid #E5E7EB',
-              }}
-            >
-              <Sparkles size={12} />
-              Asistente IA
-            </button>
-          </div>
+      {/* Page header — two rows */}
+      <div className="flex-shrink-0" style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}>
+
+        {/* Row 1: section type label + estado badge */}
+        <div className="flex items-center gap-3 px-5 pt-3 pb-1">
+          <span className="text-xs font-medium" style={{ color: '#9CA3AF' }}>
+            {isResumen ? 'Resumen de asignatura' : seccion.label}
+          </span>
+          <EstadoBadge estado={estadoMostrado} />
         </div>
-        {/* Action row: inline with header */}
-        {getActionBar() && (
-          <div
-            className="flex items-center gap-2 px-5 py-2.5"
-            style={{ borderTop: '1px solid #F1F5F9' }}
-          >
+
+        {/* Row 2: section title + action buttons + three-dots */}
+        <div className="flex items-center justify-between px-5 pb-3 gap-3">
+          <h2 className="text-base font-semibold truncate" style={{ color: '#111827', flexShrink: 1 }}>
+            {isResumen
+              ? (asignaturaData?.nombre || 'Nueva asignatura')
+              : (seccion.labelCorto || seccion.label)}
+          </h2>
+
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Action buttons inline */}
             {getActionBar()}
           </div>
-        )}
+        </div>
       </div>
 
       {/* Main layout */}
@@ -482,10 +970,11 @@ export default function PantallaCanvas({
         />
 
         {/* Content area */}
-        <main className="flex-1 overflow-y-auto" style={{ background: '#FFFFFF' }}>
+        <main className="flex-1 overflow-y-auto" style={{ background: '#FFFFFF' }} onMouseUp={handleTextSelection} onKeyUp={handleTextSelection}>
           {isResumen ? (
             <SeccionResumen
               asignatura={asignaturaData}
+              resumenPrefill={resumenPrefill}
               editable={editable}
               onAccionIA={handleAccionIA}
             />
@@ -502,52 +991,152 @@ export default function PantallaCanvas({
                 </h1>
               </div>
 
-              {!editable && (
-                <div
-                  className="flex items-center gap-2 mb-8 text-sm animate-fade-in"
-                  style={{ color: '#9CA3AF' }}
-                >
-                  <Eye size={13} />
-                  <span>Solo lectura — el Autor puede editar este contenido</span>
-                </div>
-              )}
-
-              {/* Blocks — document style */}
-              <div className="space-y-0">
-                {bloques.map((bloque, i) => (
+              {/* Índice section: AI generation flow */}
+              {seccionActiva === 'indice' && creacionData?.indice ? (
+                <SeccionIndice
+                  bloques={bloques}
+                  creacionData={creacionData}
+                  onCreacionDataConsumed={onCreacionDataConsumed}
+                  onGenerarResumen={() => {
+                    setResumenPrefill(creacionData?.resumen || null)
+                    setSeccionActiva('resumen')
+                  }}
+                />
+              ) : seccion.estado === 'bloqueado' ? (
+                <div className="flex flex-col items-center justify-center py-24 text-center">
                   <div
-                    key={bloque.id}
-                    style={{
-                      paddingTop: i === 0 ? '0' : '20px',
-                      paddingBottom: '20px',
-                      borderBottom: i < bloques.length - 1 ? '1px solid #F3F4F6' : 'none',
-                    }}
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+                    style={{ background: '#F1F5F9' }}
                   >
-                    <BloqueContenido
-                      bloque={bloque}
-                      index={i}
-                      editable={editable}
-                      onComentarioClick={() => handleComentarioClick(bloque)}
-                      onAccionIA={handleAccionIA}
-                    />
+                    <Lock size={22} style={{ color: '#CBD5E1' }} />
                   </div>
-                ))}
-              </div>
+                  <p className="text-base font-medium mb-1.5" style={{ color: '#94A3B8' }}>Sección bloqueada</p>
+                  <p className="text-sm leading-relaxed max-w-xs" style={{ color: '#CBD5E1' }}>
+                    Esta sección se desbloqueará automáticamente cuando se aprueben las etapas previas del tema.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {!editable && (
+                    <div
+                      className="flex items-center gap-2 mb-8 text-sm animate-fade-in"
+                      style={{ color: '#9CA3AF' }}
+                    >
+                      <Eye size={13} />
+                      <span>Solo lectura — el Autor puede editar este contenido</span>
+                    </div>
+                  )}
 
-              {editable && (
-                <button
-                  className="mt-6 flex items-center gap-2 text-sm transition-all"
-                  style={{ color: '#D1D5DB', paddingLeft: '0' }}
-                  onMouseEnter={e => e.currentTarget.style.color = '#0098CD'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
-                >
-                  <Plus size={14} />
-                  Añadir párrafo
-                </button>
+                  {/* Blocks — document style */}
+                  <div className="space-y-0">
+                    {bloques.map((bloque, i) => (
+                      <div
+                        key={bloque.id}
+                        style={{
+                          paddingTop: i === 0 ? '0' : '20px',
+                          paddingBottom: '20px',
+                          borderBottom: i < bloques.length - 1 ? '1px solid #F3F4F6' : 'none',
+                        }}
+                      >
+                        <BloqueContenido
+                          bloque={bloque}
+                          index={i}
+                          editable={editable}
+                          onComentarioClick={() => handleComentarioClick(bloque)}
+                          onAccionIA={handleAccionIA}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {editable && (
+                    <button
+                      className="mt-6 flex items-center gap-2 text-sm transition-all"
+                      style={{ color: '#D1D5DB', paddingLeft: '0' }}
+                      onMouseEnter={e => e.currentTarget.style.color = '#0098CD'}
+                      onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
+                    >
+                      <Plus size={14} />
+                      Añadir párrafo
+                    </button>
+                  )}
+                </>
               )}
             </div>
           )}
         </main>
+
+        {/* Utilities strip — comments + notas + IA toggle */}
+        {!comentarioActivoBloque && !panelIAabierto && (
+          <div
+            className="flex-shrink-0 flex flex-col items-center py-3 gap-2"
+            style={{ width: '44px', background: '#F8F9FA', borderLeft: '1px solid #E5E7EB' }}
+          >
+            {/* Comments badge */}
+            <button
+              onClick={() => {
+                const bloqueConComentario = bloques.find(b => b.comentarios?.some(c => !c.resuelto))
+                if (bloqueConComentario) handleComentarioClick(bloqueConComentario)
+              }}
+              className="relative w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
+              style={{
+                background: tieneComentariosActivos ? '#FFFFFF' : 'transparent',
+                border: tieneComentariosActivos ? '1px solid #E5E7EB' : '1px solid transparent',
+                cursor: tieneComentariosActivos ? 'pointer' : 'default',
+                color: tieneComentariosActivos ? '#6B7280' : '#CBD5E1',
+              }}
+              title="Ver comentarios"
+              onMouseEnter={e => { if (tieneComentariosActivos) e.currentTarget.style.background = '#F1F5F9' }}
+              onMouseLeave={e => { if (tieneComentariosActivos) e.currentTarget.style.background = '#FFFFFF' }}
+            >
+              <MessageSquare size={14} />
+              {totalComentariosCriticos > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center font-bold text-white"
+                  style={{ background: '#EF4444', fontSize: '9px' }}
+                >
+                  {totalComentariosCriticos}
+                </span>
+              )}
+            </button>
+
+            {/* Notas toggle */}
+            <button
+              onClick={() => { setPanelNotasAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false) }}
+              className="relative w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
+              style={{
+                background: panelNotasAbierto ? '#FEF9C3' : '#FFFFFF',
+                border: panelNotasAbierto ? '1px solid #FDE68A' : '1px solid #E5E7EB',
+                color: panelNotasAbierto ? '#D97706' : '#9CA3AF',
+              }}
+              title="Notas"
+              onMouseEnter={e => { if (!panelNotasAbierto) { e.currentTarget.style.background = '#FEF9C3'; e.currentTarget.style.borderColor = '#FDE68A'; e.currentTarget.style.color = '#D97706' } }}
+              onMouseLeave={e => { if (!panelNotasAbierto) { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.color = '#9CA3AF' } }}
+            >
+              <StickyNote size={13} />
+              {notasState.length > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center font-bold text-white"
+                  style={{ background: '#D97706', fontSize: '9px' }}
+                >
+                  {notasState.length}
+                </span>
+              )}
+            </button>
+
+            {/* IA toggle */}
+            <button
+              onClick={() => setPanelIAabierto(true)}
+              className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
+              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', color: '#0098CD' }}
+              title="Asistente IA"
+              onMouseEnter={e => { e.currentTarget.style.background = '#E0F4FB'; e.currentTarget.style.borderColor = '#B3E0F2' }}
+              onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.borderColor = '#E5E7EB' }}
+            >
+              <Sparkles size={14} />
+            </button>
+          </div>
+        )}
 
         {/* Right panel: Comentarios */}
         {comentarioActivoBloque && (
@@ -600,6 +1189,143 @@ export default function PantallaCanvas({
           </div>
         )}
 
+        {/* Right panel: Notas */}
+        {panelNotasAbierto && !comentarioActivoBloque && !panelIAabierto && (
+          <div
+            className="flex flex-col h-full animate-slide-in-right"
+            style={{ width: '300px', minWidth: '300px', background: '#FFFDF0', borderLeft: '1px solid #FDE68A' }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #FDE68A' }}>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#FEF9C3' }}>
+                  <StickyNote size={12} style={{ color: '#D97706' }} />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Notas</p>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>{notasState.length} nota{notasState.length !== 1 ? 's' : ''}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setPanelNotasAbierto(false)}
+                className="p-1.5 rounded-lg transition-colors text-xs"
+                style={{ color: '#9CA3AF' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#FEF9C3'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+              >
+                <X size={14} />
+              </button>
+            </div>
+
+            {/* Add new note — shows only when text is selected */}
+            {selectionAnchor && (
+              <div className="mx-3 mt-3 p-3 rounded-lg" style={{ background: '#FFFFFF', border: '1px solid #FDE68A' }}>
+                <p className="text-xs font-semibold mb-1.5" style={{ color: '#D97706' }}>
+                  Nota para: <span className="font-normal italic" style={{ color: '#9CA3AF' }}>«{selectionAnchor.substring(0, 50)}{selectionAnchor.length > 50 ? '…' : ''}»</span>
+                </p>
+                <textarea
+                  value={nuevaNotaTexto}
+                  onChange={e => setNuevaNotaTexto(e.target.value)}
+                  placeholder="Escribe tu nota…"
+                  rows={3}
+                  className="w-full text-sm outline-none resize-none"
+                  style={{ color: '#374151', caretColor: '#D97706', background: 'transparent' }}
+                  autoFocus
+                />
+                <div className="flex justify-end gap-2 mt-2">
+                  <button
+                    onClick={() => { setSelectionAnchor(null); setNuevaNotaTexto('') }}
+                    className="text-xs px-2 py-1 rounded"
+                    style={{ color: '#9CA3AF' }}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleAddNota}
+                    disabled={!nuevaNotaTexto.trim()}
+                    className="text-xs px-3 py-1 rounded-lg font-semibold text-white"
+                    style={{ background: nuevaNotaTexto.trim() ? '#D97706' : '#E5E7EB', color: nuevaNotaTexto.trim() ? '#FFFFFF' : '#9CA3AF' }}
+                  >
+                    Guardar nota
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Notes list */}
+            <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
+              {notasState.length === 0 && !selectionAnchor && (
+                <div className="flex flex-col items-center justify-center py-10 text-center">
+                  <StickyNote size={24} style={{ color: '#FDE68A', marginBottom: '8px' }} />
+                  <p className="text-sm font-medium" style={{ color: '#9CA3AF' }}>Sin notas aún</p>
+                  <p className="text-xs mt-1 leading-relaxed" style={{ color: '#CBD5E1' }}>
+                    Selecciona texto en el Canvas y aparecerá la opción "Añadir nota"
+                  </p>
+                </div>
+              )}
+              {notasState.map(nota => (
+                <div
+                  key={nota.id}
+                  className="rounded-xl p-3"
+                  style={{ background: '#FFFFFF', border: '1px solid #FDE68A' }}
+                >
+                  <p className="text-xs mb-1.5 italic" style={{ color: '#CBD5E1' }}>
+                    «{nota.anchor.substring(0, 60)}{nota.anchor.length > 60 ? '…' : ''}»
+                  </p>
+                  {notaEditandoId === nota.id ? (
+                    <>
+                      <textarea
+                        value={notaEditandoTexto}
+                        onChange={e => setNotaEditandoTexto(e.target.value)}
+                        rows={3}
+                        className="w-full text-sm outline-none resize-none rounded px-2 py-1"
+                        style={{ color: '#374151', background: '#FFFDF0', border: '1px solid #FDE68A' }}
+                        autoFocus
+                      />
+                      <div className="flex justify-end gap-2 mt-2">
+                        <button onClick={() => setNotaEditandoId(null)} className="text-xs" style={{ color: '#9CA3AF' }}>Cancelar</button>
+                        <button
+                          onClick={() => handleSaveEditNota(nota.id)}
+                          className="text-xs px-2 py-1 rounded font-semibold text-white"
+                          style={{ background: '#D97706' }}
+                        >
+                          Guardar
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-sm" style={{ color: '#374151' }}>{nota.contenido}</p>
+                      <div className="flex items-center gap-2 mt-2 justify-end">
+                        <button
+                          onClick={() => { setNotaEditandoId(nota.id); setNotaEditandoTexto(nota.contenido) }}
+                          className="p-1 rounded transition-colors"
+                          style={{ color: '#CBD5E1' }}
+                          onMouseEnter={e => e.currentTarget.style.color = '#D97706'}
+                          onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
+                          title="Editar"
+                        >
+                          <Pencil size={12} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteNota(nota.id)}
+                          className="p-1 rounded transition-colors"
+                          style={{ color: '#CBD5E1' }}
+                          onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
+                          onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
+                          title="Eliminar"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Right panel: IA */}
         {panelIAabierto && !comentarioActivoBloque && (
           <PanelIA
@@ -609,22 +1335,6 @@ export default function PantallaCanvas({
             onQuoteConsumed={() => setQuotePendiente(null)}
             onCerrar={() => setPanelIAabierto(false)}
           />
-        )}
-
-        {/* Collapsed IA toggle */}
-        {!panelIAabierto && !comentarioActivoBloque && (
-          <button
-            onClick={() => setPanelIAabierto(true)}
-            className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 px-2 transition-colors"
-            style={{ width: '36px', background: '#F8F9FA', borderLeft: '1px solid #E5E7EB' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#E0F4FB'}
-            onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
-          >
-            <Sparkles size={14} style={{ color: '#0098CD' }} />
-            <span className="text-xs font-medium" style={{ color: '#0098CD', writingMode: 'vertical-rl', textOrientation: 'mixed', transform: 'rotate(180deg)' }}>
-              IA
-            </span>
-          </button>
         )}
       </div>
 
