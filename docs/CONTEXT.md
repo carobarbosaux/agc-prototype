@@ -124,6 +124,8 @@ App.jsx
   creacionData: { indice[], resumen{} } | null  ← datos generados antes de navegar a canvas
 ```
 
+**Nota:** Estructura jerárquica. Cada Tema contiene sus propias subsecciones (Instrucciones > Temario > Recursos > Tests). Los estados de edición/revisión son contextuales por tema, no globales para el canvas.
+
 ---
 
 ## Sistema de botones por rol (Canvas)
