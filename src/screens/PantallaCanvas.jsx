@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronDown, Plus, MessageSquare, Eye, Sparkles, X, Lock, Wand2, ShieldCheck, BookOpenCheck, Check, ToggleLeft, ToggleRight, StickyNote, Pencil, Trash2, RefreshCw, ArrowUpRight } from 'lucide-react'
+import { ChevronRight, ChevronDown, Plus, MessageSquare, Eye, Sparkles, X, Lock, Wand2, ShieldCheck, BookOpenCheck, Check, ToggleLeft, ToggleRight, StickyNote, Pencil, Trash2, RefreshCw, ArrowUpRight, FlaskConical, BrainCircuit, Mic, Save, Layers } from 'lucide-react'
 import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
@@ -537,6 +537,9 @@ export default function PantallaCanvas({
   const [nuevaNotaTexto, setNuevaNotaTexto] = useState('')
   const [herramientasMenuAbierto, setHerramientasMenuAbierto] = useState(false)
   const herramientasMenuRef = useRef(null)
+  const [enrichmentPanelAbierto, setEnrichmentPanelAbierto] = useState(false)
+  const [enrichmentGenerando, setEnrichmentGenerando] = useState(null) // null | 'test' | 'mapa' | 'podcast'
+  const [enrichmentsGenerados, setEnrichmentsGenerados] = useState([]) // [{ tipo, titulo, descripcion }]
   // Inline IA suggestion state
   const [iaInline, setIaInline] = useState(null) // { bloqueId, accion, textoOriginal, textoGenerado, generando }
 
@@ -1007,18 +1010,21 @@ export default function PantallaCanvas({
 
     // ─ Diseñador ─
     if (rolActivo === 'disenador') {
-      // Solo cuando aprobado → puede solicitar permiso para sugerir enriquecimiento
-      if (estado === 'aprobado') {
+      // Cualquier sección no bloqueada → herramientas de enriquecimiento didáctico
+      if (estado !== 'bloqueado') {
         return (
-          <button
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-            style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
-            onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
-          >
-            <Eye size={13} />
-            Solicitar permiso de edición
-          </button>
+          <>
+            <button
+              onClick={() => { setEnrichmentPanelAbierto(true); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false) }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+              style={{ background: '#7C3AED' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#6D28D9'}
+              onMouseLeave={e => e.currentTarget.style.background = '#7C3AED'}
+            >
+              <Layers size={13} />
+              Crear experiencia didáctica
+            </button>
+          </>
         )
       }
       // Cualquier otro estado → sin acciones
@@ -1126,10 +1132,14 @@ export default function PantallaCanvas({
                   {!editable && (
                     <div
                       className="flex items-center gap-2 mb-8 text-sm animate-fade-in"
-                      style={{ color: '#9CA3AF' }}
+                      style={{ color: rolActivo === 'disenador' ? '#7C3AED' : '#9CA3AF' }}
                     >
-                      <Eye size={13} />
-                      <span>Solo lectura — el Autor puede editar este contenido</span>
+                      {rolActivo === 'disenador' ? <Layers size={13} /> : <Eye size={13} />}
+                      <span>
+                        {rolActivo === 'disenador'
+                          ? 'Contenido aprobado · Solo lectura — crea experiencias didácticas con el panel derecho'
+                          : 'Solo lectura — el Autor puede editar este contenido'}
+                      </span>
                     </div>
                   )}
 
@@ -1327,6 +1337,27 @@ export default function PantallaCanvas({
             <Sparkles size={15} />
             <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelIAabierto ? '600' : '500' }}>Asistente IA</span>
           </button>
+
+          {/* Experiencias (disenador only) */}
+          {rolActivo === 'disenador' && (
+            <button
+              onClick={() => { setEnrichmentPanelAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false) }}
+              className="flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
+              style={{ color: enrichmentPanelAbierto ? '#7C3AED' : '#9CA3AF' }}
+              onMouseEnter={e => { if (!enrichmentPanelAbierto) e.currentTarget.style.background = '#F1F5F9' }}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <div className="relative">
+                <Layers size={15} />
+                {enrichmentsGenerados.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#7C3AED', fontSize: '8px' }}>
+                    {enrichmentsGenerados.length}
+                  </span>
+                )}
+              </div>
+              <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: enrichmentPanelAbierto ? '600' : '500' }}>Experiencias</span>
+            </button>
+          )}
         </div>
 
         {/* Right panel: Comentarios */}
@@ -1544,6 +1575,134 @@ export default function PantallaCanvas({
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Right panel: Experiencias Didácticas (disenador) */}
+        {enrichmentPanelAbierto && rolActivo === 'disenador' && !comentarioActivoBloque && !panelIAabierto && (
+          <div
+            className="flex flex-col h-full animate-slide-in-right"
+            style={{ width: '320px', minWidth: '320px', background: '#FFFFFF', borderLeft: '1px solid #E5E7EB' }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #E5E7EB' }}>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#F3E8FF' }}>
+                  <Layers size={12} style={{ color: '#7C3AED' }} />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Experiencias Didácticas</p>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>Capa de enriquecimiento · no modifica el contenido académico</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setEnrichmentPanelAbierto(false)}
+                className="p-1.5 rounded-lg transition-colors text-xs"
+                style={{ color: '#9CA3AF' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+              >
+                <X size={13} />
+              </button>
+            </div>
+
+            {/* Generator buttons */}
+            <div className="px-4 pt-4 pb-3 flex-shrink-0" style={{ borderBottom: '1px solid #F3F4F6' }}>
+              <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#9CA3AF' }}>Generar para este tema</p>
+              <div className="space-y-2">
+                {[
+                  { tipo: 'test', icon: FlaskConical, label: 'Test de autoevaluación', desc: 'Preguntas de opción múltiple', color: '#7C3AED', bg: '#F3E8FF' },
+                  { tipo: 'mapa', icon: BrainCircuit, label: 'Mapa mental', desc: 'Estructura visual de conceptos', color: '#0EA5E9', bg: '#E0F2FE' },
+                  { tipo: 'podcast', icon: Mic, label: 'Resumen en podcast', desc: 'Guion de audio con síntesis del tema', color: '#10B981', bg: '#ECFDF5' },
+                ].map(({ tipo, icon: Icon, label, desc, color, bg }) => (
+                  <button
+                    key={tipo}
+                    onClick={() => {
+                      if (enrichmentGenerando) return
+                      setEnrichmentGenerando(tipo)
+                      setTimeout(() => {
+                        setEnrichmentsGenerados(prev => {
+                          const exists = prev.find(e => e.tipo === tipo)
+                          if (exists) return prev.map(e => e.tipo === tipo ? { ...e, generado: true } : e)
+                          return [...prev, { tipo, titulo: label, descripcion: desc, generado: true }]
+                        })
+                        setEnrichmentGenerando(null)
+                      }, 1600)
+                    }}
+                    disabled={!!enrichmentGenerando}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all"
+                    style={{
+                      background: enrichmentGenerando === tipo ? bg : '#F8F9FA',
+                      border: `1px solid ${enrichmentGenerando === tipo ? color + '40' : '#E5E7EB'}`,
+                      cursor: enrichmentGenerando ? 'default' : 'pointer',
+                      opacity: enrichmentGenerando && enrichmentGenerando !== tipo ? 0.5 : 1,
+                    }}
+                    onMouseEnter={e => { if (!enrichmentGenerando) { e.currentTarget.style.background = bg; e.currentTarget.style.borderColor = color + '40' } }}
+                    onMouseLeave={e => { if (!enrichmentGenerando) { e.currentTarget.style.background = '#F8F9FA'; e.currentTarget.style.borderColor = '#E5E7EB' } }}
+                  >
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: bg }}>
+                      {enrichmentGenerando === tipo
+                        ? <div className="flex gap-0.5">{[0,1,2].map(i => <div key={i} className="w-1 h-1 rounded-full animate-bounce" style={{ background: color, animationDelay: `${i*0.15}s` }} />)}</div>
+                        : <Icon size={14} style={{ color }} />
+                      }
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>{enrichmentGenerando === tipo ? 'Generando…' : label}</p>
+                      <p className="text-xs" style={{ color: '#9CA3AF' }}>{desc}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Generated enrichments list */}
+            <div className="flex-1 overflow-y-auto px-4 py-3">
+              {enrichmentsGenerados.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: '#F3E8FF' }}>
+                    <Layers size={18} style={{ color: '#C4B5FD' }} />
+                  </div>
+                  <p className="text-sm font-medium mb-1" style={{ color: '#9CA3AF' }}>Sin experiencias todavía</p>
+                  <p className="text-xs" style={{ color: '#CBD5E1' }}>Genera un test, mapa mental o podcast para este tema</p>
+                </div>
+              ) : (
+                <>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#9CA3AF' }}>Experiencias generadas</p>
+                  <div className="space-y-2">
+                    {enrichmentsGenerados.map((e, i) => {
+                      const iconMap = { test: FlaskConical, mapa: BrainCircuit, podcast: Mic }
+                      const colorMap = { test: '#7C3AED', mapa: '#0EA5E9', podcast: '#10B981' }
+                      const bgMap = { test: '#F3E8FF', mapa: '#E0F2FE', podcast: '#ECFDF5' }
+                      const Icon = iconMap[e.tipo]
+                      return (
+                        <div
+                          key={i}
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl"
+                          style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}
+                        >
+                          <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: bgMap[e.tipo] }}>
+                            <Icon size={12} style={{ color: colorMap[e.tipo] }} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-semibold truncate" style={{ color: '#374151' }}>{e.titulo}</p>
+                            <p className="text-xs" style={{ color: '#9CA3AF' }}>Borrador · sin publicar</p>
+                          </div>
+                          <button
+                            className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg font-medium transition-all"
+                            style={{ background: '#F3E8FF', color: '#7C3AED', border: '1px solid #DDD6FE' }}
+                            onMouseEnter={e => e.currentTarget.style.background = '#EDE9FE'}
+                            onMouseLeave={e => e.currentTarget.style.background = '#F3E8FF'}
+                          >
+                            <Save size={10} />
+                            Publicar
+                          </button>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}
