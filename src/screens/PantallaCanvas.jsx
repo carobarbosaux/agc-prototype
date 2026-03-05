@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronDown, Plus, MessageSquare, Eye, Sparkles, X, Lock, Wand2, ShieldCheck, BookOpenCheck, Check, ToggleLeft, ToggleRight, StickyNote, Pencil, Trash2 } from 'lucide-react'
+import { ChevronRight, ChevronDown, Plus, MessageSquare, Eye, Sparkles, X, Lock, Wand2, ShieldCheck, BookOpenCheck, Check, ToggleLeft, ToggleRight, StickyNote, Pencil, Trash2, RefreshCw, ArrowUpRight } from 'lucide-react'
 import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
@@ -537,6 +537,8 @@ export default function PantallaCanvas({
   const [nuevaNotaTexto, setNuevaNotaTexto] = useState('')
   const [herramientasMenuAbierto, setHerramientasMenuAbierto] = useState(false)
   const herramientasMenuRef = useRef(null)
+  // Inline IA suggestion state
+  const [iaInline, setIaInline] = useState(null) // { bloqueId, accion, textoOriginal, textoGenerado, generando }
 
   useEffect(() => {
     const handler = (e) => {
@@ -567,6 +569,16 @@ export default function PantallaCanvas({
       setComentarioActivoBloque(bloque)
       setPanelIAabierto(false)
     }
+  }
+
+  const handleTipoChange = (bloqueId, nuevoTipo) => {
+    const currentBloques = bloquesState[seccionActiva] || (SECCION_CONFIG[seccionActiva] || SECCION_CONFIG.t2).bloques
+    setBloquesState(prev => ({
+      ...prev,
+      [seccionActiva]: currentBloques.map(b =>
+        b.id === bloqueId ? { ...b, tipo: nuevoTipo } : b
+      ),
+    }))
   }
 
   const handleMarcarResuelto = (bloqueId, comentarioId) => {
@@ -689,12 +701,40 @@ export default function PantallaCanvas({
     else setSelectionAnchor(null)
   }
 
+  const ACCIONES_INLINE = ['Expandir', 'Resumir', 'Regenerar']
+
+  const mockGenerarInline = (texto, accion) => {
+    if (accion === 'Expandir') {
+      return `${texto} Este concepto tiene una importancia fundamental en el contexto del aprendizaje automático moderno, ya que establece las bases teóricas sobre las cuales se construyen los modelos más complejos. Su comprensión profunda permite al estudiante desarrollar una intuición sólida para diagnosticar y resolver problemas en situaciones reales de producción.`
+    }
+    if (accion === 'Resumir') {
+      const words = texto.split(' ')
+      return words.slice(0, Math.ceil(words.length * 0.45)).join(' ') + '.'
+    }
+    if (accion === 'Regenerar') {
+      const variantes = [
+        texto.replace(/\. /g, ', y ').replace(/,([^,]*)$/, '. $1'),
+        `En términos prácticos, ${texto.charAt(0).toLowerCase() + texto.slice(1)}`,
+        texto.split('. ').reverse().join('. '),
+      ]
+      return variantes[Math.floor(Math.random() * variantes.length)]
+    }
+    return texto
+  }
+
   const handleAccionIA = (texto, accion, bloque) => {
     if (accion === 'Añadir comentario') {
       setComentarioActivoBloque(bloque)
       setNuevoComentarioAnchor(texto)
       setNuevoComentarioTexto('')
       setPanelIAabierto(false)
+      setPanelNotasAbierto(false)
+      return
+    }
+    if (accion === 'Llevar al chat') {
+      setQuotePendiente({ texto, accion: 'Consultar' })
+      setPanelIAabierto(true)
+      setComentarioActivoBloque(null)
       setPanelNotasAbierto(false)
       return
     }
@@ -705,6 +745,13 @@ export default function PantallaCanvas({
       setPanelNotasAbierto(true)
       setPanelIAabierto(false)
       setComentarioActivoBloque(null)
+      return
+    }
+    if (ACCIONES_INLINE.includes(accion) && bloque) {
+      setIaInline({ bloqueId: bloque.id, accion, textoOriginal: texto, textoGenerado: null, generando: true })
+      setTimeout(() => {
+        setIaInline(prev => prev ? { ...prev, textoGenerado: mockGenerarInline(texto, accion), generando: false } : null)
+      }, 1200)
       return
     }
     setComentarioActivoBloque(null)
@@ -1094,7 +1141,7 @@ export default function PantallaCanvas({
                         style={{
                           paddingTop: i === 0 ? '0' : '20px',
                           paddingBottom: '20px',
-                          borderBottom: i < bloques.length - 1 ? '1px solid #F3F4F6' : 'none',
+                          borderBottom: i < bloques.length - 1 && iaInline?.bloqueId !== bloque.id ? '1px solid #F3F4F6' : 'none',
                         }}
                       >
                         <BloqueContenido
@@ -1103,7 +1150,105 @@ export default function PantallaCanvas({
                           editable={editable}
                           onComentarioClick={() => handleComentarioClick(bloque)}
                           onAccionIA={handleAccionIA}
+                          onTipoChange={handleTipoChange}
+                          textoReemplazando={iaInline?.bloqueId === bloque.id ? iaInline.textoOriginal : null}
                         />
+
+                        {/* Inline IA suggestion */}
+                        {iaInline?.bloqueId === bloque.id && (
+                          <div className="mt-3 animate-fade-in" style={{ borderBottom: i < bloques.length - 1 ? '1px solid #F3F4F6' : 'none', paddingBottom: '20px' }}>
+                            {iaInline.generando ? (
+                              <div className="flex items-center gap-2.5 px-3 py-3 rounded-xl" style={{ background: '#EFF6FF', border: '1px solid #BFDBFE' }}>
+                                <div className="flex gap-1">
+                                  {[0,1,2].map(j => (
+                                    <div key={j} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#3B82F6', animationDelay: `${j * 0.15}s` }} />
+                                  ))}
+                                </div>
+                                <span className="text-xs" style={{ color: '#3B82F6' }}>Generando versión {iaInline.accion.toLowerCase()}…</span>
+                              </div>
+                            ) : (
+                              <>
+                                {/* Label */}
+                                <div className="flex items-center gap-1.5 mb-2">
+                                  <Sparkles size={11} style={{ color: '#3B82F6' }} />
+                                  <span className="text-xs font-semibold" style={{ color: '#3B82F6' }}>Sugerencia IA · {iaInline.accion}</span>
+                                </div>
+
+                                {/* Generated text */}
+                                <div
+                                  className="px-3 py-3 rounded-xl text-base leading-8"
+                                  style={{
+                                    background: '#EFF6FF',
+                                    border: '1px solid #BFDBFE',
+                                    color: '#1D4ED8',
+                                  }}
+                                >
+                                  {iaInline.textoGenerado}
+                                </div>
+
+                                {/* Action buttons */}
+                                <div className="flex items-center gap-2 mt-2.5">
+                                  <button
+                                    onClick={() => setIaInline(null)}
+                                    className="px-3 py-1.5 rounded-lg text-xs transition-colors"
+                                    style={{ color: '#9CA3AF' }}
+                                    onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
+                                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                                  >
+                                    Descartar
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setIaInline(prev => ({ ...prev, generando: true, textoGenerado: null }))
+                                      setTimeout(() => {
+                                        setIaInline(prev => prev ? { ...prev, textoGenerado: mockGenerarInline(prev.textoOriginal, prev.accion), generando: false } : null)
+                                      }, 1000)
+                                    }}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                                    style={{ background: '#EFF6FF', color: '#3B82F6', border: '1px solid #BFDBFE' }}
+                                    onMouseEnter={e => e.currentTarget.style.background = '#DBEAFE'}
+                                    onMouseLeave={e => e.currentTarget.style.background = '#EFF6FF'}
+                                  >
+                                    <RefreshCw size={11} />
+                                    Reintentar
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setQuotePendiente({ texto: iaInline.textoOriginal, accion: iaInline.accion })
+                                      setPanelIAabierto(true)
+                                      setIaInline(null)
+                                    }}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                                    style={{ color: '#6B7280', border: '1px solid #E5E7EB' }}
+                                    onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
+                                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                                  >
+                                    <ArrowUpRight size={11} />
+                                    Llevar al chat
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setBloquesState(prev => ({
+                                        ...prev,
+                                        [seccionActiva]: (prev[seccionActiva] || bloques).map(b =>
+                                          b.id === bloque.id ? { ...b, contenido: iaInline.textoGenerado } : b
+                                        ),
+                                      }))
+                                      setIaInline(null)
+                                    }}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
+                                    style={{ background: '#3B82F6', color: '#FFFFFF' }}
+                                    onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+                                    onMouseLeave={e => e.currentTarget.style.background = '#3B82F6'}
+                                  >
+                                    <Check size={12} />
+                                    Aceptar cambios
+                                  </button>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>

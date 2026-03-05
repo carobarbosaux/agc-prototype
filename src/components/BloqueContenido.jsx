@@ -1,6 +1,22 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
-import { ZoomIn, Minimize2, RefreshCw, Search, BookMarked, MessageSquare, StickyNote, MessageCircle } from 'lucide-react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import { ZoomIn, Minimize2, RefreshCw, Search, BookMarked, MessageSquare, StickyNote, MessageCircle, ArrowUpRight, Bold, Italic, Quote, List, ListOrdered } from 'lucide-react'
 import { gravedadConfig } from '../mockData'
+
+// ─── Block type config ─────────────────────────────────────────────────────────
+
+const TIPO_CONFIG = {
+  p:     { label: 'p',  title: 'Párrafo',       className: 'text-base leading-8',               style: { color: '#1F2937' } },
+  h1:    { label: 'H1', title: 'Título 1',       className: 'text-3xl font-bold leading-tight',  style: { color: '#111827' } },
+  h2:    { label: 'H2', title: 'Título 2',       className: 'text-xl font-semibold leading-snug', style: { color: '#111827' } },
+  h3:    { label: 'H3', title: 'Título 3',       className: 'text-lg font-semibold leading-snug', style: { color: '#1F2937' } },
+  quote: { label: '"',  title: 'Cita',           className: 'text-base leading-8 italic',        style: { color: '#4B5563', borderLeft: '3px solid #0098CD', paddingLeft: '16px', marginLeft: '4px' } },
+  ul:    { label: '•',  title: 'Lista',          className: 'text-base leading-7',               style: { color: '#1F2937' } },
+  ol:    { label: '1.', title: 'Lista numerada', className: 'text-base leading-7',               style: { color: '#1F2937' } },
+}
+
+const TIPO_ORDER = ['p', 'h1', 'h2', 'h3', 'quote', 'ul', 'ol']
+
+// ─── Component ─────────────────────────────────────────────────────────────────
 
 export default function BloqueContenido({
   bloque,
@@ -8,21 +24,36 @@ export default function BloqueContenido({
   editable = true,
   onComentarioClick,
   onContenidoChange,
+  onTipoChange,
   onAccionIA,
+  textoReemplazando = null,
 }) {
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const [toolbarPos, setToolbarPos] = useState({ top: 0, left: 0 })
   const contenedorRef = useRef(null)
   const toolbarRef = useRef(null)
+  const editableRef = useRef(null)
 
+  const tipo = bloque.tipo || 'p'
+  const tipoConf = TIPO_CONFIG[tipo] || TIPO_CONFIG.p
   const comentariosActivos = bloque.comentarios?.filter(c => !c.resuelto) || []
   const tieneComentarioCritico = comentariosActivos.some(c => c.gravedad === 'critico')
+
+  // Sync innerHTML only when bloque.contenido changes externally (e.g. after tipo change or IA replace)
+  // NOT on every render — avoids fighting contentEditable
+  useEffect(() => {
+    const el = editableRef.current
+    if (!el) return
+    if (el.innerHTML !== bloque.contenido) {
+      el.innerHTML = bloque.contenido
+    }
+  }, [bloque.contenido])
 
   const handleMouseUp = useCallback(() => {
     if (!editable) return
     setTimeout(() => {
       const selection = window.getSelection()
-      if (!selection || selection.isCollapsed || selection.toString().trim().length < 3) {
+      if (!selection || selection.isCollapsed || selection.toString().trim().length < 2) {
         setToolbarVisible(false)
         return
       }
@@ -32,7 +63,7 @@ export default function BloqueContenido({
       if (!containerRect) return
 
       setToolbarPos({
-        top: rect.bottom - containerRect.top + 8,
+        top: rect.top - containerRect.top,
         left: rect.left - containerRect.left,
       })
       setToolbarVisible(true)
@@ -50,12 +81,31 @@ export default function BloqueContenido({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [handleClickOutside])
 
+  // ── Inline mark (bold / italic via execCommand) ───────────────────────────────
+
+  const applyMark = (command) => {
+    editableRef.current?.focus()
+    document.execCommand(command)
+    if (editableRef.current) onContenidoChange?.(bloque.id, editableRef.current.innerHTML)
+  }
+
+  // ── Block type change ─────────────────────────────────────────────────────────
+
+  const handleTipoChange = (nuevoTipo) => {
+    setToolbarVisible(false)
+    window.getSelection()?.removeAllRanges()
+    onTipoChange?.(bloque.id, nuevoTipo)
+  }
+
+  // ── Toolbar actions ───────────────────────────────────────────────────────────
+
   const toolbarActionsIA = [
     { label: 'Buscar fuentes bibliográficas', icon: BookMarked },
     { label: 'Expandir', icon: ZoomIn },
     { label: 'Resumir', icon: Minimize2 },
     { label: 'Regenerar', icon: RefreshCw },
     { label: 'Realizar investigación profunda', icon: Search },
+    { label: 'Llevar al chat', icon: ArrowUpRight },
   ]
 
   const toolbarActionsAnotaciones = [
@@ -63,10 +113,59 @@ export default function BloqueContenido({
     { label: 'Añadir nota', icon: StickyNote },
   ]
 
+  // ── Content render ─────────────────────────────────────────────────────────────
+
+  const renderContent = () => {
+    const contenido = bloque.contenido
+    const editStyle = { ...tipoConf.style, caretColor: '#0098CD', outline: 'none' }
+
+    // For list types wrap in ul/ol
+    const maybeWrapList = (inner) => {
+      if (tipo === 'ul') return <ul className="list-disc pl-5">{inner}</ul>
+      if (tipo === 'ol') return <ol className="list-decimal pl-5">{inner}</ol>
+      return inner
+    }
+
+    if (editable && !textoReemplazando) {
+      // Use ref + useEffect to set innerHTML — avoids dangerouslySetInnerHTML fighting contentEditable
+      return maybeWrapList(
+        <div
+          ref={editableRef}
+          contentEditable
+          suppressContentEditableWarning
+          onInput={e => onContenidoChange?.(bloque.id, e.currentTarget.innerHTML)}
+          className={tipoConf.className}
+          style={editStyle}
+        />
+      )
+    }
+
+    // Read-only with optional strikethrough on replaced text
+    if (textoReemplazando && contenido.includes(textoReemplazando)) {
+      const idx = contenido.indexOf(textoReemplazando)
+      return maybeWrapList(
+        <p className={tipoConf.className} style={tipoConf.style}>
+          {contenido.slice(0, idx)}
+          <span style={{ color: '#9CA3AF', textDecoration: 'line-through' }}>{textoReemplazando}</span>
+          {contenido.slice(idx + textoReemplazando.length)}
+        </p>
+      )
+    }
+
+    return maybeWrapList(
+      <p
+        className={tipoConf.className}
+        style={tipoConf.style}
+        dangerouslySetInnerHTML={{ __html: contenido }}
+      />
+    )
+  }
+
   return (
     <div
       className="group relative"
       ref={contenedorRef}
+      onMouseUp={handleMouseUp}
       style={{ fontFamily: "'Inter', 'Arial', sans-serif" }}
     >
       {/* Left accent for critical comments */}
@@ -85,7 +184,7 @@ export default function BloqueContenido({
         {index + 1}
       </div>
 
-      {/* Comment button in right gutter */}
+      {/* Comment badge in right gutter */}
       {comentariosActivos.length > 0 && (
         <button
           onClick={() => onComentarioClick?.(bloque)}
@@ -109,30 +208,9 @@ export default function BloqueContenido({
         </button>
       )}
 
-      {/* Content — markdown-style, no box */}
+      {/* Content area */}
       <div className="relative py-1">
-        {editable ? (
-          <div
-            contentEditable
-            suppressContentEditableWarning
-            onMouseUp={handleMouseUp}
-            onInput={e => onContenidoChange?.(bloque.id, e.currentTarget.textContent)}
-            className="text-base leading-8 outline-none"
-            style={{
-              color: '#1F2937',
-              caretColor: '#0098CD',
-            }}
-          >
-            {bloque.contenido}
-          </div>
-        ) : (
-          <p
-            className="text-base leading-8"
-            style={{ color: '#1F2937' }}
-          >
-            {bloque.contenido}
-          </p>
-        )}
+        {renderContent()}
 
         {!editable && comentariosActivos.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-2">
@@ -150,7 +228,7 @@ export default function BloqueContenido({
         )}
       </div>
 
-      {/* Inline context menu on text selection — Notion style */}
+      {/* ── Floating toolbar (appears above selection) ────────────────────────── */}
       {toolbarVisible && editable && (
         <div
           ref={toolbarRef}
@@ -158,7 +236,8 @@ export default function BloqueContenido({
           style={{
             top: `${toolbarPos.top}px`,
             left: `${Math.max(0, toolbarPos.left)}px`,
-            width: '196px',
+            transform: 'translateY(calc(-100% - 8px))',
+            width: '220px',
             background: '#FFFFFF',
             border: '1px solid #E5E7EB',
             borderRadius: '8px',
@@ -166,7 +245,73 @@ export default function BloqueContenido({
             overflow: 'hidden',
           }}
         >
-          {/* IA actions section */}
+          {/* ── Format section ──────────────────────────────────────── */}
+          <div style={{ padding: '6px 6px 4px' }}>
+            {/* Block type pills */}
+            <div className="flex items-center gap-1 flex-wrap mb-2">
+              {TIPO_ORDER.map(t => {
+                const conf = TIPO_CONFIG[t]
+                const active = tipo === t
+                return (
+                  <button
+                    key={t}
+                    title={conf.title}
+                    onMouseDown={e => e.preventDefault()}
+                    onClick={() => handleTipoChange(t)}
+                    className="flex items-center justify-center rounded transition-colors"
+                    style={{
+                      minWidth: '24px',
+                      height: '24px',
+                      padding: '0 5px',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      background: active ? '#0098CD' : '#F3F4F6',
+                      color: active ? '#FFFFFF' : '#374151',
+                    }}
+                    onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#E5E7EB' }}
+                    onMouseLeave={e => { if (!active) e.currentTarget.style.background = '#F3F4F6' }}
+                  >
+                    {t === 'ul'
+                      ? <List size={11} />
+                      : t === 'ol'
+                      ? <ListOrdered size={11} />
+                      : t === 'quote'
+                      ? <Quote size={10} />
+                      : conf.label}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Inline marks row */}
+            <div className="flex items-center gap-1">
+              <button
+                title="Negrita"
+                onMouseDown={e => { e.preventDefault(); applyMark('bold') }}
+                className="flex items-center justify-center rounded transition-colors"
+                style={{ width: '24px', height: '24px', background: '#F3F4F6', color: '#374151' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+                onMouseLeave={e => e.currentTarget.style.background = '#F3F4F6'}
+              >
+                <Bold size={11} />
+              </button>
+              <button
+                title="Cursiva"
+                onMouseDown={e => { e.preventDefault(); applyMark('italic') }}
+                className="flex items-center justify-center rounded transition-colors"
+                style={{ width: '24px', height: '24px', background: '#F3F4F6', color: '#374151' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+                onMouseLeave={e => e.currentTarget.style.background = '#F3F4F6'}
+              >
+                <Italic size={11} />
+              </button>
+            </div>
+          </div>
+
+          {/* Separator */}
+          <div style={{ height: '1px', background: '#F3F4F6' }} />
+
+          {/* ── IA actions section ───────────────────────────────────── */}
           <div style={{ padding: '3px' }}>
             <p
               className="px-2 pt-1.5 pb-0.5 text-xs font-semibold uppercase tracking-wider"
@@ -198,7 +343,7 @@ export default function BloqueContenido({
           {/* Separator */}
           <div style={{ height: '1px', background: '#F3F4F6', margin: '0 3px' }} />
 
-          {/* Annotation section */}
+          {/* ── Annotation section ───────────────────────────────────── */}
           <div style={{ padding: '3px' }}>
             {toolbarActionsAnotaciones.map(({ label, icon: Icon }) => (
               <button
