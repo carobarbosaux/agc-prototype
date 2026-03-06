@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronDown, Plus, MessageSquare, Eye, Sparkles, X, Lock, Wand2, ShieldCheck, BookOpenCheck, Check, ToggleLeft, ToggleRight, StickyNote, Pencil, Trash2, RefreshCw, ArrowUpRight, FlaskConical, BrainCircuit, Mic, Save, Layers } from 'lucide-react'
+import { ChevronRight, ChevronDown, Plus, MessageSquare, Eye, Sparkles, X, Lock, Wand2, ShieldCheck, BookOpenCheck, Check, ToggleLeft, ToggleRight, StickyNote, Pencil, Trash2, RefreshCw, ArrowUpRight, FlaskConical, BrainCircuit, Mic, Save, Layers, BookOpen, Link, Send, ExternalLink } from 'lucide-react'
 import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
@@ -9,6 +9,8 @@ import EtiquetaBloque from '../components/EtiquetaBloque'
 import {
   bloquesTema2,
   bloquesTema1,
+  bloquesTema3,
+  bloquesTema4,
   bloquesIndice,
   instruccionesTema1,
   instruccionesTema2,
@@ -18,6 +20,9 @@ import {
   instruccionesTema6,
   chatHistorialTema2,
   chatHistorialTema1,
+  recursosChainingThoughts,
+  recursosReferencesPool,
+  recursosRefinementSuggestions,
 } from '../mockData'
 
 const SECCION_CONFIG = {
@@ -40,21 +45,21 @@ const SECCION_CONFIG = {
   t1: {
     label: 'Temario · Tema 1',
     labelCorto: 'Temario T1',
-    estado: 'revision',
+    estado: 'aprobado',
     bloques: bloquesTema1,
     chat: chatHistorialTema1,
   },
   'recursos-t1': {
     label: 'Recursos a fondo · Tema 1',
     labelCorto: 'Recursos T1',
-    estado: 'bloqueado',
+    estado: 'aprobado',
     bloques: [],
     chat: chatHistorialTema1,
   },
   'test-t1': {
     label: 'Tests · Tema 1',
     labelCorto: 'Tests T1',
-    estado: 'bloqueado',
+    estado: 'borrador',
     bloques: [],
     chat: chatHistorialTema1,
   },
@@ -69,14 +74,14 @@ const SECCION_CONFIG = {
   t2: {
     label: 'Temario · Tema 2',
     labelCorto: 'Temario T2',
-    estado: 'borrador',
+    estado: 'aprobado',
     bloques: bloquesTema2,
     chat: chatHistorialTema2,
   },
   'recursos-t2': {
     label: 'Recursos a fondo · Tema 2',
     labelCorto: 'Recursos T2',
-    estado: 'bloqueado',
+    estado: 'borrador',
     bloques: [],
     chat: chatHistorialTema2,
   },
@@ -120,14 +125,14 @@ const SECCION_CONFIG = {
   t3: {
     label: 'Temario · Tema 3',
     labelCorto: 'Temario T3',
-    estado: 'bloqueado',
-    bloques: [],
+    estado: 'revision',
+    bloques: bloquesTema3,
     chat: chatHistorialTema2,
   },
   'recursos-t3': {
     label: 'Recursos a fondo · Tema 3',
     labelCorto: 'Recursos T3',
-    estado: 'bloqueado',
+    estado: 'borrador',
     bloques: [],
     chat: chatHistorialTema2,
   },
@@ -141,8 +146,8 @@ const SECCION_CONFIG = {
   t4: {
     label: 'Temario · Tema 4',
     labelCorto: 'Temario T4',
-    estado: 'bloqueado',
-    bloques: [],
+    estado: 'comentarios',
+    bloques: bloquesTema4,
     chat: chatHistorialTema2,
   },
   'recursos-t4': {
@@ -341,89 +346,497 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
   )
 }
 
-// ─── Resumen section component ────────────────────────────────────────────────
+// ─── Índice fijo (sección aprobada, vista normal) ─────────────────────────────
 
-function SeccionResumen({ asignatura, resumenPrefill, editable, onAccionIA }) {
-  const [nombre, setNombre] = useState(resumenPrefill?.nombre || asignatura?.nombre || '')
-  const [descripcion, setDescripcion] = useState(resumenPrefill?.descripcion || asignatura?.descripcion || '')
-  const [objetivos, setObjetivos] = useState(resumenPrefill?.objetivos || asignatura?.objetivos || [])
-  const [tags, setTags] = useState(resumenPrefill?.tags || asignatura?.tags || [])
-  const [tagInput, setTagInput] = useState('')
-  const [unsaved, setUnsaved] = useState(false)
+// ─── Recursos a Fondo ─────────────────────────────────────────────────────────
 
-  const markUnsaved = () => setUnsaved(true)
+const RELEVANCE_CONFIG = {
+  high:   { label: 'Alta relevancia',  bg: '#DCFCE7', color: '#16A34A', border: '#BBF7D0' },
+  medium: { label: 'Media relevancia', bg: '#FFFBEB', color: '#D97706', border: '#FDE68A' },
+  low:    { label: 'Baja relevancia',  bg: '#F3F4F6', color: '#6B7280', border: '#E5E7EB' },
+}
 
-  const removeTag = (tag) => { setTags(prev => prev.filter(t => t !== tag)); markUnsaved() }
-  const addTag = (tag) => {
-    const t = tag.trim()
-    if (t && !tags.includes(t)) { setTags(prev => [...prev, t]); markUnsaved() }
-    setTagInput('')
+const SOURCE_LABELS = { journal: 'Revista', book: 'Libro', conference: 'Conferencia', article: 'Artículo' }
+
+// Shared loading screen (chain-of-thought)
+function RecursosLoadingScreen({ onCancel }) {
+  const [thoughtStep, setThoughtStep] = useState(0)
+  useEffect(() => {
+    let cancelled = false
+    let i = 0
+    const tick = () => {
+      if (cancelled) return
+      setThoughtStep(i); i++
+      if (i < recursosChainingThoughts.length) setTimeout(tick, 520)
+      else setTimeout(() => { if (!cancelled) onCancel() }, 600)
+    }
+    setTimeout(tick, 300)
+    return () => { cancelled = true }
+  }, [])
+  const current = recursosChainingThoughts[thoughtStep] || recursosChainingThoughts[recursosChainingThoughts.length - 1]
+  const pct = Math.round(((thoughtStep + 1) / recursosChainingThoughts.length) * 100)
+  return (
+    <div className="rounded-xl p-8" style={{ border: '1px solid #E5E7EB', background: '#FAFAFA' }}>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center animate-pulse" style={{ background: '#EEF2FF' }}>
+          <Sparkles size={16} style={{ color: '#6366F1' }} />
+        </div>
+        <div>
+          <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Generando referencias académicas…</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>Paso {current.step} de {current.total}</p>
+        </div>
+        <button
+          onClick={onCancel}
+          className="ml-auto text-xs px-3 py-1.5 rounded-lg transition-colors"
+          style={{ color: '#6B7280', border: '1px solid #E5E7EB', background: '#FFFFFF' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
+          onMouseLeave={e => e.currentTarget.style.background = '#FFFFFF'}
+        >
+          Cancelar
+        </button>
+      </div>
+      <div className="rounded-full overflow-hidden mb-5" style={{ height: 4, background: '#E5E7EB' }}>
+        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: '#6366F1' }} />
+      </div>
+      <div className="space-y-2">
+        {recursosChainingThoughts.slice(0, thoughtStep + 1).map((t, i) => (
+          <div key={i} className="flex items-start gap-2.5">
+            <div className="flex-shrink-0 mt-0.5">
+              {i < thoughtStep
+                ? <Check size={13} style={{ color: '#16A34A' }} />
+                : <div className="w-3 h-3 rounded-full animate-pulse" style={{ background: '#6366F1' }} />
+              }
+            </div>
+            <div>
+              <p className="text-xs font-medium" style={{ color: i < thoughtStep ? '#6B7280' : '#1A1A1A' }}>{t.text}</p>
+              {i === thoughtStep && <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{t.detail}</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// Shared reference card
+function RefCard({ data: r, idx, showDelete, showRegenerate, onDelete, onRegenerate, regeneratingId }) {
+  const rel = RELEVANCE_CONFIG[r.relevance] || RELEVANCE_CONFIG.medium
+  return (
+    <div
+      className="rounded-xl px-4 py-3.5 transition-all"
+      style={{ border: '1px solid #E5E7EB', background: '#FFFFFF' }}
+      onMouseEnter={e => e.currentTarget.style.borderColor = '#D1D5DB'}
+      onMouseLeave={e => e.currentTarget.style.borderColor = '#E5E7EB'}
+    >
+      <div className="flex items-start gap-3">
+        <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold" style={{ background: '#F3F4F6', color: '#6B7280' }}>
+          {idx + 1}
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2 mb-1">
+            <a href={r.url} target="_blank" rel="noopener noreferrer"
+              className="text-sm font-semibold leading-snug hover:underline flex items-center gap-1"
+              style={{ color: '#0098CD' }}
+            >
+              {r.title}
+              <ExternalLink size={11} style={{ flexShrink: 0, opacity: 0.6 }} />
+            </a>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {showRegenerate && (
+                <button
+                  onClick={() => onRegenerate(r.id)}
+                  disabled={regeneratingId === r.id}
+                  className="p-1 rounded transition-colors"
+                  style={{ color: '#D1D5DB' }}
+                  title="Regenerar esta referencia"
+                  onMouseEnter={e => e.currentTarget.style.color = '#6366F1'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
+                >
+                  {regeneratingId === r.id
+                    ? <div className="w-3 h-3 rounded-full border-2 border-indigo-300 border-t-indigo-600 animate-spin" />
+                    : <RefreshCw size={13} />
+                  }
+                </button>
+              )}
+              {showDelete && (
+                <button
+                  onClick={() => onDelete(r.id)}
+                  className="p-1 rounded transition-colors"
+                  style={{ color: '#D1D5DB' }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
+                >
+                  <Trash2 size={13} />
+                </button>
+              )}
+            </div>
+          </div>
+          <p className="text-xs mb-1.5" style={{ color: '#9CA3AF' }}>
+            {r.authors.join(', ')} · {SOURCE_LABELS[r.source] || r.source} · {r.year}
+          </p>
+          <p className="text-sm leading-relaxed mb-2" style={{ color: '#374151' }}>{r.description}</p>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: rel.bg, color: rel.color, border: `1px solid ${rel.border}` }}>
+              {rel.label}
+            </span>
+            <a href={r.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs hover:underline" style={{ color: '#9CA3AF' }}>
+              <Link size={10} />
+              {r.url.length > 50 ? r.url.slice(0, 50) + '…' : r.url}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
+  // estado: 'aprobado' | 'borrador'
+  // initialScreen: 'list' (T1/T2 have refs) | 'idle' (T3 has none yet)
+  // T1 aprobado+list: read-only, request-edit banner
+  // T2 borrador+list: individual regen per card, no chat/save
+  // T3 borrador+idle: generate CTA → loading → list+chat
+  // T4 bloqueado: handled above render tree, never reaches here
+  const isAprobado = estado === 'aprobado'
+
+  const [screen, setScreen] = useState(initialScreen || (isAprobado ? 'list' : 'idle'))
+  const [refs, setRefs] = useState(initialScreen === 'list' || isAprobado ? recursosReferencesPool.slice(0, 10) : [])
+  const [deletedIds, setDeletedIds] = useState([])
+  const [regeneratingId, setRegeneratingId] = useState(null)
+  const [chatInput, setChatInput] = useState('')
+  const [chatHistory, setChatHistory] = useState([])
+  const [chatLoading, setChatLoading] = useState(false)
+  const chatEndRef = useRef(null)
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [chatHistory])
+
+  const visibleRefs = refs.filter(r => !deletedIds.includes(r.id))
+
+  const handleDelete = (id) => setDeletedIds(prev => [...prev, id])
+
+  const handleRegenerateOne = (id) => {
+    setRegeneratingId(id)
+    setTimeout(() => {
+      const pool = recursosReferencesPool.filter(r => !refs.find(existing => existing.id === r.id) || r.id === id)
+      const replacement = pool[Math.floor(Math.random() * pool.length)] || refs.find(r => r.id === id)
+      setRefs(prev => prev.map(r => r.id === id ? { ...replacement, id } : r))
+      setRegeneratingId(null)
+    }, 1200)
   }
-  const updateObjetivo = (idx, val) => {
-    setObjetivos(prev => { const o = [...prev]; o[idx] = val; return o })
-    markUnsaved()
+
+  const handleSendChat = () => {
+    const text = chatInput.trim()
+    if (!text) return
+    setChatHistory(prev => [...prev, { role: 'user', text }])
+    setChatInput('')
+    setChatLoading(true)
+    setTimeout(() => {
+      const responses = [
+        `Entendido. Aplicando el criterio "${text}" a las referencias actuales. He ajustado 3 referencias para alinearse mejor con tu solicitud.`,
+        `Perfecto. He regenerado las referencias teniendo en cuenta: "${text}". Las referencias 2, 5 y 8 han sido reemplazadas.`,
+        `Realizado. El criterio "${text}" ha sido aplicado. Las referencias priorizan ahora lo que has indicado.`,
+      ]
+      setChatHistory(prev => [...prev, { role: 'ai', text: responses[Math.floor(Math.random() * responses.length)] }])
+      setChatLoading(false)
+    }, 1400)
   }
-  const removeObjetivo = (idx) => { setObjetivos(prev => prev.filter((_, i) => i !== idx)); markUnsaved() }
-  const addObjetivo = () => { setObjetivos(prev => [...prev, '']); markUnsaved() }
+
+  // ── Screen: idle (T3 — no refs yet, author triggers generation) ──
+  if (screen === 'idle') {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 rounded-xl" style={{ border: '1px dashed #D1D5DB', background: '#FAFAFA' }}>
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#EEF2FF' }}>
+          <BookOpen size={20} style={{ color: '#6366F1' }} />
+        </div>
+        <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Sin referencias generadas</p>
+        <p className="text-xs mb-5 text-center max-w-xs" style={{ color: '#9CA3AF' }}>
+          La IA buscará 10 referencias académicas relevantes para este tema a partir del temario aprobado.
+        </p>
+        {editable && (
+          <button
+            onClick={() => setScreen('loading')}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
+            style={{ background: '#6366F1' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#4F46E5'}
+            onMouseLeave={e => e.currentTarget.style.background = '#6366F1'}
+          >
+            <Sparkles size={14} /> Generar referencias con IA
+          </button>
+        )}
+      </div>
+    )
+  }
+
+  // ── Screen: loading (chain-of-thought) ──
+  if (screen === 'loading') {
+    return (
+      <RecursosLoadingScreen onCancel={() => {
+        setRefs(recursosReferencesPool.slice(0, 10))
+        setDeletedIds([])
+        setScreen('list')
+      }} />
+    )
+  }
+
+  // ── Screen: list ──
+  //          T3 (post-generation) = same but was idle before → same behavior as T2
 
   return (
-    <div className="max-w-2xl mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '64px' }}>
-      {/* Document header */}
+    <div>
+      {/* Borrador action hint */}
+      {!isAprobado && editable && (
+        <div className="flex items-center gap-3 px-4 py-3 rounded-xl mb-5" style={{ background: '#F0F9FF', border: '1px solid #BAE6FD' }}>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E0F2FE' }}>
+            <Wand2 size={14} style={{ color: '#0284C7' }} />
+          </div>
+          <div className="flex-1">
+            <p className="text-xs font-semibold" style={{ color: '#0C4A6E' }}>En construcción — edición libre</p>
+            <p className="text-xs" style={{ color: '#0369A1' }}>Regenera o elimina cada referencia individualmente con los iconos en cada tarjeta.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{visibleRefs.length} referencias académicas</p>
+          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+            {isAprobado ? 'Aprobadas · Contenido finalizado' : 'Borrador · Puedes regenerar o eliminar referencias individualmente'}
+          </p>
+        </div>
+      </div>
+
+      {/* Reference cards */}
+      <div className="space-y-2 mb-6">
+        {visibleRefs.map((r, i) => (
+          <RefCard
+            key={r.id}
+            data={r}
+            idx={i}
+            showDelete={!isAprobado && editable}
+            showRegenerate={!isAprobado && editable}
+            onDelete={handleDelete}
+            onRegenerate={handleRegenerateOne}
+            regeneratingId={regeneratingId}
+          />
+        ))}
+      </div>
+
+      {/* T1 aprobado — request edit permission */}
+      {isAprobado && (
+        <div className="flex items-center gap-3 px-4 py-3 rounded-xl mb-4" style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#FEF3C7' }}>
+            <Lock size={14} style={{ color: '#D97706' }} />
+          </div>
+          <div className="flex-1">
+            <p className="text-xs font-semibold" style={{ color: '#92400E' }}>Contenido aprobado — Solo lectura</p>
+            <p className="text-xs" style={{ color: '#B45309' }}>Las referencias han sido validadas. Solicita permiso para modificarlas.</p>
+          </div>
+          <button
+            className="flex-shrink-0 text-xs px-3 py-1.5 rounded-lg font-medium transition-all"
+            style={{ background: '#D97706', color: '#FFFFFF' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#B45309'}
+            onMouseLeave={e => e.currentTarget.style.background = '#D97706'}
+          >
+            Solicitar permiso de edición
+          </button>
+        </div>
+      )}
+
+      {/* Screen 3: Refinement chat — only for T3 (post-generation, borrador) */}
+      {!isAprobado && editable && screen === 'chat' && (
+        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
+          <div className="flex items-center justify-between px-4 py-3" style={{ background: '#F8F9FA', borderBottom: '1px solid #E5E7EB' }}>
+            <div className="flex items-center gap-2">
+              <Sparkles size={13} style={{ color: '#6366F1' }} />
+              <span className="text-xs font-semibold" style={{ color: '#6366F1' }}>Refinar referencias con IA</span>
+            </div>
+            <button onClick={() => setScreen('list')} className="p-1 rounded hover:bg-gray-200 transition-colors">
+              <X size={13} style={{ color: '#6B7280' }} />
+            </button>
+          </div>
+          <div className="px-4 py-3" style={{ borderBottom: '1px solid #F3F4F6' }}>
+            <p className="text-xs mb-2" style={{ color: '#9CA3AF' }}>Sugerencias rápidas:</p>
+            <div className="flex flex-wrap gap-1.5">
+              {recursosRefinementSuggestions.map(s => (
+                <button key={s} onClick={() => setChatInput(s)}
+                  className="text-xs px-2.5 py-1 rounded-full transition-all"
+                  style={{ background: '#EEF2FF', color: '#6366F1', border: '1px solid #C7D2FE' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#E0E7FF'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#EEF2FF'}
+                >{s}</button>
+              ))}
+            </div>
+          </div>
+          {chatHistory.length > 0 && (
+            <div className="px-4 py-3 space-y-3 max-h-52 overflow-y-auto" style={{ borderBottom: '1px solid #F3F4F6' }}>
+              {chatHistory.map((msg, i) => (
+                <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  {msg.role === 'ai' && (
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#EEF2FF' }}>
+                      <Sparkles size={10} style={{ color: '#6366F1' }} />
+                    </div>
+                  )}
+                  <div className="text-xs leading-relaxed rounded-xl px-3 py-2 max-w-xs"
+                    style={msg.role === 'user' ? { background: '#0098CD', color: '#FFFFFF' } : { background: '#F3F4F6', color: '#374151' }}
+                  >{msg.text}</div>
+                </div>
+              ))}
+              {chatLoading && (
+                <div className="flex gap-2 justify-start">
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#EEF2FF' }}>
+                    <Sparkles size={10} style={{ color: '#6366F1' }} />
+                  </div>
+                  <div className="flex items-center gap-1 px-3 py-2 rounded-xl" style={{ background: '#F3F4F6' }}>
+                    {[0,1,2].map(i => (
+                      <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#9CA3AF', animationDelay: `${i * 0.15}s` }} />
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div ref={chatEndRef} />
+            </div>
+          )}
+          <div className="flex items-center gap-2 px-4 py-3">
+            <input
+              value={chatInput}
+              onChange={e => setChatInput(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendChat() } }}
+              placeholder="Pide un criterio específico para las referencias…"
+              className="flex-1 text-sm outline-none bg-transparent"
+              style={{ color: '#374151', caretColor: '#0098CD' }}
+            />
+            <button
+              onClick={handleSendChat}
+              disabled={!chatInput.trim() || chatLoading}
+              className="flex items-center justify-center w-7 h-7 rounded-lg transition-all flex-shrink-0"
+              style={{ background: chatInput.trim() && !chatLoading ? '#0098CD' : '#E5E7EB' }}
+            >
+              <Send size={12} style={{ color: chatInput.trim() && !chatLoading ? '#FFFFFF' : '#9CA3AF' }} />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Índice fijo (sección aprobada, vista normal) ─────────────────────────────
+
+function SeccionIndiceFija({ bloques }) {
+  return (
+    <div className="space-y-3">
+      {bloques.map((tema) => (
+        <div
+          key={tema.id}
+          className="flex gap-4 rounded-xl px-5 py-4 transition-colors"
+          style={{ border: '1px solid #E5E7EB', background: '#FFFFFF' }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = '#D1D5DB'}
+          onMouseLeave={e => e.currentTarget.style.borderColor = '#E5E7EB'}
+        >
+          {/* Number badge */}
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-sm font-bold"
+            style={{ background: '#EEF2FF', color: '#6366F1' }}
+          >
+            {tema.numero}
+          </div>
+          {/* Content */}
+          <div className="min-w-0">
+            <p className="text-sm font-semibold leading-snug mb-1" style={{ color: '#111827' }}>
+              {tema.nombre}
+            </p>
+            <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
+              {tema.descripcion}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ─── Resumen section component ────────────────────────────────────────────────
+
+const RESUMEN_DATA = {
+  nombre: 'Fundamentos de Machine Learning',
+  introduccion: 'Este tema ofrece una visión general del entorno digital y del papel que desempeñan los principales canales online en las estrategias de marketing actuales.',
+  objetivos: [
+    'Comprender la evolución del marketing hacia entornos digitales.',
+    'Identificar los componentes del ecosistema digital.',
+    'Reconocer los principales canales y su función estratégica.',
+  ],
+  extension: 'XXXX palabras · 20 páginas (aproximadamente)',
+  epigrafes: 'El tema se estructurará siguiendo los epígrafes aprobados en el índice: concepto de marketing digital, comportamiento del consumidor online, principales canales digitales e integración multicanal. Cada epígrafe comenzará con una breve explicación introductoria y desarrollará los conceptos fundamentales que el estudiante debe comprender.\n\nA lo largo del tema se destacarán ideas esenciales como la transición del marketing tradicional al digital, el papel del usuario en la toma de decisiones y la función estratégica de canales como SEO, SEM, redes sociales y publicidad display, utilizando recuadros de "punto clave" para facilitar la lectura.\n\nPara reforzar estos contenidos, se incorporarán varios elementos visuales: una tabla comparativa entre SEO y SEM, un esquema visual del embudo de conversión y un diagrama simplificado del customer journey. Además, el tema trabajará dos competencias principales: la capacidad de analizar el ecosistema digital y la habilidad para interpretar el rol de cada canal dentro de una estrategia online.',
+}
+
+function SeccionResumen({ editable }) {
+  const [data, setData] = useState(RESUMEN_DATA)
+  const [unsaved, setUnsaved] = useState(false)
+
+  const mark = () => setUnsaved(true)
+  const set = (field, val) => { setData(prev => ({ ...prev, [field]: val })); mark() }
+  const setObjetivo = (idx, val) => {
+    setData(prev => { const o = [...prev.objetivos]; o[idx] = val; return { ...prev, objetivos: o } })
+    mark()
+  }
+  const removeObjetivo = (idx) => { setData(prev => ({ ...prev, objetivos: prev.objetivos.filter((_, i) => i !== idx) })); mark() }
+  const addObjetivo = () => { setData(prev => ({ ...prev, objetivos: [...prev.objetivos, ''] })); mark() }
+
+  const Field = ({ label, children }) => (
+    <div className="mb-8" style={{ borderBottom: '1px solid #F3F4F6', paddingBottom: '28px' }}>
+      <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF', letterSpacing: '0.07em' }}>{label}</p>
+      {children}
+    </div>
+  )
+
+  return (
+    <div className="max-w-2xl mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '80px' }}>
+
+      {/* Header */}
       <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
         <p className="text-xs font-medium mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.05em' }}>
-          Nueva asignatura · En borrador
+          Fundamentos de Machine Learning · Máster en IA · En borrador
         </p>
-        {editable ? (
-          <input
-            value={nombre}
-            onChange={e => { setNombre(e.target.value); markUnsaved() }}
-            className="w-full text-2xl font-semibold outline-none bg-transparent"
-            style={{ color: '#111827', caretColor: '#0098CD' }}
-            placeholder="Nombre de la asignatura"
-          />
-        ) : (
-          <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>{nombre}</h1>
-        )}
+        <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>Resumen general</h1>
         {unsaved && editable && (
           <p className="text-xs mt-2 animate-fade-in" style={{ color: '#F59E0B' }}>● Sin guardar</p>
         )}
       </div>
 
-      {/* Descripción */}
-      <div className="mb-8" style={{ borderBottom: '1px solid #F3F4F6', paddingBottom: '28px' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF' }}>Descripción</p>
+      {/* Introducción */}
+      <Field label="Introducción">
         {editable ? (
           <textarea
-            value={descripcion}
-            onChange={e => { setDescripcion(e.target.value); markUnsaved() }}
-            onMouseUp={() => {
-              const sel = window.getSelection()?.toString().trim()
-              if (sel && sel.length > 3 && onAccionIA) {
-                // expose selection for inline toolbar via onAccionIA hook (same as BloqueContenido)
-              }
-            }}
-            rows={5}
+            value={data.introduccion}
+            onChange={e => set('introduccion', e.target.value)}
+            rows={3}
             className="w-full text-base leading-8 outline-none resize-none bg-transparent"
             style={{ color: '#1F2937', caretColor: '#0098CD' }}
-            placeholder="Descripción de la asignatura…"
           />
         ) : (
-          <p className="text-base leading-8" style={{ color: '#1F2937' }}>{descripcion}</p>
+          <p className="text-base leading-8" style={{ color: '#1F2937' }}>{data.introduccion}</p>
         )}
-      </div>
+      </Field>
 
       {/* Objetivos */}
-      <div className="mb-8" style={{ borderBottom: '1px solid #F3F4F6', paddingBottom: '28px' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF' }}>Objetivos de aprendizaje</p>
+      <Field label="Objetivos de aprendizaje">
         <div className="space-y-2">
-          {objetivos.map((obj, idx) => (
-            <div key={idx} className="flex items-start gap-2 group">
-              <span className="text-sm font-medium mt-2.5 flex-shrink-0 w-5 text-right" style={{ color: '#CBD5E1' }}>{idx + 1}.</span>
+          {data.objetivos.map((obj, idx) => (
+            <div key={idx} className="flex items-start gap-3 group">
+              <span
+                className="w-5 h-5 rounded flex items-center justify-center text-xs font-bold flex-shrink-0 mt-1.5"
+                style={{ background: '#EEF2FF', color: '#6366F1' }}
+              >
+                {idx + 1}
+              </span>
               {editable ? (
                 <>
                   <input
                     value={obj}
-                    onChange={e => updateObjetivo(idx, e.target.value)}
+                    onChange={e => setObjetivo(idx, e.target.value)}
                     className="flex-1 text-base leading-8 outline-none bg-transparent"
                     style={{ color: '#1F2937', caretColor: '#0098CD' }}
                     placeholder="Objetivo de aprendizaje…"
@@ -439,7 +852,7 @@ function SeccionResumen({ asignatura, resumenPrefill, editable, onAccionIA }) {
                   </button>
                 </>
               ) : (
-                <p className="flex-1 text-base leading-8" style={{ color: '#1F2937' }}>{obj}</p>
+                <p className="flex-1 text-base leading-7 pt-1" style={{ color: '#1F2937' }}>{obj}</p>
               )}
             </div>
           ))}
@@ -447,53 +860,50 @@ function SeccionResumen({ asignatura, resumenPrefill, editable, onAccionIA }) {
             <button
               onClick={addObjetivo}
               className="flex items-center gap-2 text-sm mt-2 transition-all"
-              style={{ color: '#D1D5DB', paddingLeft: '28px' }}
+              style={{ color: '#D1D5DB', paddingLeft: '32px' }}
               onMouseEnter={e => e.currentTarget.style.color = '#0098CD'}
               onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
             >
-              <Plus size={14} />
-              Agregar objetivo
+              <Plus size={14} /> Agregar objetivo
             </button>
           )}
         </div>
-      </div>
+      </Field>
 
-      {/* Tags */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF' }}>Etiquetas</p>
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {tags.map(tag => (
-            <span
-              key={tag}
-              className="inline-flex items-center gap-1 rounded-full text-xs font-medium"
-              style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2', padding: '4px 10px' }}
-            >
-              {tag}
-              {editable && (
-                <button
-                  onClick={() => removeTag(tag)}
-                  style={{ color: '#0098CD', lineHeight: 1 }}
-                  onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#0098CD'}
-                >
-                  <X size={10} />
-                </button>
-              )}
-            </span>
-          ))}
-        </div>
-        {editable && (
+      {/* Extensión */}
+      <Field label="Extensión estimada">
+        {editable ? (
           <input
-            value={tagInput}
-            onChange={e => setTagInput(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTag(tagInput) } }}
-            onBlur={() => { if (tagInput.trim()) addTag(tagInput) }}
-            placeholder="Añadir etiqueta y pulsar Enter…"
-            className="text-sm outline-none bg-transparent"
-            style={{ color: '#6B7280', caretColor: '#0098CD' }}
+            value={data.extension}
+            onChange={e => set('extension', e.target.value)}
+            className="text-base leading-8 outline-none bg-transparent w-full"
+            style={{ color: '#1F2937', caretColor: '#0098CD' }}
           />
+        ) : (
+          <p className="text-base leading-8" style={{ color: '#1F2937' }}>{data.extension}</p>
+        )}
+      </Field>
+
+      {/* Epígrafes y puntos destacados */}
+      <div className="mb-8">
+        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF', letterSpacing: '0.07em' }}>Epígrafes y puntos destacados</p>
+        {editable ? (
+          <textarea
+            value={data.epigrafes}
+            onChange={e => set('epigrafes', e.target.value)}
+            rows={10}
+            className="w-full text-base leading-8 outline-none resize-none bg-transparent"
+            style={{ color: '#1F2937', caretColor: '#0098CD' }}
+          />
+        ) : (
+          <div className="space-y-4">
+            {data.epigrafes.split('\n\n').map((para, i) => (
+              <p key={i} className="text-base leading-8" style={{ color: '#1F2937' }}>{para}</p>
+            ))}
+          </div>
         )}
       </div>
+
     </div>
   )
 }
@@ -520,6 +930,8 @@ export default function PantallaCanvas({
   const [bloquesState, setBloquesState] = useState({
     t2: bloquesTema2.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
     t1: bloquesTema1.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
+    t3: bloquesTema3.map(b => ({ ...b, comentarios: [] })),
+    t4: bloquesTema4.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
     indice: bloquesIndice,
   })
   const [savedToast, setSavedToast] = useState(false)
@@ -1077,10 +1489,7 @@ export default function PantallaCanvas({
         <main className="flex-1 overflow-y-auto" style={{ background: '#FFFFFF' }} onMouseUp={handleTextSelection} onKeyUp={handleTextSelection}>
           {isResumen ? (
             <SeccionResumen
-              asignatura={asignaturaData}
-              resumenPrefill={resumenPrefill}
               editable={editable}
-              onAccionIA={handleAccionIA}
             />
           ) : (
             <div className="max-w-2xl mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '64px' }}>
@@ -1093,18 +1502,60 @@ export default function PantallaCanvas({
                 <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>
                   {seccion.label}
                 </h1>
-                {rolActivo === 'coordinador' && (() => {
-                  const tags = [...new Set(bloques.flatMap(b => b.etiquetas || []))]
-                  return tags.length > 0 ? (
-                    <div className="flex flex-wrap gap-1.5 mt-3">
-                      {tags.map(tag => <EtiquetaBloque key={tag} label={tag} />)}
-                    </div>
-                  ) : null
+                {/* Tags — temario only */}
+                {/^t\d+$/.test(seccionActiva) && (() => {
+                  const isRevision = seccion.estado === 'revision'
+                  const existingTags = [...new Set(bloques.flatMap(b => b.etiquetas || []))]
+
+                  // AI-suggested tags for revision temario (shown to coordinator)
+                  if (isRevision && rolActivo === 'coordinador') {
+                    const aiTags = ['Machine Learning', 'Árboles de decisión', 'Ensemble Methods', 'Random Forest', 'Gradient Boosting', 'XGBoost']
+                    return (
+                      <div className="mt-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Sparkles size={12} style={{ color: '#6366F1' }} />
+                          <span className="text-xs font-medium" style={{ color: '#6366F1' }}>Etiquetas sugeridas por IA</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {aiTags.map(tag => (
+                            <button
+                              key={tag}
+                              className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded transition-all"
+                              style={{ background: '#EEF2FF', color: '#6366F1', border: '1px solid #C7D2FE' }}
+                              onMouseEnter={e => { e.currentTarget.style.background = '#E0E7FF'; e.currentTarget.style.borderColor = '#A5B4FC' }}
+                              onMouseLeave={e => { e.currentTarget.style.background = '#EEF2FF'; e.currentTarget.style.borderColor = '#C7D2FE' }}
+                            >
+                              + {tag}
+                            </button>
+                          ))}
+                        </div>
+                        <p className="text-xs mt-2" style={{ color: '#9CA3AF' }}>Haz clic para añadir al temario</p>
+                      </div>
+                    )
+                  }
+
+                  // Real tags for aprobado temario (shown to coordinator)
+                  if (!isRevision && rolActivo === 'coordinador' && existingTags.length > 0) {
+                    return (
+                      <div className="flex flex-wrap gap-1.5 mt-3">
+                        {existingTags.map(tag => <EtiquetaBloque key={tag} label={tag} />)}
+                      </div>
+                    )
+                  }
+
+                  return null
                 })()}
               </div>
 
-              {/* Índice section: AI generation flow */}
-              {seccionActiva === 'indice' && creacionData?.indice ? (
+              {/* Recursos a fondo section */}
+              {seccionActiva.startsWith('recursos-') ? (
+                <SeccionRecursosAFondo
+                  key={seccionActiva}
+                  estado={seccion.estado}
+                  initialScreen={seccion.estado === 'aprobado' || seccionActiva === 'recursos-t2' ? 'list' : 'idle'}
+                  editable={editable}
+                />
+              ) : seccionActiva === 'indice' && creacionData?.indice ? (
                 <SeccionIndice
                   bloques={bloques}
                   creacionData={creacionData}
@@ -1114,6 +1565,8 @@ export default function PantallaCanvas({
                     setSeccionActiva('resumen')
                   }}
                 />
+              ) : seccionActiva === 'indice' ? (
+                <SeccionIndiceFija bloques={bloques} />
               ) : seccion.estado === 'bloqueado' ? (
                 <div className="flex flex-col items-center justify-center py-24 text-center">
                   <div
