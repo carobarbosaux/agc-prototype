@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send, ChevronRight, Sparkles, X, SquarePen, History } from 'lucide-react'
 import { respuestasIA, respuestasCalidadIA } from '../mockData'
+import { ProdiMark } from './ProdiLogo'
 
 const historialConversaciones = [
   {
@@ -134,15 +135,10 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
         style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}
       >
         <div className="flex items-center gap-2">
-          <div
-            className="w-6 h-6 rounded-lg flex items-center justify-center"
-            style={{ background: '#E0F4FB' }}
-          >
-            <Sparkles size={13} style={{ color: '#0098CD' }} />
-          </div>
+          <ProdiMark size={22} />
           <div>
             <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>
-              {vistaHistorial ? 'Historial' : 'Asistente IA'}
+              {vistaHistorial ? 'Historial' : 'Prodi'}
             </p>
             <p className="text-xs" style={{ color: '#6B7280' }}>{temaLabel}</p>
           </div>

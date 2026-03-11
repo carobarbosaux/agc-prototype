@@ -1,6 +1,7 @@
 import { Bell, ChevronRight, ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 import { roles } from '../mockData'
+import { ProdiWordmark } from './ProdiLogo'
 
 export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClick, notifCount }) {
   const [rolMenuAbierto, setRolMenuAbierto] = useState(false)
@@ -27,14 +28,8 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
       {/* Left: Logo + Breadcrumb */}
       <div className="flex items-center gap-2">
         {/* Logo */}
-        <div className="flex items-center gap-2 mr-3">
-          <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center"
-            style={{ background: '#0098CD' }}
-          >
-            <span className="text-white text-xs font-bold" style={{ fontFamily: "'Arial', sans-serif" }}>A</span>
-          </div>
-          <span className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>AGC</span>
+        <div className="flex items-center mr-3">
+          <ProdiWordmark height={22} />
         </div>
 
         {/* Divider */}

@@ -4,7 +4,7 @@ import {
   GraduationCap, FileText, Upload, CheckSquare, Square, Info, Paperclip,
 } from 'lucide-react'
 import { tagsSugerenciasPorArea } from '../mockData'
-import { ProdiMark } from './ProdiLogo'
+import { ProdiMark } from '../components/ProdiLogo'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SHARED: Confirmation modal

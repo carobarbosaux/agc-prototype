@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { ZoomIn, Minimize2, RefreshCw, Search, BookMarked, MessageSquare, StickyNote, MessageCircle, ArrowUpRight, Bold, Italic, Quote, List, ListOrdered } from 'lucide-react'
 import { gravedadConfig } from '../mockData'
+import { ProdiMark } from './ProdiLogo'
 
 // ─── Block type config ─────────────────────────────────────────────────────────
 
@@ -318,12 +319,12 @@ export default function BloqueContenido({
           {/* ── IA + Annotation actions ──────────────────────────────── */}
           <div style={{ padding: '3px' }}>
             {editable && (
-              <p
-                className="px-2 pt-1.5 pb-0.5 text-xs font-semibold uppercase tracking-wider"
-                style={{ color: '#9CA3AF' }}
-              >
-                Asistente IA
-              </p>
+              <div className="px-2 pt-1.5 pb-0.5 flex items-center gap-1.5">
+                <ProdiMark size={14} />
+                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
+                  Prodi
+                </p>
+              </div>
             )}
             {[...toolbarActionsIA, ...toolbarActionsAnotaciones].map(({ label, icon: Icon }) => (
               <button

@@ -1,0 +1,81 @@
+// Onboarding Prodi — slide data
+// 7 slides introducing Prodi as the transversal AI assistant for Asistente de Contenidos
+
+export const onboardingSlides = [
+  {
+    id: 1,
+    title: 'Conoce Prodi',
+    subtitle: 'El nuevo Asistente de Contenidos',
+    body: 'Tu criterio profesional en el centro.',
+    bullets: [],
+    cta: null,
+    visualType: 'editor-zoom',
+  },
+  {
+    id: 2,
+    title: null,
+    subtitle: null,
+    body: 'Define aspectos de tu asignatura\ny comienza a generar contenido.',
+    bullets: [],
+    cta: null,
+    visualType: 'canvas-overview',
+  },
+  {
+    id: 3,
+    title: null,
+    subtitle: null,
+    body: 'Selecciona cualquier fragmento\nAparecen herramientas contextuales',
+    bullets: [],
+    cta: null,
+    visualType: 'contextual-selection',
+  },
+  {
+    id: 4,
+    title: 'Mejora tu contenido',
+    subtitle: null,
+    body: null,
+    bullets: [
+      'Corregir redacción',
+      'Expandir o resumir',
+      'Regenerar texto',
+      'Buscar bibliografía',
+      'Deep research',
+    ],
+    cta: null,
+    visualType: 'contextual-actions',
+  },
+  {
+    id: 5,
+    title: null,
+    subtitle: null,
+    body: 'Consulta a Prodi en cualquier momento',
+    bullets: [
+      'Investigar un tema',
+      'Desarrollar ideas',
+    ],
+    cta: null,
+    visualType: 'side-panel',
+  },
+  {
+    id: 6,
+    title: null,
+    subtitle: null,
+    body: 'Añade notas personales\ny comentarios para colaborar',
+    bullets: [],
+    cta: null,
+    visualType: 'notes-comments',
+    concepts: [
+      { label: 'Notas', desc: 'Anotaciones personales' },
+      { label: 'Comentarios', desc: 'Colaboración y revisión con el equipo' },
+    ],
+  },
+  {
+    id: 7,
+    title: 'Empieza a crear con Prodi',
+    subtitle: null,
+    body: null,
+    bullets: [],
+    cta: 'Abrir asistente',
+    visualType: 'final-state',
+  },
+]

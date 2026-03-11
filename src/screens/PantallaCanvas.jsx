@@ -6,6 +6,8 @@ import PanelIA from '../components/PanelIA'
 import ComentarioHilo from '../components/ComentarioHilo'
 import EstadoBadge from '../components/EstadoBadge'
 import EtiquetaBloque from '../components/EtiquetaBloque'
+import OnboardingProdi from '../components/OnboardingProdi'
+import { ProdiMark } from '../components/ProdiLogo'
 import {
   bloquesTema2,
   bloquesTema1,
@@ -954,6 +956,8 @@ export default function PantallaCanvas({
   const [enrichmentsGenerados, setEnrichmentsGenerados] = useState([]) // [{ tipo, titulo, descripcion }]
   // Inline IA suggestion state
   const [iaInline, setIaInline] = useState(null) // { bloqueId, accion, textoOriginal, textoGenerado, generando }
+  // Prodi onboarding — show once for autor role (prototype: always on first mount)
+  const [onboardingVisible, setOnboardingVisible] = useState(rolActivo === 'autor')
 
   useEffect(() => {
     const handler = (e) => {
@@ -1448,6 +1452,12 @@ export default function PantallaCanvas({
 
   return (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 56px)', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+      {onboardingVisible && (
+        <OnboardingProdi
+          onClose={() => setOnboardingVisible(false)}
+          onOpenAssistant={() => { setOnboardingVisible(false); setPanelIAabierto(true) }}
+        />
+      )}
       {/* Page header — two rows */}
       <div className="flex-shrink-0" style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}>
 
@@ -1787,8 +1797,8 @@ export default function PantallaCanvas({
             onMouseEnter={e => { if (!panelIAabierto) e.currentTarget.style.background = '#F1F5F9' }}
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
-            <Sparkles size={15} />
-            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelIAabierto ? '600' : '500' }}>Asistente IA</span>
+            <ProdiMark size={18} />
+            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelIAabierto ? '600' : '500' }}>Prodi</span>
           </button>
 
           {/* Experiencias (disenador only) */}
