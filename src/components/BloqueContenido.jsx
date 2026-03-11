@@ -10,7 +10,7 @@ const TIPO_CONFIG = {
   h1:    { label: 'H1', title: 'Título 1',       className: 'text-3xl font-bold leading-tight',  style: { color: '#111827' } },
   h2:    { label: 'H2', title: 'Título 2',       className: 'text-xl font-semibold leading-snug', style: { color: '#111827' } },
   h3:    { label: 'H3', title: 'Título 3',       className: 'text-lg font-semibold leading-snug', style: { color: '#1F2937' } },
-  quote: { label: '"',  title: 'Cita',           className: 'text-base leading-8 italic',        style: { color: '#4B5563', borderLeft: '3px solid #0098CD', paddingLeft: '16px', marginLeft: '4px' } },
+  quote: { label: '"',  title: 'Cita',           className: 'text-base leading-8 italic',        style: { color: '#4B5563', borderLeft: '3px solid #367CFF', paddingLeft: '16px', marginLeft: '4px' } },
   ul:    { label: '•',  title: 'Lista',          className: 'text-base leading-7',               style: { color: '#1F2937' } },
   ol:    { label: '1.', title: 'Lista numerada', className: 'text-base leading-7',               style: { color: '#1F2937' } },
 }
@@ -123,7 +123,7 @@ export default function BloqueContenido({
 
   const renderContent = () => {
     const contenido = bloque.contenido
-    const editStyle = { ...tipoConf.style, caretColor: '#0098CD', outline: 'none' }
+    const editStyle = { ...tipoConf.style, caretColor: '#367CFF', outline: 'none' }
 
     // For list types wrap in ul/ol
     const maybeWrapList = (inner) => {
@@ -157,7 +157,7 @@ export default function BloqueContenido({
         onKeyDown={e => { if (!editable) e.preventDefault() }}
         onPaste={e => { if (!editable) e.preventDefault() }}
         className={tipoConf.className}
-        style={{ ...tipoConf.style, caretColor: editable ? '#0098CD' : 'transparent', outline: 'none' }}
+        style={{ ...tipoConf.style, caretColor: editable ? '#367CFF' : 'transparent', outline: 'none' }}
       />
     )
   }
@@ -268,7 +268,7 @@ export default function BloqueContenido({
                           padding: '0 5px',
                           fontSize: '11px',
                           fontWeight: '700',
-                          background: active ? '#0098CD' : '#F3F4F6',
+                          background: active ? '#367CFF' : '#F3F4F6',
                           color: active ? '#FFFFFF' : '#374151',
                         }}
                         onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#E5E7EB' }}

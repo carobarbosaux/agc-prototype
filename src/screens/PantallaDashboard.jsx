@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowRight, AlertCircle, Clock, Plus, BookOpen, Lock, Filter, Globe, CheckCircle, XCircle, AlertTriangle, GitBranch, ChevronRight, X } from 'lucide-react'
 import EstadoBadge from '../components/EstadoBadge'
 import Chatbar from '../components/Chatbar'
 import CalidadContenidosCards from '../components/CalidadContenidosCards'
 import PanelMisPendientes from '../components/PanelMisPendientes'
+import OnboardingProdi from '../components/OnboardingProdi'
 import { dashboardStats, titulaciones as titulacionesData, miTrabajo, estadoConfig, tagsFiltrablesDashboard, coordinatorTrackingData } from '../mockData'
 
 const rolLabel = {
@@ -43,24 +44,24 @@ function SidebarTitulaciones({ titulaciones, seleccionada, onSelect }) {
               className="w-full text-left px-4 py-2.5 transition-all flex items-start gap-2.5"
               style={{
                 cursor: t.navegable ? 'pointer' : 'default',
-                background: selected ? '#E0F4FB' : 'transparent',
-                borderLeft: selected ? '2.5px solid #0098CD' : '2.5px solid transparent',
+                background: selected ? '#E7EFFE' : 'transparent',
+                borderLeft: selected ? '2.5px solid #367CFF' : '2.5px solid transparent',
                 opacity: t.navegable ? 1 : 0.4,
               }}
             >
               <div
                 className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
-                style={{ background: selected ? '#E0F4FB' : '#F8F9FA' }}
+                style={{ background: selected ? '#E7EFFE' : '#F8F9FA' }}
               >
                 {t.navegable
-                  ? <BookOpen size={11} style={{ color: selected ? '#0098CD' : '#94A3B8' }} />
+                  ? <BookOpen size={11} style={{ color: selected ? '#367CFF' : '#94A3B8' }} />
                   : <Lock size={10} style={{ color: '#CBD5E1' }} />
                 }
               </div>
               <div className="flex-1 min-w-0">
                 <p
                   className="text-xs font-medium leading-snug"
-                  style={{ color: selected ? '#0098CD' : t.navegable ? '#374151' : '#94A3B8' }}
+                  style={{ color: selected ? '#367CFF' : t.navegable ? '#374151' : '#94A3B8' }}
                 >
                   {t.nombre}
                 </p>
@@ -114,7 +115,7 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
             {asignaturas.length} de {titulacion?.asignaturas_count} asignaturas
           </p>
         </div>
-        <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2' }}>
+        <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>
           Activa
         </span>
       </div>
@@ -157,10 +158,10 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
             >
               <div className="flex items-center gap-2 min-w-0">
                 {clickable && !asig.crearAsignatura && (
-                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#0098CD' }} />
+                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#367CFF' }} />
                 )}
                 {clickable && asig.crearAsignatura && (
-                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#6366F1' }} />
+                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#367CFF' }} />
                 )}
                 <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#94A3B8' }}>
                   {asig.nombre}
@@ -179,7 +180,7 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
               </span>
 
               <div className="flex items-center">
-                <span className="text-sm" style={{ color: esPropio ? '#0098CD' : '#9CA3AF', fontWeight: esPropio ? '500' : '400' }}>
+                <span className="text-sm" style={{ color: esPropio ? '#367CFF' : '#9CA3AF', fontWeight: esPropio ? '500' : '400' }}>
                   {pendienteDisplay}
                 </span>
               </div>
@@ -251,7 +252,7 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
               {filialesDisponibles.map(f => <option key={f} value={f}>{f}</option>)}
             </select>
           </div>
-          <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2' }}>
+          <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>
             Activa
           </span>
         </div>
@@ -296,7 +297,7 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
             >
               <div className="flex items-center gap-2 min-w-0">
                 {clickable && !asig.crearAsignatura && (
-                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#0098CD' }} />
+                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#367CFF' }} />
                 )}
                 {clickable && asig.crearAsignatura && (
                   <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#9CA3AF' }} />
@@ -314,7 +315,7 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
               </div>
 
               <div className="flex items-center">
-                <span className="text-xs" style={{ color: esPropio ? '#0098CD' : '#9CA3AF', fontWeight: esPropio ? '500' : '400' }}>
+                <span className="text-xs" style={{ color: esPropio ? '#367CFF' : '#9CA3AF', fontWeight: esPropio ? '500' : '400' }}>
                   {pendienteDisplay}
                 </span>
               </div>
@@ -358,9 +359,9 @@ function BarraAccionesDashboard({ rolActivo, filtroTag, onFiltroChange, onNuevaA
               onClick={() => onFiltroChange(tag.id === 'todos' ? null : tag.id)}
               className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
               style={{
-                background: active ? '#0098CD' : '#FFFFFF',
+                background: active ? '#367CFF' : '#FFFFFF',
                 color: active ? '#FFFFFF' : '#6B7280',
-                border: active ? '1px solid #0098CD' : '1px solid #E5E7EB',
+                border: active ? '1px solid #367CFF' : '1px solid #E5E7EB',
               }}
             >
               {tag.label}
@@ -374,9 +375,9 @@ function BarraAccionesDashboard({ rolActivo, filtroTag, onFiltroChange, onNuevaA
         <button
           onClick={onNuevaAsignatura}
           className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all flex-shrink-0"
-          style={{ background: '#0098CD' }}
-          onMouseEnter={e => e.currentTarget.style.background = '#00729A'}
-          onMouseLeave={e => e.currentTarget.style.background = '#0098CD'}
+          style={{ background: '#367CFF' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
+          onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
         >
           <Plus size={14} />
           Nueva asignatura
@@ -491,7 +492,7 @@ const ALARM_CONFIG = {
   'approaching-obsolescence':  { label: 'Obsolescencia próxima',    color: '#D97706' },
   'critical-obsolescence':     { label: 'Obsolescencia crítica',    color: '#DC2626' },
   'expired-content':           { label: 'Contenido caducado',       color: '#7C3AED' },
-  'pending-update':            { label: 'Actualización pendiente',  color: '#0098CD' },
+  'pending-update':            { label: 'Actualización pendiente',  color: '#367CFF' },
 }
 
 const FILIAL_LABELS = { espana: 'España', colombia: 'Colombia', mexico: 'México', ecuador: 'Ecuador' }
@@ -710,7 +711,7 @@ function TrackingDashboard({ onNavigate }) {
                   <div key={key} className="rounded-lg px-3 py-2" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
                     <div className="flex items-center justify-between mb-0.5">
                       <span className="text-xs font-medium" style={{ color: '#374151' }}>{FILIAL_LABELS[key] || key}</span>
-                      <span className="text-xs font-mono" style={{ color: '#0098CD' }}>v{fv.version}</span>
+                      <span className="text-xs font-mono" style={{ color: '#367CFF' }}>v{fv.version}</span>
                     </div>
                     <div className="flex items-center justify-between text-xs" style={{ color: '#9CA3AF' }}>
                       <span>{formatDate(fv.date)}</span>
@@ -746,9 +747,9 @@ function TrackingDashboard({ onNavigate }) {
             <div className="space-y-2 pt-1">
               <button
                 className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-white transition-all"
-                style={{ background: '#0098CD' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#007BA8'}
-                onMouseLeave={e => e.currentTarget.style.background = '#0098CD'}
+                style={{ background: '#367CFF' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
+                onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
                 onClick={() => onNavigate({ pantalla: 'canvas', asignaturaId: selected.id, seccion: 't1' })}
               >
                 <ChevronRight size={13} />
@@ -785,6 +786,12 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
   const [filtroTag, setFiltroTag] = useState(null)
   const [filtroFilial, setFiltroFilial] = useState(null)
   const [dashTab, setDashTab] = useState('operativo')
+  const [onboardingVisible, setOnboardingVisible] = useState(rolActivo === 'autor')
+
+  // Re-show onboarding whenever rol switches to autor
+  useEffect(() => {
+    if (rolActivo === 'autor') setOnboardingVisible(true)
+  }, [rolActivo])
 
   const esCoordinador = rolActivo === 'coordinador' || rolActivo === 'editor'
   const esDisenador = rolActivo === 'disenador'
@@ -798,6 +805,9 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
 
   return (
     <div className="min-h-screen" style={{ background: '#F8F9FA', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+      {onboardingVisible && (
+        <OnboardingProdi onClose={() => setOnboardingVisible(false)} />
+      )}
       <div className="max-w-screen-xl mx-auto px-6 py-6">
 
         {/* Page title */}
@@ -828,8 +838,8 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
                 onClick={() => setDashTab(tab.key)}
                 className="px-4 py-2 text-sm font-medium transition-colors"
                 style={{
-                  color: dashTab === tab.key ? '#0098CD' : '#6B7280',
-                  borderBottom: dashTab === tab.key ? '2px solid #0098CD' : '2px solid transparent',
+                  color: dashTab === tab.key ? '#367CFF' : '#6B7280',
+                  borderBottom: dashTab === tab.key ? '2px solid #367CFF' : '2px solid transparent',
                   marginBottom: '-2px',
                   background: 'none',
                 }}

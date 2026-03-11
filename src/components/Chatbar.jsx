@@ -115,8 +115,8 @@ export default function Chatbar({ onNavigate, placeholder = 'Pregunta qué neces
         >
           <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid #F1F5F9' }}>
             <div className="flex items-center gap-2">
-              <Sparkles size={13} style={{ color: '#6366F1' }} />
-              <span className="text-xs font-semibold" style={{ color: '#6366F1' }}>Asistente AGC</span>
+              <Sparkles size={13} style={{ color: '#367CFF' }} />
+              <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Asistente AGC</span>
             </div>
             <button
               onClick={() => setHistorialVisible(false)}
@@ -132,14 +132,14 @@ export default function Chatbar({ onNavigate, placeholder = 'Pregunta qué neces
               <div key={msg.id} className={`flex ${msg.rol === 'usuario' ? 'justify-end' : 'justify-start'}`}>
                 {msg.rol === 'ia' && (
                   <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mr-2 mt-0.5"
-                    style={{ background: '#EEF2FF' }}>
-                    <Sparkles size={10} style={{ color: '#6366F1' }} />
+                    style={{ background: '#E7EFFE' }}>
+                    <Sparkles size={10} style={{ color: '#367CFF' }} />
                   </div>
                 )}
                 <div
                   className="max-w-xs rounded-xl px-3 py-2 text-xs leading-relaxed"
                   style={{
-                    background: msg.rol === 'usuario' ? '#0098CD' : '#F8F9FA',
+                    background: msg.rol === 'usuario' ? '#367CFF' : '#F8F9FA',
                     color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151',
                     borderRadius: msg.rol === 'usuario' ? '12px 12px 4px 12px' : '12px 12px 12px 4px',
                   }}
@@ -178,8 +178,8 @@ export default function Chatbar({ onNavigate, placeholder = 'Pregunta qué neces
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
               >
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: s.accion === 'crearAsignatura' ? '#E0F4FB' : '#F8F9FA' }}>
-                  <Icon size={14} style={{ color: s.accion === 'crearAsignatura' ? '#0098CD' : '#94A3B8' }} />
+                  style={{ background: s.accion === 'crearAsignatura' ? '#E7EFFE' : '#F8F9FA' }}>
+                  <Icon size={14} style={{ color: s.accion === 'crearAsignatura' ? '#367CFF' : '#94A3B8' }} />
                 </div>
                 <div>
                   <span className="text-sm font-medium" style={{ color: '#1A1A1A', fontFamily: "'JetBrains Mono', monospace" }}>
@@ -205,8 +205,8 @@ export default function Chatbar({ onNavigate, placeholder = 'Pregunta qué neces
         onFocus={() => {}}
       >
         <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
-          style={{ background: '#EEF2FF' }}>
-          <Sparkles size={13} style={{ color: '#6366F1' }} />
+          style={{ background: '#E7EFFE' }}>
+          <Sparkles size={13} style={{ color: '#367CFF' }} />
         </div>
 
         <input
@@ -215,7 +215,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Pregunta qué neces
           value={valor}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          onFocus={e => e.currentTarget.closest('div').style.borderColor = '#6366F1'}
+          onFocus={e => e.currentTarget.closest('div').style.borderColor = '#367CFF'}
           onBlur={e => e.currentTarget.closest('div').style.borderColor = '#E5E7EB'}
           placeholder={placeholder}
           className="flex-1 text-sm bg-transparent outline-none"
@@ -240,7 +240,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Pregunta qué neces
           disabled={!valor.trim()}
           className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-all"
           style={{
-            background: valor.trim() ? '#0098CD' : '#F1F5F9',
+            background: valor.trim() ? '#367CFF' : '#F1F5F9',
             cursor: valor.trim() ? 'pointer' : 'default',
           }}
         >

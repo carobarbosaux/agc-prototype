@@ -11,7 +11,7 @@ const FILTROS = [
 const tipoIconos = {
   comentarios: { Icon: AlertCircle, color: '#F97316', bg: '#FFF7ED' },
   aprobado: { Icon: CheckCircle, color: '#10B981', bg: '#F0FDF4' },
-  info: { Icon: Info, color: '#0098CD', bg: '#E0F4FB' },
+  info: { Icon: Info, color: '#367CFF', bg: '#E7EFFE' },
 }
 
 function agrupar(notifs) {
@@ -82,9 +82,9 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
               onClick={() => setFiltro(f.id)}
               className="text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
               style={{
-                background: filtro === f.id ? '#E0F4FB' : 'transparent',
-                color: filtro === f.id ? '#0098CD' : '#6B7280',
-                border: filtro === f.id ? '1px solid #B3E0F2' : '1px solid transparent',
+                background: filtro === f.id ? '#E7EFFE' : 'transparent',
+                color: filtro === f.id ? '#367CFF' : '#6B7280',
+                border: filtro === f.id ? '1px solid #BAD2FF' : '1px solid transparent',
               }}
             >
               {f.label}

@@ -168,7 +168,7 @@ function PasoContextoAcademico({ datos, onChange }) {
             placeholder="Buscar titulación…"
             className="flex-1 text-sm outline-none bg-transparent"
             style={{ color: '#374151' }}
-            onFocus={e => e.currentTarget.parentElement.style.borderColor = '#0098CD'}
+            onFocus={e => e.currentTarget.parentElement.style.borderColor = '#367CFF'}
             onBlur={e => e.currentTarget.parentElement.style.borderColor = '#E5E7EB'}
           />
         </div>
@@ -178,14 +178,14 @@ function PasoContextoAcademico({ datos, onChange }) {
             return (
               <button key={t.id} onClick={() => onChange('titulacionId', t.id)}
                 className="w-full text-left px-3 py-2.5 rounded-lg flex items-center gap-3 transition-all"
-                style={{ background: sel ? '#E0F4FB' : '#F8F9FA', border: sel ? '2px solid #0098CD' : '2px solid transparent' }}
+                style={{ background: sel ? '#E7EFFE' : '#F8F9FA', border: sel ? '2px solid #367CFF' : '2px solid transparent' }}
               >
-                <BookOpen size={14} style={{ color: sel ? '#0098CD' : '#94A3B8' }} />
+                <BookOpen size={14} style={{ color: sel ? '#367CFF' : '#94A3B8' }} />
                 <div className="flex-1 min-w-0 text-left">
-                  <p className="text-sm font-medium truncate" style={{ color: sel ? '#0098CD' : '#1A1A1A' }}>{t.nombre}</p>
+                  <p className="text-sm font-medium truncate" style={{ color: sel ? '#367CFF' : '#1A1A1A' }}>{t.nombre}</p>
                   <p className="text-xs" style={{ color: '#9CA3AF' }}>{t.codigo}</p>
                 </div>
-                {sel && <Check size={14} style={{ color: '#0098CD' }} />}
+                {sel && <Check size={14} style={{ color: '#367CFF' }} />}
               </button>
             )
           })}
@@ -197,7 +197,7 @@ function PasoContextoAcademico({ datos, onChange }) {
         <select value={datos.nivel || ''} onChange={e => onChange('nivel', e.target.value)}
           className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
           style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: datos.nivel ? '#1A1A1A' : '#9CA3AF' }}
-          onFocus={e => { e.target.style.borderColor = '#0098CD'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
+          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
           onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
         >
           <option value="">Seleccionar nivel…</option>
@@ -211,7 +211,7 @@ function PasoContextoAcademico({ datos, onChange }) {
           placeholder="Ej. Profesionales de TI con 2+ años de experiencia que quieren especializarse en IA aplicada…"
           rows={3} className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
           style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#374151', lineHeight: '1.6' }}
-          onFocus={e => { e.target.style.borderColor = '#0098CD'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
+          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
           onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
         />
       </div>
@@ -222,7 +222,7 @@ function PasoContextoAcademico({ datos, onChange }) {
           <input type="number" value={datos.creditos || ''} onChange={e => onChange('creditos', e.target.value)}
             min={1} max={30} placeholder="6" className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
             style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A' }}
-            onFocus={e => { e.target.style.borderColor = '#0098CD'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
+            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
             onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
           />
         </div>
@@ -231,7 +231,7 @@ function PasoContextoAcademico({ datos, onChange }) {
           <input type="text" value={datos.nombre || ''} onChange={e => onChange('nombre', e.target.value)}
             placeholder="Ej. Fundamentos de ML" className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
             style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A' }}
-            onFocus={e => { e.target.style.borderColor = '#0098CD'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
+            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
             onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
           />
         </div>
@@ -243,7 +243,7 @@ function PasoContextoAcademico({ datos, onChange }) {
           placeholder="Ej. Regresión lineal, clasificación, árboles de decisión, redes neuronales, evaluación de modelos…"
           rows={3} className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
           style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#374151', lineHeight: '1.6' }}
-          onFocus={e => { e.target.style.borderColor = '#0098CD'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
+          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
           onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
         />
       </div>
@@ -268,7 +268,7 @@ function PasoDefinicionTematica({ datos, onChange }) {
             return (
               <button key={area} onClick={() => onChange('areaConocimiento', area)}
                 className="text-left px-3 py-2.5 rounded-lg text-sm transition-all"
-                style={{ background: sel ? '#E0F4FB' : '#F8F9FA', border: sel ? '2px solid #0098CD' : '2px solid transparent', color: sel ? '#0098CD' : '#374151', fontWeight: sel ? '600' : '400' }}
+                style={{ background: sel ? '#E7EFFE' : '#F8F9FA', border: sel ? '2px solid #367CFF' : '2px solid transparent', color: sel ? '#367CFF' : '#374151', fontWeight: sel ? '600' : '400' }}
               >
                 {area}
               </button>
@@ -282,7 +282,7 @@ function PasoDefinicionTematica({ datos, onChange }) {
         <select value={datos.tipoAsignatura || ''} onChange={e => onChange('tipoAsignatura', e.target.value)}
           className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
           style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: datos.tipoAsignatura ? '#1A1A1A' : '#9CA3AF' }}
-          onFocus={e => { e.target.style.borderColor = '#0098CD'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
+          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
           onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
         >
           <option value="">Seleccionar tipo…</option>
@@ -298,7 +298,7 @@ function PasoDefinicionTematica({ datos, onChange }) {
             return (
               <button key={enfoque} onClick={() => onChange('enfoque', enfoque)}
                 className="px-3 py-2 rounded-lg text-xs font-medium transition-all"
-                style={{ background: sel ? '#E0F4FB' : '#F8F9FA', border: sel ? '2px solid #0098CD' : '2px solid transparent', color: sel ? '#0098CD' : '#6B7280' }}
+                style={{ background: sel ? '#E7EFFE' : '#F8F9FA', border: sel ? '2px solid #367CFF' : '2px solid transparent', color: sel ? '#367CFF' : '#6B7280' }}
               >
                 {enfoque}
               </button>
@@ -307,9 +307,9 @@ function PasoDefinicionTematica({ datos, onChange }) {
         </div>
       </div>
 
-      <div className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg" style={{ background: '#EEF2FF', border: '1px solid #C7D2FE' }}>
-        <Sparkles size={12} style={{ color: '#6366F1', flexShrink: 0, marginTop: '2px' }} />
-        <p className="text-xs" style={{ color: '#4338CA', lineHeight: '1.5' }}>
+      <div className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
+        <Sparkles size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
+        <p className="text-xs" style={{ color: '#0047CC', lineHeight: '1.5' }}>
           Al hacer clic en <strong>Ver vista previa</strong>, la IA generará un resumen preliminar de la asignatura que podrás revisar y ajustar antes de continuar.
         </p>
       </div>
@@ -373,7 +373,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
   }
 
   return (
-    <div className="flex gap-0" style={{ minHeight: '520px' }}>
+    <div className="flex gap-0" style={{ height: 'calc(100vh - 290px)', minHeight: '440px' }}>
       <div className="flex-1 min-w-0 pr-6 overflow-y-auto space-y-5" style={{ borderRight: '1px solid #F1F5F9' }}>
         <div>
           <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Resumen preliminar</h3>
@@ -403,7 +403,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
           <div className="flex flex-wrap gap-1.5">
             {resumenPreview.tags.map(tag => (
               <span key={tag} className="inline-flex items-center rounded-full text-xs font-medium"
-                style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2', padding: '3px 10px' }}>
+                style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF', padding: '3px 10px' }}>
                 {tag}
               </span>
             ))}
@@ -417,28 +417,28 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
           <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Prodi</p>
           <p className="text-xs ml-auto" style={{ color: '#9CA3AF' }}>Ajusta el resumen</p>
         </div>
-        <div className="flex-1 overflow-y-auto space-y-3 mb-3" style={{ maxHeight: '340px' }}>
+        <div className="flex-1 overflow-y-auto space-y-3" style={{ minHeight: 0 }}>
           {chatMensajes.map(msg => (
             <div key={msg.id} className={`flex ${msg.rol === 'usuario' ? 'justify-end' : 'justify-start'}`}>
               {msg.rol === 'ia' && (
-                <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#EEF2FF' }}>
-                  <Sparkles size={9} style={{ color: '#6366F1' }} />
+                <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#E7EFFE' }}>
+                  <ProdiMark size={11} />
                 </div>
               )}
               <div className="px-3 py-2 rounded-xl text-xs leading-relaxed"
-                style={{ maxWidth: '200px', background: msg.rol === 'usuario' ? '#0098CD' : '#F8F9FA', color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151', borderRadius: msg.rol === 'usuario' ? '12px 12px 4px 12px' : '4px 12px 12px 12px' }}>
+                style={{ maxWidth: '200px', background: msg.rol === 'usuario' ? '#367CFF' : '#F8F9FA', color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151', borderRadius: msg.rol === 'usuario' ? '12px 12px 4px 12px' : '4px 12px 12px 12px' }}>
                 {msg.texto}
               </div>
             </div>
           ))}
           {cargandoIA && (
             <div className="flex justify-start">
-              <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#EEF2FF' }}>
-                <Sparkles size={9} style={{ color: '#6366F1' }} />
+              <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#E7EFFE' }}>
+                <Sparkles size={9} style={{ color: '#367CFF' }} />
               </div>
               <div className="px-3 py-2 rounded-xl" style={{ background: '#F8F9FA', borderRadius: '4px 12px 12px 12px' }}>
                 <div className="flex gap-1">
-                  {[0, 1, 2].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#6366F1', animationDelay: `${i * 0.15}s` }} />)}
+                  {[0, 1, 2].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />)}
                 </div>
               </div>
             </div>
@@ -453,7 +453,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
           />
           <button onClick={enviarMensaje} disabled={!inputChat.trim() || cargandoIA}
             className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
-            style={{ background: inputChat.trim() && !cargandoIA ? '#6366F1' : '#E5E7EB', color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#9CA3AF' }}>
+            style={{ background: inputChat.trim() && !cargandoIA ? '#367CFF' : '#E5E7EB', color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#9CA3AF' }}>
             <Send size={12} />
           </button>
         </div>
@@ -553,8 +553,8 @@ function AutorPaso1Metadata() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E0F4FB' }}>
-            <GraduationCap size={14} style={{ color: '#0098CD' }} />
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E7EFFE' }}>
+            <GraduationCap size={14} style={{ color: '#367CFF' }} />
           </div>
           <h3 className="text-base font-semibold" style={{ color: '#1A1A1A' }}>Información académica</h3>
         </div>
@@ -585,7 +585,7 @@ function AutorPaso1Metadata() {
             <span className="text-xs font-medium w-40 flex-shrink-0" style={{ color: '#9CA3AF' }}>{f.label}</span>
             <span
               className={`text-sm ${f.highlight ? 'font-semibold' : 'font-medium'}`}
-              style={{ color: f.highlight ? '#0098CD' : '#1A1A1A' }}
+              style={{ color: f.highlight ? '#367CFF' : '#1A1A1A' }}
             >
               {f.value}
             </span>
@@ -632,8 +632,8 @@ function AutorPaso2Descriptor({ datos, onChange }) {
     <div className="space-y-6">
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#EEF2FF' }}>
-            <FileText size={14} style={{ color: '#6366F1' }} />
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E7EFFE' }}>
+            <FileText size={14} style={{ color: '#367CFF' }} />
           </div>
           <h3 className="text-base font-semibold" style={{ color: '#1A1A1A' }}>Descriptor y contexto didáctico</h3>
         </div>
@@ -652,7 +652,7 @@ function AutorPaso2Descriptor({ datos, onChange }) {
           onChange={e => onChange('nivelConocimiento', e.target.value)}
           className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
           style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: datos.nivelConocimiento ? '#1A1A1A' : '#9CA3AF' }}
-          onFocus={e => { e.target.style.borderColor = '#6366F1'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.12)' }}
+          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.12)' }}
           onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
         >
           <option value="">Seleccionar nivel…</option>
@@ -674,7 +674,7 @@ function AutorPaso2Descriptor({ datos, onChange }) {
             placeholder="8"
             className="w-28 px-3 py-2.5 rounded-lg text-sm outline-none"
             style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A' }}
-            onFocus={e => { e.target.style.borderColor = '#6366F1'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.12)' }}
+            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.12)' }}
             onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
           />
           <p className="text-xs" style={{ color: '#9CA3AF' }}>Entre 1 y 10 temas</p>
@@ -695,9 +695,9 @@ function AutorPaso2Descriptor({ datos, onChange }) {
                 onClick={() => onChange('enfoque', enfoque)}
                 className="px-3 py-2.5 rounded-lg text-xs font-medium transition-all text-center"
                 style={{
-                  background: sel ? '#EEF2FF' : '#F8F9FA',
-                  border: sel ? '2px solid #6366F1' : '2px solid transparent',
-                  color: sel ? '#6366F1' : '#6B7280',
+                  background: sel ? '#E7EFFE' : '#F8F9FA',
+                  border: sel ? '2px solid #367CFF' : '2px solid transparent',
+                  color: sel ? '#367CFF' : '#6B7280',
                 }}
               >
                 {enfoque}
@@ -722,7 +722,7 @@ function AutorPaso2Descriptor({ datos, onChange }) {
           rows={3}
           className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
           style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#374151', lineHeight: '1.6' }}
-          onFocus={e => { e.target.style.borderColor = '#6366F1'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.12)' }}
+          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.12)' }}
           onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
         />
       </div>
@@ -736,7 +736,7 @@ function AutorPaso2Descriptor({ datos, onChange }) {
           onClick={handleSimularSubida}
           className="w-full flex flex-col items-center gap-2 px-4 py-5 rounded-xl transition-all"
           style={{ border: '2px dashed #E5E7EB', background: '#FAFAFA', color: '#9CA3AF' }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = '#6366F1'; e.currentTarget.style.background = '#F5F3FF' }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = '#367CFF'; e.currentTarget.style.background = '#F5F3FF' }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.background = '#FAFAFA' }}
         >
           <Upload size={18} style={{ color: '#CBD5E1' }} />
@@ -777,15 +777,15 @@ function AutorPaso2Descriptor({ datos, onChange }) {
                 onClick={() => toggleOpcion(op.id)}
                 className="w-full flex items-start gap-3 px-4 py-3 rounded-xl transition-all text-left"
                 style={{
-                  background: checked ? '#EEF2FF' : '#F8F9FA',
-                  border: checked ? '1.5px solid #6366F1' : '1.5px solid #E5E7EB',
+                  background: checked ? '#E7EFFE' : '#F8F9FA',
+                  border: checked ? '1.5px solid #367CFF' : '1.5px solid #E5E7EB',
                 }}
               >
-                <div className="mt-0.5 flex-shrink-0" style={{ color: checked ? '#6366F1' : '#CBD5E1' }}>
+                <div className="mt-0.5 flex-shrink-0" style={{ color: checked ? '#367CFF' : '#CBD5E1' }}>
                   {checked ? <CheckSquare size={15} /> : <Square size={15} />}
                 </div>
                 <div>
-                  <p className="text-sm font-medium" style={{ color: checked ? '#4338CA' : '#374151' }}>{op.label}</p>
+                  <p className="text-sm font-medium" style={{ color: checked ? '#0047CC' : '#374151' }}>{op.label}</p>
                   <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{op.desc}</p>
                 </div>
               </button>
@@ -795,9 +795,9 @@ function AutorPaso2Descriptor({ datos, onChange }) {
       </div>
 
       {/* AI hint */}
-      <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl" style={{ background: '#EEF2FF', border: '1px solid #C7D2FE' }}>
-        <Sparkles size={12} style={{ color: '#6366F1', flexShrink: 0, marginTop: '2px' }} />
-        <p className="text-xs leading-relaxed" style={{ color: '#4338CA' }}>
+      <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
+        <Sparkles size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
+        <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
           Al hacer clic en <strong>Generar resumen</strong>, la IA procesará toda esta información para crear un resumen de la asignatura que podrás revisar y ajustar.
         </p>
       </div>
@@ -834,7 +834,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
   }
 
   return (
-    <div className="flex gap-0" style={{ minHeight: '540px' }}>
+    <div className="flex gap-0" style={{ height: 'calc(100vh - 290px)', minHeight: '440px' }}>
       {/* Left: summary */}
       <div className="flex-1 min-w-0 pr-6 overflow-y-auto space-y-5" style={{ borderRight: '1px solid #F1F5F9' }}>
         <div>
@@ -861,7 +861,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
             {(resumen.temasConDescripcion || resumen.temas.map((t, i) => ({ numero: i + 1, titulo: t, descripcion: null }))).map((tema) => (
               <div key={tema.numero} className="px-3 py-2.5 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #F1F5F9' }}>
                 <div className="flex items-start gap-2">
-                  <span className="text-xs font-semibold flex-shrink-0 mt-0.5" style={{ color: '#0098CD', minWidth: '22px' }}>T{tema.numero}</span>
+                  <span className="text-xs font-semibold flex-shrink-0 mt-0.5" style={{ color: '#367CFF', minWidth: '22px' }}>T{tema.numero}</span>
                   <p className="text-xs font-medium" style={{ color: '#1A1A1A' }}>{tema.titulo}</p>
                 </div>
                 {tema.descripcion && (
@@ -878,7 +878,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
           <div className="flex flex-wrap gap-1.5">
             {resumen.tags.map(tag => (
               <span key={tag} className="inline-flex items-center rounded-full text-xs font-medium"
-                style={{ background: '#E0F4FB', color: '#0098CD', border: '1px solid #B3E0F2', padding: '3px 10px' }}>
+                style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF', padding: '3px 10px' }}>
                 {tag}
               </span>
             ))}
@@ -897,24 +897,24 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
           {chatMensajes.map(msg => (
             <div key={msg.id} className={`flex ${msg.rol === 'usuario' ? 'justify-end' : 'justify-start'}`}>
               {msg.rol === 'ia' && (
-                <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#EEF2FF' }}>
-                  <Sparkles size={9} style={{ color: '#6366F1' }} />
+                <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#E7EFFE' }}>
+                  <ProdiMark size={11} />
                 </div>
               )}
               <div className="px-3 py-2 rounded-xl text-xs leading-relaxed"
-                style={{ maxWidth: '200px', background: msg.rol === 'usuario' ? '#6366F1' : '#F8F9FA', color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151', borderRadius: msg.rol === 'usuario' ? '12px 12px 4px 12px' : '4px 12px 12px 12px' }}>
+                style={{ maxWidth: '200px', background: msg.rol === 'usuario' ? '#367CFF' : '#F8F9FA', color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151', borderRadius: msg.rol === 'usuario' ? '12px 12px 4px 12px' : '4px 12px 12px 12px' }}>
                 {msg.texto}
               </div>
             </div>
           ))}
           {cargandoIA && (
             <div className="flex justify-start">
-              <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#EEF2FF' }}>
-                <Sparkles size={9} style={{ color: '#6366F1' }} />
+              <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#E7EFFE' }}>
+                <Sparkles size={9} style={{ color: '#367CFF' }} />
               </div>
               <div className="px-3 py-2 rounded-xl" style={{ background: '#F8F9FA', borderRadius: '4px 12px 12px 12px' }}>
                 <div className="flex gap-1">
-                  {[0, 1, 2].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#6366F1', animationDelay: `${i * 0.15}s` }} />)}
+                  {[0, 1, 2].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />)}
                 </div>
               </div>
             </div>
@@ -941,7 +941,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
           />
           <button onClick={enviarMensaje} disabled={!inputChat.trim() || cargandoIA}
             className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
-            style={{ background: inputChat.trim() && !cargandoIA ? '#6366F1' : '#E5E7EB', color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#9CA3AF' }}>
+            style={{ background: inputChat.trim() && !cargandoIA ? '#367CFF' : '#E5E7EB', color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#9CA3AF' }}>
             <Send size={12} />
           </button>
         </div>
@@ -1039,8 +1039,8 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
           </button>
           <span style={{ color: '#E5E7EB' }}>·</span>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#EEF2FF' }}>
-              <Sparkles size={12} style={{ color: '#6366F1' }} />
+            <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#E7EFFE' }}>
+              <Sparkles size={12} style={{ color: '#367CFF' }} />
             </div>
             <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Deep Learning y Redes Neuronales</p>
           </div>
@@ -1054,7 +1054,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
       <div className="flex-shrink-0" style={{ background: '#FFFFFF', borderBottom: '1px solid #F1F5F9' }}>
         <div className="h-1" style={{ background: '#E5E7EB' }}>
           <div className="h-full rounded-r-full transition-all"
-            style={{ width: `${(paso / AUTOR_TOTAL_PASOS) * 100}%`, background: '#6366F1', transition: 'width 400ms ease' }} />
+            style={{ width: `${(paso / AUTOR_TOTAL_PASOS) * 100}%`, background: '#367CFF', transition: 'width 400ms ease' }} />
         </div>
         <div className="flex items-center justify-center gap-2 py-3">
           {[1, 2, 3].map((n, idx) => {
@@ -1064,14 +1064,14 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
               <div key={n} className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
                   <div className="flex items-center justify-center rounded-full flex-shrink-0 transition-all"
-                    style={{ width: '22px', height: '22px', background: done ? '#10B981' : current ? '#6366F1' : '#F1F5F9' }}>
+                    style={{ width: '22px', height: '22px', background: done ? '#10B981' : current ? '#367CFF' : '#F1F5F9' }}>
                     {done
                       ? <Check size={11} style={{ color: '#FFFFFF' }} />
                       : <span style={{ fontSize: '10px', fontWeight: '700', color: current ? '#FFFFFF' : '#CBD5E1' }}>{n}</span>
                     }
                   </div>
                   <span className="text-xs font-medium hidden sm:block"
-                    style={{ color: done ? '#10B981' : current ? '#6366F1' : '#CBD5E1' }}>
+                    style={{ color: done ? '#10B981' : current ? '#367CFF' : '#CBD5E1' }}>
                     {AUTOR_PASO_LABELS[n]}
                   </span>
                 </div>
@@ -1098,8 +1098,8 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
           <div className="px-8 py-8">
             {(generando || generandoResumen) ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#EEF2FF' }}>
-                  <Sparkles size={24} style={{ color: '#6366F1' }} />
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
+                  <Sparkles size={24} style={{ color: '#367CFF' }} />
                 </div>
                 <div className="text-center">
                   <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
@@ -1110,7 +1110,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
                 <div className="flex gap-1.5 mt-2">
                   {[0, 1, 2].map(i => (
                     <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce"
-                      style={{ background: '#6366F1', animationDelay: `${i * 0.15}s` }} />
+                      style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />
                   ))}
                 </div>
               </div>
@@ -1140,9 +1140,9 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
                 <button
                   onClick={() => setPaso(2)}
                   className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold text-white transition-all"
-                  style={{ background: '#0098CD' }}
+                  style={{ background: '#367CFF' }}
                   onMouseEnter={e => e.currentTarget.style.background = '#0080B0'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#0098CD'}>
+                  onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}>
                   Siguiente
                   <ChevronRight size={14} />
                 </button>
@@ -1153,7 +1153,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
                   disabled={!puedeAvanzar()}
                   className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold transition-all"
                   style={{
-                    background: puedeAvanzar() ? '#6366F1' : '#E5E7EB',
+                    background: puedeAvanzar() ? '#367CFF' : '#E5E7EB',
                     color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF',
                     cursor: puedeAvanzar() ? 'pointer' : 'default',
                   }}>
@@ -1266,8 +1266,8 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
           </button>
           <span style={{ color: '#E5E7EB' }}>·</span>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#EEF2FF' }}>
-              <Sparkles size={12} style={{ color: '#6366F1' }} />
+            <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#E7EFFE' }}>
+              <Sparkles size={12} style={{ color: '#367CFF' }} />
             </div>
             <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Crear nueva asignatura</p>
           </div>
@@ -1280,7 +1280,7 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
       <div className="flex-shrink-0" style={{ background: '#FFFFFF', borderBottom: '1px solid #F1F5F9' }}>
         <div className="h-1" style={{ background: '#E5E7EB' }}>
           <div className="h-full rounded-r-full transition-all"
-            style={{ width: `${(paso / COORD_TOTAL_PASOS) * 100}%`, background: '#0098CD', transition: 'width 400ms ease' }} />
+            style={{ width: `${(paso / COORD_TOTAL_PASOS) * 100}%`, background: '#367CFF', transition: 'width 400ms ease' }} />
         </div>
         <div className="flex items-center justify-center gap-2 py-3">
           {[1, 2, 3].map((n, idx) => {
@@ -1290,14 +1290,14 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
               <div key={n} className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
                   <div className="flex items-center justify-center rounded-full flex-shrink-0 transition-all"
-                    style={{ width: '22px', height: '22px', background: done ? '#10B981' : current ? '#0098CD' : '#F1F5F9' }}>
+                    style={{ width: '22px', height: '22px', background: done ? '#10B981' : current ? '#367CFF' : '#F1F5F9' }}>
                     {done
                       ? <Check size={11} style={{ color: '#FFFFFF' }} />
                       : <span style={{ fontSize: '10px', fontWeight: '700', color: current ? '#FFFFFF' : '#CBD5E1' }}>{n}</span>
                     }
                   </div>
                   <span className="text-xs font-medium hidden sm:block"
-                    style={{ color: done ? '#10B981' : current ? '#0098CD' : '#CBD5E1' }}>
+                    style={{ color: done ? '#10B981' : current ? '#367CFF' : '#CBD5E1' }}>
                     {COORD_PASO_LABELS[n]}
                   </span>
                 </div>
@@ -1323,8 +1323,8 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
           <div className="px-8 py-8">
             {(generando || generandoPreview) ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#EEF2FF' }}>
-                  <Sparkles size={24} style={{ color: '#6366F1' }} />
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
+                  <Sparkles size={24} style={{ color: '#367CFF' }} />
                 </div>
                 <div className="text-center">
                   <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
@@ -1335,7 +1335,7 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
                 <div className="flex gap-1.5 mt-2">
                   {[0, 1, 2].map(i => (
                     <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce"
-                      style={{ background: '#6366F1', animationDelay: `${i * 0.15}s` }} />
+                      style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />
                   ))}
                 </div>
               </div>
@@ -1365,7 +1365,7 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
               {paso === 1 && (
                 <button onClick={() => setPaso(2)} disabled={!puedeAvanzar()}
                   className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold transition-all"
-                  style={{ background: puedeAvanzar() ? '#0098CD' : '#E5E7EB', color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF', cursor: puedeAvanzar() ? 'pointer' : 'default' }}>
+                  style={{ background: puedeAvanzar() ? '#367CFF' : '#E5E7EB', color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF', cursor: puedeAvanzar() ? 'pointer' : 'default' }}>
                   Siguiente
                   <ChevronRight size={14} />
                 </button>
@@ -1373,7 +1373,7 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
               {paso === 2 && (
                 <button onClick={handleAvanzarA3} disabled={!puedeAvanzar()}
                   className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold transition-all"
-                  style={{ background: puedeAvanzar() ? '#6366F1' : '#E5E7EB', color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF', cursor: puedeAvanzar() ? 'pointer' : 'default' }}>
+                  style={{ background: puedeAvanzar() ? '#367CFF' : '#E5E7EB', color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF', cursor: puedeAvanzar() ? 'pointer' : 'default' }}>
                   <Sparkles size={13} />
                   Ver vista previa
                 </button>

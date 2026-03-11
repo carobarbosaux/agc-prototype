@@ -112,8 +112,8 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                   className="flex items-center justify-between px-2 py-2 rounded-lg transition-all"
                   style={{
                     cursor: clickable ? 'pointer' : 'default',
-                    background: activo ? '#E0F4FB' : 'transparent',
-                    borderLeft: activo ? '2px solid #0098CD' : '2px solid transparent',
+                    background: activo ? '#E7EFFE' : 'transparent',
+                    borderLeft: activo ? '2px solid #367CFF' : '2px solid transparent',
                   }}
                   onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F8F9FA' }}
                   onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
@@ -124,7 +124,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                       className="text-sm"
                       style={{
                         fontWeight: activo ? '600' : '500',
-                        color: activo ? '#0098CD' : clickable ? '#374151' : '#94A3B8',
+                        color: activo ? '#367CFF' : clickable ? '#374151' : '#94A3B8',
                       }}
                     >
                       {etapa.label}
@@ -189,8 +189,8 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                             className="flex items-center gap-2 px-2 py-1.5 rounded-md transition-all"
                             style={{
                               cursor: clickable ? 'pointer' : 'default',
-                              background: activo ? '#E0F4FB' : 'transparent',
-                              borderLeft: activo ? '2px solid #0098CD' : '2px solid transparent',
+                              background: activo ? '#E7EFFE' : 'transparent',
+                              borderLeft: activo ? '2px solid #367CFF' : '2px solid transparent',
                               marginLeft: '-2px',
                             }}
                             title={!clickable ? 'Bloqueado hasta aprobar la etapa anterior' : undefined}
@@ -202,7 +202,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                               className="text-xs"
                               style={{
                                 fontWeight: activo ? '600' : '400',
-                                color: activo ? '#0098CD' : clickable ? '#4B5563' : '#CBD5E1',
+                                color: activo ? '#367CFF' : clickable ? '#4B5563' : '#CBD5E1',
                               }}
                             >
                               {sec.label}
@@ -228,7 +228,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
           <p className="text-xs font-semibold" style={{ color: '#374151' }}>{pct}%</p>
         </div>
         <div className="w-full h-1.5 rounded-full" style={{ background: '#E5E7EB' }}>
-          <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#0098CD' }} />
+          <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#367CFF' }} />
         </div>
         <p className="text-xs mt-1.5" style={{ color: '#9CA3AF' }}>{aprobadas} de {total} secciones aprobadas</p>
       </div>

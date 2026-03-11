@@ -8,10 +8,10 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
   const rolActualLabel = roles.find(r => r.id === rolActivo)?.label || 'Autor'
 
   const rolColors = {
-    autor: { bg: '#E0F4FB', text: '#0098CD', border: '#B3E0F2' },
+    autor: { bg: '#E7EFFE', text: '#367CFF', border: '#BAD2FF' },
     coordinador: { bg: '#F0FDF4', text: '#10B981', border: '#A7F3D0' },
     editor: { bg: '#FFFBEB', text: '#F59E0B', border: '#FDE68A' },
-    disenador: { bg: '#EEF2FF', text: '#073676', border: '#C7D2FE' },
+    disenador: { bg: '#E7EFFE', text: '#073676', border: '#BAD2FF' },
   }
   const rc = rolColors[rolActivo] || rolColors.autor
 

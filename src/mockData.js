@@ -1504,3 +1504,74 @@ export const recursosRefinementSuggestions = [
   'Incluir casos prácticos',
   'Fuentes de acceso libre (open access)',
 ]
+
+// ─── Deep Learning Author Workflow Mockdata ───────────────────────────────────
+// Used only for deep-learning new-subject flow (esAsignaturaNueva === true)
+
+export const dlIndicacionesDidacticasT1 = {
+  enfoqueIA: 'Proporciona una introducción clara y accesible al concepto de deep learning, diferenciando entre IA, ML y deep learning. Incluye elementos visuales y una línea temporal histórica.',
+  bibliografiaT1: 'Russell, S. y Norvig, P. (2021). Artificial Intelligence: A Modern Approach. Pearson.\nMitchell, T. M. (1997). Machine Learning. McGraw-Hill.',
+  notasPedagogicas: 'Incluir actividades interactivas para identificar diferencias entre conceptos. Usar ejemplos de aplicaciones prácticas actuales (visión por computador, NLP). Destacar la importancia de los datos en deep learning.',
+}
+
+export const dlResumenTema1 = {
+  titulo: 'Tema 1. Introducción al Deep Learning',
+  introduccionYObjetivos: 'Este primer epígrafe introduce al estudiante en el significado y la relevancia del deep learning dentro del campo más amplio de la inteligencia artificial y el aprendizaje automático. Se presenta el aprendizaje profundo como un conjunto de técnicas basadas en redes neuronales artificiales capaces de aprender representaciones complejas a partir de grandes volúmenes de datos. Asimismo, se contextualiza su papel en el desarrollo de sistemas inteligentes capaces de resolver problemas como el reconocimiento de imágenes, la comprensión del lenguaje natural o la predicción de patrones complejos.\n\nEste apartado también permite situar al estudiante en los contenidos del tema y comprender la importancia del deep learning como una de las tecnologías clave en el desarrollo actual de la inteligencia artificial.',
+  objetivos: [
+    'Comprender el concepto de deep learning y su relación con la inteligencia artificial y el machine learning.',
+    'Identificar las principales características que diferencian el aprendizaje profundo de otros enfoques de aprendizaje automático.',
+    'Analizar el papel de las redes neuronales artificiales como base de los modelos de deep learning.',
+    'Conocer las principales aplicaciones actuales del deep learning en distintos ámbitos tecnológicos y científicos.',
+    'Reconocer los retos y limitaciones asociados al desarrollo y uso de modelos de aprendizaje profundo.',
+  ],
+  epigrafes: [
+    {
+      titulo: 'Concepto y evolución del Deep Learning',
+      descripcion: 'En este epígrafe se aborda el concepto de deep learning desde una perspectiva conceptual e histórica, analizando cómo ha evolucionado a partir de las primeras investigaciones en redes neuronales artificiales. Se revisan los principales hitos en el desarrollo de esta disciplina, desde los primeros modelos neuronales hasta el auge reciente impulsado por la disponibilidad de grandes volúmenes de datos y el aumento de la capacidad computacional.\n\nTambién se analizan las razones por las cuales el deep learning ha adquirido un papel central en la inteligencia artificial contemporánea, especialmente en tareas complejas relacionadas con el análisis de datos no estructurados como imágenes, texto o audio.',
+      ideasDidacticas: [
+        'Línea temporal que muestre la evolución histórica de las redes neuronales y del deep learning.',
+        'Cuadro comparativo entre inteligencia artificial, machine learning y deep learning.',
+        'Ejemplo práctico de aplicaciones actuales del deep learning.',
+      ],
+    },
+    {
+      titulo: 'Fundamentos de las redes neuronales artificiales',
+      descripcion: 'Este epígrafe introduce los principios básicos que sustentan el funcionamiento de las redes neuronales artificiales, explicando su inspiración en el funcionamiento del cerebro humano. Se describen los componentes fundamentales de una red neuronal, como las neuronas artificiales, los pesos, las funciones de activación y las capas que conforman la arquitectura de la red.\n\nAsimismo, se explica cómo las redes neuronales procesan la información y cómo pueden aprender patrones a partir de datos mediante procesos de entrenamiento.',
+      ideasDidacticas: [
+        'Esquema visual de la estructura de una red neuronal artificial.',
+        'Diagrama que represente el funcionamiento de una neurona artificial.',
+        'Actividad breve de identificación de los componentes de una red neuronal.',
+      ],
+    },
+    {
+      titulo: 'El papel de los datos y el entrenamiento de modelos',
+      descripcion: 'En este epígrafe se explica la importancia de los datos en el desarrollo de modelos de deep learning. Se analizan los diferentes tipos de datos utilizados en el entrenamiento de redes neuronales, así como los procesos mediante los cuales los modelos aprenden a partir de ejemplos.\n\nTambién se introducen conceptos básicos relacionados con el entrenamiento de modelos, como el ajuste de parámetros, la función de pérdida y el proceso de optimización.',
+      ideasDidacticas: [
+        'Diagrama del proceso de entrenamiento de una red neuronal.',
+        'Ejemplo sencillo que ilustre cómo un modelo aprende a partir de datos.',
+        'Actividad breve de reflexión sobre la importancia de los datos en sistemas de inteligencia artificial.',
+      ],
+    },
+    {
+      titulo: 'Aplicaciones y retos del Deep Learning',
+      descripcion: 'Este último epígrafe presenta algunas de las principales aplicaciones del deep learning en diferentes sectores, como la visión por computador, el procesamiento del lenguaje natural, la medicina o la automatización industrial. Se analizan ejemplos de sistemas que utilizan redes neuronales profundas para resolver problemas complejos.\n\nAsimismo, se abordan algunos de los retos asociados al uso de estos modelos, como la necesidad de grandes volúmenes de datos, el alto consumo computacional o las cuestiones relacionadas con la interpretabilidad y la ética de los sistemas de inteligencia artificial.',
+      ideasDidacticas: [
+        'Tabla con ejemplos de aplicaciones del deep learning en distintos sectores.',
+        'Caso práctico sobre el uso de redes neuronales en una aplicación real.',
+        'Preguntas de autoevaluación para reforzar la comprensión de los conceptos clave.',
+      ],
+    },
+  ],
+}
+
+export const dlBloquesTema1 = [
+  { id: 'dl-t1-b1', tipo: 'h2', contenido: '1. Introducción y objetivos', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-b2', tipo: 'p', contenido: 'Este primer epígrafe introduce al estudiante en el significado y la relevancia del deep learning dentro del campo más amplio de la inteligencia artificial y el aprendizaje automático. Se presenta el aprendizaje profundo como un conjunto de técnicas basadas en redes neuronales artificiales capaces de aprender representaciones complejas a partir de grandes volúmenes de datos.', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-b3', tipo: 'h3', contenido: 'Objetivos del tema', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-b4', tipo: 'ul', contenido: ['Comprender el concepto de deep learning y su relación con la inteligencia artificial y el machine learning.', 'Identificar las principales características que diferencian el aprendizaje profundo de otros enfoques de aprendizaje automático.', 'Analizar el papel de las redes neuronales artificiales como base de los modelos de deep learning.', 'Conocer las principales aplicaciones actuales del deep learning en distintos ámbitos tecnológicos y científicos.'], etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-b5', tipo: 'h2', contenido: '2. Concepto y evolución del Deep Learning', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-b6', tipo: 'p', contenido: 'En este epígrafe se aborda el concepto de deep learning desde una perspectiva conceptual e histórica, analizando cómo ha evolucionado a partir de las primeras investigaciones en redes neuronales artificiales. Se revisan los principales hitos en el desarrollo de esta disciplina, desde los primeros modelos neuronales hasta el auge reciente impulsado por la disponibilidad de grandes volúmenes de datos y el aumento de la capacidad computacional.', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-b7', tipo: 'p', contenido: 'El deep learning surge como resultado de décadas de investigación en inteligencia artificial, ciencias computacionales y neurociencia. En las últimas dos décadas, la disponibilidad de grandes volúmenes de datos, el incremento exponencial de la capacidad computacional (especialmente mediante el uso de GPU) y el desarrollo de nuevas arquitecturas han permitido que el aprendizaje profundo se posicione como una de las tecnologías más transformadoras del siglo XXI.', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-b8', tipo: 'h3', contenido: 'Aplicaciones actuales del Deep Learning', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-b9', tipo: 'p', contenido: 'Hoy en día, el deep learning es omnipresente en numerosos ámbitos: desde sistemas de reconocimiento facial y visión por computador, hasta asistentes virtuales que procesan lenguaje natural. En medicina, los modelos profundos ayudan a diagnosticar enfermedades a partir de imágenes médicas. En el sector financiero, se utilizan para detección de fraudes. En automoción, son fundamentales para los vehículos autónomos.', etiquetas: [], comentarios: [] },
+]

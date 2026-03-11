@@ -10,8 +10,8 @@
   --font-mono: 'Arial', sans-serif;
 
   /* UNIR brand */
-  --color-primary:        #0098CD;
-  --color-primary-hover:  #00729A;
+  --color-primary:        #367CFF;
+  --color-primary-hover:  #0A5CF5;
   --color-secondary:      #006C8F;
   --color-secondary-dark: #073676;
 
@@ -27,9 +27,9 @@
   --color-error:          #EF4444;
 
   /* AI accent (kept distinct from brand) */
-  --color-ai:             #0098CD;
-  --color-ai-light:       #E0F4FB;
-  --color-ai-border:      #B3E0F2;
+  --color-ai:             #367CFF;
+  --color-ai-light:       #E7EFFE;
+  --color-ai-border:      #BAD2FF;
 }
 
 body {

@@ -215,7 +215,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
               </p>
               <p
                 className="text-xs mt-1.5 font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ color: '#0098CD' }}
+                style={{ color: '#367CFF' }}
               >
                 Reanudar →
               </p>
@@ -234,15 +234,15 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 {msg.rol === 'ia' && (
                   <div
                     className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mr-2 mt-0.5"
-                    style={{ background: '#E0F4FB' }}
+                    style={{ background: '#E7EFFE' }}
                   >
-                    <Sparkles size={11} style={{ color: '#0098CD' }} />
+                    <Sparkles size={11} style={{ color: '#367CFF' }} />
                   </div>
                 )}
                 <div
                   className="max-w-[85%] rounded-xl px-3 py-2.5 text-sm leading-relaxed"
                   style={{
-                    background: msg.rol === 'usuario' ? '#0098CD' : '#FFFFFF',
+                    background: msg.rol === 'usuario' ? '#367CFF' : '#FFFFFF',
                     color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151',
                     border: msg.rol === 'ia' ? '1px solid #E5E7EB' : 'none',
                     boxShadow: msg.rol === 'ia' ? '0 1px 2px rgba(0,0,0,0.04)' : 'none',
@@ -257,15 +257,15 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
             {/* Typing indicator */}
             {esperando && (
               <div className="flex items-center gap-2 animate-fade-in">
-                <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E0F4FB' }}>
-                  <Sparkles size={11} style={{ color: '#0098CD' }} />
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E7EFFE' }}>
+                  <Sparkles size={11} style={{ color: '#367CFF' }} />
                 </div>
                 <div className="px-3 py-2.5 rounded-xl flex items-center gap-1" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
                   {[0, 1, 2].map(i => (
                     <span
                       key={i}
                       className="w-1.5 h-1.5 rounded-full animate-pulse-dot"
-                      style={{ background: '#0098CD', animationDelay: `${i * 0.2}s` }}
+                      style={{ background: '#367CFF', animationDelay: `${i * 0.2}s` }}
                     />
                   ))}
                 </div>
@@ -284,7 +284,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 <div className="flex-1 min-w-0">
                   <span
                     className="inline-block text-xs font-semibold px-1.5 py-0.5 rounded mb-1"
-                    style={{ background: '#0098CD', color: '#FFFFFF', fontFamily: "'Arial', sans-serif" }}
+                    style={{ background: '#367CFF', color: '#FFFFFF', fontFamily: "'Arial', sans-serif" }}
                   >
                     {quote.accion}
                   </span>
@@ -324,7 +324,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 disabled={(!input.trim() && !quote) || esperando}
                 className="p-1.5 rounded-lg transition-all flex-shrink-0"
                 style={{
-                  background: (input.trim() || quote) && !esperando ? '#0098CD' : '#E5E7EB',
+                  background: (input.trim() || quote) && !esperando ? '#367CFF' : '#E5E7EB',
                   color: (input.trim() || quote) && !esperando ? '#FFFFFF' : '#9CA3AF',
                 }}
               >

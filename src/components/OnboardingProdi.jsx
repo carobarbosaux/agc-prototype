@@ -19,8 +19,8 @@ function VisualEditorZoom() {
           <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#FCD34D' }} />
           <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#4ADE80' }} />
           <div className="flex-1 mx-3 h-5 rounded-md" style={{ background: '#F1F5F9' }} />
-          <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: '#EEF2FF' }}>
-            <Sparkles size={11} style={{ color: '#6366F1' }} />
+          <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: '#E7EFFE' }}>
+            <Sparkles size={11} style={{ color: '#367CFF' }} />
           </div>
         </div>
         {/* Content mockup */}
@@ -31,14 +31,14 @@ function VisualEditorZoom() {
           <div className="h-3 rounded-md w-full" style={{ background: '#F8F9FA' }} />
           <div className="h-3 rounded-md w-3/4" style={{ background: '#F8F9FA' }} />
           {/* Highlighted block */}
-          <div className="h-3 rounded-md w-full" style={{ background: '#EEF2FF' }} />
-          <div className="h-3 rounded-md w-2/3" style={{ background: '#EEF2FF' }} />
+          <div className="h-3 rounded-md w-full" style={{ background: '#E7EFFE' }} />
+          <div className="h-3 rounded-md w-2/3" style={{ background: '#E7EFFE' }} />
         </div>
         {/* Prodi badge */}
         <div className="px-5 pb-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{ background: '#EEF2FF', border: '1px solid #C7D2FE' }}>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
             <ProdiMark size={14} />
-            <span className="text-xs font-semibold" style={{ color: '#4338CA' }}>Prodi</span>
+            <span className="text-xs font-semibold" style={{ color: '#0047CC' }}>Prodi</span>
           </div>
         </div>
       </div>
@@ -55,7 +55,7 @@ function VisualCanvasOverview() {
           <div className="w-28 flex-shrink-0 p-3 space-y-1.5" style={{ background: '#F8F9FA', borderRight: '1px solid #F1F5F9' }}>
             {['Índice', 'Tema 1', 'Tema 2', 'Tema 3'].map((item, i) => (
               <div key={item} className="px-2 py-1.5 rounded-lg text-xs font-medium"
-                style={{ background: i === 1 ? '#EEF2FF' : 'transparent', color: i === 1 ? '#4338CA' : '#6B7280' }}>
+                style={{ background: i === 1 ? '#E7EFFE' : 'transparent', color: i === 1 ? '#0047CC' : '#6B7280' }}>
                 {item}
               </div>
             ))}
@@ -67,8 +67,8 @@ function VisualCanvasOverview() {
             <div className="h-3 w-5/6 rounded-md" style={{ background: '#F8F9FA' }} />
             <div className="h-3 w-full rounded-md" style={{ background: '#F8F9FA' }} />
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
-              style={{ background: '#EEF2FF', color: '#4338CA', border: '1px solid #C7D2FE' }}>
-              <Sparkles size={10} style={{ color: '#6366F1' }} />
+              style={{ background: '#E7EFFE', color: '#0047CC', border: '1px solid #BAD2FF' }}>
+              <Sparkles size={10} style={{ color: '#367CFF' }} />
               Generar contenido
             </div>
           </div>
@@ -93,8 +93,8 @@ function VisualContextualSelection() {
         <div className="rounded-xl p-4 space-y-2" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
           <div className="h-3 w-full rounded" style={{ background: '#F1F5F9' }} />
           <div className="flex gap-1 items-center">
-            <div className="h-3 rounded flex-1" style={{ background: '#C7D2FE' }} />
-            <div className="h-3 rounded w-1/3" style={{ background: '#C7D2FE' }} />
+            <div className="h-3 rounded flex-1" style={{ background: '#BAD2FF' }} />
+            <div className="h-3 rounded w-1/3" style={{ background: '#BAD2FF' }} />
           </div>
           <div className="h-3 w-4/5 rounded" style={{ background: '#F1F5F9' }} />
         </div>
@@ -127,8 +127,8 @@ function VisualContextualSelection() {
 
 function VisualContextualActions() {
   const actions = [
-    { icon: RotateCcw, label: 'Corregir redacción', color: '#6366F1' },
-    { icon: Expand, label: 'Expandir o resumir', color: '#0098CD' },
+    { icon: RotateCcw, label: 'Corregir redacción', color: '#367CFF' },
+    { icon: Expand, label: 'Expandir o resumir', color: '#367CFF' },
     { icon: Sparkles, label: 'Regenerar texto', color: '#7C3AED' },
     { icon: BookOpen, label: 'Buscar bibliografía', color: '#059669' },
     { icon: Microscope, label: 'Deep research', color: '#D97706' },
@@ -163,28 +163,28 @@ function VisualSidePanel() {
     <div className="w-full h-full flex items-center justify-center p-4">
       <div className="w-full max-w-xs rounded-2xl overflow-hidden" style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.10)', border: '1px solid #E5E7EB' }}>
         {/* Panel header */}
-        <div className="flex items-center gap-2 px-4 py-3" style={{ background: '#EEF2FF', borderBottom: '1px solid #C7D2FE' }}>
+        <div className="flex items-center gap-2 px-4 py-3" style={{ background: '#E7EFFE', borderBottom: '1px solid #BAD2FF' }}>
           <ProdiMark size={20} />
-          <span className="text-sm font-semibold" style={{ color: '#4338CA' }}>Prodi</span>
+          <span className="text-sm font-semibold" style={{ color: '#0047CC' }}>Prodi</span>
         </div>
         {/* Messages */}
         <div className="p-4 space-y-3" style={{ background: '#FFFFFF' }}>
           <div className="flex items-start gap-2">
-            <div className="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style={{ background: '#EEF2FF' }}>
-              <Sparkles size={8} style={{ color: '#6366F1' }} />
+            <div className="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style={{ background: '#E7EFFE' }}>
+              <Sparkles size={8} style={{ color: '#367CFF' }} />
             </div>
             <div className="px-3 py-2 rounded-xl text-xs leading-relaxed" style={{ background: '#F8F9FA', color: '#374151', maxWidth: '160px' }}>
               ¿En qué puedo ayudarte hoy?
             </div>
           </div>
           <div className="flex justify-end">
-            <div className="px-3 py-2 rounded-xl text-xs" style={{ background: '#6366F1', color: '#FFFFFF', maxWidth: '140px' }}>
+            <div className="px-3 py-2 rounded-xl text-xs" style={{ background: '#367CFF', color: '#FFFFFF', maxWidth: '140px' }}>
               Investigar fuentes sobre CNN
             </div>
           </div>
           <div className="flex items-start gap-2">
-            <div className="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style={{ background: '#EEF2FF' }}>
-              <Sparkles size={8} style={{ color: '#6366F1' }} />
+            <div className="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style={{ background: '#E7EFFE' }}>
+              <Sparkles size={8} style={{ color: '#367CFF' }} />
             </div>
             <div className="px-3 py-2 rounded-xl text-xs leading-relaxed" style={{ background: '#F8F9FA', color: '#374151', maxWidth: '160px' }}>
               Aquí tienes algunas referencias clave...
@@ -195,7 +195,7 @@ function VisualSidePanel() {
         <div className="px-4 pb-4">
           <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
             <span className="flex-1 text-xs" style={{ color: '#9CA3AF' }}>Escribe tu pregunta…</span>
-            <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: '#6366F1' }}>
+            <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: '#367CFF' }}>
               <ArrowUpRight size={10} style={{ color: '#FFFFFF' }} />
             </div>
           </div>
@@ -248,9 +248,9 @@ function VisualFinalState() {
         <div className="flex items-center gap-3">
           {['Generar', 'Editar', 'Revisar'].map(cap => (
             <div key={cap} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full"
-              style={{ background: '#EEF2FF', border: '1px solid #C7D2FE' }}>
-              <Check size={9} style={{ color: '#6366F1' }} />
-              <span className="text-xs font-medium" style={{ color: '#4338CA' }}>{cap}</span>
+              style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
+              <Check size={9} style={{ color: '#367CFF' }} />
+              <span className="text-xs font-medium" style={{ color: '#0047CC' }}>{cap}</span>
             </div>
           ))}
         </div>
@@ -341,12 +341,12 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
                     key={s.id}
                     onClick={() => setSlideIndex(i)}
                     className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all"
-                    style={{ background: isActive ? '#EEF2FF' : 'transparent' }}
+                    style={{ background: isActive ? '#E7EFFE' : 'transparent' }}
                   >
                     <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all"
                       style={{
-                        background: isActive ? '#6366F1' : isPast ? '#DCFCE7' : '#E5E7EB',
-                        border: isActive ? '2px solid #6366F1' : isPast ? '2px solid #16A34A' : '2px solid #E5E7EB',
+                        background: isActive ? '#367CFF' : isPast ? '#DCFCE7' : '#E5E7EB',
+                        border: isActive ? '2px solid #367CFF' : isPast ? '2px solid #16A34A' : '2px solid #E5E7EB',
                       }}>
                       {isPast
                         ? <Check size={10} style={{ color: '#16A34A' }} />
@@ -354,7 +354,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
                       }
                     </div>
                     <span className="text-xs font-medium truncate"
-                      style={{ color: isActive ? '#4338CA' : isPast ? '#374151' : '#9CA3AF' }}>
+                      style={{ color: isActive ? '#0047CC' : isPast ? '#374151' : '#9CA3AF' }}>
                       {s.title || `Paso ${i + 1}`}
                     </span>
                   </button>
@@ -370,7 +370,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
             </div>
             <div className="w-full rounded-full overflow-hidden" style={{ height: '4px', background: '#E5E7EB' }}>
               <div className="h-full rounded-full transition-all"
-                style={{ background: 'linear-gradient(90deg, #6366F1, #7C3AED)', width: `${((slideIndex + 1) / onboardingSlides.length) * 100}%` }} />
+                style={{ background: 'linear-gradient(90deg, #367CFF, #7C3AED)', width: `${((slideIndex + 1) / onboardingSlides.length) * 100}%` }} />
             </div>
           </div>
         </div>
@@ -407,7 +407,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
                 <div className="space-y-2">
                   {slide.bullets.map(b => (
                     <div key={b} className="flex items-center gap-2.5">
-                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#6366F1' }} />
+                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#367CFF' }} />
                       <span className="text-sm" style={{ color: '#374151' }}>{b}</span>
                     </div>
                   ))}
@@ -454,7 +454,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
               <button
                 onClick={handleCta}
                 className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all"
-                style={{ background: 'linear-gradient(135deg, #6366F1 0%, #7C3AED 100%)', color: '#FFFFFF', boxShadow: '0 4px 16px rgba(99,102,241,0.35)' }}
+                style={{ background: 'linear-gradient(135deg, #367CFF 0%, #7C3AED 100%)', color: '#FFFFFF', boxShadow: '0 4px 16px rgba(99,102,241,0.35)' }}
                 onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
                 onMouseLeave={e => e.currentTarget.style.opacity = '1'}
               >
@@ -464,9 +464,9 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
               <button
                 onClick={goNext}
                 className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
-                style={{ background: '#6366F1', color: '#FFFFFF' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#4F46E5'}
-                onMouseLeave={e => e.currentTarget.style.background = '#6366F1'}
+                style={{ background: '#367CFF', color: '#FFFFFF' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
+                onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
               >
                 Siguiente
                 <ChevronRight size={15} />

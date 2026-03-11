@@ -6,7 +6,6 @@ import PanelIA from '../components/PanelIA'
 import ComentarioHilo from '../components/ComentarioHilo'
 import EstadoBadge from '../components/EstadoBadge'
 import EtiquetaBloque from '../components/EtiquetaBloque'
-import OnboardingProdi from '../components/OnboardingProdi'
 import { ProdiMark } from '../components/ProdiLogo'
 import {
   bloquesTema2,
@@ -25,6 +24,9 @@ import {
   recursosChainingThoughts,
   recursosReferencesPool,
   recursosRefinementSuggestions,
+  dlIndicacionesDidacticasT1,
+  dlResumenTema1,
+  dlBloquesTema1,
 } from '../mockData'
 
 const SECCION_CONFIG = {
@@ -246,9 +248,9 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
       <div className="flex flex-col items-center justify-center py-24 gap-4">
         <div
           className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse"
-          style={{ background: '#EEF2FF' }}
+          style={{ background: '#E7EFFE' }}
         >
-          <Sparkles size={24} style={{ color: '#6366F1' }} />
+          <Sparkles size={24} style={{ color: '#367CFF' }} />
         </div>
         <div className="text-center">
           <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando índice de temas…</p>
@@ -259,7 +261,7 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
             <div
               key={i}
               className="w-1.5 h-1.5 rounded-full animate-bounce"
-              style={{ background: '#6366F1', animationDelay: `${i * 0.15}s` }}
+              style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }}
             />
           ))}
         </div>
@@ -272,9 +274,9 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
       <div className="flex flex-col items-center justify-center py-24 gap-4">
         <div
           className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse"
-          style={{ background: '#EEF2FF' }}
+          style={{ background: '#E7EFFE' }}
         >
-          <Sparkles size={24} style={{ color: '#6366F1' }} />
+          <Sparkles size={24} style={{ color: '#367CFF' }} />
         </div>
         <div className="text-center">
           <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando resumen preliminar…</p>
@@ -285,7 +287,7 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
             <div
               key={i}
               className="w-1.5 h-1.5 rounded-full animate-bounce"
-              style={{ background: '#6366F1', animationDelay: `${i * 0.15}s` }}
+              style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }}
             />
           ))}
         </div>
@@ -301,10 +303,10 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
         style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}
       >
         <div className="flex items-center gap-2 mb-3 pb-3" style={{ borderBottom: '1px solid #E5E7EB' }}>
-          <div className="w-5 h-5 rounded flex items-center justify-center" style={{ background: '#EEF2FF' }}>
-            <Sparkles size={11} style={{ color: '#6366F1' }} />
+          <div className="w-5 h-5 rounded flex items-center justify-center" style={{ background: '#E7EFFE' }}>
+            <Sparkles size={11} style={{ color: '#367CFF' }} />
           </div>
-          <span className="text-xs font-semibold" style={{ color: '#6366F1' }}>Índice generado por IA · Solo lectura</span>
+          <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Índice generado por IA · Solo lectura</span>
         </div>
         <div className="space-y-2">
           {indice.map((tema, i) => (
@@ -324,10 +326,10 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
       {/* AI hint */}
       <div
         className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg mb-6"
-        style={{ background: '#EEF2FF', border: '1px solid #C7D2FE' }}
+        style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}
       >
-        <Sparkles size={12} style={{ color: '#6366F1', flexShrink: 0, marginTop: '2px' }} />
-        <p className="text-xs" style={{ color: '#4338CA', lineHeight: '1.5' }}>
+        <Sparkles size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
+        <p className="text-xs" style={{ color: '#0047CC', lineHeight: '1.5' }}>
           El índice se ha generado en base al área temática y los contenidos indicados. Podrás reorganizar y editar los temas desde el Canvas.
         </p>
       </div>
@@ -336,9 +338,9 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
       <button
         onClick={handleGenerarResumen}
         className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all"
-        style={{ background: '#6366F1', color: '#FFFFFF' }}
-        onMouseEnter={e => e.currentTarget.style.background = '#4F46E5'}
-        onMouseLeave={e => e.currentTarget.style.background = '#6366F1'}
+        style={{ background: '#367CFF', color: '#FFFFFF' }}
+        onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
+        onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
       >
         <Sparkles size={14} />
         Generar resumen de la asignatura
@@ -380,8 +382,8 @@ function RecursosLoadingScreen({ onCancel }) {
   return (
     <div className="rounded-xl p-8" style={{ border: '1px solid #E5E7EB', background: '#FAFAFA' }}>
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center animate-pulse" style={{ background: '#EEF2FF' }}>
-          <Sparkles size={16} style={{ color: '#6366F1' }} />
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
+          <Sparkles size={16} style={{ color: '#367CFF' }} />
         </div>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Generando referencias académicas…</p>
@@ -398,7 +400,7 @@ function RecursosLoadingScreen({ onCancel }) {
         </button>
       </div>
       <div className="rounded-full overflow-hidden mb-5" style={{ height: 4, background: '#E5E7EB' }}>
-        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: '#6366F1' }} />
+        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: '#367CFF' }} />
       </div>
       <div className="space-y-2">
         {recursosChainingThoughts.slice(0, thoughtStep + 1).map((t, i) => (
@@ -406,7 +408,7 @@ function RecursosLoadingScreen({ onCancel }) {
             <div className="flex-shrink-0 mt-0.5">
               {i < thoughtStep
                 ? <Check size={13} style={{ color: '#16A34A' }} />
-                : <div className="w-3 h-3 rounded-full animate-pulse" style={{ background: '#6366F1' }} />
+                : <div className="w-3 h-3 rounded-full animate-pulse" style={{ background: '#367CFF' }} />
               }
             </div>
             <div>
@@ -438,7 +440,7 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, onDelete, onRegener
           <div className="flex items-start justify-between gap-2 mb-1">
             <a href={r.url} target="_blank" rel="noopener noreferrer"
               className="text-sm font-semibold leading-snug hover:underline flex items-center gap-1"
-              style={{ color: '#0098CD' }}
+              style={{ color: '#367CFF' }}
             >
               {r.title}
               <ExternalLink size={11} style={{ flexShrink: 0, opacity: 0.6 }} />
@@ -451,7 +453,7 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, onDelete, onRegener
                   className="p-1 rounded transition-colors"
                   style={{ color: '#D1D5DB' }}
                   title="Regenerar esta referencia"
-                  onMouseEnter={e => e.currentTarget.style.color = '#6366F1'}
+                  onMouseEnter={e => e.currentTarget.style.color = '#367CFF'}
                   onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
                 >
                   {regeneratingId === r.id
@@ -549,8 +551,8 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
   if (screen === 'idle') {
     return (
       <div className="flex flex-col items-center justify-center py-16 rounded-xl" style={{ border: '1px dashed #D1D5DB', background: '#FAFAFA' }}>
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#EEF2FF' }}>
-          <BookOpen size={20} style={{ color: '#6366F1' }} />
+        <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#E7EFFE' }}>
+          <BookOpen size={20} style={{ color: '#367CFF' }} />
         </div>
         <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Sin referencias generadas</p>
         <p className="text-xs mb-5 text-center max-w-xs" style={{ color: '#9CA3AF' }}>
@@ -560,9 +562,9 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
           <button
             onClick={() => setScreen('loading')}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
-            style={{ background: '#6366F1' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#4F46E5'}
-            onMouseLeave={e => e.currentTarget.style.background = '#6366F1'}
+            style={{ background: '#367CFF' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
+            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
           >
             <Sparkles size={14} /> Generar referencias con IA
           </button>
@@ -652,8 +654,8 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
         <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
           <div className="flex items-center justify-between px-4 py-3" style={{ background: '#F8F9FA', borderBottom: '1px solid #E5E7EB' }}>
             <div className="flex items-center gap-2">
-              <Sparkles size={13} style={{ color: '#6366F1' }} />
-              <span className="text-xs font-semibold" style={{ color: '#6366F1' }}>Refinar referencias con IA</span>
+              <Sparkles size={13} style={{ color: '#367CFF' }} />
+              <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Refinar referencias con IA</span>
             </div>
             <button onClick={() => setScreen('list')} className="p-1 rounded hover:bg-gray-200 transition-colors">
               <X size={13} style={{ color: '#6B7280' }} />
@@ -665,9 +667,9 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
               {recursosRefinementSuggestions.map(s => (
                 <button key={s} onClick={() => setChatInput(s)}
                   className="text-xs px-2.5 py-1 rounded-full transition-all"
-                  style={{ background: '#EEF2FF', color: '#6366F1', border: '1px solid #C7D2FE' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#E0E7FF'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#EEF2FF'}
+                  style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#BAD2FF'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#E7EFFE'}
                 >{s}</button>
               ))}
             </div>
@@ -677,19 +679,19 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
               {chatHistory.map((msg, i) => (
                 <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'ai' && (
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#EEF2FF' }}>
-                      <Sparkles size={10} style={{ color: '#6366F1' }} />
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#E7EFFE' }}>
+                      <Sparkles size={10} style={{ color: '#367CFF' }} />
                     </div>
                   )}
                   <div className="text-xs leading-relaxed rounded-xl px-3 py-2 max-w-xs"
-                    style={msg.role === 'user' ? { background: '#0098CD', color: '#FFFFFF' } : { background: '#F3F4F6', color: '#374151' }}
+                    style={msg.role === 'user' ? { background: '#367CFF', color: '#FFFFFF' } : { background: '#F3F4F6', color: '#374151' }}
                   >{msg.text}</div>
                 </div>
               ))}
               {chatLoading && (
                 <div className="flex gap-2 justify-start">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#EEF2FF' }}>
-                    <Sparkles size={10} style={{ color: '#6366F1' }} />
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#E7EFFE' }}>
+                    <Sparkles size={10} style={{ color: '#367CFF' }} />
                   </div>
                   <div className="flex items-center gap-1 px-3 py-2 rounded-xl" style={{ background: '#F3F4F6' }}>
                     {[0,1,2].map(i => (
@@ -708,13 +710,13 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
               onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendChat() } }}
               placeholder="Pide un criterio específico para las referencias…"
               className="flex-1 text-sm outline-none bg-transparent"
-              style={{ color: '#374151', caretColor: '#0098CD' }}
+              style={{ color: '#374151', caretColor: '#367CFF' }}
             />
             <button
               onClick={handleSendChat}
               disabled={!chatInput.trim() || chatLoading}
               className="flex items-center justify-center w-7 h-7 rounded-lg transition-all flex-shrink-0"
-              style={{ background: chatInput.trim() && !chatLoading ? '#0098CD' : '#E5E7EB' }}
+              style={{ background: chatInput.trim() && !chatLoading ? '#367CFF' : '#E5E7EB' }}
             >
               <Send size={12} style={{ color: chatInput.trim() && !chatLoading ? '#FFFFFF' : '#9CA3AF' }} />
             </button>
@@ -741,7 +743,7 @@ function SeccionIndiceFija({ bloques }) {
           {/* Number badge */}
           <div
             className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-sm font-bold"
-            style={{ background: '#EEF2FF', color: '#6366F1' }}
+            style={{ background: '#E7EFFE', color: '#367CFF' }}
           >
             {tema.numero}
           </div>
@@ -816,7 +818,7 @@ function SeccionResumen({ editable }) {
             onChange={e => set('introduccion', e.target.value)}
             rows={3}
             className="w-full text-base leading-8 outline-none resize-none bg-transparent"
-            style={{ color: '#1F2937', caretColor: '#0098CD' }}
+            style={{ color: '#1F2937', caretColor: '#367CFF' }}
           />
         ) : (
           <p className="text-base leading-8" style={{ color: '#1F2937' }}>{data.introduccion}</p>
@@ -830,7 +832,7 @@ function SeccionResumen({ editable }) {
             <div key={idx} className="flex items-start gap-3 group">
               <span
                 className="w-5 h-5 rounded flex items-center justify-center text-xs font-bold flex-shrink-0 mt-1.5"
-                style={{ background: '#EEF2FF', color: '#6366F1' }}
+                style={{ background: '#E7EFFE', color: '#367CFF' }}
               >
                 {idx + 1}
               </span>
@@ -840,7 +842,7 @@ function SeccionResumen({ editable }) {
                     value={obj}
                     onChange={e => setObjetivo(idx, e.target.value)}
                     className="flex-1 text-base leading-8 outline-none bg-transparent"
-                    style={{ color: '#1F2937', caretColor: '#0098CD' }}
+                    style={{ color: '#1F2937', caretColor: '#367CFF' }}
                     placeholder="Objetivo de aprendizaje…"
                   />
                   <button
@@ -863,7 +865,7 @@ function SeccionResumen({ editable }) {
               onClick={addObjetivo}
               className="flex items-center gap-2 text-sm mt-2 transition-all"
               style={{ color: '#D1D5DB', paddingLeft: '32px' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#0098CD'}
+              onMouseEnter={e => e.currentTarget.style.color = '#367CFF'}
               onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
             >
               <Plus size={14} /> Agregar objetivo
@@ -879,7 +881,7 @@ function SeccionResumen({ editable }) {
             value={data.extension}
             onChange={e => set('extension', e.target.value)}
             className="text-base leading-8 outline-none bg-transparent w-full"
-            style={{ color: '#1F2937', caretColor: '#0098CD' }}
+            style={{ color: '#1F2937', caretColor: '#367CFF' }}
           />
         ) : (
           <p className="text-base leading-8" style={{ color: '#1F2937' }}>{data.extension}</p>
@@ -895,7 +897,7 @@ function SeccionResumen({ editable }) {
             onChange={e => set('epigrafes', e.target.value)}
             rows={10}
             className="w-full text-base leading-8 outline-none resize-none bg-transparent"
-            style={{ color: '#1F2937', caretColor: '#0098CD' }}
+            style={{ color: '#1F2937', caretColor: '#367CFF' }}
           />
         ) : (
           <div className="space-y-4">
@@ -906,6 +908,207 @@ function SeccionResumen({ editable }) {
         )}
       </div>
 
+    </div>
+  )
+}
+
+// ─── Deep Learning: Instrucciones Didácticas T1 (two-part flow) ──────────────
+
+function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGenerarResumen, onGenerarContenido, dlGenerandoContenido, onVolverAInstrucciones }) {
+
+  if (generandoResumen || dlGenerandoContenido) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 gap-4">
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
+          <ProdiMark size={28} />
+        </div>
+        <div className="text-center">
+          <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
+            {dlGenerandoContenido ? 'Generando contenido del tema…' : 'Generando resumen del tema…'}
+          </p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está procesando las instrucciones…</p>
+        </div>
+        <div className="flex gap-1.5 mt-2">
+          {[0, 1, 2].map(i => (
+            <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (parte === 1) {
+    return (
+      <div className="space-y-6 max-w-2xl">
+        {/* Header */}
+        <div>
+          <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Instrucciones para la IA</h3>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>Proporciona contexto al asistente para generar el resumen del tema</p>
+        </div>
+
+        {/* Enfoque para la IA */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Enfoque para la IA</label>
+          <textarea
+            value={datos.enfoqueIA}
+            onChange={e => onChange('enfoqueIA', e.target.value)}
+            rows={3}
+            className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
+            style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A', lineHeight: '1.6' }}
+            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.10)' }}
+            onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+          />
+        </div>
+
+        {/* Bibliografía */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Bibliografía del tema</label>
+          <textarea
+            value={datos.bibliografiaT1}
+            onChange={e => onChange('bibliografiaT1', e.target.value)}
+            rows={4}
+            className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
+            style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A', lineHeight: '1.6', fontFamily: "'Arial', sans-serif" }}
+            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.10)' }}
+            onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+          />
+        </div>
+
+        {/* Notas pedagógicas */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Notas pedagógicas e instrucciones</label>
+          <textarea
+            value={datos.notasPedagogicas}
+            onChange={e => onChange('notasPedagogicas', e.target.value)}
+            rows={3}
+            className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
+            style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A', lineHeight: '1.6' }}
+            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.10)' }}
+            onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+          />
+        </div>
+
+        {/* AI hint */}
+        <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
+          <ProdiMark size={14} className="flex-shrink-0 mt-0.5" />
+          <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
+            Al hacer clic en <strong>Generar resumen</strong>, Prodi analizará las instrucciones y creará un resumen estructurado del tema con objetivos, epígrafes e ideas didácticas.
+          </p>
+        </div>
+
+        {/* CTA */}
+        <div className="flex items-center justify-end gap-3 pt-2">
+          <button
+            className="px-4 py-2 rounded-lg text-xs font-medium transition-all"
+            style={{ background: '#F1F5F9', color: '#374151' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+            onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
+          >
+            Guardar borrador
+          </button>
+          <button
+            onClick={onGenerarResumen}
+            className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold text-white transition-all"
+            style={{ background: '#367CFF' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
+            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+          >
+            <ProdiMark size={14} />
+            Generar resumen del tema
+            <ChevronRight size={14} />
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Part 2: Topic summary review
+  return (
+    <div className="space-y-6 max-w-2xl">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="text-base font-semibold" style={{ color: '#1A1A1A' }}>{dlResumenTema1.titulo}</h3>
+            <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>
+              <ProdiMark size={10} /> Generado por IA
+            </span>
+          </div>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>Revisa la estructura antes de generar el contenido completo</p>
+        </div>
+      </div>
+
+      {/* Introducción y objetivos */}
+      <div className="rounded-xl p-4 space-y-2" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Introducción y objetivos</p>
+        {dlResumenTema1.introduccionYObjetivos.split('\n\n').map((par, i) => (
+          <p key={i} className="text-sm leading-relaxed" style={{ color: '#374151' }}>{par}</p>
+        ))}
+      </div>
+
+      {/* Objetivos list */}
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Objetivos de aprendizaje</p>
+        <div className="space-y-1.5">
+          {dlResumenTema1.objetivos.map((obj, i) => (
+            <div key={i} className="flex items-start gap-2.5">
+              <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-0.5" style={{ background: '#E7EFFE', color: '#367CFF' }}>{i + 1}</span>
+              <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{obj}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Epígrafes */}
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF' }}>Estructura propuesta del tema</p>
+        <div className="space-y-3">
+          {dlResumenTema1.epigrafes.map((ep, i) => (
+            <div key={i} className="rounded-xl p-4" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs font-bold" style={{ color: '#367CFF' }}>Epígrafe {i + 1}</span>
+                <span className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{ep.titulo}</span>
+              </div>
+              {ep.descripcion.split('\n\n').map((par, j) => (
+                <p key={j} className="text-xs leading-relaxed mb-2" style={{ color: '#6B7280' }}>{par}</p>
+              ))}
+              <div className="mt-2 pt-2" style={{ borderTop: '1px solid #F1F5F9' }}>
+                <p className="text-xs font-medium mb-1.5" style={{ color: '#9CA3AF' }}>Ideas didácticas</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {ep.ideasDidacticas.map((idea, k) => (
+                    <span key={k} className="text-xs px-2 py-1 rounded-lg" style={{ background: '#F0FDF4', color: '#16A34A', border: '1px solid #BBF7D0' }}>{idea}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer CTAs */}
+      <div className="flex items-center justify-between pt-2">
+        <button
+          onClick={onVolverAInstrucciones}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-all"
+          style={{ background: '#F1F5F9', color: '#374151' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+          onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
+        >
+          <ChevronRight size={12} style={{ transform: 'rotate(180deg)' }} />
+          Volver a instrucciones
+        </button>
+        <button
+          onClick={onGenerarContenido}
+          className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold text-white transition-all"
+          style={{ background: '#367CFF' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
+          onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+        >
+          <ProdiMark size={14} />
+          Generar contenido del tema
+          <ChevronRight size={14} />
+        </button>
+      </div>
     </div>
   )
 }
@@ -925,16 +1128,34 @@ export default function PantallaCanvas({
   onCreacionDataConsumed,
 }) {
   const [resumenPrefill, setResumenPrefill] = useState(null)
+  const [esAsignaturaNueva] = useState(!!creacionData?.indice)
+  // DL-specific instrucciones-t1 two-part flow
+  const [dlInstruccionesParte, setDlInstruccionesParte] = useState(1) // 1=setup form | 2=summary review
+  const [dlInstruccionesData, setDlInstruccionesData] = useState({ ...dlIndicacionesDidacticasT1 })
+  const [dlGenerandoResumen, setDlGenerandoResumen] = useState(false)
+  const [dlGenerandoContenido, setDlGenerandoContenido] = useState(false)
   const [comentarioActivoBloque, setComentarioActivoBloque] = useState(null)
   const [nuevoComentarioTexto, setNuevoComentarioTexto] = useState('')
   const [nuevoComentarioAnchor, setNuevoComentarioAnchor] = useState(null)
   const [quotePendiente, setQuotePendiente] = useState(null)
-  const [bloquesState, setBloquesState] = useState({
-    t2: bloquesTema2.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
-    t1: bloquesTema1.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
-    t3: bloquesTema3.map(b => ({ ...b, comentarios: [] })),
-    t4: bloquesTema4.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
-    indice: bloquesIndice,
+  const [bloquesState, setBloquesState] = useState(() => {
+    // When coming from the author creation flow, topic sections start empty
+    if (creacionData?.indice) {
+      const emptyTopicSections = {}
+      ;['t1','t2','t3','t4','t5','t6'].forEach(t => {
+        emptyTopicSections[t] = []
+        emptyTopicSections[`recursos-${t}`] = []
+        emptyTopicSections[`test-${t}`] = []
+      })
+      return { indice: bloquesIndice, ...emptyTopicSections }
+    }
+    return {
+      t2: bloquesTema2.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
+      t1: bloquesTema1.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
+      t3: bloquesTema3.map(b => ({ ...b, comentarios: [] })),
+      t4: bloquesTema4.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
+      indice: bloquesIndice,
+    }
   })
   const [savedToast, setSavedToast] = useState(false)
   const [sentToast, setSentToast] = useState(false)
@@ -956,8 +1177,6 @@ export default function PantallaCanvas({
   const [enrichmentsGenerados, setEnrichmentsGenerados] = useState([]) // [{ tipo, titulo, descripcion }]
   // Inline IA suggestion state
   const [iaInline, setIaInline] = useState(null) // { bloqueId, accion, textoOriginal, textoGenerado, generando }
-  // Prodi onboarding — show once for autor role (prototype: always on first mount)
-  const [onboardingVisible, setOnboardingVisible] = useState(rolActivo === 'autor')
 
   useEffect(() => {
     const handler = (e) => {
@@ -978,10 +1197,14 @@ export default function PantallaCanvas({
 
   const isResumen = seccionActiva === 'resumen'
   const seccion = SECCION_CONFIG[seccionActiva] || SECCION_CONFIG.t2
-  const bloques = bloquesState[seccionActiva] || seccion.bloques
+  // When coming from creation flow, topic section blocks are explicitly empty []
+  const bloques = bloquesState[seccionActiva] !== undefined ? bloquesState[seccionActiva] : seccion.bloques
   const editable = rolActivo === 'autor'
 
-  const estadoMostrado = isResumen ? 'borrador' : seccion.estado
+  // New subjects from creation flow: all topic sections start as borrador
+  const estadoMostrado = isResumen ? 'borrador'
+    : (esAsignaturaNueva && seccionActiva !== 'indice') ? 'borrador'
+    : seccion.estado
 
   const handleComentarioClick = (bloque) => {
     if (bloque.comentarios?.length > 0) {
@@ -1196,6 +1419,9 @@ export default function PantallaCanvas({
   const getActionBar = () => {
     const estado = isResumen ? 'borrador' : seccion.estado
 
+    // DL instrucciones-t1 has its own CTA buttons inside SeccionDLInstrucciones
+    if (esAsignaturaNueva && seccionActiva === 'instrucciones-t1') return null
+
     // ─ Autor ─
     if (rolActivo === 'autor') {
       // Editando (borrador) o Corrigiendo (comentarios) → full bar
@@ -1208,11 +1434,11 @@ export default function PantallaCanvas({
                 onClick={() => setHerramientasMenuAbierto(v => !v)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
                 style={{
-                  background: herramientasMenuAbierto ? '#EEF2FF' : '#F8F9FA',
-                  color: herramientasMenuAbierto ? '#6366F1' : '#6B7280',
-                  border: herramientasMenuAbierto ? '1px solid #C7D2FE' : '1px solid #E5E7EB',
+                  background: herramientasMenuAbierto ? '#E7EFFE' : '#F8F9FA',
+                  color: herramientasMenuAbierto ? '#367CFF' : '#6B7280',
+                  border: herramientasMenuAbierto ? '1px solid #BAD2FF' : '1px solid #E5E7EB',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#EEF2FF'; e.currentTarget.style.color = '#6366F1'; e.currentTarget.style.borderColor = '#C7D2FE' }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.color = '#367CFF'; e.currentTarget.style.borderColor = '#BAD2FF' }}
                 onMouseLeave={e => {
                   if (!herramientasMenuAbierto) {
                     e.currentTarget.style.background = '#F8F9FA'; e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.borderColor = '#E5E7EB'
@@ -1247,7 +1473,7 @@ export default function PantallaCanvas({
                     onMouseEnter={e => { if (!revisandoCalidad) e.currentTarget.style.background = '#F8F9FA' }}
                     onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
                   >
-                    <Wand2 size={14} style={{ color: revisandoCalidad ? '#CBD5E1' : '#6366F1' }} />
+                    <Wand2 size={14} style={{ color: revisandoCalidad ? '#CBD5E1' : '#367CFF' }} />
                     <div className="text-left">
                       <p className="text-xs font-medium" style={{ color: revisandoCalidad ? '#9CA3AF' : '#374151' }}>
                         {revisandoCalidad ? 'Analizando…' : 'Revisar calidad'}
@@ -1298,9 +1524,9 @@ export default function PantallaCanvas({
             <button
               onClick={showSentToast}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
-              style={{ background: '#0098CD' }}
-              onMouseEnter={e => e.currentTarget.style.background = '#00729A'}
-              onMouseLeave={e => e.currentTarget.style.background = '#0098CD'}
+              style={{ background: '#367CFF' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
+              onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
             >
               Enviar a revisión
               <ChevronRight size={13} />
@@ -1452,12 +1678,7 @@ export default function PantallaCanvas({
 
   return (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 56px)', fontFamily: "'Inter', 'Arial', sans-serif" }}>
-      {onboardingVisible && (
-        <OnboardingProdi
-          onClose={() => setOnboardingVisible(false)}
-          onOpenAssistant={() => { setOnboardingVisible(false); setPanelIAabierto(true) }}
-        />
-      )}
+
       {/* Page header — two rows */}
       <div className="flex-shrink-0" style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}>
 
@@ -1523,17 +1744,17 @@ export default function PantallaCanvas({
                     return (
                       <div className="mt-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <Sparkles size={12} style={{ color: '#6366F1' }} />
-                          <span className="text-xs font-medium" style={{ color: '#6366F1' }}>Etiquetas sugeridas por IA</span>
+                          <Sparkles size={12} style={{ color: '#367CFF' }} />
+                          <span className="text-xs font-medium" style={{ color: '#367CFF' }}>Etiquetas sugeridas por IA</span>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {aiTags.map(tag => (
                             <button
                               key={tag}
                               className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded transition-all"
-                              style={{ background: '#EEF2FF', color: '#6366F1', border: '1px solid #C7D2FE' }}
-                              onMouseEnter={e => { e.currentTarget.style.background = '#E0E7FF'; e.currentTarget.style.borderColor = '#A5B4FC' }}
-                              onMouseLeave={e => { e.currentTarget.style.background = '#EEF2FF'; e.currentTarget.style.borderColor = '#C7D2FE' }}
+                              style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}
+                              onMouseEnter={e => { e.currentTarget.style.background = '#BAD2FF'; e.currentTarget.style.borderColor = '#8EB6FF' }}
+                              onMouseLeave={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.borderColor = '#BAD2FF' }}
                             >
                               + {tag}
                             </button>
@@ -1565,6 +1786,27 @@ export default function PantallaCanvas({
                   initialScreen={seccion.estado === 'aprobado' || seccionActiva === 'recursos-t2' ? 'list' : 'idle'}
                   editable={editable}
                 />
+              ) : esAsignaturaNueva && seccionActiva === 'instrucciones-t1' ? (
+                <SeccionDLInstrucciones
+                  parte={dlInstruccionesParte}
+                  datos={dlInstruccionesData}
+                  onChange={(key, val) => setDlInstruccionesData(prev => ({ ...prev, [key]: val }))}
+                  generandoResumen={dlGenerandoResumen}
+                  dlGenerandoContenido={dlGenerandoContenido}
+                  onGenerarResumen={() => {
+                    setDlGenerandoResumen(true)
+                    setTimeout(() => { setDlGenerandoResumen(false); setDlInstruccionesParte(2) }, 1400)
+                  }}
+                  onGenerarContenido={() => {
+                    setDlGenerandoContenido(true)
+                    setTimeout(() => {
+                      setBloquesState(prev => ({ ...prev, t1: dlBloquesTema1 }))
+                      setDlGenerandoContenido(false)
+                      setSeccionActiva('t1')
+                    }, 1600)
+                  }}
+                  onVolverAInstrucciones={() => setDlInstruccionesParte(1)}
+                />
               ) : seccionActiva === 'indice' && creacionData?.indice ? (
                 <SeccionIndice
                   bloques={bloques}
@@ -1577,7 +1819,7 @@ export default function PantallaCanvas({
                 />
               ) : seccionActiva === 'indice' ? (
                 <SeccionIndiceFija bloques={bloques} />
-              ) : seccion.estado === 'bloqueado' ? (
+              ) : estadoMostrado === 'bloqueado' ? (
                 <div className="flex flex-col items-center justify-center py-24 text-center">
                   <div
                     className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
@@ -1603,6 +1845,19 @@ export default function PantallaCanvas({
                           ? 'Contenido aprobado · Solo lectura — crea experiencias didácticas con el panel derecho'
                           : 'Solo lectura — el Autor puede editar este contenido'}
                       </span>
+                    </div>
+                  )}
+
+                  {/* Empty state for new subjects */}
+                  {bloques.length === 0 && editable && (
+                    <div className="flex flex-col items-center justify-center py-20 text-center">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#F1F5F9' }}>
+                        <BookOpen size={20} style={{ color: '#CBD5E1' }} />
+                      </div>
+                      <p className="text-sm font-medium mb-1" style={{ color: '#9CA3AF' }}>Sección vacía</p>
+                      <p className="text-xs leading-relaxed max-w-xs" style={{ color: '#CBD5E1' }}>
+                        Empieza a escribir el contenido de este tema o usa el asistente Prodi para generarlo.
+                      </p>
                     </div>
                   )}
 
@@ -1730,7 +1985,7 @@ export default function PantallaCanvas({
                     <button
                       className="mt-6 flex items-center gap-2 text-sm transition-all"
                       style={{ color: '#D1D5DB', paddingLeft: '0' }}
-                      onMouseEnter={e => e.currentTarget.style.color = '#0098CD'}
+                      onMouseEnter={e => e.currentTarget.style.color = '#367CFF'}
                       onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
                     >
                       <Plus size={14} />
@@ -1793,7 +2048,7 @@ export default function PantallaCanvas({
           <button
             onClick={() => { setPanelIAabierto(true); setComentarioActivoBloque(null); setPanelNotasAbierto(false) }}
             className="flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
-            style={{ color: panelIAabierto ? '#0098CD' : '#9CA3AF' }}
+            style={{ color: panelIAabierto ? '#367CFF' : '#9CA3AF' }}
             onMouseEnter={e => { if (!panelIAabierto) e.currentTarget.style.background = '#F1F5F9' }}
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
@@ -2190,7 +2445,7 @@ export default function PantallaCanvas({
       )}
       {sentToast && (
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white shadow-xl animate-fade-in"
-          style={{ background: '#0098CD', zIndex: 100 }}>
+          style={{ background: '#367CFF', zIndex: 100 }}>
           ✓ Tema 2 enviado a revisión
         </div>
       )}

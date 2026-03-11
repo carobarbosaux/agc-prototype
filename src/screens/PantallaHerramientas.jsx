@@ -52,10 +52,10 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
   const rolActualLabel = roles.find(r => r.id === rolActivo)?.label || 'Autor'
 
   const rolColors = {
-    autor: { bg: '#E0F4FB', text: '#0098CD', border: '#B3E0F2' },
+    autor: { bg: '#E7EFFE', text: '#367CFF', border: '#BAD2FF' },
     coordinador: { bg: '#F0FDF4', text: '#10B981', border: '#A7F3D0' },
     editor: { bg: '#FFFBEB', text: '#F59E0B', border: '#FDE68A' },
-    disenador: { bg: '#EEF2FF', text: '#073676', border: '#C7D2FE' },
+    disenador: { bg: '#E7EFFE', text: '#073676', border: '#BAD2FF' },
   }
   const rc = rolColors[rolActivo] || rolColors.autor
 
@@ -69,7 +69,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
         <div className="flex items-center gap-2">
           <div
             className="w-7 h-7 rounded-lg flex items-center justify-center"
-            style={{ background: '#0098CD' }}
+            style={{ background: '#367CFF' }}
           >
             <span className="text-white text-xs font-bold" style={{ fontFamily: "'Arial', sans-serif" }}>A</span>
           </div>
@@ -157,7 +157,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
                 className="relative rounded-2xl p-6 transition-all"
                 style={{
                   background: '#FFFFFF',
-                  border: h.activa ? '1.5px solid #B3E0F2' : '1px solid #E5E7EB',
+                  border: h.activa ? '1.5px solid #BAD2FF' : '1px solid #E5E7EB',
                   boxShadow: h.activa ? '0 4px 16px rgba(0, 152, 205, 0.10)' : 'none',
                   opacity: h.clickable ? 1 : 0.5,
                   cursor: h.clickable ? 'pointer' : 'default',
@@ -180,8 +180,8 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
                   <span
                     className="absolute top-4 right-4 text-xs font-semibold px-2 py-0.5 rounded-md"
                     style={{
-                      background: '#E0F4FB',
-                      color: '#0098CD',
+                      background: '#E7EFFE',
+                      color: '#367CFF',
                       fontFamily: "'Arial', sans-serif",
                     }}
                   >
@@ -191,9 +191,9 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
 
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: h.activa ? '#E0F4FB' : '#F8F9FA' }}
+                  style={{ background: h.activa ? '#E7EFFE' : '#F8F9FA' }}
                 >
-                  <Icon size={20} style={{ color: h.activa ? '#0098CD' : '#94A3B8' }} />
+                  <Icon size={20} style={{ color: h.activa ? '#367CFF' : '#94A3B8' }} />
                 </div>
 
                 <h3
@@ -208,8 +208,8 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
 
                 {h.activa && (
                   <div className="mt-5 flex items-center gap-1.5">
-                    <Sparkles size={12} style={{ color: '#0098CD' }} />
-                    <span className="text-xs font-medium" style={{ color: '#0098CD' }}>
+                    <Sparkles size={12} style={{ color: '#367CFF' }} />
+                    <span className="text-xs font-medium" style={{ color: '#367CFF' }}>
                       Abrir herramienta →
                     </span>
                   </div>

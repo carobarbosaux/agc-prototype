@@ -3,9 +3,9 @@ export default function EtiquetaBloque({ label }) {
     <span
       className="inline-flex items-center text-xs font-medium px-2 py-0.5 rounded"
       style={{
-        background: '#EEF2FF',
-        color: '#6366F1',
-        border: '1px solid #C7D2FE',
+        background: '#E7EFFE',
+        color: '#367CFF',
+        border: '1px solid #BAD2FF',
         fontFamily: "'Arial', sans-serif",
         letterSpacing: '0.01em',
       }}
