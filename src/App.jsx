@@ -95,6 +95,7 @@ export default function App() {
         titulaciones={titulaciones}
         onCrearAsignatura={handleCrearAsignatura}
         onCancel={() => setPantalla('dashboard')}
+        rolActivo={rolActivo}
       />
     )
   }

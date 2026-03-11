@@ -142,27 +142,30 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
               key={asig.id}
               onClick={() => {
                 if (!clickable) return
-                if (asig.crearAsignatura) return // autor can't create
-                onNavigate('canvas', { seccion: 't2', titulacionId: 'master-ia', asignaturaId: asig.id })
+                if (asig.crearAsignatura) onNavigate('crearAsignatura')
+                else onNavigate('canvas', { seccion: 't2', titulacionId: 'master-ia', asignaturaId: asig.id })
               }}
               className="grid px-5 py-3.5 transition-all group"
               style={{
                 gridTemplateColumns: '2fr 1.2fr 0.9fr 0.9fr 1fr',
                 borderBottom: i < asignaturas.length - 1 ? '1px solid #F8F9FA' : 'none',
-                cursor: (clickable && !asig.crearAsignatura) ? 'pointer' : 'default',
+                cursor: clickable ? 'pointer' : 'default',
                 gap: '12px',
               }}
-              onMouseEnter={e => { if (clickable && !asig.crearAsignatura) e.currentTarget.style.background = '#F8F9FA' }}
+              onMouseEnter={e => { if (clickable) e.currentTarget.style.background = '#F8F9FA' }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
             >
               <div className="flex items-center gap-2 min-w-0">
                 {clickable && !asig.crearAsignatura && (
                   <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#0098CD' }} />
                 )}
+                {clickable && asig.crearAsignatura && (
+                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#6366F1' }} />
+                )}
                 <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#94A3B8' }}>
                   {asig.nombre}
                 </span>
-                {clickable && !asig.crearAsignatura && (
+                {clickable && (
                   <ArrowRight size={12} style={{ color: '#CBD5E1', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                 )}
               </div>
@@ -842,8 +845,8 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
           <TrackingDashboard onNavigate={onNavigate} />
         ) : (
           <>
-            {/* Calidad de Contenidos — hidden for disenador */}
-            {!esDisenador && (
+            {/* Calidad de Contenidos — hidden for disenador and autor */}
+            {!esDisenador && rolActivo !== 'autor' && (
               <div className="mb-6">
                 <CalidadContenidosCards onCardClick={id => {
                   const map = { alertas: 'comentarios', revision: 'revision', ise: null, critico: 'comentarios' }
