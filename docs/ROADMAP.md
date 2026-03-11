@@ -108,13 +108,45 @@ Ambas rutas llevan al MISMO canvas de edición. El usuario elige cómo crear.
 - Editor de contenido: comenta
 - Diseñador instruccional: comenta y sugiere enriquecimiento de formato
 
-#### AGREGADO (NUEVO):
+#### AGREGADO (NUEVO) — Author Workflow Enhancement:
+
+**Flujo de creación de asignaturas: 3 pasos en componentes separados**
+- **PantallaCrearAsignatura1.jsx** — Paso 1: Ficha académica (metadata pre-rellenada, solo lectura)
+- **PantallaCrearAsignatura2.jsx** — Paso 2: Descriptor memoria + contexto (formulario editable: nivel previo, nº temas, enfoque, obligatorios, opciones, archivos)
+- **PantallaCrearAsignatura3.jsx** — Paso 3: Resumen asignatura (preview generado por IA, editable, con chatbar de refinamiento)
+- UI compartida entre Paso 1 y 2 para cambios precisos
+- Tras aceptar Paso 3 → Navega a Canvas sección Índice
+
+**Canvas — Sección Índice (Nueva)**
+- Contenido generado por IA: temas, epígrafes, orden
+- Author puede modificar/reordenar libremente
+- Acciones: [Guardar], [Cambiar orden], [Volver al Resumen], [Enviar a revisión]
+- Una vez Completado, se desbloquean los Temas
+
+**Canvas — Sección Tema 1: Indicaciones Didácticas (Nueva)**
+- Parte 1: Setup area (enfoque IA, bibliografía, archivos, notas pedagógicas)
+- AI generates Topic summary based on instructions
+- Si generación > 5s, muestra chain of thought visualization
+- Parte 2: Generated summary (introducción, objetivos, desarrollo conceptual con ideas didácticas)
+- Estados: Generado / En edición / Completado
+- Acciones: [Guardar], [Cambiar indicaciones y regenerar]
+
+**Canvas — Sección Tema 1: Contenido Temario (Nueva)**
+- Contenido completo generado por IA (editable con herramientas existentes sin cambios)
+- Author puede volver a Indicaciones para modificar y regenerar
+- Acciones: [Guardar], [Volver a Indicaciones], [Enviar a revisión]
+- Una vez Aprobado, desbloquea A Fondo
+
+**A Fondo (Recursos) — Enhancement**
+- Mantiene toda funcionalidad existente
+- **NEW: Category labels per reference** (Casos reales, Ampliaciones conceptuales, Tendencias, Lecturas complementarias)
+- Author puede asignar categoría a cada recurso para mejor organización
 
 **Pantalla Herramientas con Chatbar conversacional**
 - Chatbar superior (input + botón enviar) que soporta shortcuts con `/`
 - Grid de herramientas visual debajo (5 tools, preview)
 - Usuario puede usar `/generar-asignatura` en chat O hacer clic en card "Generación de Asignaturas"
-- Ambas rutas abren el mismo modal de creación
+- Ambas rutas abren el mismo flujo de 3 pasos
 - Respuestas conversacionales simuladas
 
 **Pantalla Dashboard rediseñada como Workspace**
@@ -128,7 +160,7 @@ Ambas rutas llevan al MISMO canvas de edición. El usuario elige cómo crear.
 
 **Sistema de Chatbar Inteligente (Herramientas + Dashboard)**
 - Shortcuts con `/` para acceso rápido:
-  - `/generar-asignatura` → Modal creación asignatura
+  - `/generar-asignatura` → Flujo creación asignatura (3 pasos)
   - `/mejora-rúbricas` → Panel mejora rúbricas
   - `/diseñador-actividades` → Panel diseño actividades
   - etc.

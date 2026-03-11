@@ -76,28 +76,53 @@ npm run dev
 
 ---
 
-## ✅ What's Built
+## 📋 What's Built
 
 **Functional screens:**
-- ✅ Tools screen (Herramientas)
-- ✅ Dashboard with "Mi trabajo" & "Por titulación" views
-- ✅ Canvas with 3-column layout (Pipeline | Content | AI Panel)
+- ✅ Tools screen (Herramientas) with Chatbar
+- ✅ Dashboard with 3-column workspace layout + Chatbar
+- ✅ Subject creation (3 steps, separate components) with Chatbar navigation
+- ✅ Canvas with enhanced sections:
+  - Index (new) — AI-generated structure, author modifiable
+  - Topic 1 Instructions (new) — Setup + Generated summary
+  - Topic 1 Content (new) — Full editable content
+  - A Fondo with **NEW: category labels** (Real cases, Conceptual expansions, Trends, Complementary readings)
 - ✅ Inline content editing with toolbar
 - ✅ AI panel with chat simulation
 - ✅ Comments threading system
 - ✅ Notifications overlay
-- ✅ Role selector (topbar)
+- ✅ Role selector (Topbar)
+
+**Author Workflow (NEW):**
+- ✅ 3-step subject creation (PantallaCrearAsignatura1/2/3)
+- ✅ Canvas Index section (modify/reorder/send for review)
+- ✅ Topic 1 Instructions setup (focus, bibliography, files, pedagogical notes)
+- ✅ Topic 1 Summary generation (with chain of thought if > 5s)
+- ✅ Topic 1 Content editing (with existing tools)
+- ✅ A Fondo resources with category organization
 
 **Responsive:** Desktop-first, Canvas optimized for 1280px+
 
 ---
 
-## 🔄 What's Next (Phase 2)
+## 🔄 What's Next (Phase 2 Implementation)
+
+- [ ] **Implement 3-step subject creation workflow**
+  - [ ] PantallaCrearAsignatura1.jsx (Academic metadata)
+  - [ ] PantallaCrearAsignatura2.jsx (Descriptor + context)
+  - [ ] PantallaCrearAsignatura3.jsx (Summary preview)
+
+- [ ] **Implement Canvas new sections**
+  - [ ] SectionIndice.jsx (Index with modify/reorder)
+  - [ ] SectionTema1Indicaciones.jsx (Topic Instructions setup + summary)
+  - [ ] SectionTema1Contenido.jsx (Topic full content)
+
+- [ ] **Enhance A Fondo**
+  - [ ] Add category dropdown to RecursosReferenceCard.jsx
 
 - [ ] **Coordinator view** — Same canvas, role-based read-only + approval actions
-- [ ] Coordinator dashboard — Reordered by urgency
 - [ ] Editor role view
-- [ ] Instructional Designer role view
+- [ ] Instructional Designer role view with enrichment toolkit
 
 ---
 

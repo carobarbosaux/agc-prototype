@@ -20,20 +20,41 @@ Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación
 
 2. **Dashboard** (`src/screens/PantallaDashboard.jsx`)
    - Layout 3 columnas: Sidebar titulaciones | Tabla asignaturas | Mis pendientes
-   - 3 stat cards (CalidadContenidosCards) clickeables que filtran la tabla
+   - 4 stat cards (CalidadContenidosCards) clickeables que filtran la tabla
    - **Vista por rol** (ver sección "Roles" abajo)
    - Chatbar superior
 
-3. **Crear asignatura** (`src/screens/PantallaCrearAsignatura.jsx`)
-   - **Solo accesible para `coordinador`**
-   - 3 pasos: Contexto → Temática → **Preview resumen (aceptar/volver)**
-   - Tras aceptar → navega al Canvas sección `indice` con spinner de generación
+3. **Crear asignatura — FLUJO DE 3 PASOS (Componentes separados)**
+   
+   **Paso 1: Ficha académica** (`src/screens/PantallaCrearAsignatura1.jsx`)
+   - Información fija (metadata académica: nombre, titulación, coordinador, especialista, modelo)
+   - Solo lectura
+   - Botón [Siguiente] → Paso 2
+   
+   **Paso 2: Descriptor de la memoria + Resultados de aprendizaje** (`src/screens/PantallaCrearAsignatura2.jsx`)
+   - Formulario editable: nivel conocimiento previo, nº temas, enfoque, temas obligatorios, opciones encargo, archivos de referencia
+   - Botones: [Guardar], [Subir archivos], [Asistente IA]
+   - Botón principal: [GENERAR RESUMEN DE LA ASIGNATURA] → Paso 3
+   - UI compartida con Paso 1 (mismo estilo y estructura)
+   
+   **Paso 3: Resumen de la asignatura (Vista previa)** (`src/screens/PantallaCrearAsignatura3.jsx`)
+   - Resumen general + descripción de cada tema + estructura de cada tema
+   - Botones: [Guardar], [Editar resumen], [Volver a editar ficha], [Dar instrucciones a IA], [GENERAR ÍNDICE]
+   - "Volver a editar ficha" regresa a Paso 2 descartando resumen
+   - [GENERAR ÍNDICE] → Navega a Canvas sección Índice (Paso 4)
 
 4. **Canvas** (`src/screens/PantallaCanvas.jsx`)
    - Layout: PipelineSidebar (240px) | Contenido (flexible) | Panel IA (320px) | Utilities strip (44px)
    - **Guardado automático** toggle reemplaza "Guardar borrador"
    - **Notas** ancladas a texto seleccionado, separadas de Comentarios
    - Herramientas IA dropdown (Revisar calidad + futuros)
+   
+   **NUEVAS SECCIONES EN CANVAS (Autor):**
+   - **Índice:** Contenido generado por IA, autor puede modificar/reordenar. Botones: [Guardar], [Cambiar orden], [Volver al Resumen], [Enviar a revisión] → marca como Completado
+   - **Tema 1 - Indicaciones didácticas:** Setup area (enfoque IA, bibliografía, archivos, notas pedagógicas) + botón [GENERAR RESUMEN DE TEMA]. Si genera > 5s, muestra chain of thought
+   - **Tema 1 - Resumen de tema:** Contenido generado (introducción, objetivos, desarrollo). Estados: Generado/En edición/Completado. Botones: [Guardar], [Cambiar indicaciones y regenerar]
+   - **Tema 1 - Contenido (Temario):** Contenido completo generado, editable con toolbars existentes. Botones: [Guardar], [Volver a Indicaciones > Resumen], [Enviar a revisión] → marca como Aprobado
+   - **A Fondo (Tema 1):** Mantiene toda funcionalidad existente + **NEW: categorías por referencia** (Casos reales | Ampliaciones conceptuales | Tendencias | Lecturas complementarias)
 
 ---
 
@@ -57,14 +78,42 @@ Prototipo navegable de alta fidelidad de **AGC 2.0** — plataforma de creación
 
 ## Flujo "Crear nueva asignatura" (3 pasos)
 
-1. **Contexto académico** — titulación, nivel, nombre, público, créditos, temas a tratar
-2. **Definición temática** — área de conocimiento, tipo, enfoque
-3. **Preview resumen** *(nuevo)* — read-only. Muestra lo que la IA generará: título, descripción, objetivos. Solo dos acciones:
-   - **Aceptar y continuar** → genera `indice` y `resumen` en memoria → navega a Canvas `indice`
-   - **Volver** → regresa al paso 2
-   - Sin edición, sin chat
+### Paso 1: Ficha Académica (Fixed Metadata)
+- Información pre-rellenada del sistema (NO editable):
+  - Nombre asignatura
+  - Titulación
+  - Tipo de estudio
+  - Área de conocimiento
+  - Créditos (ECTS)
+  - Coordinador
+  - Especialista
+  - Modelo educativo
+- Acción: [Siguiente] → Paso 2
 
-En Canvas `indice`: spinner ~1.4s → muestra índice AI → CTA "Generar resumen" → spinner → navega a Canvas `resumen` con datos prefilled.
+### Paso 2: Descriptor de la Memoria + Resultados de Aprendizaje
+- Author proporciona contexto educativo:
+  - Nivel de conocimiento previo (dropdown: inicial, intermedio, avanzado, experto)
+  - Número de temas (1-10, recomendado 8)
+  - Enfoque asignatura (dropdown: teórico, práctico, teórico-práctico, basado en casos, basado en proyectos)
+  - Temas obligatorios (text area abierto)
+  - Opciones encargo (checkboxes: plan de videos, apartado a fondo)
+  - Archivos de referencia (upload)
+- Botones: [Guardar], [Subir archivos], [Asistente IA]
+- Acción principal: [GENERAR RESUMEN DE LA ASIGNATURA] → Paso 3 (genera contenido por IA)
+
+### Paso 3: Resumen de la Asignatura (Vista previa)
+- IA genera resumen basado en Paso 1-2:
+  - Descripción general / enfoque de contenidos
+  - Explicación de cada tema: "En este tema se va a tratar…"
+  - Estructura de cada tema (epígrafes, qué se va a destacar, elementos visuales)
+- Acciones:
+  - [Guardar] — guarda resumen
+  - [Editar resumen] — modifica el contenido generado
+  - [Volver a editar ficha] — regresa a Paso 2, descarta resumen
+  - [Dar instrucciones a IA] — chatbar contextual para refinamiento
+  - [GENERAR ÍNDICE] → navega a Canvas sección Índice
+
+**Transición a Canvas:** Una vez acepta el Resumen, navega al Canvas con la sección Índice desbloqueada.
 
 ---
 
@@ -75,6 +124,98 @@ Reemplaza el botón "Guardar borrador":
 - ON: guarda cambios (simulado), muestra "Guardado" con check verde
 - OFF: muestra "Cambios sin guardar" en ámbar
 - Estado local: `autosaveOn` (bool, default true)
+
+---
+
+## Canvas — Sección Índice (Nueva)
+
+Tras generar índice en Paso 3 (PantallaCrearAsignatura3), el Author entra al Canvas con esta sección:
+
+**Contenido:**
+- IA propone estructura: temas, epígrafes, orden
+- Author puede modificar libremente (mantiene funcionalidades existentes)
+
+**Acciones (Author):**
+- `[Guardar]` (autosave)
+- `[Cambiar orden]` — drag/reorder bloques markdown
+- `[Volver al Resumen]` — regresa a Paso 3 para ajustes y regenerar índice completo
+- `[Enviar a revisión]` — marca como **Completado** (ilustrativo: auto-aprueba en prototipo)
+
+**State transition:** Una vez Índice está **Completado**, se desbloquean los Temas. Temas aparecen inicialmente como **Pendiente**.
+
+---
+
+## Canvas — Sección Tema 1: Indicaciones Didácticas (Nueva)
+
+### Parte 1: Setup Area (Configuración del tema)
+
+Antes de generar contenido, Author define enfoque específico del tema:
+
+**Inputs (Author):**
+- **Enfoque IA** — Input conversacional; enfoque específico para el tema
+- **Bibliografía del tema** — Text area
+- **Archivos de referencia** — Upload (archivos de apoyo para el tema)
+- **Notas pedagógicas e indicaciones** — Text area abierto; guía para IA
+
+**Generación:**
+- Botón: `[GENERAR RESUMEN DE TEMA DE ACUERDO A INDICACIONES DIDÁCTICAS]` (UX mejorado)
+
+**Loading behavior:**
+- Si IA tarda > 5 segundos, aparece **chain of thought** visualization
+- Muestra pasos del razonamiento en tiempo real
+
+### Parte 2: Resumen Amplio de Tema (Post-generación)
+
+Reemplaza Parte 1 una vez que IA genera.
+
+**Contenido (AI-generated):**
+- **Introducción** (siempre)
+- **Objetivos** (siempre)
+- **Desarrollo conceptual de epígrafes** con ideas didácticas para cada epígrafe
+  - Ejemplos: ejemplos concretos, tablas, infografías, elementos visuales
+
+**Estados:**
+- `Generado` — Acaba de generar
+- `En edición` — Author está modificando
+- `Completado` — Listo para continuar
+
+**Acciones:**
+- `[Guardar]` (autosave)
+- `[Cambiar indicaciones y generar resumen completo de nuevo]` — regresa a Parte 1
+
+---
+
+## Canvas — Sección Tema 1: Contenido Temario (Nueva)
+
+**Contenido:** IA genera contenido redactado completo del tema a partir del Resumen.
+
+**Workflow (Author):**
+- Edita contenido usando herramientas de edición existentes (sin cambios)
+- Usa asistentes IA existentes (toolbar, chat, etc.) — sin cambios
+- Puede volver atrás al Resumen del Tema si necesita modificar enfoque y regenerar
+
+**Acciones (Author):**
+- `[Guardar]` (autosave)
+- `[Volver a Indicaciones didácticas > Resumen]` — regresa a cambiar enfoque, regenera contenido
+- `[Enviar a revisión]` — final action para Tema 1
+
+**Illustration behavior:** Una vez que Author da click en `[Enviar a revisión]`, contenido aparece como **Aprobado** (en prototipo, para ilustrar flujo).
+
+**State transition:** Una vez Tema 1 está **Aprobado**, se desbloquea la sección **A Fondo** (Recursos).
+
+---
+
+## Canvas — Sección A Fondo (Recursos) — Enhancement
+
+**Funcionalidad existente:** Se mantiene completamente (sin cambios a las features actuales).
+
+**NEW ENHANCEMENT:** Cada referencia académica ahora puede tener una **etiqueta de categoría:**
+- `Casos reales` — Aplicaciones prácticas y casos reales
+- `Ampliaciones conceptuales` — Exploración conceptual y teoría avanzada
+- `Tendencias` — Desarrollos actuales y tecnología de vanguardia
+- `Lecturas complementarias` — Materiales de lectura suplementarios
+
+**Implementación:** Author puede asignar categoría a cada recurso (dropdown/tag). Las categorías ayudan a organizar y contextualizar las referencias.
 
 ---
 

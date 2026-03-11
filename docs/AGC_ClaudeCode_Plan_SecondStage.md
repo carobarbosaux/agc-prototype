@@ -116,38 +116,53 @@ Usuario click en card "Generación de Asignaturas" → ModalCrearAsignatura abre
 
 ---
 
-### FRENTE B: Canvas + Sistema Inteligente (MANTENER TODO)
+### FRENTE B: Canvas + Sistema Inteligente + Workflow de Autor (MANTENER + EXPANDIR)
 
-#### Pantalla 3: Modal Creación Asignatura (OPTIMIZADO)
+#### Pantalla 3: Crear Asignatura — **NUEVO FLUJO DE 3 PASOS (Componentes separados)**
 
-**Flujo nuevo: 7 pasos progresivos** (basado en "Propuesta nuevo Flujo PEDUCA"):
+**Paso 1: Ficha Académica** (`PantallaCrearAsignatura1.jsx`)
+- Información fija del sistema (metadata académica, read-only)
+- Nombre, titulación, coordinador, especialista, modelo
+- Botón: [Siguiente] → Paso 2
 
-**Paso 1: Contexto académico**
-- Seleccionar titulación (dropdown)
-- Nivel de estudio (select)
-- Público objetivo (textarea)
-- Número de créditos (number)
-- Temas a tratar (textarea)
-- Botón: "Siguiente" → Paso 2
+**Paso 2: Descriptor de la Memoria + Resultados de aprendizaje** (`PantallaCrearAsignatura2.jsx`)
+- Formulario editable (nivel conocimiento previo, nº temas, enfoque, temas obligatorios, opciones, archivos)
+- Botones: [Guardar], [Subir archivos], [Asistente IA]
+- Botón principal: [GENERAR RESUMEN DE LA ASIGNATURA] → Paso 3
+- **Comparte UI con Paso 1** (mismo estilo, layout, estructura)
 
-**Paso 2: Definición temática**
-- Área de conocimiento (select) — determina tags sugeridos
-- Tipo de asignatura (select: cuantitativa, cualitativa, mixta)
-- Enfoque (select: teórico, práctico, etc.)
-- Botón: "Siguiente" → Paso 3 (IA genera índice)
+**Paso 3: Resumen de la Asignatura (Vista previa)** (`PantallaCrearAsignatura3.jsx`)
+- Resumen general de asignatura, descripción de temas, estructura de cada tema
+- Acciones: [Guardar], [Editar resumen], [Volver a editar ficha], [Dar instrucciones a IA], [GENERAR ÍNDICE]
+- [GENERAR ÍNDICE] → Navega a Canvas sección Índice
 
-**Paso 3: Generación automática (Índice)**
-- IA genera índice provisional basado en respuestas
-- Mostrar: "Generando índice de temas..." (loading)
-- Preview del índice generado (solo lectura)
-- Botón: "Siguiente" → Paso 4 (IA genera resumen)
+#### Pantalla 4-6: Canvas (SIN CAMBIOS FUNDAMENTALES — EXPANSIÓN DE SECCIONES)
 
-**Paso 4: Resumen preliminar**
-- IA genera: nombre, descripción, objetivos
-- Todo editable (input nombre, textarea descripción, lista objetivos)
-- Botón: "Siguiente" → Paso 5 (IA genera Tema 1)
+**Todo se mantiene IGUAL:**
+- Pipeline sidebar, bloques editables, toolbar, comentarios, etiquetas, notificaciones, roles
 
-**Paso 5: Previsualización Tema 1**
+**NUEVAS SECCIONES en Canvas (para Autor):**
+
+1. **Sección Índice (Nueva)**
+   - IA propone estructura (temas, epígrafes, orden)
+   - Author modifica libremente
+   - Acciones: [Guardar], [Cambiar orden], [Volver al Resumen], [Enviar a revisión] → Completado
+   - Una vez Completado, desbloquean Temas
+
+2. **Sección Tema 1 - Indicaciones Didácticas (Nueva)**
+   - Parte 1: Setup (enfoque IA, bibliografía, archivos, notas)
+   - Botón: [GENERAR RESUMEN DE TEMA] — Si > 5s, muestra chain of thought
+   - Parte 2: Resumen generado (introducción, objetivos, desarrollo)
+   - Acciones: [Guardar], [Cambiar indicaciones y regenerar]
+
+3. **Sección Tema 1 - Contenido/Temario (Nueva)**
+   - Contenido completo generado por IA (editable con herramientas existentes)
+   - Acciones: [Guardar], [Volver a Indicaciones > Resumen], [Enviar a revisión] → Aprobado
+   - Una vez Aprobado, desbloquea A Fondo
+
+4. **Sección A Fondo (Enhancement)**
+   - Mantiene toda funcionalidad existente
+   - **NEW: Categorías por referencia** (Casos reales, Ampliaciones, Tendencias, Lecturas)
 - IA genera estructura del Tema 1: Introducción, Objetivos, Estructura, Extensión
 - Preview (solo lectura)
 - Mostrar: "Generando contenido del primer tema..." (loading)
@@ -237,6 +252,21 @@ Usuario click en card "Generación de Asignaturas" → ModalCrearAsignatura abre
 
 ## Componentes Totales
 
+### NUEVOS (Workflow Author + Canvas Sections):
+
+**Crear Asignatura (3 pasos separados):**
+1. `PantallaCrearAsignatura1.jsx` — Paso 1: Ficha académica
+2. `PantallaCrearAsignatura2.jsx` — Paso 2: Descriptor + contexto
+3. `PantallaCrearAsignatura3.jsx` — Paso 3: Resumen de asignatura
+
+**Canvas sections (nuevas, para Autor):**
+4. `SectionIndice.jsx` — Sección Índice (IA propone, Author modifica/reordena)
+5. `SectionTema1Indicaciones.jsx` — Tema 1: Indicaciones didácticas (setup + summary)
+6. `SectionTema1Contenido.jsx` — Tema 1: Contenido temario (full generated content)
+
+**A Fondo enhancement:**
+7. Modify `RecursosReferenceCard.jsx` — Add category dropdown/label field
+
 ### NUEVOS (Chatbar + Workspace + Calidad):
 1. `Chatbar.jsx` — conversacional
 2. `ShortcutsDropdown.jsx` — dropdown `/`
@@ -269,35 +299,34 @@ Usuario click en card "Generación de Asignaturas" → ModalCrearAsignatura abre
 
 ## mockData Necesario
 
-**NUEVO:**
-```js
-export const shortcutsComandos = [...]
-export const respuestasIAChatbar = [...]
-export const misPendientes = [...]
-export const tagsFiltrabledashboard = [...]
+**NUEVO (específico para Author Workflow):**
 
-// Nuevos para Calidad de Contenidos
-export const calidadContenidosIndicadores = {
-  alertasNormativas: 6,
-  revisionProfunda: 21,
-  iseMediaPonderado: 3.9,
-  asignaturasEstadoCritico: 3,
-}
+Crear archivo separado: `AUTHOR_WORKFLOW_MOCKDATA.md` (JavaScript/JSON structure) con:
 
-export const alertasNormativasPorAsignatura = {
-  'fund-ml': { totalAlertas: 2, alertas: [...] },
-  'deep-learning': { totalAlertas: 1, alertas: [...] },
-}
+```
+- asignacionesActuales — Subject assignments (Author entry point)
+- metadatosAcademicos — Pre-filled academic metadata (Step 1)
+- descriptorMemoriaFormulario / descriptorMemoriaDatos — Form structure + sample (Step 2)
+- resumenAsignatura — AI-generated subject summary (Step 3)
+- indiceAsignatura — Generated index (Canvas)
+- indicacionesDidacticasTema1 — Author-provided instructions (Topic 1)
+- resumenTema1 — AI-generated Topic 1 summary
+- contenidoTema1 — Full written Topic 1 content
+- aFondoTema1 — References WITH NEW category labels
+- recursosChainingThoughts — Chain of thought visualization
+- cargandoResumenTema1 — Loading messages
+- estadosPosibles — State configurations
+- validacionesStep2 — Form validation rules
+- categoriasRecursos — Category options (Casos reales, Ampliaciones, Tendencias, Lecturas)
 ```
 
 **MANTENER TODO LO EXISTENTE:**
 - `currentUser`, `titulaciones` (estructura jerárquica)
-- `preguntasCreacion` (11 preguntas)
-- `pipeline`, `bloquesTema2`, `bloquesTema1`
-- `chatHistorialTema2`, `chatHistorialTema1`
+- `preguntasCreacion` (si aplica)
+- `pipeline`, `bloques`, `chatHistorial`
 - `respuestasIA`, `notificaciones`
 - `estadoConfig`, `gravedadConfig`
-- `etiquetasDisponibles`, `tagsSugerenciasPorArea`
+- `etiquetasDisponibles`
 - `dashboardStats`, `roles`, `herramientas`
 
 ---
