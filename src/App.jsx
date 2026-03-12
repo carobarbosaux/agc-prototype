@@ -43,7 +43,8 @@ export default function App() {
   const handleCrearAsignatura = (titulacionId, nuevaAsig, generados = {}) => {
     setTitulaciones(prev => prev.map(t => {
       if (t.id !== titulacionId) return t
-      return { ...t, asignaturas: [...(t.asignaturas || []), nuevaAsig], asignaturas_count: (t.asignaturas_count || 0) + 1 }
+      const sinDuplicado = (t.asignaturas || []).filter(a => a.id !== nuevaAsig.id)
+      return { ...t, asignaturas: [...sinDuplicado, nuevaAsig], asignaturas_count: sinDuplicado.length + 1 }
     }))
     setAsignaturaActiva({ titulacionId, asignaturaId: nuevaAsig.id })
     setCreacionData(generados)
