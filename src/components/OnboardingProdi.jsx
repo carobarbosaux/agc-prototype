@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
   Sparkles, X, ChevronRight, ChevronLeft,
-  MessageSquare, StickyNote, Search, Expand, RotateCcw,
+  MessageSquare, StickyNote, Expand, RotateCcw,
   BookOpen, Microscope, ArrowUpRight, Check,
 } from 'lucide-react'
 import { onboardingSlides } from '../data/onboardingProdiData'
@@ -80,52 +80,14 @@ function VisualCanvasOverview() {
 
 function VisualContextualSelection() {
   const [showMenu, setShowMenu] = useState(false)
+  const [activeAction, setActiveAction] = useState(null)
 
   useEffect(() => {
-    const t = setTimeout(() => setShowMenu(true), 600)
-    return () => clearTimeout(t)
+    const t1 = setTimeout(() => setShowMenu(true), 600)
+    const t2 = setTimeout(() => setActiveAction(0), 1200)
+    return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
-  return (
-    <div className="w-full h-full flex items-center justify-center p-4">
-      <div className="relative w-full max-w-xs">
-        {/* Text block */}
-        <div className="rounded-xl p-4 space-y-2" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
-          <div className="h-3 w-full rounded" style={{ background: '#F1F5F9' }} />
-          <div className="flex gap-1 items-center">
-            <div className="h-3 rounded flex-1" style={{ background: '#BAD2FF' }} />
-            <div className="h-3 rounded w-1/3" style={{ background: '#BAD2FF' }} />
-          </div>
-          <div className="h-3 w-4/5 rounded" style={{ background: '#F1F5F9' }} />
-        </div>
-        {/* Floating menu */}
-        {showMenu && (
-          <div className="absolute left-4 -top-12 flex items-center gap-1 px-2 py-1.5 rounded-lg"
-            style={{
-              background: '#1A1A1A', boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-              animation: 'fadeInUp 0.25s ease',
-            }}>
-            {[
-              { icon: Sparkles, label: 'IA' },
-              { icon: MessageSquare, label: 'Comentar' },
-              { icon: StickyNote, label: 'Nota' },
-            ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-1 px-2 py-1 rounded-md cursor-pointer"
-                style={{ color: '#E5E7EB' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#374151'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                <Icon size={11} />
-                <span className="text-xs">{label}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function VisualContextualActions() {
   const actions = [
     { icon: RotateCcw, label: 'Corregir redacción', color: '#367CFF' },
     { icon: Expand, label: 'Expandir o resumir', color: '#367CFF' },
@@ -133,26 +95,55 @@ function VisualContextualActions() {
     { icon: BookOpen, label: 'Buscar bibliografía', color: '#059669' },
     { icon: Microscope, label: 'Deep research', color: '#D97706' },
   ]
+
   return (
     <div className="w-full h-full flex items-center justify-center p-4">
-      <div className="w-full max-w-xs space-y-1.5">
-        {actions.map(({ icon: Icon, label, color }, i) => (
-          <div key={label}
-            className="flex items-center gap-3 px-4 py-2.5 rounded-xl"
-            style={{
-              background: '#FFFFFF',
-              border: '1px solid #F1F5F9',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
-              transform: `translateX(${i % 2 === 0 ? '0' : '8px'})`,
-              opacity: i === 0 ? 1 : 0.7 + i * 0.05,
-            }}>
-            <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
-              style={{ background: `${color}14` }}>
-              <Icon size={12} style={{ color }} />
-            </div>
-            <span className="text-xs font-medium" style={{ color: '#374151' }}>{label}</span>
+      <div className="w-full max-w-xs space-y-3">
+        {/* Text block with selection */}
+        <div className="relative rounded-xl p-4 space-y-2" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+          <div className="h-3 w-full rounded" style={{ background: '#F1F5F9' }} />
+          <div className="flex gap-1 items-center">
+            <div className="h-3 rounded flex-1" style={{ background: '#BAD2FF' }} />
+            <div className="h-3 rounded w-1/3" style={{ background: '#BAD2FF' }} />
           </div>
-        ))}
+          <div className="h-3 w-4/5 rounded" style={{ background: '#F1F5F9' }} />
+          {/* Floating menu */}
+          {showMenu && (
+            <div className="absolute left-4 -top-10 flex items-center gap-1 px-2 py-1.5 rounded-lg"
+              style={{ background: '#1A1A1A', boxShadow: '0 4px 16px rgba(0,0,0,0.2)', animation: 'fadeInUp 0.25s ease' }}>
+              {[
+                { icon: Sparkles, label: 'IA' },
+                { icon: MessageSquare, label: 'Comentar' },
+                { icon: StickyNote, label: 'Nota' },
+              ].map(({ icon: Icon, label }) => (
+                <div key={label} className="flex items-center gap-1 px-2 py-1 rounded-md"
+                  style={{ color: '#E5E7EB' }}>
+                  <Icon size={11} />
+                  <span className="text-xs">{label}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        {/* Actions list */}
+        <div className="space-y-1">
+          {actions.map(({ icon: Icon, label, color }, i) => (
+            <div key={label}
+              className="flex items-center gap-2.5 px-3 py-2 rounded-lg"
+              style={{
+                background: activeAction === i ? `${color}10` : '#FFFFFF',
+                border: `1px solid ${activeAction === i ? color + '40' : '#F1F5F9'}`,
+                boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+                transition: 'all 0.2s',
+              }}>
+              <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0"
+                style={{ background: `${color}14` }}>
+                <Icon size={10} style={{ color }} />
+              </div>
+              <span className="text-xs font-medium" style={{ color: '#374151' }}>{label}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -160,73 +151,53 @@ function VisualContextualActions() {
 
 function VisualSidePanel() {
   return (
-    <div className="w-full h-full flex items-center justify-center p-4">
-      <div className="w-full max-w-xs rounded-2xl overflow-hidden" style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.10)', border: '1px solid #E5E7EB' }}>
-        {/* Panel header */}
-        <div className="flex items-center gap-2 px-4 py-3" style={{ background: '#E7EFFE', borderBottom: '1px solid #BAD2FF' }}>
-          <ProdiMark size={20} />
-          <span className="text-sm font-semibold" style={{ color: '#0047CC' }}>Prodi</span>
-        </div>
-        {/* Messages */}
-        <div className="p-4 space-y-3" style={{ background: '#FFFFFF' }}>
-          <div className="flex items-start gap-2">
-            <div className="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-              <Sparkles size={8} style={{ color: '#367CFF' }} />
+    <div className="w-full h-full flex items-center justify-center p-3">
+      <div className="w-full max-w-xs space-y-2">
+        {/* AI Panel */}
+        <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.08)', border: '1px solid #E5E7EB' }}>
+          <div className="flex items-center gap-2 px-3 py-2.5" style={{ background: '#E7EFFE', borderBottom: '1px solid #BAD2FF' }}>
+            <ProdiMark size={16} />
+            <span className="text-xs font-semibold" style={{ color: '#0047CC' }}>Prodi</span>
+          </div>
+          <div className="p-3 space-y-2" style={{ background: '#FFFFFF' }}>
+            <div className="flex items-start gap-2">
+              <div className="w-4 h-4 rounded-md flex-shrink-0 flex items-center justify-center" style={{ background: '#E7EFFE' }}>
+                <Sparkles size={7} style={{ color: '#367CFF' }} />
+              </div>
+              <div className="px-2.5 py-1.5 rounded-xl text-xs leading-relaxed" style={{ background: '#F8F9FA', color: '#374151', maxWidth: '140px' }}>
+                ¿En qué puedo ayudarte hoy?
+              </div>
             </div>
-            <div className="px-3 py-2 rounded-xl text-xs leading-relaxed" style={{ background: '#F8F9FA', color: '#374151', maxWidth: '160px' }}>
-              ¿En qué puedo ayudarte hoy?
+            <div className="flex justify-end">
+              <div className="px-2.5 py-1.5 rounded-xl text-xs" style={{ background: '#367CFF', color: '#FFFFFF', maxWidth: '120px' }}>
+                Investigar fuentes sobre CNN
+              </div>
             </div>
           </div>
-          <div className="flex justify-end">
-            <div className="px-3 py-2 rounded-xl text-xs" style={{ background: '#367CFF', color: '#FFFFFF', maxWidth: '140px' }}>
-              Investigar fuentes sobre CNN
-            </div>
-          </div>
-          <div className="flex items-start gap-2">
-            <div className="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-              <Sparkles size={8} style={{ color: '#367CFF' }} />
-            </div>
-            <div className="px-3 py-2 rounded-xl text-xs leading-relaxed" style={{ background: '#F8F9FA', color: '#374151', maxWidth: '160px' }}>
-              Aquí tienes algunas referencias clave...
-            </div>
-          </div>
-        </div>
-        {/* Input */}
-        <div className="px-4 pb-4">
-          <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
-            <span className="flex-1 text-xs" style={{ color: '#9CA3AF' }}>Escribe tu pregunta…</span>
-            <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: '#367CFF' }}>
-              <ArrowUpRight size={10} style={{ color: '#FFFFFF' }} />
+          <div className="px-3 pb-3" style={{ background: '#FFFFFF' }}>
+            <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
+              <span className="flex-1 text-xs" style={{ color: '#9CA3AF' }}>Escribe tu pregunta…</span>
+              <div className="w-4 h-4 rounded-md flex items-center justify-center" style={{ background: '#367CFF' }}>
+                <ArrowUpRight size={9} style={{ color: '#FFFFFF' }} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-function VisualNotesComments() {
-  return (
-    <div className="w-full h-full flex items-center justify-center p-4">
-      <div className="w-full max-w-xs space-y-3">
-        {/* Note */}
-        <div className="rounded-xl p-3 flex items-start gap-3" style={{ background: '#FFFBEB', border: '1px solid #FDE68A', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-          <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#FEF9C3' }}>
-            <StickyNote size={12} style={{ color: '#CA8A04' }} />
+        {/* Notes + Comments */}
+        <div className="flex gap-2">
+          <div className="flex-1 rounded-xl p-2.5 flex items-start gap-2" style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}>
+            <StickyNote size={11} style={{ color: '#CA8A04', flexShrink: 0, marginTop: '1px' }} />
+            <div>
+              <p className="text-xs font-semibold" style={{ color: '#92400E' }}>Nota</p>
+              <p className="text-xs leading-snug mt-0.5" style={{ color: '#78350F' }}>Revisar con más ejemplos</p>
+            </div>
           </div>
-          <div>
-            <p className="text-xs font-semibold mb-0.5" style={{ color: '#92400E' }}>Nota personal</p>
-            <p className="text-xs leading-relaxed" style={{ color: '#78350F' }}>Revisar esta sección con más ejemplos prácticos.</p>
-          </div>
-        </div>
-        {/* Comment */}
-        <div className="rounded-xl p-3 flex items-start gap-3" style={{ background: '#EFF6FF', border: '1px solid #BFDBFE', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-          <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#DBEAFE' }}>
-            <MessageSquare size={12} style={{ color: '#2563EB' }} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold mb-0.5" style={{ color: '#1E40AF' }}>Comentario — Carlos M.</p>
-            <p className="text-xs leading-relaxed" style={{ color: '#1E3A8A' }}>¿Podemos ampliar el apartado 2.3?</p>
+          <div className="flex-1 rounded-xl p-2.5 flex items-start gap-2" style={{ background: '#EFF6FF', border: '1px solid #BFDBFE' }}>
+            <MessageSquare size={11} style={{ color: '#2563EB', flexShrink: 0, marginTop: '1px' }} />
+            <div>
+              <p className="text-xs font-semibold" style={{ color: '#1E40AF' }}>Comentario</p>
+              <p className="text-xs leading-snug mt-0.5" style={{ color: '#1E3A8A' }}>¿Ampliamos el 2.3?</p>
+            </div>
           </div>
         </div>
       </div>
@@ -235,22 +206,34 @@ function VisualNotesComments() {
 }
 
 function VisualFinalState() {
+  const caps = [
+    { label: 'Generar', desc: 'contenido desde cero' },
+    { label: 'Editar', desc: 'y mejorar fragmentos' },
+    { label: 'Revisar', desc: 'calidad y coherencia' },
+  ]
   return (
-    <div className="w-full h-full flex items-center justify-center p-4">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-20 h-20 rounded-3xl flex items-center justify-center" style={{ background: '#FFFFFF', boxShadow: '0 12px 32px rgba(99,102,241,0.15)', border: '1px solid #E5E7EB' }}>
-          <ProdiMark size={48} />
+    <div className="w-full h-full flex items-center justify-center p-6">
+      <div className="flex items-center gap-6 w-full max-w-xs">
+        {/* Logo */}
+        <div className="flex-shrink-0 flex flex-col items-center gap-2">
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: '#FFFFFF', boxShadow: '0 12px 32px rgba(99,102,241,0.15)', border: '1px solid #E5E7EB' }}>
+            <ProdiMark size={38} />
+          </div>
+          <p className="text-xs font-semibold text-center" style={{ color: '#1A1A1A' }}>Prodi</p>
         </div>
-        <div className="text-center">
-          <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Prodi está listo</p>
-          <p className="text-xs mt-1" style={{ color: '#9CA3AF' }}>Tu asistente de contenidos</p>
-        </div>
-        <div className="flex items-center gap-3">
-          {['Generar', 'Editar', 'Revisar'].map(cap => (
-            <div key={cap} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full"
-              style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
-              <Check size={9} style={{ color: '#367CFF' }} />
-              <span className="text-xs font-medium" style={{ color: '#0047CC' }}>{cap}</span>
+        {/* Tags vertical */}
+        <div className="flex flex-col gap-2 flex-1">
+          {caps.map(({ label, desc }) => (
+            <div key={label} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl"
+              style={{ background: '#FFFFFF', border: '1px solid #E7EFFE', boxShadow: '0 2px 8px rgba(54,124,255,0.08)' }}>
+              <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: '#E7EFFE' }}>
+                <Check size={10} style={{ color: '#367CFF' }} />
+              </div>
+              <div>
+                <span className="text-xs font-semibold block" style={{ color: '#0047CC' }}>{label}</span>
+                <span className="text-xs leading-none" style={{ color: '#9CA3AF' }}>{desc}</span>
+              </div>
             </div>
           ))}
         </div>
@@ -263,9 +246,7 @@ const VISUAL_MAP = {
   'editor-zoom': VisualEditorZoom,
   'canvas-overview': VisualCanvasOverview,
   'contextual-selection': VisualContextualSelection,
-  'contextual-actions': VisualContextualActions,
   'side-panel': VisualSidePanel,
-  'notes-comments': VisualNotesComments,
   'final-state': VisualFinalState,
 }
 
@@ -355,7 +336,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
                     </div>
                     <span className="text-xs font-medium truncate"
                       style={{ color: isActive ? '#0047CC' : isPast ? '#374151' : '#9CA3AF' }}>
-                      {s.title || `Paso ${i + 1}`}
+                      {s.title || s.stepLabel || `Paso ${i + 1}`}
                     </span>
                   </button>
                 )
@@ -391,7 +372,10 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
           {/* Content + visual */}
           <div className="flex flex-1 min-h-0 px-8 pb-0 gap-6">
             {/* Text content */}
-            <div className="flex flex-col justify-center gap-4 flex-1 min-w-0" style={{ maxWidth: '240px' }}>
+            <div className="flex flex-col justify-center gap-3 flex-1 min-w-0" style={{ maxWidth: '240px' }}>
+              {!slide.titleFirst && slide.body && (
+                <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: '#374151' }}>{slide.body}</p>
+              )}
               {slide.title && (
                 <div>
                   <h2 className="text-xl font-bold leading-tight" style={{ color: '#1A1A1A' }}>{slide.title}</h2>
@@ -400,11 +384,11 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
                   )}
                 </div>
               )}
-              {slide.body && (
+              {slide.titleFirst && slide.body && (
                 <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: '#374151' }}>{slide.body}</p>
               )}
               {slide.bullets && slide.bullets.length > 0 && (
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {slide.bullets.map(b => (
                     <div key={b} className="flex items-center gap-2.5">
                       <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#367CFF' }} />
@@ -413,14 +397,17 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
                   ))}
                 </div>
               )}
-              {slide.concepts && (
-                <div className="space-y-2 mt-1">
-                  {slide.concepts.map(c => (
-                    <div key={c.label} className="px-3 py-2 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #F1F5F9' }}>
-                      <span className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>{c.label}</span>
-                      <span className="text-xs ml-1.5" style={{ color: '#6B7280' }}>→ {c.desc}</span>
-                    </div>
-                  ))}
+              {slide.additionalSection && (
+                <div className="mt-1">
+                  <p className="text-xs font-semibold mb-1.5" style={{ color: '#6B7280' }}>{slide.additionalSection.label}</p>
+                  <div className="space-y-1">
+                    {slide.additionalSection.items.map(item => (
+                      <div key={item} className="flex items-center gap-2.5">
+                        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#9CA3AF' }} />
+                        <span className="text-sm" style={{ color: '#374151' }}>{item}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

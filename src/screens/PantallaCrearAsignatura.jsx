@@ -721,22 +721,7 @@ function PanelIADescriptor({ contexto, onContexto }) {
               Usa los atajos o escribe una pregunta para recibir orientación.
             </p>
             <div className="space-y-1.5 w-full">
-              {[
-                { key: 'conceptos', label: 'Sugerir conceptos' },
-                { key: 'enfoque', label: 'Sugerir enfoque' },
-                { key: 'nivel', label: 'Sugerir nivel' },
-              ].map(item => (
-                <button
-                  key={item.key}
-                  onClick={() => onContexto(item.key)}
-                  className="w-full text-left px-3 py-2 rounded-lg text-xs transition-all"
-                  style={{ background: '#F8F9FA', color: '#374151', border: '1px solid #E5E7EB' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.color = '#0047CC' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = '#F8F9FA'; e.currentTarget.style.color = '#374151' }}
-                >
-                  {item.label}
-                </button>
-              ))}
+          
             </div>
           </div>
         )}
@@ -835,7 +820,8 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
         onClick={() => onPanelContexto(active ? null : ctxKey)}
         style={{
           ...ctaStyle.base,
-          color: active ? '#0A5CF5' : hovered ? '#0A5CF5' : '#6B7280',
+          color: '#0A5CF5',
+          opacity: active ? 1 : hovered ? 0.85 : 0.65,
           fontWeight: active ? '600' : '500',
         }}
         onMouseEnter={() => setHovered(true)}

@@ -1,13 +1,68 @@
-import { useState } from 'react'
-import { ChevronDown, ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { ChevronDown, ChevronRight, PanelLeftClose, PanelLeftOpen, Info, X } from 'lucide-react'
 import { pipeline } from '../mockData'
 import StatusIndicator, { toStatusKey } from './StatusIndicator'
 
 const ESTADO_CLICKABLE = ['aprobado', 'borrador', 'revision', 'comentarios']
 
-export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
+function TemaResumenPopover({ tema, onClose, anchorRef }) {
+  const popRef = useRef(null)
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (popRef.current && !popRef.current.contains(e.target) && !anchorRef.current?.contains(e.target)) {
+        onClose()
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [onClose, anchorRef])
+
+  return (
+    <div
+      ref={popRef}
+      className="absolute z-50 left-full ml-2 top-0 w-64 rounded-xl p-3.5"
+      style={{
+        background: '#FFFFFF',
+        border: '1px solid #E5E7EB',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+      }}
+    >
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <span className="text-xs font-semibold leading-tight" style={{ color: '#1A1A1A' }}>
+          T{tema.numero} — {tema.titulo}
+        </span>
+        <button onClick={onClose} className="flex-shrink-0 mt-0.5" style={{ color: '#9CA3AF' }}>
+          <X size={12} />
+        </button>
+      </div>
+      <p className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>
+        {tema.descripcion}
+      </p>
+    </div>
+  )
+}
+
+export default function PipelineSidebar({ seccionActiva, onSeccionChange, creacionData }) {
   const [temasExpandidos, setTemasExpandidos] = useState({ 'tema-1': true, 'tema-2': true })
   const [collapsed, setCollapsed] = useState(false)
+  const [popoverAbierto, setPopoverAbierto] = useState(null)
+  const infoRefs = useRef({})
+
+  const temaDescMap = creacionData?.resumen?.temasConDescripcion
+    ? Object.fromEntries(creacionData.resumen.temasConDescripcion.map((t, i) => [i + 1, t]))
+    : null
+
+  const esAsignaturaNueva = !!creacionData?.indice
+
+  // When coming from the creation flow all topic sections are locked except instrucciones-t1
+  const getEstado = (secId, staticEstado) => {
+    if (!esAsignaturaNueva) return staticEstado
+    if (secId === 'instrucciones-t1') return 'borrador'
+    // resumen and indice keep their static estado
+    if (secId === 'resumen' || secId === 'indice') return staticEstado
+    return 'bloqueado'
+  }
 
   const toggleTema = (id) => setTemasExpandidos(prev => ({ ...prev, [id]: !prev[id] }))
 
@@ -15,7 +70,6 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
     if (!ESTADO_CLICKABLE.includes(estado)) return
     onSeccionChange(id)
   }
-
 
   // Count approved sections for progress
   const allSecciones = pipeline.flatMap(e => e.tipo === 'tema' ? e.secciones : [e])
@@ -86,12 +140,13 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
           {pipeline.map((etapa) => {
             // ─ Flat sections (Resumen, Índice) ─
             if (etapa.tipo === 'seccion') {
-              const clickable = ESTADO_CLICKABLE.includes(etapa.estado)
+              const estado = getEstado(etapa.id, etapa.estado)
+              const clickable = ESTADO_CLICKABLE.includes(estado)
               const activo = seccionActiva === etapa.id
               return (
                 <div
                   key={etapa.id}
-                  onClick={() => handleClick(etapa.id, etapa.estado)}
+                  onClick={() => handleClick(etapa.id, estado)}
                   className="flex items-center justify-between px-2 py-2 rounded-lg transition-all"
                   style={{
                     cursor: clickable ? 'pointer' : 'default',
@@ -102,7 +157,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                   onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
                 >
                   <div className="flex items-center gap-2">
-                    <StatusIndicator status={toStatusKey(etapa.estado)} variant="icon" size="sm" showTooltip={true} />
+                    <StatusIndicator status={toStatusKey(estado)} variant="icon" size="sm" showTooltip={true} />
                     <span
                       className="text-sm"
                       style={{
@@ -121,14 +176,19 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
             if (etapa.tipo === 'tema') {
               const expandido = !!temasExpandidos[etapa.id]
               const tieneActivo = etapa.secciones.some(s => s.id === seccionActiva)
-              const estadoTema = etapa.secciones.some(s => s.estado === 'comentarios') ? 'comentarios'
-                : etapa.secciones.some(s => s.estado === 'revision') ? 'revision'
-                : etapa.secciones.some(s => s.estado === 'borrador') ? 'borrador'
-                : etapa.secciones.every(s => s.estado === 'aprobado') ? 'aprobado'
+              const secEstados = etapa.secciones.map(s => getEstado(s.id, s.estado))
+              const estadoTema = secEstados.some(e => e === 'comentarios') ? 'comentarios'
+                : secEstados.some(e => e === 'revision') ? 'revision'
+                : secEstados.some(e => e === 'borrador') ? 'borrador'
+                : secEstados.every(e => e === 'aprobado') ? 'aprobado'
                 : 'bloqueado'
 
+              // Extract tema number from id (e.g. 'tema-1' → 1)
+              const temaNum = parseInt(etapa.id.split('-')[1], 10)
+              const temaDesc = temaDescMap?.[temaNum] ?? null
+
               return (
-                <div key={etapa.id}>
+                <div key={etapa.id} className="relative">
                   {/* Tema header */}
                   <button
                     onClick={() => toggleTema(etapa.id)}
@@ -150,22 +210,47 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                         </p>
                       </div>
                     </div>
-                    {expandido
-                      ? <ChevronDown size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
-                      : <ChevronRight size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
-                    }
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      {temaDesc && (
+                        <span
+                          ref={el => infoRefs.current[etapa.id] = el}
+                          onClick={e => { e.stopPropagation(); setPopoverAbierto(prev => prev === etapa.id ? null : etapa.id) }}
+                          className="flex items-center justify-center w-5 h-5 rounded-md transition-colors"
+                          style={{
+                            color: popoverAbierto === etapa.id ? '#367CFF' : '#9CA3AF',
+                            background: popoverAbierto === etapa.id ? '#E7EFFE' : 'transparent',
+                          }}
+                          onMouseEnter={e => { e.stopPropagation(); e.currentTarget.style.color = '#367CFF'; e.currentTarget.style.background = '#E7EFFE' }}
+                          onMouseLeave={e => { e.stopPropagation(); if (popoverAbierto !== etapa.id) { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' } }}
+                        >
+                          <Info size={12} />
+                        </span>
+                      )}
+                      {expandido
+                        ? <ChevronDown size={13} style={{ color: '#9CA3AF' }} />
+                        : <ChevronRight size={13} style={{ color: '#9CA3AF' }} />
+                      }
+                    </div>
                   </button>
+                  {popoverAbierto === etapa.id && temaDesc && (
+                    <TemaResumenPopover
+                      tema={temaDesc}
+                      onClose={() => setPopoverAbierto(null)}
+                      anchorRef={{ current: infoRefs.current[etapa.id] }}
+                    />
+                  )}
 
                   {/* Subsections */}
                   {expandido && (
                     <div className="mt-0.5 mb-1 ml-4 space-y-0.5 pl-2.5" style={{ borderLeft: '1.5px solid #E5E7EB' }}>
                       {etapa.secciones.map(sec => {
-                        const clickable = ESTADO_CLICKABLE.includes(sec.estado)
+                        const secEstado = getEstado(sec.id, sec.estado)
+                        const clickable = ESTADO_CLICKABLE.includes(secEstado)
                         const activo = seccionActiva === sec.id
                         return (
                           <div
                             key={sec.id}
-                            onClick={() => handleClick(sec.id, sec.estado)}
+                            onClick={() => handleClick(sec.id, secEstado)}
                             className="flex items-center gap-2 px-2 py-1.5 rounded-md transition-all"
                             style={{
                               cursor: clickable ? 'pointer' : 'default',
@@ -177,7 +262,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                             onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F8F9FA' }}
                             onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
                           >
-                            <StatusIndicator status={toStatusKey(sec.estado)} variant="icon" size="sm" showTooltip={true} />
+                            <StatusIndicator status={toStatusKey(secEstado)} variant="icon" size="sm" showTooltip={true} />
                             <span
                               className="text-xs"
                               style={{

@@ -1,5 +1,5 @@
 // Onboarding Prodi — slide data
-// 7 slides introducing Prodi as the transversal AI assistant for Asistente de Contenidos
+// 5 slides introducing Prodi as the transversal AI assistant for Asistente de Contenidos
 
 export const onboardingSlides = [
   {
@@ -7,6 +7,7 @@ export const onboardingSlides = [
     title: 'Conoce Prodi',
     subtitle: 'El nuevo Asistente de Contenidos',
     body: 'Tu criterio profesional en el centro.',
+    titleFirst: true,
     bullets: [],
     cta: null,
     visualType: 'editor-zoom',
@@ -14,6 +15,7 @@ export const onboardingSlides = [
   {
     id: 2,
     title: null,
+    stepLabel: 'Genera contenido',
     subtitle: null,
     body: 'Define aspectos de tu asignatura\ny comienza a generar contenido.',
     bullets: [],
@@ -22,18 +24,9 @@ export const onboardingSlides = [
   },
   {
     id: 3,
-    title: null,
-    subtitle: null,
-    body: 'Selecciona cualquier fragmento\nAparecen herramientas contextuales',
-    bullets: [],
-    cta: null,
-    visualType: 'contextual-selection',
-  },
-  {
-    id: 4,
     title: 'Mejora tu contenido',
     subtitle: null,
-    body: null,
+    body: 'Selecciona cualquier fragmento para usar las herramientas de Prodi.',
     bullets: [
       'Corregir redacción',
       'Expandir o resumir',
@@ -42,35 +35,27 @@ export const onboardingSlides = [
       'Deep research',
     ],
     cta: null,
-    visualType: 'contextual-actions',
+    visualType: 'contextual-selection',
   },
   {
-    id: 5,
+    id: 4,
     title: null,
+    stepLabel: 'Prodi siempre disponible',
     subtitle: null,
-    body: 'Consulta a Prodi en cualquier momento',
+    body: 'Consulta a Prodi en cualquier momento\ndesde el panel de IA.',
     bullets: [
       'Investigar un tema',
       'Desarrollar ideas',
     ],
+    additionalSection: {
+      label: 'También puedes añadir:',
+      items: ['Notas personales', 'Comentarios para colaborar'],
+    },
     cta: null,
     visualType: 'side-panel',
   },
   {
-    id: 6,
-    title: null,
-    subtitle: null,
-    body: 'Añade notas personales\ny comentarios para colaborar',
-    bullets: [],
-    cta: null,
-    visualType: 'notes-comments',
-    concepts: [
-      { label: 'Notas', desc: 'Anotaciones personales' },
-      { label: 'Comentarios', desc: 'Colaboración y revisión con el equipo' },
-    ],
-  },
-  {
-    id: 7,
+    id: 5,
     title: 'Empieza a crear con Prodi',
     subtitle: null,
     body: null,

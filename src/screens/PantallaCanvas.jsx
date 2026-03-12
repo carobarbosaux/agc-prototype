@@ -1720,6 +1720,7 @@ export default function PantallaCanvas({
             setSeccionActiva(id)
             setComentarioActivoBloque(null)
           }}
+          creacionData={creacionData}
         />
 
         {/* Content area */}
