@@ -31,6 +31,13 @@ import {
 
 const SECCION_CONFIG = {
   // ─ Global ─
+  resumen: {
+    label: 'Resumen general',
+    labelCorto: 'Resumen',
+    estado: 'borrador',
+    bloques: [],
+    chat: [],
+  },
   indice: {
     label: 'Índice',
     labelCorto: 'Índice',
@@ -833,7 +840,7 @@ function SeccionIndiceFija({ bloques }) {
 
 // ─── Resumen section component ────────────────────────────────────────────────
 
-const RESUMEN_DATA = {
+const DL_RESUMEN_DATA = {
   nombre: 'Deep Learning y Redes Neuronales',
   introduccion: 'La asignatura Deep Learning y Redes Neuronales introduce al estudiante en los fundamentos y aplicaciones del aprendizaje profundo dentro del campo de la inteligencia artificial. A lo largo del curso se analizan los principios que sustentan el funcionamiento de las redes neuronales artificiales y su capacidad para aprender patrones complejos a partir de datos.',
   objetivos: [
@@ -842,12 +849,37 @@ const RESUMEN_DATA = {
     'Aplicar técnicas de entrenamiento y optimización de modelos de aprendizaje profundo.',
     'Evaluar el potencial y las limitaciones del deep learning en distintos contextos tecnológicos y científicos.',
   ],
-  extension: 'XXXX palabras · 20 páginas (aproximadamente)',
+  extension: '12.000 palabras · 20 páginas (aproximadamente)',
   epigrafes: 'El tema se estructurará siguiendo los epígrafes aprobados en el índice: introducción al deep learning, fundamentos de redes neuronales artificiales, entrenamiento y optimización, arquitecturas CNN y RNN, modelos generativos y aplicaciones avanzadas. Cada epígrafe comenzará con una breve introducción conceptual y desarrollará los fundamentos que el estudiante debe comprender.\n\nA lo largo del tema se destacarán ideas esenciales como la relación entre IA, machine learning y deep learning, el papel de los datos en el entrenamiento de modelos, y las diferencias entre las principales arquitecturas de redes neuronales profundas, utilizando recuadros de "punto clave" para facilitar la lectura.\n\nPara reforzar los contenidos, se incorporarán elementos visuales: una línea temporal de la evolución del deep learning, un esquema comparativo de arquitecturas (CNN, RNN, Transformers) y diagramas del proceso de entrenamiento. El tema trabajará dos competencias principales: la capacidad de comprender el funcionamiento de las redes neuronales y la habilidad para identificar la arquitectura adecuada según el tipo de problema.',
 }
 
+const FUNDML_RESUMEN_DATA = {
+  nombre: 'Fundamentos de Machine Learning',
+  introduccion: 'La asignatura Fundamentos de Machine Learning introduce al estudiante en los principios y métodos del aprendizaje automático dentro del campo de la inteligencia artificial. A lo largo del curso se analizan los algoritmos, paradigmas y flujos de trabajo que permiten a los sistemas aprender a partir de datos para resolver tareas de clasificación, regresión, agrupamiento y predicción.',
+  objetivos: [
+    'Comprender los fundamentos teóricos del machine learning y su relación con la estadística y la inteligencia artificial.',
+    'Identificar y aplicar los principales algoritmos supervisados y no supervisados.',
+    'Aplicar técnicas de preprocesamiento, validación y evaluación de modelos.',
+    'Evaluar el potencial y las limitaciones del machine learning en distintos contextos tecnológicos y científicos.',
+  ],
+  extension: '12.000 palabras · 20 páginas (aproximadamente)',
+  epigrafes: 'El tema se estructurará siguiendo los epígrafes aprobados en el índice: introducción al machine learning, aprendizaje supervisado, aprendizaje no supervisado, evaluación y validación de modelos, y aplicaciones prácticas. Cada epígrafe comenzará con una breve introducción conceptual y desarrollará los fundamentos que el estudiante debe comprender.\n\nA lo largo del tema se destacarán ideas esenciales como la diferencia entre aprendizaje supervisado y no supervisado, el papel del preprocesamiento de datos y los criterios de selección de modelos, utilizando recuadros de "punto clave" para facilitar la lectura.\n\nPara reforzar los contenidos, se incorporarán elementos visuales: esquemas del flujo de trabajo típico en machine learning, comparativas de algoritmos y ejemplos de casos de uso reales.',
+}
+
+function getResumenData(nombreAsignatura) {
+  if (!nombreAsignatura) return DL_RESUMEN_DATA
+  if (nombreAsignatura.toLowerCase().includes('machine learning') || nombreAsignatura.toLowerCase().includes('fund')) return FUNDML_RESUMEN_DATA
+  if (nombreAsignatura.toLowerCase().includes('deep learning')) return DL_RESUMEN_DATA
+  // Generic fallback: replace subject name in DL template
+  return {
+    ...DL_RESUMEN_DATA,
+    nombre: nombreAsignatura,
+    introduccion: `La asignatura ${nombreAsignatura} introduce al estudiante en los conceptos, métodos y aplicaciones fundamentales de esta disciplina dentro del campo de la inteligencia artificial. A lo largo del curso se analizan los principios teóricos y prácticos que permiten comprender y aplicar sus técnicas principales.`,
+  }
+}
+
 function SeccionResumen({ editable, nombreAsignatura }) {
-  const [data, setData] = useState(RESUMEN_DATA)
+  const [data, setData] = useState(() => getResumenData(nombreAsignatura))
   const [unsaved, setUnsaved] = useState(false)
 
   const mark = () => setUnsaved(true)
@@ -872,7 +904,7 @@ function SeccionResumen({ editable, nombreAsignatura }) {
       {/* Header */}
       <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
         <p className="text-xs font-medium mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.05em' }}>
-          {nombreAsignatura ?? data.nombre} · Máster en IA · En borrador
+          {nombreAsignatura ?? data.nombre}
         </p>
         <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>Resumen general</h1>
         {unsaved && editable && (
@@ -1306,7 +1338,7 @@ export default function PantallaCanvas({
   const handleMarcarResuelto = (bloqueId, comentarioId) => {
     setBloquesState(prev => ({
       ...prev,
-      [seccionActiva]: prev[seccionActiva].map(b => {
+      [seccionActiva]: (prev[seccionActiva] || bloques).map(b => {
         if (b.id !== bloqueId) return b
         return {
           ...b,
@@ -1328,7 +1360,7 @@ export default function PantallaCanvas({
   const handleResponder = (bloqueId, comentarioId, texto) => {
     setBloquesState(prev => ({
       ...prev,
-      [seccionActiva]: prev[seccionActiva].map(b => {
+      [seccionActiva]: (prev[seccionActiva] || bloques).map(b => {
         if (b.id !== bloqueId) return b
         return {
           ...b,
@@ -1975,6 +2007,14 @@ export default function PantallaCanvas({
                           onComentarioClick={() => handleComentarioClick(bloque)}
                           onAccionIA={handleAccionIA}
                           onTipoChange={handleTipoChange}
+                          onContenidoChange={(bloqueId, nuevoContenido) => {
+                            setBloquesState(prev => ({
+                              ...prev,
+                              [seccionActiva]: (prev[seccionActiva] || bloques).map(b =>
+                                b.id === bloqueId ? { ...b, contenido: nuevoContenido } : b
+                              ),
+                            }))
+                          }}
                           textoReemplazando={iaInline?.bloqueId === bloque.id ? iaInline.textoOriginal : null}
                         />
 
