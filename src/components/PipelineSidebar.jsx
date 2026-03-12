@@ -43,7 +43,7 @@ function TemaResumenPopover({ tema, onClose, anchorRef }) {
   )
 }
 
-export default function PipelineSidebar({ seccionActiva, onSeccionChange, creacionData }) {
+export default function PipelineSidebar({ seccionActiva, onSeccionChange, creacionData, esAsignaturaNueva, estadosSeccion }) {
   const [temasExpandidos, setTemasExpandidos] = useState({ 'tema-1': true, 'tema-2': true })
   const [collapsed, setCollapsed] = useState(false)
   const [popoverAbierto, setPopoverAbierto] = useState(null)
@@ -53,15 +53,9 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
     ? Object.fromEntries(creacionData.resumen.temasConDescripcion.map((t, i) => [i + 1, t]))
     : null
 
-  const esAsignaturaNueva = !!creacionData?.indice
-
-  // When coming from the creation flow all topic sections are locked except instrucciones-t1
   const getEstado = (secId, staticEstado) => {
     if (!esAsignaturaNueva) return staticEstado
-    if (secId === 'instrucciones-t1') return 'borrador'
-    // resumen and indice keep their static estado
-    if (secId === 'resumen' || secId === 'indice') return staticEstado
-    return 'bloqueado'
+    return estadosSeccion?.[secId] ?? 'sin_comenzar'
   }
 
   const toggleTema = (id) => setTemasExpandidos(prev => ({ ...prev, [id]: !prev[id] }))
@@ -181,6 +175,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                 : secEstados.some(e => e === 'revision') ? 'revision'
                 : secEstados.some(e => e === 'borrador') ? 'borrador'
                 : secEstados.every(e => e === 'aprobado') ? 'aprobado'
+                : secEstados.every(e => e === 'sin_comenzar') ? 'sin_comenzar'
                 : 'bloqueado'
 
               // Extract tema number from id (e.g. 'tema-1' → 1)

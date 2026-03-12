@@ -156,14 +156,15 @@ export { STATUS_CONFIG }
 // Maps legacy estadoConfig keys → StatusIndicator keys
 export function toStatusKey(legacy) {
   const map = {
-    porComenzar: 'sin_comenzar',
-    bloqueado:   'bloqueado',
-    borrador:    'editando',
-    revision:    'revisando',
-    comentarios: 'revisando',
-    aprobado:    'aprobado',
-    publicado:   'aprobado',
-    disenado:    'aprobado',
+    porComenzar:  'sin_comenzar',
+    sin_comenzar: 'sin_comenzar',
+    bloqueado:    'bloqueado',
+    borrador:     'editando',
+    revision:     'revisando',
+    comentarios:  'revisando',
+    aprobado:     'aprobado',
+    publicado:    'aprobado',
+    disenado:     'aprobado',
   }
   return map[legacy] || 'sin_comenzar'
 }

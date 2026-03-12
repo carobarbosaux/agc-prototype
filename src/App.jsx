@@ -12,7 +12,7 @@ export default function App() {
   const [pantalla, setPantalla] = useState('herramientas')
   const [rolActivo, setRolActivo] = useState('autor')
   const [seccionActiva, setSeccionActiva] = useState('t2')
-  const [panelIAabierto, setPanelIAabierto] = useState(false)
+  const [panelIAabierto, setPanelIAabierto] = useState(true)
   const [notifAbiertas, setNotifAbiertas] = useState(false)
   const [titulaciones, setTitulaciones] = useState(titulacionesIniciales)
   const [asignaturaActiva, setAsignaturaActiva] = useState({ titulacionId: 'master-ia', asignaturaId: 'fund-ml' })
@@ -58,34 +58,7 @@ export default function App() {
       { label: 'Generación de Asignaturas', onClick: () => setPantalla('herramientas') },
       { label: 'Dashboard', onClick: null },
     ]
-    if (pantalla === 'canvas') {
-      const temaLabelMap = {
-        resumen: 'Resumen',
-        indice: 'Índice',
-        'instrucciones-t1': 'Instrucciones T1',
-        t1: 'Temario T1',
-        'recursos-t1': 'Recursos T1',
-        'test-t1': 'Tests T1',
-        'instrucciones-t2': 'Instrucciones T2',
-        t2: 'Temario T2',
-        'recursos-t2': 'Recursos T2',
-        'test-t2': 'Tests T2',
-        'instrucciones-t3': 'Instrucciones T3',
-        t3: 'Temario T3',
-        'instrucciones-t4': 'Instrucciones T4',
-        t4: 'Temario T4',
-        'instrucciones-t5': 'Instrucciones T5',
-        t5: 'Temario T5',
-        'instrucciones-t6': 'Instrucciones T6',
-        t6: 'Temario T6',
-      }
-      const temaLabel = temaLabelMap[seccionActiva] || seccionActiva
-      return [
-        { label: 'Generación de Asignaturas', onClick: () => setPantalla('herramientas') },
-        { label: 'Fundamentos de ML', onClick: () => setPantalla('dashboard') },
-        { label: temaLabel, onClick: null },
-      ]
-    }
+    if (pantalla === 'canvas') return []
     return []
   }
 

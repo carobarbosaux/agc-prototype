@@ -765,18 +765,19 @@ function SeccionIndiceFija({ bloques }) {
 // ─── Resumen section component ────────────────────────────────────────────────
 
 const RESUMEN_DATA = {
-  nombre: 'Fundamentos de Machine Learning',
-  introduccion: 'Este tema ofrece una visión general del entorno digital y del papel que desempeñan los principales canales online en las estrategias de marketing actuales.',
+  nombre: 'Deep Learning y Redes Neuronales',
+  introduccion: 'La asignatura Deep Learning y Redes Neuronales introduce al estudiante en los fundamentos y aplicaciones del aprendizaje profundo dentro del campo de la inteligencia artificial. A lo largo del curso se analizan los principios que sustentan el funcionamiento de las redes neuronales artificiales y su capacidad para aprender patrones complejos a partir de datos.',
   objetivos: [
-    'Comprender la evolución del marketing hacia entornos digitales.',
-    'Identificar los componentes del ecosistema digital.',
-    'Reconocer los principales canales y su función estratégica.',
+    'Comprender los fundamentos teóricos del deep learning y su relación con la inteligencia artificial y el machine learning.',
+    'Analizar las principales arquitecturas de redes neuronales profundas (CNN, RNN, Transformers) y sus aplicaciones.',
+    'Aplicar técnicas de entrenamiento y optimización de modelos de aprendizaje profundo.',
+    'Evaluar el potencial y las limitaciones del deep learning en distintos contextos tecnológicos y científicos.',
   ],
   extension: 'XXXX palabras · 20 páginas (aproximadamente)',
-  epigrafes: 'El tema se estructurará siguiendo los epígrafes aprobados en el índice: concepto de marketing digital, comportamiento del consumidor online, principales canales digitales e integración multicanal. Cada epígrafe comenzará con una breve explicación introductoria y desarrollará los conceptos fundamentales que el estudiante debe comprender.\n\nA lo largo del tema se destacarán ideas esenciales como la transición del marketing tradicional al digital, el papel del usuario en la toma de decisiones y la función estratégica de canales como SEO, SEM, redes sociales y publicidad display, utilizando recuadros de "punto clave" para facilitar la lectura.\n\nPara reforzar estos contenidos, se incorporarán varios elementos visuales: una tabla comparativa entre SEO y SEM, un esquema visual del embudo de conversión y un diagrama simplificado del customer journey. Además, el tema trabajará dos competencias principales: la capacidad de analizar el ecosistema digital y la habilidad para interpretar el rol de cada canal dentro de una estrategia online.',
+  epigrafes: 'El tema se estructurará siguiendo los epígrafes aprobados en el índice: introducción al deep learning, fundamentos de redes neuronales artificiales, entrenamiento y optimización, arquitecturas CNN y RNN, modelos generativos y aplicaciones avanzadas. Cada epígrafe comenzará con una breve introducción conceptual y desarrollará los fundamentos que el estudiante debe comprender.\n\nA lo largo del tema se destacarán ideas esenciales como la relación entre IA, machine learning y deep learning, el papel de los datos en el entrenamiento de modelos, y las diferencias entre las principales arquitecturas de redes neuronales profundas, utilizando recuadros de "punto clave" para facilitar la lectura.\n\nPara reforzar los contenidos, se incorporarán elementos visuales: una línea temporal de la evolución del deep learning, un esquema comparativo de arquitecturas (CNN, RNN, Transformers) y diagramas del proceso de entrenamiento. El tema trabajará dos competencias principales: la capacidad de comprender el funcionamiento de las redes neuronales y la habilidad para identificar la arquitectura adecuada según el tipo de problema.',
 }
 
-function SeccionResumen({ editable }) {
+function SeccionResumen({ editable, nombreAsignatura }) {
   const [data, setData] = useState(RESUMEN_DATA)
   const [unsaved, setUnsaved] = useState(false)
 
@@ -802,7 +803,7 @@ function SeccionResumen({ editable }) {
       {/* Header */}
       <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
         <p className="text-xs font-medium mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.05em' }}>
-          Fundamentos de Machine Learning · Máster en IA · En borrador
+          {nombreAsignatura ?? data.nombre} · Máster en IA · En borrador
         </p>
         <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>Resumen general</h1>
         {unsaved && editable && (
@@ -998,7 +999,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
         <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
           <ProdiMark size={14} className="flex-shrink-0 mt-0.5" />
           <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
-            Al hacer clic en <strong>Generar resumen</strong>, Prodi analizará las instrucciones y creará un resumen estructurado del tema con objetivos, epígrafes e ideas didácticas.
+            Al hacer clic en <strong>Generar resumen</strong>, el asistente analizará las instrucciones y creará un resumen estructurado del tema con objetivos, epígrafes e ideas didácticas.
           </p>
         </div>
 
@@ -1163,6 +1164,11 @@ export default function PantallaCanvas({
       indice: bloquesIndice,
     }
   })
+  // Single source of truth for new-subject section statuses.
+  // Only sections present here are accessible; absent = sin_comenzar.
+  const [estadosSeccion, setEstadosSeccion] = useState(
+    () => esAsignaturaNueva ? { indice: 'borrador' } : {}
+  )
   const [savedToast, setSavedToast] = useState(false)
   const [sentToast, setSentToast] = useState(false)
   const [revisandoCalidad, setRevisandoCalidad] = useState(false)
@@ -1207,9 +1213,8 @@ export default function PantallaCanvas({
   const bloques = bloquesState[seccionActiva] !== undefined ? bloquesState[seccionActiva] : seccion.bloques
   const editable = rolActivo === 'autor'
 
-  // New subjects from creation flow: all topic sections start as borrador
-  const estadoMostrado = isResumen ? 'borrador'
-    : (esAsignaturaNueva && seccionActiva !== 'indice') ? 'borrador'
+  const estadoMostrado = esAsignaturaNueva
+    ? (estadosSeccion[seccionActiva] ?? 'sin_comenzar')
     : seccion.estado
 
   const handleComentarioClick = (bloque) => {
@@ -1308,6 +1313,25 @@ export default function PantallaCanvas({
   }
 
   const showSentToast = () => {
+    if (esAsignaturaNueva) {
+      const order = [
+        'indice', 'resumen',
+        'instrucciones-t1', 't1', 'recursos-t1',
+        'instrucciones-t2', 't2', 'recursos-t2',
+        'instrucciones-t3', 't3', 'recursos-t3',
+        'instrucciones-t4', 't4', 'recursos-t4',
+        'instrucciones-t5', 't5', 'recursos-t5',
+        'instrucciones-t6', 't6', 'recursos-t6',
+      ]
+      const idx = order.indexOf(seccionActiva)
+      const next = order[idx + 1]
+      setEstadosSeccion(prev => ({
+        ...prev,
+        [seccionActiva]: 'aprobado',
+        ...(next ? { [next]: 'borrador' } : {}),
+      }))
+      if (next) setTimeout(() => setSeccionActiva(next), 300)
+    }
     setSentToast(true)
     setTimeout(() => setSentToast(false), 2500)
   }
@@ -1423,7 +1447,7 @@ export default function PantallaCanvas({
   const tieneComentariosActivos = bloques.some(b => b.comentarios?.some(c => !c.resuelto))
 
   const getActionBar = () => {
-    const estado = isResumen ? 'borrador' : seccion.estado
+    const estado = estadoMostrado
 
     // DL instrucciones-t1 has its own CTA buttons inside SeccionDLInstrucciones
     if (esAsignaturaNueva && seccionActiva === 'instrucciones-t1') return null
@@ -1685,27 +1709,18 @@ export default function PantallaCanvas({
   return (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 56px)', fontFamily: "'Inter', 'Arial', sans-serif" }}>
 
-      {/* Page header — two rows */}
+      {/* Page header — single row */}
       <div className="flex-shrink-0" style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}>
 
-        {/* Row 1: section type label + estado badge */}
-        <div className="flex items-center gap-3 px-5 pt-3 pb-1">
-          <span className="text-xs font-medium" style={{ color: '#9CA3AF' }}>
-            {isResumen ? 'Resumen de asignatura' : seccion.label}
-          </span>
-          <StatusIndicator status={toStatusKey(estadoMostrado)} variant="badge" />
-        </div>
-
-        {/* Row 2: section title + action buttons + three-dots */}
-        <div className="flex items-center justify-between px-5 pb-3 gap-3">
-          <h2 className="text-base font-semibold truncate" style={{ color: '#111827', flexShrink: 1 }}>
+        <div className="flex items-center gap-2 px-5 py-2.5 min-w-0">
+          {/* Breadcrumb text — truncates with ellipsis */}
+          <span className="text-xs font-medium truncate min-w-0 flex-shrink" style={{ color: '#9CA3AF' }}>
             {isResumen
-              ? (asignaturaData?.nombre || 'Nueva asignatura')
-              : (seccion.labelCorto || seccion.label)}
-          </h2>
-
-          <div className="flex items-center gap-2 flex-shrink-0">
-            {/* Action buttons inline */}
+              ? 'Resumen de asignatura'
+              : [asignaturaData?.nombre, seccion.label].filter(Boolean).join(' · ')}
+          </span>
+          <StatusIndicator status={toStatusKey(estadoMostrado)} variant="badge" className="flex-shrink-0" />
+          <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
             {getActionBar()}
           </div>
         </div>
@@ -1721,6 +1736,8 @@ export default function PantallaCanvas({
             setComentarioActivoBloque(null)
           }}
           creacionData={creacionData}
+          esAsignaturaNueva={esAsignaturaNueva}
+          estadosSeccion={estadosSeccion}
         />
 
         {/* Content area */}
@@ -1728,6 +1745,7 @@ export default function PantallaCanvas({
           {isResumen ? (
             <SeccionResumen
               editable={editable}
+              nombreAsignatura={asignaturaData?.nombre}
             />
           ) : (
             <div className="max-w-2xl mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '64px' }}>
@@ -1735,7 +1753,7 @@ export default function PantallaCanvas({
               {/* Document header */}
               <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
                 <p className="text-xs font-medium mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.05em' }}>
-                  Fundamentos de Machine Learning · Máster en IA
+                  {asignaturaData?.nombre ?? 'Deep Learning y Redes Neuronales'} · Máster en IA
                 </p>
                 <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>
                   {seccion.label}
@@ -1808,6 +1826,7 @@ export default function PantallaCanvas({
                     setDlGenerandoContenido(true)
                     setTimeout(() => {
                       setBloquesState(prev => ({ ...prev, t1: dlBloquesTema1 }))
+                      setEstadosSeccion(prev => ({ ...prev, t1: prev.t1 ?? 'borrador' }))
                       setDlGenerandoContenido(false)
                       setSeccionActiva('t1')
                     }, 1600)
@@ -1821,6 +1840,7 @@ export default function PantallaCanvas({
                   onCreacionDataConsumed={onCreacionDataConsumed}
                   onGenerarResumen={() => {
                     setResumenPrefill(creacionData?.resumen || null)
+                    setEstadosSeccion(prev => ({ ...prev, indice: 'aprobado', resumen: 'borrador' }))
                     setSeccionActiva('resumen')
                   }}
                 />
@@ -1863,7 +1883,7 @@ export default function PantallaCanvas({
                       </div>
                       <p className="text-sm font-medium mb-1" style={{ color: '#9CA3AF' }}>Sección vacía</p>
                       <p className="text-xs leading-relaxed max-w-xs" style={{ color: '#CBD5E1' }}>
-                        Empieza a escribir el contenido de este tema o usa el asistente Prodi para generarlo.
+                        Empieza a escribir el contenido de este tema o usa el Asistente de contenidos para generarlo.
                       </p>
                     </div>
                   )}
@@ -2060,7 +2080,7 @@ export default function PantallaCanvas({
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
             <ProdiMark size={18} />
-            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelIAabierto ? '600' : '500' }}>Prodi</span>
+            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelIAabierto ? '600' : '500' }}>Asistente</span>
           </button>
 
           {/* Experiencias (disenador only) */}

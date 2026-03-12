@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, ChevronRight, Sparkles, X, SquarePen, History } from 'lucide-react'
+import { Send, ChevronRight, Sparkles, X, SquarePen, History, Search, MessageSquare } from 'lucide-react'
 import { respuestasIA, respuestasCalidadIA } from '../mockData'
 import { ProdiMark } from './ProdiLogo'
 
@@ -8,7 +8,7 @@ const historialConversaciones = [
     id: 'h1',
     titulo: 'Referencias académicas para Bloque 2',
     preview: 'He analizado el bloque. Te sugiero añadir la referencia: Bishop...',
-    fecha: 'Hace 1 hora',
+    grupo: 'Hoy',
     mensajes: [
       { id: 1, rol: 'usuario', mensaje: 'Necesito referencias para el bloque de regresión lineal' },
       { id: 2, rol: 'ia', mensaje: 'He analizado el bloque. Te sugiero añadir la referencia: Bishop, C.M. (2006). *Pattern Recognition and Machine Learning*. Springer. Es la referencia estándar para este tipo de contenido.' },
@@ -19,8 +19,8 @@ const historialConversaciones = [
   {
     id: 'h2',
     titulo: 'Mejorar explicación de KNN',
-    preview: 'El contenido está bien estructurado. Considera añadir...',
-    fecha: 'Ayer',
+    preview: 'El contenido está bien estructurado. Considera añadir una transición más clara...',
+    grupo: 'Hoy',
     mensajes: [
       { id: 1, rol: 'usuario', mensaje: '[Mejorar] "El algoritmo K-Nearest Neighbors (KNN) clasifica un nuevo punto..."' },
       { id: 2, rol: 'ia', mensaje: 'El contenido está bien estructurado. Considera añadir una transición más clara entre los paradigmas supervisado y no supervisado para mejorar la fluidez.' },
@@ -30,13 +30,55 @@ const historialConversaciones = [
     id: 'h3',
     titulo: 'Generar ejemplo de regresión logística',
     preview: 'Puedo expandir este concepto con un ejemplo más detallado...',
-    fecha: 'Hace 3 días',
+    grupo: 'Ayer',
     mensajes: [
       { id: 1, rol: 'usuario', mensaje: 'Genera un ejemplo práctico de regresión logística para estudiantes' },
       { id: 2, rol: 'ia', mensaje: 'Puedo expandir este concepto con un ejemplo más detallado. ¿Quieres que lo genere en el canvas o prefieres verlo aquí primero?' },
     ],
   },
+  {
+    id: 'h4',
+    titulo: 'Resumen del Tema 3 para coordinador',
+    preview: 'Aquí tienes un resumen ejecutivo del Tema 3 listo para revisión...',
+    grupo: 'Ayer',
+    mensajes: [
+      { id: 1, rol: 'usuario', mensaje: 'Necesito un resumen ejecutivo del Tema 3 para el coordinador' },
+      { id: 2, rol: 'ia', mensaje: 'Aquí tienes un resumen ejecutivo del Tema 3 listo para revisión del coordinador.' },
+    ],
+  },
+  {
+    id: 'h5',
+    titulo: 'Adaptar nivel de dificultad del test',
+    preview: 'He revisado las preguntas. Tres de ellas superan el nivel esperado...',
+    grupo: 'Esta semana',
+    mensajes: [
+      { id: 1, rol: 'usuario', mensaje: '¿Puedes revisar si el nivel de dificultad del test es adecuado?' },
+      { id: 2, rol: 'ia', mensaje: 'He revisado las preguntas. Tres de ellas superan el nivel esperado para este módulo.' },
+    ],
+  },
+  {
+    id: 'h6',
+    titulo: 'Coherencia entre temario y recursos',
+    preview: 'Los recursos están bien alineados con el temario, aunque detecté...',
+    grupo: 'Esta semana',
+    mensajes: [
+      { id: 1, rol: 'usuario', mensaje: 'Comprueba si los recursos a fondo son coherentes con el temario' },
+      { id: 2, rol: 'ia', mensaje: 'Los recursos están bien alineados con el temario, aunque detecté una referencia desactualizada en la sección de redes convolucionales.' },
+    ],
+  },
+  {
+    id: 'h7',
+    titulo: 'Revisar calidad del Bloque 5',
+    preview: 'El bloque cumple los criterios de calidad. Sugerencia menor: ampliar...',
+    grupo: 'Hace más tiempo',
+    mensajes: [
+      { id: 1, rol: 'usuario', mensaje: 'Revisar calidad — Bloque 5: Introducción a las redes neuronales' },
+      { id: 2, rol: 'ia', mensaje: 'El bloque cumple los criterios de calidad. Sugerencia menor: ampliar el ejemplo de backpropagation con una notación más clara.' },
+    ],
+  },
 ]
+
+const RECENT_LIMIT = 5
 
 export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePendiente, onQuoteConsumed }) {
   const [mensajes, setMensajes] = useState(historialInicial || [])
@@ -45,6 +87,8 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
   const [esperando, setEsperando] = useState(false)
   const [respIdx, setRespIdx] = useState(0)
   const [vistaHistorial, setVistaHistorial] = useState(false)
+  const [busqueda, setBusqueda] = useState('')
+  const [mostrarTodo, setMostrarTodo] = useState(false)
   const chatRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -138,9 +182,9 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
           <ProdiMark size={22} />
           <div>
             <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>
-              {vistaHistorial ? 'Historial' : 'Prodi'}
+              {vistaHistorial ? 'Historial' : 'Asistente de contenidos'}
             </p>
-            <p className="text-xs" style={{ color: '#6B7280' }}>{temaLabel}</p>
+            {!vistaHistorial && <p className="text-xs" style={{ color: '#6B7280' }}>{temaLabel}</p>}
           </div>
         </div>
 
@@ -158,12 +202,12 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
 
           {/* Historial toggle */}
           <button
-            onClick={() => setVistaHistorial(v => !v)}
+            onClick={() => { setVistaHistorial(v => !v); setBusqueda(''); setMostrarTodo(false) }}
             title="Historial de conversaciones"
             className="p-1.5 rounded-lg transition-colors"
-            style={{ background: vistaHistorial ? '#F8F9FA' : 'transparent' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
-            onMouseLeave={e => e.currentTarget.style.background = vistaHistorial ? '#F8F9FA' : 'transparent'}
+            style={{ background: vistaHistorial ? '#F3F4F6' : 'transparent' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
+            onMouseLeave={e => e.currentTarget.style.background = vistaHistorial ? '#F3F4F6' : 'transparent'}
           >
             <History size={14} style={{ color: vistaHistorial ? '#374151' : '#9CA3AF' }} />
           </button>
@@ -183,44 +227,98 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
 
       {/* ── Vista historial ─────────────────────────────────────────────── */}
       {vistaHistorial ? (
-        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-1.5">
-          {historialConversaciones.map(conv => (
-            <button
-              key={conv.id}
-              onClick={() => reanudarConversacion(conv)}
-              className="w-full text-left p-3 rounded-xl transition-all group"
+        <div className="flex flex-col flex-1 overflow-hidden" style={{ background: '#FAFAFA' }}>
+
+          {/* Search */}
+          <div className="px-3 pt-3 pb-2 flex-shrink-0">
+            <div
+              className="flex items-center gap-2 px-3 py-2 rounded-lg"
               style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
-              onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
-              onMouseLeave={e => e.currentTarget.style.background = '#FFFFFF'}
             >
-              <div className="flex items-start justify-between gap-2">
-                <p className="text-xs font-semibold leading-snug" style={{ color: '#1A1A1A' }}>
-                  {conv.titulo}
-                </p>
-                <span className="text-xs flex-shrink-0" style={{ color: '#CBD5E1' }}>
-                  {conv.fecha}
-                </span>
-              </div>
-              <p
-                className="text-xs mt-1 leading-relaxed"
-                style={{
-                  color: '#9CA3AF',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                }}
-              >
-                {conv.preview}
-              </p>
-              <p
-                className="text-xs mt-1.5 font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ color: '#367CFF' }}
-              >
-                Reanudar →
-              </p>
-            </button>
-          ))}
+              <Search size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+              <input
+                value={busqueda}
+                onChange={e => { setBusqueda(e.target.value); setMostrarTodo(false) }}
+                placeholder="Buscar conversaciones..."
+                className="flex-1 text-xs bg-transparent outline-none"
+                style={{ color: '#374151', caretColor: '#367CFF' }}
+              />
+              {busqueda && (
+                <button onClick={() => setBusqueda('')}>
+                  <X size={12} style={{ color: '#9CA3AF' }} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* List */}
+          <div className="flex-1 overflow-y-auto px-2 pb-2">
+            {(() => {
+              const filtradas = busqueda.trim()
+                ? historialConversaciones.filter(c =>
+                    c.titulo.toLowerCase().includes(busqueda.toLowerCase()) ||
+                    c.preview.toLowerCase().includes(busqueda.toLowerCase())
+                  )
+                : historialConversaciones
+
+              const visibles = (!mostrarTodo && !busqueda.trim())
+                ? filtradas.slice(0, RECENT_LIMIT)
+                : filtradas
+
+              // Group by grupo
+              const grupos = []
+              const seen = {}
+              visibles.forEach(c => {
+                if (!seen[c.grupo]) { seen[c.grupo] = true; grupos.push(c.grupo) }
+              })
+
+              return (
+                <>
+                  {visibles.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-10 gap-2">
+                      <Search size={20} style={{ color: '#D1D5DB' }} />
+                      <p className="text-xs" style={{ color: '#9CA3AF' }}>Sin resultados</p>
+                    </div>
+                  ) : (
+                    grupos.map(grupo => (
+                      <div key={grupo} className="mb-1">
+                        <p className="text-xs font-medium px-2 py-1.5 sticky top-0" style={{ color: '#9CA3AF', background: '#FAFAFA', letterSpacing: '0.03em' }}>
+                          {grupo}
+                        </p>
+                        {visibles.filter(c => c.grupo === grupo).map(conv => (
+                          <button
+                            key={conv.id}
+                            onClick={() => reanudarConversacion(conv)}
+                            className="w-full text-left flex items-center gap-2.5 px-2.5 py-2 rounded-lg transition-colors"
+                            onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
+                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                          >
+                            <MessageSquare size={13} style={{ color: '#D1D5DB', flexShrink: 0 }} />
+                            <span className="text-xs truncate flex-1" style={{ color: '#374151' }}>
+                              {conv.titulo}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    ))
+                  )}
+
+                  {/* Show all button */}
+                  {!busqueda.trim() && !mostrarTodo && historialConversaciones.length > RECENT_LIMIT && (
+                    <button
+                      onClick={() => setMostrarTodo(true)}
+                      className="w-full mt-1 py-2 rounded-lg text-xs font-medium transition-colors"
+                      style={{ color: '#9CA3AF' }}
+                      onMouseEnter={e => { e.currentTarget.style.background = '#F3F4F6'; e.currentTarget.style.color = '#6B7280' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9CA3AF' }}
+                    >
+                      Ver todo el historial ({historialConversaciones.length})
+                    </button>
+                  )}
+                </>
+              )
+            })()}
+          </div>
         </div>
       ) : (
         <>

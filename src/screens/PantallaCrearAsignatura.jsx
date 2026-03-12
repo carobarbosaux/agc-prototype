@@ -427,7 +427,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
       <div className="flex flex-col pl-6" style={{ width: '280px', flexShrink: 0 }}>
         <div className="flex items-center gap-2 mb-3 pb-3" style={{ borderBottom: '1px solid #F1F5F9' }}>
           <ProdiMark size={20} />
-          <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Prodi</p>
+          <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Asistente de contenidos</p>
           <p className="text-xs ml-auto" style={{ color: '#9CA3AF' }}>Ajusta el resumen</p>
         </div>
         <div className="flex-1 overflow-y-auto space-y-3" style={{ minHeight: 0 }}>
@@ -1033,7 +1033,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
       <div className="flex flex-col flex-shrink-0" style={{ width: '272px', paddingLeft: '24px', overflow: 'hidden' }}>
         <div className="flex items-center gap-2 mb-3 pb-3 flex-shrink-0" style={{ borderBottom: '1px solid #F1F5F9' }}>
           <ProdiMark size={18} />
-          <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Prodi</p>
+          <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Asistente de contenidos</p>
         </div>
         <div className="flex-1" style={{ minHeight: 0, overflow: 'hidden' }}>
           <PanelIADescriptor contexto={panelContexto} onContexto={onPanelContexto} />
@@ -1128,7 +1128,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
       <div className="flex flex-col pl-6" style={{ width: '280px', flexShrink: 0 }}>
         <div className="flex items-center gap-2 mb-3 pb-3" style={{ borderBottom: '1px solid #F1F5F9' }}>
           <ProdiMark size={20} />
-          <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Prodi</p>
+          <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Asistente de contenidos</p>
           <p className="text-xs ml-auto" style={{ color: '#9CA3AF' }}>Ajusta el resumen</p>
         </div>
         <div className="flex-1 overflow-y-auto space-y-3" style={{ minHeight: 0 }}>
@@ -1231,12 +1231,14 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
   const handleAceptarYGenerar = () => {
     setGenerando(true)
     const indice = [
-      'Tema 1: Fundamentos de redes neuronales y backpropagation',
-      'Tema 2: Redes convolucionales (CNN) para visión artificial',
-      'Tema 3: Redes recurrentes (RNN, LSTM) y secuencias',
-      'Tema 4: Arquitecturas Transformer y atención',
-      'Tema 5: Transfer learning y modelos preentrenados',
-      'Tema 6: Modelos generativos: GANs y difusión',
+      'Tema 1: Introducción al Deep Learning',
+      'Tema 2: Fundamentos de redes neuronales artificiales',
+      'Tema 3: Entrenamiento de redes neuronales',
+      'Tema 4: Redes neuronales profundas',
+      'Tema 5: Redes neuronales convolucionales (CNN)',
+      'Tema 6: Redes neuronales recurrentes (RNN)',
+      'Tema 7: Modelos generativos y aprendizaje profundo',
+      'Tema 8: Aplicaciones avanzadas del Deep Learning',
     ]
     setTimeout(() => {
       const nuevaAsig = {
