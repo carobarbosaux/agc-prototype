@@ -1,16 +1,9 @@
 import { useState } from 'react'
-import { CheckCircle2, ChevronDown, ChevronRight, Lock, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { ChevronDown, ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { pipeline } from '../mockData'
+import StatusIndicator, { toStatusKey } from './StatusIndicator'
 
 const ESTADO_CLICKABLE = ['aprobado', 'borrador', 'revision', 'comentarios']
-
-const estadoDot = {
-  borrador: '#3B82F6',
-  revision: '#F59E0B',
-  comentarios: '#F97316',
-  aprobado: '#10B981',
-  bloqueado: '#CBD5E1',
-}
 
 export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
   const [temasExpandidos, setTemasExpandidos] = useState({ 'tema-1': true, 'tema-2': true })
@@ -23,16 +16,6 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
     onSeccionChange(id)
   }
 
-  const renderSeccionIcon = (estado) => {
-    if (estado === 'aprobado') return <CheckCircle2 size={12} style={{ color: '#10B981', flexShrink: 0 }} />
-    if (estado === 'bloqueado') return <Lock size={11} style={{ color: '#CBD5E1', flexShrink: 0 }} />
-    return (
-      <div
-        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-        style={{ background: estadoDot[estado] || '#CBD5E1', marginTop: '1px' }}
-      />
-    )
-  }
 
   // Count approved sections for progress
   const allSecciones = pipeline.flatMap(e => e.tipo === 'tema' ? e.secciones : [e])
@@ -119,7 +102,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                   onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
                 >
                   <div className="flex items-center gap-2">
-                    {renderSeccionIcon(etapa.estado)}
+                    <StatusIndicator status={toStatusKey(etapa.estado)} variant="icon" size="sm" showTooltip={true} />
                     <span
                       className="text-sm"
                       style={{
@@ -157,10 +140,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                     onMouseLeave={e => e.currentTarget.style.background = tieneActivo && !expandido ? '#F0F9FF' : 'transparent'}
                   >
                     <div className="flex items-center gap-2 min-w-0">
-                      <div
-                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                        style={{ background: estadoDot[estadoTema] || '#CBD5E1' }}
-                      />
+                      <StatusIndicator status={toStatusKey(estadoTema)} variant="icon" size="sm" showTooltip={true} />
                       <div className="min-w-0 text-left">
                         <p className="text-sm font-medium leading-tight" style={{ color: '#374151' }}>
                           {etapa.label}
@@ -197,7 +177,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange }) {
                             onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F8F9FA' }}
                             onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
                           >
-                            {renderSeccionIcon(sec.estado)}
+                            <StatusIndicator status={toStatusKey(sec.estado)} variant="icon" size="sm" showTooltip={true} />
                             <span
                               className="text-xs"
                               style={{

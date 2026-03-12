@@ -87,15 +87,19 @@ export default function ComentarioHilo({ comentario, onMarcarResuelto, onRespond
             value={respuesta}
             onChange={e => setRespuesta(e.target.value)}
             placeholder="Escribe tu respuesta..."
-            className="w-full text-sm px-3 py-2 rounded-lg resize-none outline-none"
+            className="w-full text-sm px-[13px] py-[9px] rounded-[10px] resize-none outline-none"
             style={{
-              background: '#F8FAFC',
-              border: '1px solid #E2E8F0',
+              background: '#FFFFFF',
+              border: '1px solid #CBD5E1',
               color: '#334155',
               minHeight: '72px',
               fontFamily: "'DM Sans', sans-serif",
             }}
             rows={3}
+            onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+            onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+            onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+            onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
           />
           <div className="flex items-center gap-2 mt-2">
             <button

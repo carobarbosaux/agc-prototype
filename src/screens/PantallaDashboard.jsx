@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ArrowRight, AlertCircle, Clock, Plus, BookOpen, Lock, Filter, Globe, CheckCircle, XCircle, AlertTriangle, GitBranch, ChevronRight, X } from 'lucide-react'
-import EstadoBadge from '../components/EstadoBadge'
+import StatusIndicator, { toStatusKey } from '../components/StatusIndicator'
 import Chatbar from '../components/Chatbar'
 import CalidadContenidosCards from '../components/CalidadContenidosCards'
 import PanelMisPendientes from '../components/PanelMisPendientes'
@@ -172,7 +172,7 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
               </div>
 
               <div className="flex items-center">
-                <EstadoBadge estado={asig.estado} size="sm" />
+                <StatusIndicator status={toStatusKey(asig.estado)} variant="badge" />
               </div>
 
               <span className="text-sm flex items-center truncate" style={{ color: clickable ? '#6B7280' : '#CBD5E1' }}>
@@ -311,7 +311,7 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
               </div>
 
               <div className="flex items-center">
-                <EstadoBadge estado={asig.estado} size="sm" />
+                <StatusIndicator status={toStatusKey(asig.estado)} variant="badge" />
               </div>
 
               <div className="flex items-center">
@@ -374,10 +374,10 @@ function BarraAccionesDashboard({ rolActivo, filtroTag, onFiltroChange, onNuevaA
       {rolActivo === 'coordinador' && (
         <button
           onClick={onNuevaAsignatura}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all flex-shrink-0"
-          style={{ background: '#367CFF' }}
-          onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
-          onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-sm font-semibold text-white transition-all flex-shrink-0"
+          style={{ background: '#0A5CF5' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+          onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
         >
           <Plus size={14} />
           Nueva asignatura
@@ -746,10 +746,10 @@ function TrackingDashboard({ onNavigate }) {
             {/* Actions */}
             <div className="space-y-2 pt-1">
               <button
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold text-white transition-all"
-                style={{ background: '#367CFF' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
-                onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-[10px] text-xs font-semibold text-white transition-all"
+                style={{ background: '#0A5CF5' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+                onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
                 onClick={() => onNavigate({ pantalla: 'canvas', asignaturaId: selected.id, seccion: 't1' })}
               >
                 <ChevronRight size={13} />

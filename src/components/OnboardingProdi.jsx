@@ -463,10 +463,10 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
             ) : (
               <button
                 onClick={goNext}
-                className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
-                style={{ background: '#367CFF', color: '#FFFFFF' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
-                onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+                className="flex items-center gap-1.5 px-5 py-2.5 rounded-[10px] text-sm font-semibold transition-all"
+                style={{ background: '#0A5CF5', color: '#FFFFFF' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+                onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
               >
                 Siguiente
                 <ChevronRight size={15} />

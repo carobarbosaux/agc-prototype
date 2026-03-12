@@ -4,7 +4,7 @@ import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
 import ComentarioHilo from '../components/ComentarioHilo'
-import EstadoBadge from '../components/EstadoBadge'
+import StatusIndicator, { toStatusKey } from '../components/StatusIndicator'
 import EtiquetaBloque from '../components/EtiquetaBloque'
 import { ProdiMark } from '../components/ProdiLogo'
 import {
@@ -337,10 +337,10 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
       {/* Next step CTA */}
       <button
         onClick={handleGenerarResumen}
-        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all"
-        style={{ background: '#367CFF', color: '#FFFFFF' }}
-        onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
-        onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-[10px] text-sm font-semibold transition-all"
+        style={{ background: '#0A5CF5', color: '#FFFFFF' }}
+        onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+        onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
       >
         <Sparkles size={14} />
         Generar resumen de la asignatura
@@ -561,10 +561,10 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
         {editable && (
           <button
             onClick={() => setScreen('loading')}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
-            style={{ background: '#367CFF' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
-            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-sm font-semibold text-white transition-all"
+            style={{ background: '#0A5CF5' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+            onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
           >
             <Sparkles size={14} /> Generar referencias con IA
           </button>
@@ -953,10 +953,12 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
             value={datos.enfoqueIA}
             onChange={e => onChange('enfoqueIA', e.target.value)}
             rows={3}
-            className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
-            style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A', lineHeight: '1.6' }}
-            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.10)' }}
-            onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+            className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
+            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
+            onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+            onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+            onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+            onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
           />
         </div>
 
@@ -967,10 +969,12 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
             value={datos.bibliografiaT1}
             onChange={e => onChange('bibliografiaT1', e.target.value)}
             rows={4}
-            className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
-            style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A', lineHeight: '1.6', fontFamily: "'Arial', sans-serif" }}
-            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.10)' }}
-            onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+            className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
+            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6', fontFamily: "'Arial', sans-serif" }}
+            onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+            onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+            onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+            onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
           />
         </div>
 
@@ -981,10 +985,12 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
             value={datos.notasPedagogicas}
             onChange={e => onChange('notasPedagogicas', e.target.value)}
             rows={3}
-            className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
-            style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A', lineHeight: '1.6' }}
-            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.10)' }}
-            onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+            className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
+            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
+            onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+            onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+            onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+            onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
           />
         </div>
 
@@ -1008,10 +1014,10 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
           </button>
           <button
             onClick={onGenerarResumen}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold text-white transition-all"
-            style={{ background: '#367CFF' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
-            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+            className="flex items-center gap-2 px-5 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
+            style={{ background: '#0A5CF5' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+            onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
           >
             <ProdiMark size={14} />
             Generar resumen del tema
@@ -1099,10 +1105,10 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
         </button>
         <button
           onClick={onGenerarContenido}
-          className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold text-white transition-all"
-          style={{ background: '#367CFF' }}
-          onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
-          onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+          className="flex items-center gap-2 px-5 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
+          style={{ background: '#0A5CF5' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+          onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
         >
           <ProdiMark size={14} />
           Generar contenido del tema
@@ -1523,10 +1529,10 @@ export default function PantallaCanvas({
             </button>
             <button
               onClick={showSentToast}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
-              style={{ background: '#367CFF' }}
-              onMouseEnter={e => e.currentTarget.style.background = '#0A5CF5'}
-              onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-semibold text-white transition-all"
+              style={{ background: '#0A5CF5' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+              onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
             >
               Enviar a revisión
               <ChevronRight size={13} />
@@ -1687,7 +1693,7 @@ export default function PantallaCanvas({
           <span className="text-xs font-medium" style={{ color: '#9CA3AF' }}>
             {isResumen ? 'Resumen de asignatura' : seccion.label}
           </span>
-          <EstadoBadge estado={estadoMostrado} />
+          <StatusIndicator status={toStatusKey(estadoMostrado)} variant="badge" />
         </div>
 
         {/* Row 2: section title + action buttons + three-dots */}
@@ -2142,8 +2148,12 @@ export default function PantallaCanvas({
                 value={nuevoComentarioTexto}
                 onChange={e => setNuevoComentarioTexto(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleAddComentario() }}
-                className="w-full resize-none rounded-lg text-xs p-2.5 outline-none"
-                style={{ border: '1px solid #E5E7EB', background: '#F9FAFB', color: '#1F2937' }}
+                className="w-full resize-none rounded-[10px] text-xs px-[13px] py-[9px] outline-none"
+                style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155' }}
+                onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+                onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+                onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+                onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
               />
               <button
                 onClick={handleAddComentario}

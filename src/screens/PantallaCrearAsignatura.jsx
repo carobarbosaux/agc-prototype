@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { tagsSugerenciasPorArea } from '../mockData'
 import { ProdiMark } from '../components/ProdiLogo'
+import PanelIA from '../components/PanelIA'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SHARED: Confirmation modal
@@ -159,7 +160,7 @@ function PasoContextoAcademico({ datos, onChange }) {
         <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
           Titulación
         </label>
-        <div className="flex items-center gap-2 px-3 py-2 rounded-lg mb-3" style={{ background: '#F8F9FA', border: '1.5px solid #E5E7EB' }}>
+        <div className="flex items-center gap-2 px-[13px] py-[9px] rounded-[10px] mb-3" style={{ background: '#FFFFFF', border: '1px solid #CBD5E1' }}>
           <Search size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
           <input
             type="text"
@@ -168,8 +169,10 @@ function PasoContextoAcademico({ datos, onChange }) {
             placeholder="Buscar titulación…"
             className="flex-1 text-sm outline-none bg-transparent"
             style={{ color: '#374151' }}
-            onFocus={e => e.currentTarget.parentElement.style.borderColor = '#367CFF'}
-            onBlur={e => e.currentTarget.parentElement.style.borderColor = '#E5E7EB'}
+            onFocus={e => { const p = e.currentTarget.parentElement; p.style.borderColor = '#0A5CF5'; p.style.background = '#F8FAFC' }}
+            onBlur={e => { const p = e.currentTarget.parentElement; p.style.borderColor = '#CBD5E1'; p.style.background = '#FFFFFF' }}
+            onMouseEnter={e => { if (document.activeElement !== e.currentTarget) e.currentTarget.parentElement.style.borderColor = '#0A5CF5' }}
+            onMouseLeave={e => { if (document.activeElement !== e.currentTarget) e.currentTarget.parentElement.style.borderColor = '#CBD5E1' }}
           />
         </div>
         <div className="space-y-2 max-h-40 overflow-y-auto">
@@ -195,10 +198,12 @@ function PasoContextoAcademico({ datos, onChange }) {
       <div>
         <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Nivel de estudio</label>
         <select value={datos.nivel || ''} onChange={e => onChange('nivel', e.target.value)}
-          className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
-          style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: datos.nivel ? '#1A1A1A' : '#9CA3AF' }}
-          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
-          onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+          className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none"
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: datos.nivel ? '#334155' : '#94A3B8' }}
+          onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
         >
           <option value="">Seleccionar nivel…</option>
           {['Grado', 'Postgrado', 'Máster', 'Doctorado', 'Formación continua'].map(o => <option key={o} value={o}>{o}</option>)}
@@ -209,10 +214,12 @@ function PasoContextoAcademico({ datos, onChange }) {
         <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Público objetivo</label>
         <textarea value={datos.publicoObjetivo || ''} onChange={e => onChange('publicoObjetivo', e.target.value)}
           placeholder="Ej. Profesionales de TI con 2+ años de experiencia que quieren especializarse en IA aplicada…"
-          rows={3} className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
-          style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#374151', lineHeight: '1.6' }}
-          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
-          onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+          rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
+          onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
         />
       </div>
 
@@ -220,19 +227,23 @@ function PasoContextoAcademico({ datos, onChange }) {
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Número de créditos (ECTS)</label>
           <input type="number" value={datos.creditos || ''} onChange={e => onChange('creditos', e.target.value)}
-            min={1} max={30} placeholder="6" className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
-            style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A' }}
-            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
-            onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+            min={1} max={30} placeholder="6" className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none"
+            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155' }}
+            onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+            onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+            onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+            onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
           />
         </div>
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Nombre provisional</label>
           <input type="text" value={datos.nombre || ''} onChange={e => onChange('nombre', e.target.value)}
-            placeholder="Ej. Fundamentos de ML" className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
-            style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A' }}
-            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
-            onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+            placeholder="Ej. Fundamentos de ML" className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none"
+            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155' }}
+            onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+            onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+            onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+            onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
           />
         </div>
       </div>
@@ -241,10 +252,12 @@ function PasoContextoAcademico({ datos, onChange }) {
         <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Temas o contenidos a tratar</label>
         <textarea value={datos.temasTratar || ''} onChange={e => onChange('temasTratar', e.target.value)}
           placeholder="Ej. Regresión lineal, clasificación, árboles de decisión, redes neuronales, evaluación de modelos…"
-          rows={3} className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
-          style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#374151', lineHeight: '1.6' }}
-          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
-          onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+          rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
+          onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
         />
       </div>
     </div>
@@ -607,9 +620,189 @@ function AutorPaso1Metadata() {
   )
 }
 
+// ── Panel IA mockdata for Descriptor step ─────────────────────────────────────
+
+const PANEL_IA_CONTEXTOS = {
+  nivel: {
+    titulo: 'Nivel de conocimiento',
+    mensajeInicial: 'Para Deep Learning y Redes Neuronales, en un Máster en IA, lo habitual es un perfil con bases de machine learning. Te recomendaría nivel Intermedio o Avanzado.',
+    sugerencias: ['Recomendar un nivel', 'Diferencia entre niveles'],
+    respuestas: {
+      'Recomendar un nivel': 'Para este máster recomendaría Intermedio: el estudiante conoce Python y álgebra lineal, pero no ha trabajado con frameworks de deep learning. Así el temario puede construir desde backpropagation hasta Transformers sin dar pasos en falso.',
+      'Diferencia entre niveles': 'Inicial: sin conocimientos previos de ML. Intermedio: sabe programar y conoce conceptos de ML supervisado. Avanzado: ha entrenado modelos y conoce frameworks. Para un máster de IA, Intermedio suele ser el punto de partida más realista.',
+    },
+  },
+  enfoque: {
+    titulo: 'Enfoque de la asignatura',
+    mensajeInicial: 'El enfoque condiciona mucho la estructura. Para Deep Learning hay dos opciones fuertes: Teórico-práctico (50/50 teoría y código) o Por proyectos (un modelo end-to-end por tema). ¿Tienes preferencia?',
+    sugerencias: ['Recomendar un enfoque', 'Comparar enfoques'],
+    respuestas: {
+      'Recomendar un enfoque': 'Para un Máster en IA recomendaría Teórico-práctico. Permite explicar la matemática detrás de cada arquitectura y aplicarla inmediatamente con PyTorch, sin perder el rigor conceptual.',
+      'Comparar enfoques': 'Teórico: ideal para bases conceptuales sólidas, menor transferencia inmediata. Práctico: más empleable, pero puede quedar superficial. Teórico-práctico: equilibra comprensión y aplicación. Por proyectos: muy motivador, requiere más autonomía del estudiante.',
+    },
+  },
+  conceptos: {
+    titulo: 'Conceptos obligatorios',
+    mensajeInicial: 'Para Deep Learning y Redes Neuronales, hay ciertos conceptos que no pueden faltar. ¿Quieres que te proponga una lista de partida basada en el área?',
+    sugerencias: ['Proponer conceptos esenciales', 'Revisar si falta algo', 'Basarme en los archivos'],
+    respuestas: {
+      'Proponer conceptos esenciales': 'Conceptos clave para este temario:\n• Backpropagation y gradiente descendente\n• Redes convolucionales (CNN)\n• Redes recurrentes (RNN, LSTM, GRU)\n• Mecanismo de atención y Transformers\n• Regularización (dropout, batch norm)\n• Transfer learning\n• GANs o modelos de difusión\n• PyTorch como framework principal',
+      'Revisar si falta algo': 'Si ya tienes una lista, compártela y la reviso. En general, para un máster completo no debería faltar: el mecanismo de atención (base de los LLMs modernos), al menos una arquitectura generativa, y evaluación de modelos (métricas, overfitting).',
+      'Basarme en los archivos': 'Si subes la bibliografía o el plan de estudios anterior, puedo extraer los conceptos clave directamente de esos documentos y priorizarlos según su relevancia.',
+    },
+  },
+}
+
+const PANEL_GENERIC_RESPONSES = [
+  'Entendido. ¿Quieres que ajuste algún otro aspecto del descriptor?',
+  'Anotado. Puedo ayudarte con cualquier otro campo cuando quieras.',
+  'De acuerdo. ¿Hay algo más en lo que pueda orientarte antes de generar el resumen?',
+]
+let _panelRespIdx = 0
+
 // ── Step 2 (Author): Contextual form ──────────────────────────────────────────
 
-function AutorPaso2Descriptor({ datos, onChange }) {
+function PanelIADescriptor({ contexto, onContexto }) {
+  const ctx = PANEL_IA_CONTEXTOS[contexto] || null
+  const [mensajes, setMensajes] = useState([])
+  const [input, setInput] = useState('')
+  const [cargando, setCargando] = useState(false)
+  const chatEndRef = useRef(null)
+  const inputRef = useRef(null)
+
+  // When context changes, inject the contextual opening message
+  useEffect(() => {
+    if (!ctx) return
+    setMensajes([{ id: Date.now(), rol: 'ia', texto: ctx.mensajeInicial }])
+    setInput('')
+    setTimeout(() => inputRef.current?.focus(), 80)
+  }, [contexto])
+
+  useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [mensajes])
+
+  const enviar = (texto) => {
+    const txt = (texto || input).trim()
+    if (!txt || cargando) return
+    setMensajes(prev => [...prev, { id: Date.now(), rol: 'usuario', texto: txt }])
+    setInput('')
+    setCargando(true)
+    setTimeout(() => {
+      const respuesta = ctx?.respuestas?.[txt]
+        || PANEL_GENERIC_RESPONSES[_panelRespIdx++ % PANEL_GENERIC_RESPONSES.length]
+      setMensajes(prev => [...prev, { id: Date.now() + 1, rol: 'ia', texto: respuesta }])
+      setCargando(false)
+    }, 1100)
+  }
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Context header — only when a context is active */}
+      {ctx && (
+        <div className="flex items-center justify-between mb-3 pb-3 flex-shrink-0" style={{ borderBottom: '1px solid #F1F5F9' }}>
+          <span className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>{ctx.titulo}</span>
+          <button
+            onClick={() => onContexto(null)}
+            className="text-xs px-2 py-0.5 rounded-md transition-all"
+            style={{ color: '#6B7280', background: 'transparent' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#374151' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#6B7280' }}
+          >
+            ← Volver
+          </button>
+        </div>
+      )}
+
+      {/* Messages area */}
+      <div className="flex-1 overflow-y-auto space-y-3 mb-3" style={{ minHeight: 0 }}>
+        {/* Idle state: no context selected yet */}
+        {!ctx && mensajes.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-full gap-3 text-center px-2">
+            <p className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>
+              Usa los atajos o escribe una pregunta para recibir orientación.
+            </p>
+            <div className="space-y-1.5 w-full">
+              {[
+                { key: 'conceptos', label: 'Sugerir conceptos' },
+                { key: 'enfoque', label: 'Sugerir enfoque' },
+                { key: 'nivel', label: 'Sugerir nivel' },
+              ].map(item => (
+                <button
+                  key={item.key}
+                  onClick={() => onContexto(item.key)}
+                  className="w-full text-left px-3 py-2 rounded-lg text-xs transition-all"
+                  style={{ background: '#F8F9FA', color: '#374151', border: '1px solid #E5E7EB' }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.color = '#0047CC' }}
+                  onMouseLeave={e => { e.currentTarget.style.background = '#F8F9FA'; e.currentTarget.style.color = '#374151' }}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        {mensajes.map(msg => (
+          <div key={msg.id} className={`flex ${msg.rol === 'usuario' ? 'justify-end' : 'justify-start'}`}>
+            {msg.rol === 'ia' && (
+              <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#E7EFFE' }}>
+                <ProdiMark size={10} />
+              </div>
+            )}
+            <div
+              className="px-3 py-2 rounded-xl text-xs leading-relaxed"
+              style={{
+                maxWidth: '195px',
+                whiteSpace: 'pre-line',
+                background: msg.rol === 'usuario' ? '#0A5CF5' : '#F8F9FA',
+                color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151',
+                borderRadius: msg.rol === 'usuario' ? '12px 12px 4px 12px' : '4px 12px 12px 12px',
+              }}
+            >
+              {msg.texto}
+            </div>
+          </div>
+        ))}
+        {cargando && (
+          <div className="flex justify-start">
+            <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#E7EFFE' }}>
+              <ProdiMark size={10} />
+            </div>
+            <div className="px-3 py-2 rounded-xl" style={{ background: '#F8F9FA', borderRadius: '4px 12px 12px 12px' }}>
+              <div className="flex gap-1">
+                {[0, 1, 2].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />)}
+              </div>
+            </div>
+          </div>
+        )}
+        <div ref={chatEndRef} />
+      </div>
+
+      {/* Input */}
+      <div className="flex items-end gap-2 px-3 py-2 rounded-xl flex-shrink-0" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
+        <textarea
+          ref={inputRef}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviar() } }}
+          placeholder="Pregunta algo…"
+          rows={2}
+          disabled={cargando}
+          className="flex-1 text-xs outline-none resize-none bg-transparent"
+          style={{ color: '#374151', lineHeight: '1.5' }}
+        />
+        <button
+          onClick={() => enviar()}
+          disabled={!input.trim() || cargando}
+          className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+          style={{ background: input.trim() && !cargando ? '#0A5CF5' : '#E5E7EB', color: input.trim() && !cargando ? '#FFFFFF' : '#6B7280' }}
+        >
+          <Send size={12} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto }) {
   const [archivosSimulados, setArchivosSimulados] = useState([])
 
   const toggleOpcion = (opcion) => {
@@ -628,7 +821,32 @@ function AutorPaso2Descriptor({ datos, onChange }) {
     }
   }
 
-  return (
+  // Discrete CTA style
+  const ctaStyle = {
+    base: { fontSize: '11px', fontWeight: '500', color: '#6B7280', background: 'transparent', border: 'none', cursor: 'pointer', padding: '0', lineHeight: 1 },
+    hover: { color: '#0A5CF5' },
+  }
+
+  const CtaBtn = ({ ctxKey, label }) => {
+    const [hovered, setHovered] = useState(false)
+    const active = panelContexto === ctxKey
+    return (
+      <button
+        onClick={() => onPanelContexto(active ? null : ctxKey)}
+        style={{
+          ...ctaStyle.base,
+          color: active ? '#0A5CF5' : hovered ? '#0A5CF5' : '#6B7280',
+          fontWeight: active ? '600' : '500',
+        }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        {label}
+      </button>
+    )
+  }
+
+  const formContent = (
     <div className="space-y-6">
       <div>
         <div className="flex items-center gap-2 mb-1">
@@ -644,16 +862,21 @@ function AutorPaso2Descriptor({ datos, onChange }) {
 
       {/* Nivel de conocimiento previo */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
-          Nivel de conocimiento previo del estudiante
-        </label>
+        <div className="flex items-center justify-between mb-2">
+          <label className="block text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>
+            Nivel de conocimiento previo del estudiante
+          </label>
+          <CtaBtn ctxKey="nivel" label="Sugerir nivel" />
+        </div>
         <select
           value={datos.nivelConocimiento || ''}
           onChange={e => onChange('nivelConocimiento', e.target.value)}
-          className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
-          style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: datos.nivelConocimiento ? '#1A1A1A' : '#9CA3AF' }}
-          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.12)' }}
-          onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+          className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none"
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: datos.nivelConocimiento ? '#334155' : '#94A3B8' }}
+          onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
         >
           <option value="">Seleccionar nivel…</option>
           {['Inicial', 'Intermedio', 'Avanzado', 'Experto'].map(o => <option key={o} value={o}>{o}</option>)}
@@ -662,8 +885,8 @@ function AutorPaso2Descriptor({ datos, onChange }) {
 
       {/* Número de temas */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
-          Número de temas <span style={{ color: '#CBD5E1', fontWeight: '400' }}>(recomendado: 8)</span>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>
+          Número de temas <span style={{ color: '#6B7280', fontWeight: '400' }}>(recomendado: 8)</span>
         </label>
         <div className="flex items-center gap-3">
           <input
@@ -672,20 +895,25 @@ function AutorPaso2Descriptor({ datos, onChange }) {
             onChange={e => onChange('numTemas', e.target.value)}
             min={1} max={10}
             placeholder="8"
-            className="w-28 px-3 py-2.5 rounded-lg text-sm outline-none"
-            style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#1A1A1A' }}
-            onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.12)' }}
-            onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+            className="w-28 px-[13px] py-[9px] rounded-[10px] text-sm outline-none"
+            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155' }}
+            onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+            onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+            onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+            onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
           />
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Entre 1 y 10 temas</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>Entre 1 y 10 temas</p>
         </div>
       </div>
 
       {/* Enfoque de la asignatura */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
-          Enfoque de la asignatura
-        </label>
+        <div className="flex items-center justify-between mb-2">
+          <label className="block text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>
+            Enfoque de la asignatura
+          </label>
+          <CtaBtn ctxKey="enfoque" label="Sugerir enfoque" />
+        </div>
         <div className="grid grid-cols-3 gap-2">
           {['Teórico', 'Práctico', 'Teórico-práctico', 'Basado en casos', 'Por proyectos'].map(enfoque => {
             const sel = datos.enfoque === enfoque
@@ -697,7 +925,7 @@ function AutorPaso2Descriptor({ datos, onChange }) {
                 style={{
                   background: sel ? '#E7EFFE' : '#F8F9FA',
                   border: sel ? '2px solid #367CFF' : '2px solid transparent',
-                  color: sel ? '#367CFF' : '#6B7280',
+                  color: sel ? '#367CFF' : '#374151',
                 }}
               >
                 {enfoque}
@@ -709,10 +937,13 @@ function AutorPaso2Descriptor({ datos, onChange }) {
 
       {/* Temas/conceptos obligatorios */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: '#9CA3AF' }}>
-          Temas o conceptos obligatorios
-        </label>
-        <p className="text-xs mb-2" style={{ color: '#CBD5E1' }}>
+        <div className="flex items-center justify-between mb-1">
+          <label className="block text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>
+            Temas o conceptos obligatorios
+          </label>
+          <CtaBtn ctxKey="conceptos" label="Sugerir conceptos" />
+        </div>
+        <p className="text-xs mb-2" style={{ color: '#6B7280' }}>
           Conceptos que deben aparecer sí o sí en el índice generado
         </p>
         <textarea
@@ -720,16 +951,18 @@ function AutorPaso2Descriptor({ datos, onChange }) {
           onChange={e => onChange('temasObligatorios', e.target.value)}
           placeholder="Ej. Backpropagation, redes convolucionales, mecanismo de atención, PyTorch…"
           rows={3}
-          className="w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none"
-          style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: '#374151', lineHeight: '1.6' }}
-          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(99,102,241,0.12)' }}
-          onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
+          className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
+          onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
         />
       </div>
 
       {/* Archivos de referencia */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>
           Archivos de referencia
         </label>
         <button
@@ -739,10 +972,10 @@ function AutorPaso2Descriptor({ datos, onChange }) {
           onMouseEnter={e => { e.currentTarget.style.borderColor = '#367CFF'; e.currentTarget.style.background = '#F5F3FF' }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.background = '#FAFAFA' }}
         >
-          <Upload size={18} style={{ color: '#CBD5E1' }} />
+          <Upload size={18} style={{ color: '#6B7280' }} />
           <div className="text-center">
-            <p className="text-xs font-medium" style={{ color: '#6B7280' }}>Arrastra archivos aquí o haz clic para subir</p>
-            <p className="text-xs mt-0.5" style={{ color: '#CBD5E1' }}>Bibliografía, documentos, imágenes</p>
+            <p className="text-xs font-medium" style={{ color: '#374151' }}>Arrastra archivos aquí o haz clic para subir</p>
+            <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>Bibliografía, documentos, imágenes</p>
           </div>
         </button>
         {archivosSimulados.length > 0 && (
@@ -762,7 +995,7 @@ function AutorPaso2Descriptor({ datos, onChange }) {
 
       {/* Opciones de la comisión */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>
           Opciones de la comisión
         </label>
         <div className="space-y-2">
@@ -781,12 +1014,12 @@ function AutorPaso2Descriptor({ datos, onChange }) {
                   border: checked ? '1.5px solid #367CFF' : '1.5px solid #E5E7EB',
                 }}
               >
-                <div className="mt-0.5 flex-shrink-0" style={{ color: checked ? '#367CFF' : '#CBD5E1' }}>
+                <div className="mt-0.5 flex-shrink-0" style={{ color: checked ? '#367CFF' : '#6B7280' }}>
                   {checked ? <CheckSquare size={15} /> : <Square size={15} />}
                 </div>
                 <div>
                   <p className="text-sm font-medium" style={{ color: checked ? '#0047CC' : '#374151' }}>{op.label}</p>
-                  <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{op.desc}</p>
+                  <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>{op.desc}</p>
                 </div>
               </button>
             )
@@ -800,6 +1033,25 @@ function AutorPaso2Descriptor({ datos, onChange }) {
         <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
           Al hacer clic en <strong>Generar resumen</strong>, la IA procesará toda esta información para crear un resumen de la asignatura que podrás revisar y ajustar.
         </p>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="flex flex-1 min-h-0">
+      {/* Form — scrollable */}
+      <div className="flex-1 min-w-0 overflow-y-auto pr-6 pb-6" style={{ borderRight: '1px solid #F1F5F9' }}>
+        {formContent}
+      </div>
+      {/* Panel IA — always visible, persistent */}
+      <div className="flex flex-col flex-shrink-0" style={{ width: '272px', paddingLeft: '24px', overflow: 'hidden' }}>
+        <div className="flex items-center gap-2 mb-3 pb-3 flex-shrink-0" style={{ borderBottom: '1px solid #F1F5F9' }}>
+          <ProdiMark size={18} />
+          <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Prodi</p>
+        </div>
+        <div className="flex-1" style={{ minHeight: 0, overflow: 'hidden' }}>
+          <PanelIADescriptor contexto={panelContexto} onContexto={onPanelContexto} />
+        </div>
       </div>
     </div>
   )
@@ -964,8 +1216,16 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
   const [datos, setDatos] = useState({})
   const [resumen, setResumen] = useState(null)
   const [modalVolver, setModalVolver] = useState(null) // null | 'volver' | 'cancelar'
+  // Panel IA for step 2: null = panel not shown, string = panel open with that context
+  const [panelContexto, setPanelContexto] = useState(null)
 
   const updateDatos = (key, val) => setDatos(prev => ({ ...prev, [key]: val }))
+
+  // Close panel when leaving step 2
+  const handlePasoChange = (newPaso) => {
+    if (newPaso !== 2) setPanelContexto(null)
+    setPaso(newPaso)
+  }
 
   const puedeAvanzar = () => {
     if (paso === 1) return true  // Step 1 is read-only, always can proceed
@@ -1018,7 +1278,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#F8F9FA', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+    <div className="h-screen flex flex-col overflow-hidden" style={{ background: '#F8F9FA', fontFamily: "'Inter', 'Arial', sans-serif" }}>
       {modalVolver && (
         <ModalConfirmVolver
           onConfirm={handleModalConfirm}
@@ -1085,17 +1345,18 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto py-8 px-4">
-        <div className="mx-auto"
+      <div className={`flex-1 min-h-0 px-4 ${paso === 2 ? 'overflow-hidden flex flex-col py-6' : 'overflow-y-auto py-8'}`}>
+        <div className="mx-auto w-full"
           style={{
-            maxWidth: paso === 3 ? '960px' : '640px',
+            maxWidth: paso === 3 || paso === 2 ? '960px' : '640px',
             background: '#FFFFFF',
             borderRadius: '16px',
             border: '1px solid #E5E7EB',
             boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
             transition: 'max-width 300ms ease',
+            ...(paso === 2 ? { flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' } : {}),
           }}>
-          <div className="px-8 py-8">
+          <div className={paso === 2 ? 'flex-1 min-h-0 flex flex-col px-8 pt-8' : 'px-8 py-8'}>
             {(generando || generandoResumen) ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
@@ -1117,7 +1378,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
             ) : (
               <>
                 {paso === 1 && <AutorPaso1Metadata />}
-                {paso === 2 && <AutorPaso2Descriptor datos={datos} onChange={updateDatos} />}
+                {paso === 2 && <AutorPaso2Descriptor datos={datos} onChange={updateDatos} panelContexto={panelContexto} onPanelContexto={setPanelContexto} />}
                 {paso === 3 && resumen && <AutorPaso3Preview resumen={resumen} onResumenChange={setResumen} />}
               </>
             )}
@@ -1125,7 +1386,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
 
           {/* Footer */}
           {!generando && !generandoResumen && (
-            <div className="flex items-center justify-between px-8 py-5"
+            <div className="flex items-center justify-between px-8 py-5 flex-shrink-0"
               style={{ borderTop: '1px solid #F1F5F9', background: '#FAFAFA', borderRadius: '0 0 16px 16px' }}>
               <button
                 onClick={paso === 1 ? handleCancelarClick : handleVolverClick}
@@ -1138,11 +1399,11 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
 
               {paso === 1 && (
                 <button
-                  onClick={() => setPaso(2)}
-                  className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold text-white transition-all"
-                  style={{ background: '#367CFF' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#0080B0'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}>
+                  onClick={() => handlePasoChange(2)}
+                  className="flex items-center gap-1.5 px-6 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
+                  style={{ background: '#0A5CF5' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}>
                   Siguiente
                   <ChevronRight size={14} />
                 </button>
@@ -1151,9 +1412,9 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
                 <button
                   onClick={handleGenerarResumen}
                   disabled={!puedeAvanzar()}
-                  className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold transition-all"
+                  className="flex items-center gap-1.5 px-6 py-2 rounded-[10px] text-sm font-semibold transition-all"
                   style={{
-                    background: puedeAvanzar() ? '#367CFF' : '#E5E7EB',
+                    background: puedeAvanzar() ? '#0A5CF5' : '#E5E7EB',
                     color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF',
                     cursor: puedeAvanzar() ? 'pointer' : 'default',
                   }}>
@@ -1313,14 +1574,15 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
       <div className="flex-1 overflow-y-auto py-8 px-4">
         <div className="mx-auto"
           style={{
-            maxWidth: paso === 3 ? '960px' : '640px',
+            maxWidth: paso === 3 || paso === 2 ? '960px' : '640px',
             background: '#FFFFFF',
             borderRadius: '16px',
             border: '1px solid #E5E7EB',
             boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
             transition: 'max-width 300ms ease',
           }}>
-          <div className="px-8 py-8">
+          <div className={paso === 2 ? 'flex' : ''} style={paso === 2 ? { height: '560px' } : {}}>
+            <div className="px-8 py-8" style={paso === 2 ? { flex: 1, minWidth: 0, overflowY: 'auto' } : {}}>
             {(generando || generandoPreview) ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
@@ -1347,6 +1609,18 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
                   <PasoPreviewResumen resumenPreview={resumenPreview} onResumenChange={setResumenPreview} />
                 )}
               </>
+            )}
+            </div>
+            {paso === 2 && (
+              <div style={{ width: '320px', minWidth: '320px', borderLeft: '1px solid #E5E7EB', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                <PanelIA
+                  historialInicial={[]}
+                  temaLabel="Definición temática"
+                  onCerrar={null}
+                  quotePendiente={null}
+                  onQuoteConsumed={null}
+                />
+              </div>
             )}
           </div>
 
