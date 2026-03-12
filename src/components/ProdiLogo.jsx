@@ -2,18 +2,21 @@
 // Use <ProdiLogoMark size={N} /> for the icon alone
 // Use <ProdiWordmark height={N} /> for the full wordmark (icon + "Prodi" text)
 
-import logoSrc from '../assets/logo-prodi.svg'
+import isotypeySrc from '../../assets/logo-isotype.svg'
 
-// Full wordmark SVG (icon + "Prodi" lettering)
+// Full wordmark: isotype + "Asistente de contenidos" text
 export function ProdiWordmark({ height = 24, className = '' }) {
   return (
-    <img
-      src={logoSrc}
-      alt="Prodi"
-      height={height}
-      style={{ height: `${height}px`, width: 'auto', display: 'block' }}
-      className={className}
-    />
+    <div className={`flex items-center gap-2 ${className}`} style={{ height: `${height}px` }}>
+      <img
+        src={isotypeySrc}
+        alt=""
+        style={{ height: `${height}px`, width: 'auto', display: 'block' }}
+      />
+      <span style={{ fontSize: `${Math.round(height * 0.6)}px`, fontWeight: '600', color: '#1A1A1A', whiteSpace: 'nowrap', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+        Asistente de contenidos
+      </span>
+    </div>
   )
 }
 

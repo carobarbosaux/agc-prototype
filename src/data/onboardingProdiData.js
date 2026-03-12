@@ -4,7 +4,7 @@
 export const onboardingSlides = [
   {
     id: 1,
-    title: 'Conoce Prodi',
+    title: 'Conoce el Asistente de contenidos',
     subtitle: 'El nuevo Asistente de Contenidos',
     body: 'Tu criterio profesional en el centro.',
     titleFirst: true,
@@ -26,7 +26,7 @@ export const onboardingSlides = [
     id: 3,
     title: 'Mejora tu contenido',
     subtitle: null,
-    body: 'Selecciona cualquier fragmento para usar las herramientas de Prodi.',
+    body: 'Selecciona cualquier fragmento para usar las herramientas del asistente.',
     bullets: [
       'Corregir redacción',
       'Expandir o resumir',
@@ -40,9 +40,9 @@ export const onboardingSlides = [
   {
     id: 4,
     title: null,
-    stepLabel: 'Prodi siempre disponible',
+    stepLabel: 'Asistente siempre disponible',
     subtitle: null,
-    body: 'Consulta a Prodi en cualquier momento\ndesde el panel de IA.',
+    body: 'Consulta al asistente en cualquier momento\ndesde el panel de IA.',
     bullets: [
       'Investigar un tema',
       'Desarrollar ideas',
@@ -56,7 +56,7 @@ export const onboardingSlides = [
   },
   {
     id: 5,
-    title: 'Empieza a crear con Prodi',
+    title: 'Empieza a crear con el asistente',
     subtitle: null,
     body: null,
     bullets: [],

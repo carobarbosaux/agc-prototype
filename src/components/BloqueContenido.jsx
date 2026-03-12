@@ -322,7 +322,7 @@ export default function BloqueContenido({
               <div className="px-2 pt-1.5 pb-0.5 flex items-center gap-1.5">
                 <ProdiMark size={14} />
                 <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
-                  Prodi
+                  Asistente de contenidos
                 </p>
               </div>
             )}

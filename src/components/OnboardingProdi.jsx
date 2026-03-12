@@ -38,7 +38,7 @@ function VisualEditorZoom() {
         <div className="px-5 pb-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
             <ProdiMark size={14} />
-            <span className="text-xs font-semibold" style={{ color: '#0047CC' }}>Prodi</span>
+            <span className="text-xs font-semibold" style={{ color: '#0047CC' }}>Asistente de contenidos</span>
           </div>
         </div>
       </div>
@@ -157,7 +157,7 @@ function VisualSidePanel() {
         <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.08)', border: '1px solid #E5E7EB' }}>
           <div className="flex items-center gap-2 px-3 py-2.5" style={{ background: '#E7EFFE', borderBottom: '1px solid #BAD2FF' }}>
             <ProdiMark size={16} />
-            <span className="text-xs font-semibold" style={{ color: '#0047CC' }}>Prodi</span>
+            <span className="text-xs font-semibold" style={{ color: '#0047CC' }}>Asistente de contenidos</span>
           </div>
           <div className="p-3 space-y-2" style={{ background: '#FFFFFF' }}>
             <div className="flex items-start gap-2">
@@ -219,7 +219,7 @@ function VisualFinalState() {
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: '#FFFFFF', boxShadow: '0 12px 32px rgba(99,102,241,0.15)', border: '1px solid #E5E7EB' }}>
             <ProdiMark size={38} />
           </div>
-          <p className="text-xs font-semibold text-center" style={{ color: '#1A1A1A' }}>Prodi</p>
+          <p className="text-xs font-semibold text-center" style={{ color: '#1A1A1A' }}>Asistente de contenidos</p>
         </div>
         {/* Tags vertical */}
         <div className="flex flex-col gap-2 flex-1">
