@@ -65,9 +65,9 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
     onSeccionChange(id)
   }
 
-  // Count approved sections for progress
+  // Count approved sections for progress — use estadosSeccion for new subjects
   const allSecciones = pipeline.flatMap(e => e.tipo === 'tema' ? e.secciones : [e])
-  const aprobadas = allSecciones.filter(s => s.estado === 'aprobado').length
+  const aprobadas = allSecciones.filter(s => getEstado(s.id, s.estado) === 'aprobado').length
   const total = allSecciones.length
   const pct = Math.round((aprobadas / total) * 100)
 

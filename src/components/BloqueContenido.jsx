@@ -50,6 +50,8 @@ export default function BloqueContenido({
   useEffect(() => {
     const el = editableRef.current
     if (!el) return
+    // Array contenido (ul/ol) is rendered as static <li> elements — no innerHTML sync needed
+    if (Array.isArray(bloque.contenido)) return
     if (el.innerHTML !== bloque.contenido) {
       el.innerHTML = bloque.contenido
     }
@@ -127,7 +129,19 @@ export default function BloqueContenido({
 
   const renderContent = () => {
     const contenido = bloque.contenido
-    const editStyle = { ...tipoConf.style, caretColor: '#367CFF', outline: 'none' }
+
+    // For list types with array contenido render static <li> items
+    if ((tipo === 'ul' || tipo === 'ol') && Array.isArray(contenido)) {
+      const Tag = tipo === 'ul' ? 'ul' : 'ol'
+      const className = tipo === 'ul' ? 'list-disc pl-5' : 'list-decimal pl-5'
+      return (
+        <Tag className={className}>
+          {contenido.map((item, idx) => (
+            <li key={idx} className={tipoConf.className} style={tipoConf.style}>{item}</li>
+          ))}
+        </Tag>
+      )
+    }
 
     // For list types wrap in ul/ol
     const maybeWrapList = (inner) => {
@@ -137,7 +151,7 @@ export default function BloqueContenido({
     }
 
     // Read-only with optional strikethrough on replaced text
-    if (textoReemplazando && contenido.includes(textoReemplazando)) {
+    if (textoReemplazando && typeof contenido === 'string' && contenido.includes(textoReemplazando)) {
       const idx = contenido.indexOf(textoReemplazando)
       return maybeWrapList(
         <p className={tipoConf.className} style={tipoConf.style}>
@@ -156,7 +170,7 @@ export default function BloqueContenido({
         suppressContentEditableWarning
         onInput={e => {
           if (editable) onContenidoChange?.(bloque.id, e.currentTarget.innerHTML)
-          else e.currentTarget.innerHTML = bloque.contenido // revert any change
+          else e.currentTarget.innerHTML = contenido // revert any change
         }}
         onKeyDown={e => { if (!editable) e.preventDefault() }}
         onPaste={e => { if (!editable) e.preventDefault() }}

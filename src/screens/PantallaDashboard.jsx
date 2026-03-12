@@ -5,7 +5,7 @@ import Chatbar from '../components/Chatbar'
 import CalidadContenidosCards from '../components/CalidadContenidosCards'
 import PanelMisPendientes from '../components/PanelMisPendientes'
 import OnboardingProdi from '../components/OnboardingProdi'
-import { dashboardStats, titulaciones as titulacionesData, miTrabajo, estadoConfig, tagsFiltrablesDashboard, coordinatorTrackingData } from '../mockData'
+import { dashboardStats, estadoConfig, tagsFiltrablesDashboard, coordinatorTrackingData } from '../mockData'
 
 const rolLabel = {
   autor: 'Autor',
@@ -196,7 +196,7 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
 
 // ─── Tabla Asignaturas — Coordinator (completa) ───────────────────────────────
 
-function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, filtroFilial, rolActivo, onNavigate }) {
+function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, filtroFilial, onFiltroFilialChange, rolActivo, onNavigate }) {
   const titulacion = titulaciones.find(t => t.id === titulacionSeleccionada)
   let asignaturas = titulacion?.asignaturas || []
 
@@ -246,7 +246,8 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
             <select
               className="text-xs outline-none rounded-md px-2 py-1"
               style={{ border: '1px solid #E5E7EB', background: '#FFFFFF', color: '#6B7280' }}
-              onChange={e => {/* handled via prop */}}
+              value={filtroFilial || ''}
+              onChange={e => onFiltroFilialChange?.(e.target.value || null)}
             >
               <option value="">Todas las filiales</option>
               {filialesDisponibles.map(f => <option key={f} value={f}>{f}</option>)}
@@ -750,7 +751,7 @@ function TrackingDashboard({ onNavigate }) {
                 style={{ background: '#0A5CF5' }}
                 onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
                 onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
-                onClick={() => onNavigate({ pantalla: 'canvas', asignaturaId: selected.id, seccion: 't1' })}
+                onClick={() => onNavigate('canvas', { asignaturaId: selected.id, seccion: 't1' })}
               >
                 <ChevronRight size={13} />
                 Revisar contenido
@@ -898,6 +899,7 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
                     titulacionSeleccionada={titulacionSeleccionada}
                     filtroTag={filtroTag}
                     filtroFilial={filtroFilial}
+                    onFiltroFilialChange={setFiltroFilial}
                     rolActivo={rolActivo}
                     onNavigate={onNavigate}
                   />
