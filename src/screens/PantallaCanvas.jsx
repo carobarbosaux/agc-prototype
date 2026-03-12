@@ -423,8 +423,84 @@ function RecursosLoadingScreen({ onCancel }) {
 }
 
 // Shared reference card
-function RefCard({ data: r, idx, showDelete, showRegenerate, onDelete, onRegenerate, regeneratingId }) {
+function RefCard({ data: r, idx, showDelete, showRegenerate, showEdit, onDelete, onRegenerate, onEdit, regeneratingId }) {
   const rel = RELEVANCE_CONFIG[r.relevance] || RELEVANCE_CONFIG.medium
+  const [editing, setEditing] = useState(false)
+  const [draft, setDraft] = useState(r)
+
+  const handleSave = () => {
+    onEdit?.(r.id, draft)
+    setEditing(false)
+  }
+
+  if (editing) {
+    return (
+      <div className="rounded-xl px-4 py-3.5" style={{ border: '1px solid #367CFF', background: '#FFFFFF' }}>
+        <div className="flex items-start gap-3">
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold" style={{ background: '#F3F4F6', color: '#6B7280' }}>
+            {idx + 1}
+          </div>
+          <div className="flex-1 min-w-0 space-y-2">
+            <input
+              className="w-full text-sm font-semibold rounded-lg px-2.5 py-1.5 outline-none"
+              style={{ border: '1px solid #E5E7EB', color: '#1A1A1A', caretColor: '#367CFF' }}
+              value={draft.title}
+              onChange={e => setDraft(d => ({ ...d, title: e.target.value }))}
+              placeholder="Título"
+            />
+            <input
+              className="w-full text-xs rounded-lg px-2.5 py-1.5 outline-none"
+              style={{ border: '1px solid #E5E7EB', color: '#6B7280', caretColor: '#367CFF' }}
+              value={draft.authors.join(', ')}
+              onChange={e => setDraft(d => ({ ...d, authors: e.target.value.split(',').map(a => a.trim()) }))}
+              placeholder="Autores (separados por coma)"
+            />
+            <div className="flex gap-2">
+              <input
+                className="w-20 text-xs rounded-lg px-2.5 py-1.5 outline-none"
+                style={{ border: '1px solid #E5E7EB', color: '#6B7280', caretColor: '#367CFF' }}
+                value={draft.year}
+                onChange={e => setDraft(d => ({ ...d, year: e.target.value }))}
+                placeholder="Año"
+              />
+              <input
+                className="flex-1 text-xs rounded-lg px-2.5 py-1.5 outline-none"
+                style={{ border: '1px solid #E5E7EB', color: '#6B7280', caretColor: '#367CFF' }}
+                value={draft.url}
+                onChange={e => setDraft(d => ({ ...d, url: e.target.value }))}
+                placeholder="URL"
+              />
+            </div>
+            <textarea
+              className="w-full text-sm leading-relaxed rounded-lg px-2.5 py-1.5 outline-none resize-none"
+              style={{ border: '1px solid #E5E7EB', color: '#374151', caretColor: '#367CFF' }}
+              rows={3}
+              value={draft.description}
+              onChange={e => setDraft(d => ({ ...d, description: e.target.value }))}
+              placeholder="Descripción"
+            />
+            <div className="flex items-center justify-end gap-2 pt-1">
+              <button
+                onClick={() => { setDraft(r); setEditing(false) }}
+                className="text-xs px-3 py-1.5 rounded-lg font-medium transition-all"
+                style={{ background: '#F3F4F6', color: '#6B7280' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+                onMouseLeave={e => e.currentTarget.style.background = '#F3F4F6'}
+              >Cancelar</button>
+              <button
+                onClick={handleSave}
+                className="text-xs px-3 py-1.5 rounded-lg font-medium transition-all text-white"
+                style={{ background: '#367CFF' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+                onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+              >Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       className="rounded-xl px-4 py-3.5 transition-all"
@@ -442,10 +518,22 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, onDelete, onRegener
               className="text-sm font-semibold leading-snug hover:underline flex items-center gap-1"
               style={{ color: '#367CFF' }}
             >
-              {r.title}
+              {draft.title}
               <ExternalLink size={11} style={{ flexShrink: 0, opacity: 0.6 }} />
             </a>
             <div className="flex items-center gap-1 flex-shrink-0">
+              {showEdit && (
+                <button
+                  onClick={() => setEditing(true)}
+                  className="p-1 rounded transition-colors"
+                  style={{ color: '#D1D5DB' }}
+                  title="Editar referencia"
+                  onMouseEnter={e => e.currentTarget.style.color = '#374151'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
+                >
+                  <Pencil size={13} />
+                </button>
+              )}
               {showRegenerate && (
                 <button
                   onClick={() => onRegenerate(r.id)}
@@ -476,16 +564,16 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, onDelete, onRegener
             </div>
           </div>
           <p className="text-xs mb-1.5" style={{ color: '#9CA3AF' }}>
-            {r.authors.join(', ')} · {SOURCE_LABELS[r.source] || r.source} · {r.year}
+            {draft.authors.join(', ')} · {SOURCE_LABELS[r.source] || r.source} · {draft.year}
           </p>
-          <p className="text-sm leading-relaxed mb-2" style={{ color: '#374151' }}>{r.description}</p>
+          <p className="text-sm leading-relaxed mb-2" style={{ color: '#374151' }}>{draft.description}</p>
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: rel.bg, color: rel.color, border: `1px solid ${rel.border}` }}>
               {rel.label}
             </span>
-            <a href={r.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs hover:underline" style={{ color: '#9CA3AF' }}>
+            <a href={draft.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs hover:underline" style={{ color: '#9CA3AF' }}>
               <Link size={10} />
-              {r.url.length > 50 ? r.url.slice(0, 50) + '…' : r.url}
+              {draft.url.length > 50 ? draft.url.slice(0, 50) + '…' : draft.url}
             </a>
           </div>
         </div>
@@ -519,6 +607,8 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
   const visibleRefs = refs.filter(r => !deletedIds.includes(r.id))
 
   const handleDelete = (id) => setDeletedIds(prev => [...prev, id])
+
+  const handleEditRef = (id, updated) => setRefs(prev => prev.map(r => r.id === id ? { ...r, ...updated } : r))
 
   const handleRegenerateOne = (id) => {
     setRegeneratingId(id)
@@ -589,15 +679,15 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
 
   return (
     <div>
-      {/* Borrador action hint */}
-      {!isAprobado && editable && (
+      {/* Editable action hint */}
+      {editable && (
         <div className="flex items-center gap-3 px-4 py-3 rounded-xl mb-5" style={{ background: '#F0F9FF', border: '1px solid #BAE6FD' }}>
           <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E0F2FE' }}>
             <Wand2 size={14} style={{ color: '#0284C7' }} />
           </div>
           <div className="flex-1">
-            <p className="text-xs font-semibold" style={{ color: '#0C4A6E' }}>En construcción — edición libre</p>
-            <p className="text-xs" style={{ color: '#0369A1' }}>Regenera o elimina cada referencia individualmente con los iconos en cada tarjeta.</p>
+            <p className="text-xs font-semibold" style={{ color: '#0C4A6E' }}>Edición libre</p>
+            <p className="text-xs" style={{ color: '#0369A1' }}>Edita, regenera o elimina cada referencia individualmente con los iconos en cada tarjeta.</p>
           </div>
         </div>
       )}
@@ -606,9 +696,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
       <div className="flex items-center justify-between mb-5">
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{visibleRefs.length} referencias académicas</p>
-          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
-            {isAprobado ? 'Aprobadas · Contenido finalizado' : 'Borrador · Puedes regenerar o eliminar referencias individualmente'}
-          </p>
+          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Borrador · Puedes editar, regenerar o eliminar referencias individualmente</p>
         </div>
       </div>
 
@@ -619,35 +707,16 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
             key={r.id}
             data={r}
             idx={i}
-            showDelete={!isAprobado && editable}
-            showRegenerate={!isAprobado && editable}
+            showEdit={editable}
+            showDelete={editable}
+            showRegenerate={editable}
+            onEdit={handleEditRef}
             onDelete={handleDelete}
             onRegenerate={handleRegenerateOne}
             regeneratingId={regeneratingId}
           />
         ))}
       </div>
-
-      {/* T1 aprobado — request edit permission */}
-      {isAprobado && (
-        <div className="flex items-center gap-3 px-4 py-3 rounded-xl mb-4" style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}>
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#FEF3C7' }}>
-            <Lock size={14} style={{ color: '#D97706' }} />
-          </div>
-          <div className="flex-1">
-            <p className="text-xs font-semibold" style={{ color: '#92400E' }}>Contenido aprobado — Solo lectura</p>
-            <p className="text-xs" style={{ color: '#B45309' }}>Las referencias han sido validadas. Solicita permiso para modificarlas.</p>
-          </div>
-          <button
-            className="flex-shrink-0 text-xs px-3 py-1.5 rounded-lg font-medium transition-all"
-            style={{ background: '#D97706', color: '#FFFFFF' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#B45309'}
-            onMouseLeave={e => e.currentTarget.style.background = '#D97706'}
-          >
-            Solicitar permiso de edición
-          </button>
-        </div>
-      )}
 
       {/* Screen 3: Refinement chat — only for T3 (post-generation, borrador) */}
       {!isAprobado && editable && screen === 'chat' && (
@@ -1808,7 +1877,7 @@ export default function PantallaCanvas({
                 <SeccionRecursosAFondo
                   key={seccionActiva}
                   estado={seccion.estado}
-                  initialScreen={seccion.estado === 'aprobado' || seccionActiva === 'recursos-t2' ? 'list' : 'idle'}
+                  initialScreen={seccion.estado === 'aprobado' || seccionActiva === 'recursos-t1' || seccionActiva === 'recursos-t2' ? 'list' : 'idle'}
                   editable={editable}
                 />
               ) : esAsignaturaNueva && seccionActiva === 'instrucciones-t1' ? (

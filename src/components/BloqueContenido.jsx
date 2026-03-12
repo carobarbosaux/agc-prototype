@@ -37,6 +37,10 @@ export default function BloqueContenido({
   const editableRef = useRef(null)
 
   const tipo = bloque.tipo || 'p'
+
+  if (tipo === 'hr') {
+    return <hr style={{ border: 'none', borderTop: '1px solid #E5E7EB', margin: '8px 0' }} />
+  }
   const tipoConf = TIPO_CONFIG[tipo] || TIPO_CONFIG.p
   const comentariosActivos = bloque.comentarios?.filter(c => !c.resuelto) || []
   const tieneComentarioCritico = comentariosActivos.some(c => c.gravedad === 'critico')
