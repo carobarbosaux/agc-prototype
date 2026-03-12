@@ -285,65 +285,135 @@ export const contenidoTema1 = {
   "deep-learning": {
     titulo: "Tema 1. Introducción al Deep Learning",
     estado: "generado", // generado | en-edicion | aprobado
-    
+
     bloques: [
       {
         id: "t1-b1",
         tipo: "h2",
-        contenido: "1. Introducción y objetivos",
+        contenido: "1.1. Introducción y objetivos",
         etiqueta: null
       },
       {
         id: "t1-b2",
         tipo: "p",
-        contenido: "Este primer epígrafe introduce al estudiante en el significado y la relevancia del *deep learning* dentro del campo más amplio de la inteligencia artificial y el aprendizaje automático. Se presenta el aprendizaje profundo como un conjunto de técnicas basadas en redes neuronales artificiales capaces de aprender representaciones complejas a partir de grandes volúmenes de datos.",
+        contenido: "A lo largo de este tema se presentan las ideas principales, definiciones y fundamentos en torno al concepto de *deep learning* y se señala su relevancia dentro del desarrollo actual de la inteligencia artificial. El *deep learning* ha experimentado una evolución notable en las últimas décadas, impulsada por el aumento de la capacidad computacional, la disponibilidad de grandes volúmenes de datos y los avances en algoritmos de entrenamiento. Esta disciplina no se limita al uso de modelos matemáticos complejos, sino que constituye un enfoque que permite a los sistemas aprender representaciones jerárquicas de los datos y resolver problemas que anteriormente resultaban difíciles de abordar mediante técnicas tradicionales.",
         etiqueta: null
       },
       {
         id: "t1-b3",
-        tipo: "h3",
-        contenido: "Objetivos del tema",
+        tipo: "p",
+        contenido: "El aprendizaje profundo ha adquirido una posición central en ámbitos como la visión por computador, el procesamiento del lenguaje natural, la robótica, la medicina o los sistemas de recomendación. Su estudio resulta fundamental para comprender una parte importante de los avances recientes en inteligencia artificial, así como los retos técnicos, éticos y prácticos que acompañan a su desarrollo e implementación.",
         etiqueta: null
       },
       {
         id: "t1-b4",
-        tipo: "ul",
-        contenido: [
-          "Comprender el concepto de *deep learning* y su relación con la inteligencia artificial y el *machine learning*.",
-          "Identificar las principales características que diferencian el aprendizaje profundo de otros enfoques de aprendizaje automático.",
-          "Analizar el papel de las redes neuronales artificiales como base de los modelos de *deep learning*.",
-          "Conocer las principales aplicaciones actuales del *deep learning* en distintos ámbitos tecnológicos y científicos."
-        ],
+        tipo: "p",
+        contenido: "Para ampliar información sobre estos conceptos puedes consultar *Deep Learning*, de Goodfellow, Bengio y Courville (2016), así como *Artificial Intelligence: A Modern Approach*, de Russell y Norvig (2021), en la sección A fondo.",
         etiqueta: null
       },
       {
         id: "t1-b5",
-        tipo: "h2",
-        contenido: "2. Concepto y evolución del Deep Learning",
+        tipo: "p",
+        contenido: "Los objetivos de aprendizaje de este tema son los siguientes:",
         etiqueta: null
       },
       {
         id: "t1-b6",
-        tipo: "p",
-        contenido: "En este epígrafe se aborda el concepto de *deep learning* desde una perspectiva conceptual e histórica, analizando cómo ha evolucionado a partir de las primeras investigaciones en redes neuronales artificiales. Se revisan los principales hitos en el desarrollo de esta disciplina, desde los primeros modelos neuronales hasta el auge reciente impulsado por la disponibilidad de grandes volúmenes de datos y el aumento de la capacidad computacional.",
+        tipo: "ul",
+        contenido: [
+          "Definir el concepto de *deep learning* y su relación con la inteligencia artificial y el *machine learning*.",
+          "Conocer el origen y la evolución de las redes neuronales artificiales.",
+          "Comprender los principios generales del funcionamiento de una red neuronal.",
+          "Identificar el papel de los datos y del entrenamiento en el aprendizaje profundo.",
+          "Delimitar las principales aplicaciones, ventajas y limitaciones del *deep learning*."
+        ],
         etiqueta: null
       },
       {
         id: "t1-b7",
-        tipo: "p",
-        contenido: "El *deep learning* surge como resultado de décadas de investigación en inteligencia artificial, ciencias computacionales y neurociencia. En las últimas dos décadas, la disponibilidad de grandes volúmenes de datos, el incremento exponencial de la capacidad computacional (especialmente mediante el uso de GPU) y el desarrollo de nuevas arquitecturas han permitido que el aprendizaje profundo se posicione como una de las tecnologías más transformadoras del siglo XXI.",
+        tipo: "hr",
+        contenido: "",
         etiqueta: null
       },
       {
         id: "t1-b8",
-        tipo: "h3",
-        contenido: "Aplicaciones actuales del Deep Learning",
+        tipo: "h2",
+        contenido: "1.2. Naturaleza y alcance del deep learning",
         etiqueta: null
       },
       {
         id: "t1-b9",
         tipo: "p",
-        contenido: "Hoy en día, el *deep learning* es omnipresente en numerosos ámbitos: desde sistemas de reconocimiento facial y visión por computador, hasta asistentes virtuales que procesan lenguaje natural. En medicina, los modelos profundos ayudan a diagnosticar enfermedades a partir de imágenes médicas. En el sector financiero, se utilizan para detección de fraudes. En automoción, son fundamentales para los vehículos autónomos.",
+        contenido: "*Deep learning* es una expresión de origen anglosajón que se traduce en español como 'aprendizaje profundo'. Se trata de una rama del *machine learning* basada en el uso de redes neuronales artificiales con múltiples capas capaces de aprender representaciones complejas de los datos. Mientras que otros enfoques de aprendizaje automático suelen apoyarse en la extracción manual de características, el aprendizaje profundo permite que el propio modelo aprenda automáticamente las representaciones más útiles a partir de la información disponible.",
+        etiqueta: null
+      },
+      {
+        id: "t1-b10",
+        tipo: "p",
+        contenido: "Durante los últimos años se han producido importantes avances en este ámbito y, en ocasiones, se percibe una cierta confusión sobre sus límites y diferencias respecto a otros conceptos cercanos. Sin embargo, existe un acuerdo generalizado en situar el *deep learning* dentro del campo del *machine learning*, y a este, a su vez, dentro del ámbito más amplio de la inteligencia artificial.",
+        etiqueta: null
+      },
+      {
+        id: "t1-b11",
+        tipo: "p",
+        contenido: "La inteligencia artificial engloba el conjunto de métodos y técnicas orientados a diseñar sistemas capaces de realizar tareas que normalmente requerirían inteligencia humana, como reconocer patrones, tomar decisiones, comprender lenguaje o generar contenido. Dentro de este campo, el *machine learning* hace referencia a la capacidad de los sistemas para aprender a partir de datos, sin necesidad de ser programados de manera explícita para cada tarea. El *deep learning*, por su parte, constituye un enfoque específico basado en arquitecturas neuronales profundas.",
+        etiqueta: null
+      },
+      {
+        id: "t1-b12",
+        tipo: "p",
+        contenido: "El aprendizaje profundo se encarga de estudiar cómo un sistema computacional puede transformar datos de entrada en representaciones internas cada vez más abstractas. De esta forma, un modelo puede aprender desde rasgos simples hasta estructuras complejas. Por ejemplo, en una tarea de reconocimiento de imágenes, una red neuronal puede aprender primero bordes y texturas, después formas básicas y finalmente objetos completos. En el caso del lenguaje, puede aprender primero relaciones entre palabras, después estructuras sintácticas y finalmente significados más complejos.",
+        etiqueta: null
+      },
+      {
+        id: "t1-b13",
+        tipo: "p",
+        contenido: "Existen numerosas definiciones de *deep learning*. Goodfellow, Bengio y Courville (2016) lo describen como un enfoque del *machine learning* que permite a los modelos aprender representaciones múltiples de los datos mediante el uso de capas sucesivas de procesamiento. Desde una perspectiva más aplicada, puede señalarse que el *deep learning* es el conjunto de técnicas que permiten entrenar redes neuronales profundas para resolver tareas de clasificación, predicción, reconocimiento o generación de información.",
+        etiqueta: null
+      },
+      {
+        id: "t1-b14",
+        tipo: "p",
+        contenido: "A partir de estas definiciones se identifican dos niveles:",
+        etiqueta: null
+      },
+      {
+        id: "t1-b15",
+        tipo: "ul",
+        contenido: [
+          "Es una técnica computacional, ya que proporciona modelos, algoritmos y arquitecturas concretas para aprender a partir de datos.",
+          "Es también un marco metodológico, porque ha modificado la forma en que se abordan múltiples problemas dentro de la inteligencia artificial, sustituyendo reglas manuales por aprendizaje basado en ejemplos."
+        ],
+        etiqueta: null
+      },
+      {
+        id: "t1-b16",
+        tipo: "p",
+        contenido: "En este contexto, el elemento central del *deep learning* pasa a ser la representación automática de la información. Los modelos no solo producen una salida, sino que construyen internamente distintas capas de abstracción que permiten captar patrones complejos. Esta capacidad ha sido clave para el éxito del aprendizaje profundo en tareas donde los datos son abundantes y poco estructurados, como imágenes, texto, audio o vídeo.",
+        etiqueta: null
+      },
+      {
+        id: "t1-b17",
+        tipo: "h3",
+        contenido: "Evolución del concepto de deep learning",
+        etiqueta: null
+      },
+      {
+        id: "t1-b18",
+        tipo: "p",
+        contenido: "Existen distintos hitos que marcan el desarrollo del *deep learning*. Sus orígenes pueden situarse en las primeras investigaciones sobre neuronas artificiales y modelos conexionistas a mediados del siglo XX. Uno de los antecedentes más conocidos es el perceptrón, propuesto por Rosenblatt, que sentó las bases de las primeras redes neuronales.",
+        etiqueta: null
+      },
+      {
+        id: "t1-b19",
+        tipo: "p",
+        contenido: "Posteriormente, el desarrollo de estas técnicas experimentó etapas de avance y retroceso. Durante algunos periodos, el interés por las redes neuronales disminuyó debido a limitaciones matemáticas, falta de capacidad computacional y escasez de datos adecuados para el entrenamiento. Sin embargo, a partir de finales del siglo XX y especialmente durante el siglo XXI, el crecimiento de la potencia de cálculo, el uso de GPU y la disponibilidad de grandes conjuntos de datos permitieron revitalizar este campo.",
+        etiqueta: null
+      },
+      {
+        id: "t1-b20",
+        tipo: "p",
+        contenido: "En la actualidad, el *deep learning* constituye una de las áreas más dinámicas de la inteligencia artificial. Su expansión ha estado relacionada con el éxito de arquitecturas como las redes convolucionales para visión por computador, las redes recurrentes para secuencias y, más recientemente, los modelos basados en mecanismos de atención y *transformers*.",
         etiqueta: null
       }
     ]
