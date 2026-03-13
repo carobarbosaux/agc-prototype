@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { roles } from '../mockData'
 import { ProdiWordmark } from './ProdiLogo'
 
-export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClick, notifCount }) {
+export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClick, notifCount, onLogoClick }) {
   const [rolMenuAbierto, setRolMenuAbierto] = useState(false)
   const rolActualLabel = roles.find(r => r.id === rolActivo)?.label || 'Autor'
 
@@ -28,7 +28,11 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
       {/* Left: Logo + Breadcrumb */}
       <div className="flex items-center gap-2">
         {/* Logo */}
-        <div className="flex items-center mr-3">
+        <div
+          className="flex items-center mr-3"
+          style={{ cursor: onLogoClick ? 'pointer' : 'default' }}
+          onClick={onLogoClick}
+        >
           <ProdiWordmark height={22} />
         </div>
 

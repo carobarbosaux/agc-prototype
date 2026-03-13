@@ -84,6 +84,7 @@ export default function App() {
           onNotifClick={() => setNotifAbiertas(true)}
           notifCount={1}
           pantalla={pantalla}
+          onLogoClick={() => navigate('dashboard')}
         />
       )}
 
