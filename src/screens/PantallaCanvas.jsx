@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronDown, Plus, MessageSquare, Eye, Sparkles, X, Lock, Wand2, ShieldCheck, BookOpenCheck, Check, ToggleLeft, ToggleRight, StickyNote, Pencil, Trash2, RefreshCw, ArrowUpRight, FlaskConical, BrainCircuit, Mic, Save, Layers, BookOpen, Link, Send, ExternalLink } from 'lucide-react'
+import { ChevronRight, ChevronDown, Plus, MessageSquare, Eye, Sparkles, X, Lock, Wand2, ShieldCheck, BookOpenCheck, Check, ToggleLeft, ToggleRight, StickyNote, Pencil, Trash2, RefreshCw, ArrowUpRight, FlaskConical, BrainCircuit, Mic, Save, Layers, BookOpen, Link, Send, ExternalLink, AlertTriangle } from 'lucide-react'
 import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
@@ -13,6 +13,7 @@ import {
   bloquesTema3,
   bloquesTema4,
   bloquesIndice,
+  dlBloquesIndice,
   instruccionesTema1,
   instruccionesTema2,
   instruccionesTema3,
@@ -34,7 +35,7 @@ const SECCION_CONFIG = {
   resumen: {
     label: 'Resumen general',
     labelCorto: 'Resumen',
-    estado: 'borrador',
+    estado: 'aprobado',
     bloques: [],
     chat: [],
   },
@@ -315,16 +316,30 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
           </div>
           <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Índice generado por IA · Solo lectura</span>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-3">
           {indice.map((tema, i) => (
-            <div key={i} className="flex items-start gap-3 py-1.5">
-              <div
-                className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5"
-                style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
-              >
-                <span style={{ fontSize: '10px', fontWeight: '700', color: '#9CA3AF' }}>{i + 1}</span>
+            <div key={i} className="py-1.5">
+              <div className="flex items-start gap-3 mb-1.5">
+                <div
+                  className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5"
+                  style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
+                >
+                  <span style={{ fontSize: '10px', fontWeight: '700', color: '#9CA3AF' }}>{i + 1}</span>
+                </div>
+                <span className="text-sm font-semibold" style={{ color: '#374151' }}>
+                  {typeof tema === 'string' ? tema.replace(/^Tema \d+: /, '') : tema.titulo}
+                </span>
               </div>
-              <span className="text-sm" style={{ color: '#374151' }}>{tema.replace(/^Tema \d+: /, '')}</span>
+              {tema.epigrafes && (
+                <div className="ml-8 space-y-0.5">
+                  {tema.epigrafes.map((ep, j) => (
+                    <div key={j} className="flex items-center gap-2">
+                      <span style={{ fontSize: '10px', color: '#D1D5DB' }}>—</span>
+                      <span className="text-xs" style={{ color: '#6B7280' }}>{ep}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -825,12 +840,23 @@ function SeccionIndiceFija({ bloques }) {
           </div>
           {/* Content */}
           <div className="min-w-0">
-            <p className="text-sm font-semibold leading-snug mb-1" style={{ color: '#111827' }}>
+            <p className="text-sm font-semibold leading-snug mb-2" style={{ color: '#111827' }}>
               {tema.nombre}
             </p>
-            <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
-              {tema.descripcion}
-            </p>
+            {tema.epigrafes ? (
+              <div className="space-y-0.5">
+                {tema.epigrafes.map((ep, j) => (
+                  <div key={j} className="flex items-center gap-2">
+                    <span style={{ fontSize: '10px', color: '#D1D5DB' }}>—</span>
+                    <span className="text-xs" style={{ color: '#6B7280' }}>{ep}</span>
+                  </div>
+                ))}
+              </div>
+            ) : tema.descripcion ? (
+              <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
+                {tema.descripcion}
+              </p>
+            ) : null}
           </div>
         </div>
       ))}
@@ -842,15 +868,18 @@ function SeccionIndiceFija({ bloques }) {
 
 const DL_RESUMEN_DATA = {
   nombre: 'Deep Learning y Redes Neuronales',
-  introduccion: 'La asignatura Deep Learning y Redes Neuronales introduce al estudiante en los fundamentos y aplicaciones del aprendizaje profundo dentro del campo de la inteligencia artificial. A lo largo del curso se analizan los principios que sustentan el funcionamiento de las redes neuronales artificiales y su capacidad para aprender patrones complejos a partir de datos.',
-  objetivos: [
-    'Comprender los fundamentos teóricos del deep learning y su relación con la inteligencia artificial y el machine learning.',
-    'Analizar las principales arquitecturas de redes neuronales profundas (CNN, RNN, Transformers) y sus aplicaciones.',
-    'Aplicar técnicas de entrenamiento y optimización de modelos de aprendizaje profundo.',
-    'Evaluar el potencial y las limitaciones del deep learning en distintos contextos tecnológicos y científicos.',
+  introduccion: 'La asignatura Deep Learning y Redes Neuronales introduce al estudiante en los fundamentos y aplicaciones del aprendizaje profundo dentro del campo de la inteligencia artificial. A lo largo del curso se analizan los principios que sustentan el funcionamiento de las redes neuronales artificiales y su capacidad para aprender patrones complejos a partir de datos. El enfoque combina bases conceptuales con una aproximación aplicada orientada a comprender cómo estos modelos se utilizan para resolver problemas en ámbitos como la visión por computador, el procesamiento del lenguaje natural o el análisis de grandes volúmenes de información.\n\nAsimismo, se estudian los procesos de entrenamiento de redes neuronales, las diferentes arquitecturas utilizadas en el aprendizaje profundo y los principales retos asociados a su desarrollo, como la necesidad de datos, la capacidad computacional o la interpretabilidad de los modelos. De esta forma, el estudiante adquiere una visión general del deep learning como una de las tecnologías más relevantes dentro de la inteligencia artificial contemporánea.',
+  temasConDescripcion: [
+    { numero: 1, titulo: 'Introducción al Deep Learning', descripcion: 'En este tema se va a tratar el concepto de deep learning y su relación con la inteligencia artificial y el machine learning. Se analizará la evolución histórica de las redes neuronales artificiales y los factores tecnológicos que han impulsado el desarrollo reciente del aprendizaje profundo. También se abordarán los fundamentos conceptuales que permiten comprender cómo los modelos de deep learning aprenden a partir de datos y cuáles son sus principales aplicaciones en distintos ámbitos tecnológicos.' },
+    { numero: 2, titulo: 'Fundamentos de redes neuronales artificiales', descripcion: 'En este tema se va a tratar la estructura y funcionamiento de las redes neuronales artificiales como base del deep learning. Se estudiarán los componentes principales de una red neuronal, como las neuronas artificiales, las funciones de activación y la organización en capas. Asimismo, se analizará cómo estas redes procesan información y cómo se utilizan para modelar relaciones complejas dentro de los datos.' },
+    { numero: 3, titulo: 'Entrenamiento de redes neuronales', descripcion: 'En este tema se va a tratar el proceso mediante el cual las redes neuronales aprenden a partir de datos. Se estudiarán conceptos fundamentales como la función de pérdida, el algoritmo de retropropagación y los métodos de optimización utilizados para ajustar los parámetros del modelo. Además, se analizarán algunos de los problemas más comunes que aparecen durante el entrenamiento, como el sobreajuste o la dificultad para generalizar los resultados.' },
+    { numero: 4, titulo: 'Redes neuronales profundas', descripcion: 'En este tema se va a tratar el desarrollo de arquitecturas de redes neuronales profundas y su capacidad para aprender representaciones jerárquicas de los datos. Se estudiarán diferentes técnicas utilizadas para mejorar el rendimiento de estos modelos, como la regularización, la inicialización de pesos o la normalización de capas. Asimismo, se analizarán las ventajas y limitaciones de los modelos profundos en diferentes contextos de aplicación.' },
+    { numero: 5, titulo: 'Redes neuronales convolucionales (CNN)', descripcion: 'En este tema se va a tratar el funcionamiento de las redes neuronales convolucionales, una de las arquitecturas más utilizadas en tareas de visión por computador. Se estudiarán los principios de las capas convolucionales, los mecanismos de pooling y las estructuras que permiten identificar patrones visuales en imágenes. También se analizarán algunas de las aplicaciones más relevantes de las CNN en el reconocimiento de imágenes y la clasificación visual.' },
+    { numero: 6, titulo: 'Redes neuronales recurrentes (RNN)', descripcion: 'En este tema se va a tratar el uso de redes neuronales recurrentes para el análisis de datos secuenciales. Se estudiará cómo estas redes permiten modelar dependencias temporales dentro de secuencias de datos, como texto, audio o series temporales. Asimismo, se analizarán arquitecturas avanzadas como LSTM y GRU, que permiten mejorar el aprendizaje en secuencias largas y complejas.' },
+    { numero: 7, titulo: 'Modelos generativos y aprendizaje profundo', descripcion: 'En este tema se va a tratar el desarrollo de modelos generativos basados en deep learning. Se estudiarán arquitecturas como los autoencoders y las redes generativas adversariales (GAN), así como su capacidad para generar nuevos datos a partir de los patrones aprendidos durante el entrenamiento. También se analizarán aplicaciones del aprendizaje generativo en ámbitos como la generación de imágenes, texto o contenido multimedia.' },
+    { numero: 8, titulo: 'Aplicaciones avanzadas del Deep Learning', descripcion: 'En este tema se va a tratar el uso del deep learning en diferentes contextos de aplicación dentro de la inteligencia artificial. Se estudiarán ejemplos de uso en áreas como la visión artificial, el procesamiento del lenguaje natural y los sistemas inteligentes de toma de decisiones. Asimismo, se analizarán algunas tendencias actuales en el desarrollo de modelos de aprendizaje profundo y los desafíos futuros asociados a esta tecnología.' },
   ],
-  extension: '12.000 palabras · 20 páginas (aproximadamente)',
-  epigrafes: 'El tema se estructurará siguiendo los epígrafes aprobados en el índice: introducción al deep learning, fundamentos de redes neuronales artificiales, entrenamiento y optimización, arquitecturas CNN y RNN, modelos generativos y aplicaciones avanzadas. Cada epígrafe comenzará con una breve introducción conceptual y desarrollará los fundamentos que el estudiante debe comprender.\n\nA lo largo del tema se destacarán ideas esenciales como la relación entre IA, machine learning y deep learning, el papel de los datos en el entrenamiento de modelos, y las diferencias entre las principales arquitecturas de redes neuronales profundas, utilizando recuadros de "punto clave" para facilitar la lectura.\n\nPara reforzar los contenidos, se incorporarán elementos visuales: una línea temporal de la evolución del deep learning, un esquema comparativo de arquitecturas (CNN, RNN, Transformers) y diagramas del proceso de entrenamiento. El tema trabajará dos competencias principales: la capacidad de comprender el funcionamiento de las redes neuronales y la habilidad para identificar la arquitectura adecuada según el tipo de problema.',
+  tags: ['Deep Learning', 'Redes Neuronales', 'CNN', 'RNN', 'Transformers', 'IA Generativa'],
 }
 
 const FUNDML_RESUMEN_DATA = {
@@ -878,18 +907,12 @@ function getResumenData(nombreAsignatura) {
   }
 }
 
-function SeccionResumen({ editable, nombreAsignatura }) {
-  const [data, setData] = useState(() => getResumenData(nombreAsignatura))
-  const [unsaved, setUnsaved] = useState(false)
-
-  const mark = () => setUnsaved(true)
-  const set = (field, val) => { setData(prev => ({ ...prev, [field]: val })); mark() }
-  const setObjetivo = (idx, val) => {
-    setData(prev => { const o = [...prev.objetivos]; o[idx] = val; return { ...prev, objetivos: o } })
-    mark()
-  }
-  const removeObjetivo = (idx) => { setData(prev => ({ ...prev, objetivos: prev.objetivos.filter((_, i) => i !== idx) })); mark() }
-  const addObjetivo = () => { setData(prev => ({ ...prev, objetivos: [...prev.objetivos, ''] })); mark() }
+function SeccionResumen({ nombreAsignatura, creacionData }) {
+  const r = creacionData?.resumen ?? getResumenData(nombreAsignatura)
+  const nombre = r.nombre ?? nombreAsignatura
+  const descripcion = r.descripcion ?? r.introduccion
+  const temas = r.temasConDescripcion ?? (r.temas ?? []).map((t, i) => ({ numero: i + 1, titulo: t, descripcion: null }))
+  const tags = r.tags ?? []
 
   const Field = ({ label, children }) => (
     <div className="mb-8" style={{ borderBottom: '1px solid #F3F4F6', paddingBottom: '28px' }}>
@@ -904,111 +927,47 @@ function SeccionResumen({ editable, nombreAsignatura }) {
       {/* Header */}
       <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
         <p className="text-xs font-medium mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.05em' }}>
-          {nombreAsignatura ?? data.nombre}
+          {nombreAsignatura ?? nombre}
         </p>
         <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>Resumen general</h1>
-        {unsaved && editable && (
-          <p className="text-xs mt-2 animate-fade-in" style={{ color: '#F59E0B' }}>● Sin guardar</p>
-        )}
       </div>
 
-      {/* Introducción */}
-      <Field label="Introducción">
-        {editable ? (
-          <textarea
-            value={data.introduccion}
-            onChange={e => set('introduccion', e.target.value)}
-            rows={3}
-            className="w-full text-base leading-8 outline-none resize-none bg-transparent"
-            style={{ color: '#1F2937', caretColor: '#367CFF' }}
-          />
-        ) : (
-          <p className="text-base leading-8" style={{ color: '#1F2937' }}>{data.introduccion}</p>
-        )}
+      {/* Descripción */}
+      <Field label="Descripción general">
+        <p className="text-base leading-8" style={{ color: '#1F2937' }}>{descripcion}</p>
       </Field>
 
-      {/* Objetivos */}
-      <Field label="Objetivos de aprendizaje">
+      {/* Estructura de temas */}
+      <Field label="Estructura de temas propuesta">
         <div className="space-y-2">
-          {data.objetivos.map((obj, idx) => (
-            <div key={idx} className="flex items-start gap-3 group">
-              <span
-                className="w-5 h-5 rounded flex items-center justify-center text-xs font-bold flex-shrink-0 mt-1.5"
-                style={{ background: '#E7EFFE', color: '#367CFF' }}
-              >
-                {idx + 1}
-              </span>
-              {editable ? (
-                <>
-                  <input
-                    value={obj}
-                    onChange={e => setObjetivo(idx, e.target.value)}
-                    className="flex-1 text-base leading-8 outline-none bg-transparent"
-                    style={{ color: '#1F2937', caretColor: '#367CFF' }}
-                    placeholder="Objetivo de aprendizaje…"
-                  />
-                  <button
-                    onClick={() => removeObjetivo(idx)}
-                    className="mt-2 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
-                    style={{ color: '#CBD5E1' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
-                    onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
-                  >
-                    <X size={13} />
-                  </button>
-                </>
-              ) : (
-                <p className="flex-1 text-base leading-7 pt-1" style={{ color: '#1F2937' }}>{obj}</p>
+          {temas.map((tema) => (
+            <div key={tema.numero} className="px-3 py-2.5 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #F1F5F9' }}>
+              <div className="flex items-start gap-2">
+                <span className="text-xs font-semibold flex-shrink-0 mt-0.5" style={{ color: '#367CFF', minWidth: '22px' }}>T{tema.numero}</span>
+                <p className="text-xs font-medium" style={{ color: '#1A1A1A' }}>{tema.titulo}</p>
+              </div>
+              {tema.descripcion && (
+                <p className="text-xs mt-1.5 leading-relaxed" style={{ color: '#6B7280', paddingLeft: '30px' }}>{tema.descripcion}</p>
               )}
             </div>
           ))}
-          {editable && (
-            <button
-              onClick={addObjetivo}
-              className="flex items-center gap-2 text-sm mt-2 transition-all"
-              style={{ color: '#D1D5DB', paddingLeft: '32px' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#367CFF'}
-              onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
-            >
-              <Plus size={14} /> Agregar objetivo
-            </button>
-          )}
         </div>
       </Field>
 
-      {/* Extensión */}
-      <Field label="Extensión estimada">
-        {editable ? (
-          <input
-            value={data.extension}
-            onChange={e => set('extension', e.target.value)}
-            className="text-base leading-8 outline-none bg-transparent w-full"
-            style={{ color: '#1F2937', caretColor: '#367CFF' }}
-          />
-        ) : (
-          <p className="text-base leading-8" style={{ color: '#1F2937' }}>{data.extension}</p>
-        )}
-      </Field>
-
-      {/* Epígrafes y puntos destacados */}
-      <div className="mb-8">
-        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF', letterSpacing: '0.07em' }}>Epígrafes y puntos destacados</p>
-        {editable ? (
-          <textarea
-            value={data.epigrafes}
-            onChange={e => set('epigrafes', e.target.value)}
-            rows={10}
-            className="w-full text-base leading-8 outline-none resize-none bg-transparent"
-            style={{ color: '#1F2937', caretColor: '#367CFF' }}
-          />
-        ) : (
-          <div className="space-y-4">
-            {data.epigrafes.split('\n\n').map((para, i) => (
-              <p key={i} className="text-base leading-8" style={{ color: '#1F2937' }}>{para}</p>
+      {/* Etiquetas */}
+      {tags.length > 0 && (
+        <div className="mb-8">
+          <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF', letterSpacing: '0.07em' }}>Etiquetas clave</p>
+          <div className="flex flex-wrap gap-1.5">
+            {tags.map(tag => (
+              <span key={tag} className="inline-flex items-center rounded-full text-xs font-medium"
+                style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF', padding: '3px 10px' }}>
+                {tag}
+              </span>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
     </div>
   )
@@ -1246,6 +1205,8 @@ export default function PantallaCanvas({
   const [nuevoComentarioTexto, setNuevoComentarioTexto] = useState('')
   const [nuevoComentarioAnchor, setNuevoComentarioAnchor] = useState(null)
   const [quotePendiente, setQuotePendiente] = useState(null)
+  const isDL = asignaturaActiva?.asignaturaId === 'deep-learning'
+  const indiceParaAsignatura = isDL ? dlBloquesIndice : bloquesIndice
   const [bloquesState, setBloquesState] = useState(() => {
     // When coming from the author creation flow, topic sections start empty
     if (creacionData?.indice) {
@@ -1255,20 +1216,20 @@ export default function PantallaCanvas({
         emptyTopicSections[`recursos-${t}`] = []
         emptyTopicSections[`test-${t}`] = []
       })
-      return { indice: bloquesIndice, ...emptyTopicSections }
+      return { indice: indiceParaAsignatura, ...emptyTopicSections }
     }
     return {
       t2: bloquesTema2.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
       t1: bloquesTema1.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
       t3: bloquesTema3.map(b => ({ ...b, comentarios: [] })),
       t4: bloquesTema4.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
-      indice: bloquesIndice,
+      indice: indiceParaAsignatura,
     }
   })
   // Single source of truth for new-subject section statuses.
   // Only sections present here are accessible; absent = sin_comenzar.
   const [estadosSeccion, setEstadosSeccion] = useState(
-    () => esAsignaturaNueva ? { indice: 'borrador' } : {}
+    () => esAsignaturaNueva ? { indice: 'borrador', resumen: 'aprobado' } : {}
   )
   const [savedToast, setSavedToast] = useState(false)
   const [sentToast, setSentToast] = useState(false)
@@ -1284,6 +1245,7 @@ export default function PantallaCanvas({
   const [selectionAnchor, setSelectionAnchor] = useState(null)
   const [nuevaNotaTexto, setNuevaNotaTexto] = useState('')
   const [herramientasMenuAbierto, setHerramientasMenuAbierto] = useState(false)
+  const [editarResumenWarning, setEditarResumenWarning] = useState(false)
   const herramientasMenuRef = useRef(null)
   const [enrichmentPanelAbierto, setEnrichmentPanelAbierto] = useState(false)
   const [enrichmentGenerando, setEnrichmentGenerando] = useState(null) // null | 'test' | 'mapa' | 'podcast'
@@ -1816,13 +1778,22 @@ export default function PantallaCanvas({
         <div className="flex items-center gap-2 px-5 py-2.5 min-w-0">
           {/* Breadcrumb text — truncates with ellipsis */}
           <span className="text-xs font-medium truncate min-w-0 flex-shrink" style={{ color: '#9CA3AF' }}>
-            {isResumen
-              ? 'Resumen de asignatura'
-              : [asignaturaData?.nombre, seccion.label].filter(Boolean).join(' · ')}
+            {[asignaturaData?.nombre, isResumen ? 'Resumen general' : seccion.label].filter(Boolean).join(' · ')}
           </span>
-          <StatusIndicator status={toStatusKey(estadoMostrado)} variant="badge" className="flex-shrink-0" />
+          <StatusIndicator status={toStatusKey(isResumen ? 'aprobado' : estadoMostrado)} variant="badge" className="flex-shrink-0" />
           <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
-            {getActionBar()}
+            {isResumen ? (
+              <button
+                onClick={() => setEditarResumenWarning(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-medium transition-all"
+                style={{ background: 'transparent', color: '#6B7280', border: '1px solid #E5E7EB' }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#F3F4F6'; e.currentTarget.style.borderColor = '#D1D5DB' }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#E5E7EB' }}
+              >
+                <Pencil size={12} />
+                Editar resumen
+              </button>
+            ) : getActionBar()}
           </div>
         </div>
 
@@ -1845,8 +1816,8 @@ export default function PantallaCanvas({
         <main className="flex-1 overflow-y-auto" style={{ background: '#FFFFFF' }} onMouseUp={handleTextSelection} onKeyUp={handleTextSelection}>
           {isResumen ? (
             <SeccionResumen
-              editable={editable}
               nombreAsignatura={asignaturaData?.nombre}
+              creacionData={creacionData}
             />
           ) : (
             <div className="max-w-2xl mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '64px' }}>
@@ -1941,7 +1912,7 @@ export default function PantallaCanvas({
                   onCreacionDataConsumed={onCreacionDataConsumed}
                   onGenerarResumen={() => {
                     setResumenPrefill(creacionData?.resumen || null)
-                    setEstadosSeccion(prev => ({ ...prev, indice: 'aprobado', resumen: 'borrador' }))
+                    setEstadosSeccion(prev => ({ ...prev, indice: 'aprobado', resumen: 'aprobado' }))
                     setSeccionActiva('resumen')
                   }}
                 />
@@ -2139,57 +2110,57 @@ export default function PantallaCanvas({
           className="flex-shrink-0 flex flex-col items-center pt-3 pb-4 gap-1"
           style={{ width: '60px', background: '#F8F9FA', borderLeft: '1px solid #E5E7EB' }}
         >
+          {/* IA */}
+          <button
+            onClick={() => { setPanelIAabierto(true); setComentarioActivoBloque(null); setPanelNotasAbierto(false) }}
+            className="flex flex-col items-center gap-1 w-full py-2.5 rounded-lg transition-colors"
+            style={{ color: panelIAabierto ? '#367CFF' : '#4B5563', background: panelIAabierto ? '#E7EFFE' : 'transparent' }}
+            onMouseEnter={e => { if (!panelIAabierto) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
+            onMouseLeave={e => { if (!panelIAabierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#4B5563' } }}
+          >
+            <ProdiMark size={18} />
+            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelIAabierto ? '700' : '500' }}>Asistente</span>
+          </button>
+
           {/* Comments */}
           <button
             onClick={() => {
               const first = bloques.find(b => b.comentarios?.some(c => !c.resuelto))
               if (first) { setComentarioActivoBloque(first); setPanelIAabierto(false); setPanelNotasAbierto(false) }
             }}
-            className="relative flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
-            style={{ color: comentarioActivoBloque ? '#EF4444' : tieneComentariosActivos ? '#6B7280' : '#CBD5E1', cursor: tieneComentariosActivos ? 'pointer' : 'default' }}
-            onMouseEnter={e => { if (tieneComentariosActivos) e.currentTarget.style.background = '#F1F5F9' }}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            className="relative flex flex-col items-center gap-1 w-full py-2.5 rounded-lg transition-colors"
+            style={{ color: comentarioActivoBloque ? '#EF4444' : tieneComentariosActivos ? '#4B5563' : '#9CA3AF', background: comentarioActivoBloque ? '#FEE2E2' : 'transparent', cursor: tieneComentariosActivos ? 'pointer' : 'default' }}
+            onMouseEnter={e => { if (tieneComentariosActivos && !comentarioActivoBloque) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
+            onMouseLeave={e => { if (!comentarioActivoBloque) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = tieneComentariosActivos ? '#4B5563' : '#9CA3AF' } }}
           >
             <div className="relative">
-              <MessageSquare size={15} />
+              <MessageSquare size={16} />
               {totalComentariosCriticos > 0 && (
                 <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#EF4444', fontSize: '8px' }}>
                   {totalComentariosCriticos}
                 </span>
               )}
             </div>
-            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: comentarioActivoBloque ? '600' : '500' }}>Comentarios</span>
+            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: comentarioActivoBloque ? '700' : '500' }}>Comentarios</span>
           </button>
 
           {/* Notas */}
           <button
             onClick={() => { setPanelNotasAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false) }}
-            className="relative flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
-            style={{ color: panelNotasAbierto ? '#D97706' : '#9CA3AF' }}
-            onMouseEnter={e => { if (!panelNotasAbierto) e.currentTarget.style.background = '#F1F5F9' }}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            className="relative flex flex-col items-center gap-1 w-full py-2.5 rounded-lg transition-colors"
+            style={{ color: panelNotasAbierto ? '#D97706' : '#4B5563', background: panelNotasAbierto ? '#FEF3C7' : 'transparent' }}
+            onMouseEnter={e => { if (!panelNotasAbierto) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
+            onMouseLeave={e => { if (!panelNotasAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#4B5563' } }}
           >
             <div className="relative">
-              <StickyNote size={15} />
+              <StickyNote size={16} />
               {notasState.length > 0 && (
                 <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#D97706', fontSize: '8px' }}>
                   {notasState.length}
                 </span>
               )}
             </div>
-            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelNotasAbierto ? '600' : '500' }}>Notas</span>
-          </button>
-
-          {/* IA */}
-          <button
-            onClick={() => { setPanelIAabierto(true); setComentarioActivoBloque(null); setPanelNotasAbierto(false) }}
-            className="flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
-            style={{ color: panelIAabierto ? '#367CFF' : '#9CA3AF' }}
-            onMouseEnter={e => { if (!panelIAabierto) e.currentTarget.style.background = '#F1F5F9' }}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          >
-            <ProdiMark size={18} />
-            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelIAabierto ? '600' : '500' }}>Asistente</span>
+            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelNotasAbierto ? '700' : '500' }}>Notas</span>
           </button>
 
           {/* Experiencias (disenador only) */}
@@ -2587,6 +2558,56 @@ export default function PantallaCanvas({
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white shadow-xl animate-fade-in"
           style={{ background: '#367CFF', zIndex: 100 }}>
           ✓ Tema 2 enviado a revisión
+        </div>
+      )}
+
+      {/* Editar resumen — warning modal */}
+      {editarResumenWarning && (
+        <div
+          className="fixed inset-0 flex items-center justify-center"
+          style={{ background: 'rgba(0,0,0,0.35)', zIndex: 200 }}
+          onClick={() => setEditarResumenWarning(false)}
+        >
+          <div
+            className="rounded-2xl p-6 w-full max-w-sm mx-4"
+            style={{ background: '#FFFFFF', boxShadow: '0 20px 60px rgba(0,0,0,0.18)' }}
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Icon + title */}
+            <div className="flex items-start gap-3 mb-4">
+              <div className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#FEF3C7' }}>
+                <AlertTriangle size={18} style={{ color: '#D97706' }} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold mb-1" style={{ color: '#111827' }}>¿Editar el resumen general?</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>
+                  Si modificas el resumen general, el índice de la asignatura deberá regenerarse y podrías perder los avances realizados en los temas ya comenzados.
+                </p>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center justify-end gap-2 mt-5">
+              <button
+                onClick={() => setEditarResumenWarning(false)}
+                className="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                style={{ background: '#F3F4F6', color: '#374151' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+                onMouseLeave={e => e.currentTarget.style.background = '#F3F4F6'}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => setEditarResumenWarning(false)}
+                className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+                style={{ background: '#DC2626' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#B91C1C'}
+                onMouseLeave={e => e.currentTarget.style.background = '#DC2626'}
+              >
+                Sí, editar resumen
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
