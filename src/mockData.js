@@ -234,7 +234,7 @@ export const miTrabajo = [
 ]
 
 export const pipeline = [
-  { id: 'resumen', label: 'Resumen', estado: 'borrador', tipo: 'seccion' },
+  { id: 'resumen', label: 'Resumen', estado: 'aprobado', tipo: 'seccion' },
   { id: 'indice', label: 'Índice', estado: 'aprobado', tipo: 'seccion' },
   {
     id: 'tema-1',
@@ -697,6 +697,57 @@ export const bloquesIndice = [
     numero: 6,
     nombre: 'Proyecto final integrador',
     descripcion: 'Desarrollo end-to-end de un pipeline ML sobre un dataset real. Preprocesamiento, modelado, evaluación y presentación de resultados con MLflow.',
+  },
+]
+
+export const dlBloquesIndice = [
+  {
+    id: 'dl-bi1',
+    numero: 1,
+    nombre: 'Introducción al Deep Learning',
+    epigrafes: ['Introducción y objetivos', 'Concepto de inteligencia artificial, machine learning y deep learning', 'Evolución histórica de las redes neuronales', 'Aplicaciones actuales del deep learning', 'Retos y limitaciones del aprendizaje profundo', 'Forma'],
+  },
+  {
+    id: 'dl-bi2',
+    numero: 2,
+    nombre: 'Fundamentos de redes neuronales artificiales',
+    epigrafes: ['Introducción y objetivos', 'Inspiración biológica de las redes neuronales', 'La neurona artificial y las funciones de activación', 'Arquitectura básica de una red neuronal', 'Proceso de entrenamiento y aprendizaje', 'Forma'],
+  },
+  {
+    id: 'dl-bi3',
+    numero: 3,
+    nombre: 'Entrenamiento de redes neuronales',
+    epigrafes: ['Introducción y objetivos', 'Concepto de función de pérdida', 'Algoritmo de retropropagación (backpropagation)', 'Métodos de optimización en deep learning', 'Problemas comunes en el entrenamiento de redes', 'Forma'],
+  },
+  {
+    id: 'dl-bi4',
+    numero: 4,
+    nombre: 'Redes neuronales profundas',
+    epigrafes: ['Introducción y objetivos', 'Arquitectura de redes profundas', 'Inicialización de pesos y regularización', 'Overfitting y técnicas de generalización', 'Mejora del rendimiento en modelos profundos', 'Forma'],
+  },
+  {
+    id: 'dl-bi5',
+    numero: 5,
+    nombre: 'Redes neuronales convolucionales (CNN)',
+    epigrafes: ['Introducción y objetivos', 'Concepto y funcionamiento de las CNN', 'Capas convolucionales y de pooling', 'Arquitecturas populares de CNN', 'Aplicaciones en visión por computador', 'Forma'],
+  },
+  {
+    id: 'dl-bi6',
+    numero: 6,
+    nombre: 'Redes neuronales recurrentes (RNN)',
+    epigrafes: ['Introducción y objetivos', 'Concepto de secuencias y datos temporales', 'Arquitectura de redes recurrentes', 'Modelos LSTM y GRU', 'Aplicaciones en procesamiento del lenguaje natural y series temporales', 'Forma'],
+  },
+  {
+    id: 'dl-bi7',
+    numero: 7,
+    nombre: 'Modelos generativos y aprendizaje profundo',
+    epigrafes: ['Introducción y objetivos', 'Concepto de modelos generativos', 'Redes generativas adversariales (GAN)', 'Autoencoders y variational autoencoders', 'Aplicaciones del deep learning generativo', 'Forma'],
+  },
+  {
+    id: 'dl-bi8',
+    numero: 8,
+    nombre: 'Aplicaciones avanzadas del Deep Learning',
+    epigrafes: ['Introducción y objetivos', 'Deep learning en visión artificial', 'Deep learning en procesamiento del lenguaje natural', 'Uso de deep learning en sistemas inteligentes', 'Tendencias actuales y futuro del deep learning', 'Forma'],
   },
 ]
 

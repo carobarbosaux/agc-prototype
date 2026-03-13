@@ -1231,14 +1231,14 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
   const handleAceptarYGenerar = () => {
     setGenerando(true)
     const indice = [
-      'Tema 1: Introducción al Deep Learning',
-      'Tema 2: Fundamentos de redes neuronales artificiales',
-      'Tema 3: Entrenamiento de redes neuronales',
-      'Tema 4: Redes neuronales profundas',
-      'Tema 5: Redes neuronales convolucionales (CNN)',
-      'Tema 6: Redes neuronales recurrentes (RNN)',
-      'Tema 7: Modelos generativos y aprendizaje profundo',
-      'Tema 8: Aplicaciones avanzadas del Deep Learning',
+      { titulo: 'Introducción al Deep Learning', epigrafes: ['Introducción y objetivos', 'Concepto de inteligencia artificial, machine learning y deep learning', 'Evolución histórica de las redes neuronales', 'Aplicaciones actuales del deep learning', 'Retos y limitaciones del aprendizaje profundo', 'Forma'] },
+      { titulo: 'Fundamentos de redes neuronales artificiales', epigrafes: ['Introducción y objetivos', 'Inspiración biológica de las redes neuronales', 'La neurona artificial y las funciones de activación', 'Arquitectura básica de una red neuronal', 'Proceso de entrenamiento y aprendizaje', 'Forma'] },
+      { titulo: 'Entrenamiento de redes neuronales', epigrafes: ['Introducción y objetivos', 'Concepto de función de pérdida', 'Algoritmo de retropropagación (backpropagation)', 'Métodos de optimización en deep learning', 'Problemas comunes en el entrenamiento de redes', 'Forma'] },
+      { titulo: 'Redes neuronales profundas', epigrafes: ['Introducción y objetivos', 'Arquitectura de redes profundas', 'Inicialización de pesos y regularización', 'Overfitting y técnicas de generalización', 'Mejora del rendimiento en modelos profundos', 'Forma'] },
+      { titulo: 'Redes neuronales convolucionales (CNN)', epigrafes: ['Introducción y objetivos', 'Concepto y funcionamiento de las CNN', 'Capas convolucionales y de pooling', 'Arquitecturas populares de CNN', 'Aplicaciones en visión por computador', 'Forma'] },
+      { titulo: 'Redes neuronales recurrentes (RNN)', epigrafes: ['Introducción y objetivos', 'Concepto de secuencias y datos temporales', 'Arquitectura de redes recurrentes', 'Modelos LSTM y GRU', 'Aplicaciones en procesamiento del lenguaje natural y series temporales', 'Forma'] },
+      { titulo: 'Modelos generativos y aprendizaje profundo', epigrafes: ['Introducción y objetivos', 'Concepto de modelos generativos', 'Redes generativas adversariales (GAN)', 'Autoencoders y variational autoencoders', 'Aplicaciones del deep learning generativo', 'Forma'] },
+      { titulo: 'Aplicaciones avanzadas del Deep Learning', epigrafes: ['Introducción y objetivos', 'Deep learning en visión artificial', 'Deep learning en procesamiento del lenguaje natural', 'Uso de deep learning en sistemas inteligentes', 'Tendencias actuales y futuro del deep learning', 'Forma'] },
     ]
     setTimeout(() => {
       const nuevaAsig = {

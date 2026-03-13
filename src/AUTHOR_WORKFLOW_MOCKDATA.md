@@ -131,62 +131,118 @@ Asimismo, se estudian los procesos de entrenamiento de redes neuronales, las dif
 export const indiceAsignatura = {
   "deep-learning": {
     estado: "generado", // generado | completado
-    
+
     temas: [
       {
         id: "t1",
         numero: 1,
         titulo: "Introducción al Deep Learning",
-        epigrafe: "Introducción y objetivos",
+        epigrafes: [
+          "Introducción y objetivos",
+          "Concepto de inteligencia artificial, machine learning y deep learning",
+          "Evolución histórica de las redes neuronales",
+          "Aplicaciones actuales del deep learning",
+          "Retos y limitaciones del aprendizaje profundo",
+          "Forma"
+        ],
         orden: 1
       },
       {
         id: "t2",
         numero: 2,
         titulo: "Fundamentos de redes neuronales artificiales",
-        epigrafe: "Introducción y objetivos",
+        epigrafes: [
+          "Introducción y objetivos",
+          "Inspiración biológica de las redes neuronales",
+          "La neurona artificial y las funciones de activación",
+          "Arquitectura básica de una red neuronal",
+          "Proceso de entrenamiento y aprendizaje",
+          "Forma"
+        ],
         orden: 2
       },
       {
         id: "t3",
         numero: 3,
         titulo: "Entrenamiento de redes neuronales",
-        epigrafe: "Introducción y objetivos",
+        epigrafes: [
+          "Introducción y objetivos",
+          "Concepto de función de pérdida",
+          "Algoritmo de retropropagación (backpropagation)",
+          "Métodos de optimización en deep learning",
+          "Problemas comunes en el entrenamiento de redes",
+          "Forma"
+        ],
         orden: 3
       },
       {
         id: "t4",
         numero: 4,
         titulo: "Redes neuronales profundas",
-        epigrafe: "Introducción y objetivos",
+        epigrafes: [
+          "Introducción y objetivos",
+          "Arquitectura de redes profundas",
+          "Inicialización de pesos y regularización",
+          "Overfitting y técnicas de generalización",
+          "Mejora del rendimiento en modelos profundos",
+          "Forma"
+        ],
         orden: 4
       },
       {
         id: "t5",
         numero: 5,
         titulo: "Redes neuronales convolucionales (CNN)",
-        epigrafe: "Introducción y objetivos",
+        epigrafes: [
+          "Introducción y objetivos",
+          "Concepto y funcionamiento de las CNN",
+          "Capas convolucionales y de pooling",
+          "Arquitecturas populares de CNN",
+          "Aplicaciones en visión por computador",
+          "Forma"
+        ],
         orden: 5
       },
       {
         id: "t6",
         numero: 6,
         titulo: "Redes neuronales recurrentes (RNN)",
-        epigrafe: "Introducción y objetivos",
+        epigrafes: [
+          "Introducción y objetivos",
+          "Concepto de secuencias y datos temporales",
+          "Arquitectura de redes recurrentes",
+          "Modelos LSTM y GRU",
+          "Aplicaciones en procesamiento del lenguaje natural y series temporales",
+          "Forma"
+        ],
         orden: 6
       },
       {
         id: "t7",
         numero: 7,
         titulo: "Modelos generativos y aprendizaje profundo",
-        epigrafe: "Introducción y objetivos",
+        epigrafes: [
+          "Introducción y objetivos",
+          "Concepto de modelos generativos",
+          "Redes generativas adversariales (GAN)",
+          "Autoencoders y variational autoencoders",
+          "Aplicaciones del deep learning generativo",
+          "Forma"
+        ],
         orden: 7
       },
       {
         id: "t8",
         numero: 8,
         titulo: "Aplicaciones avanzadas del Deep Learning",
-        epigrafe: "Introducción y objetivos",
+        epigrafes: [
+          "Introducción y objetivos",
+          "Deep learning en visión artificial",
+          "Deep learning en procesamiento del lenguaje natural",
+          "Uso de deep learning en sistemas inteligentes",
+          "Tendencias actuales y futuro del deep learning",
+          "Forma"
+        ],
         orden: 8
       }
     ]
