@@ -3,7 +3,7 @@ import { ChevronDown, ChevronRight, PanelLeftClose, PanelLeftOpen, Info, X } fro
 import { pipeline } from '../mockData'
 import StatusIndicator, { toStatusKey } from './StatusIndicator'
 
-const ESTADO_CLICKABLE = ['aprobado', 'borrador', 'revision', 'comentarios']
+const ESTADO_CLICKABLE = ['aprobado', 'borrador', 'revision', 'comentarios', 'sin_comenzar']
 
 function TemaResumenPopover({ tema, onClose, anchorRef }) {
   const popRef = useRef(null)
@@ -54,8 +54,9 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
     : null
 
   const getEstado = (secId, staticEstado) => {
+    if (estadosSeccion?.[secId] !== undefined) return estadosSeccion[secId]
     if (!esAsignaturaNueva) return staticEstado
-    return estadosSeccion?.[secId] ?? 'sin_comenzar'
+    return 'sin_comenzar'
   }
 
   const toggleTema = (id) => setTemasExpandidos(prev => ({ ...prev, [id]: !prev[id] }))

@@ -1246,6 +1246,7 @@ export default function PantallaCanvas({
   const [nuevaNotaTexto, setNuevaNotaTexto] = useState('')
   const [herramientasMenuAbierto, setHerramientasMenuAbierto] = useState(false)
   const [editarResumenWarning, setEditarResumenWarning] = useState(false)
+  const [resumenEditando, setResumenEditando] = useState(false)
   const herramientasMenuRef = useRef(null)
   const [enrichmentPanelAbierto, setEnrichmentPanelAbierto] = useState(false)
   const [enrichmentGenerando, setEnrichmentGenerando] = useState(null) // null | 'test' | 'mapa' | 'podcast'
@@ -1378,7 +1379,7 @@ export default function PantallaCanvas({
   const showSentToast = () => {
     if (esAsignaturaNueva) {
       const order = [
-        'indice', 'resumen',
+        'indice',
         'instrucciones-t1', 't1', 'recursos-t1',
         'instrucciones-t2', 't2', 'recursos-t2',
         'instrucciones-t3', 't3', 'recursos-t3',
@@ -1780,9 +1781,9 @@ export default function PantallaCanvas({
           <span className="text-xs font-medium truncate min-w-0 flex-shrink" style={{ color: '#9CA3AF' }}>
             {[asignaturaData?.nombre, isResumen ? 'Resumen general' : seccion.label].filter(Boolean).join(' · ')}
           </span>
-          <StatusIndicator status={toStatusKey(isResumen ? 'aprobado' : estadoMostrado)} variant="badge" className="flex-shrink-0" />
+          <StatusIndicator status={toStatusKey(estadoMostrado)} variant="badge" className="flex-shrink-0" />
           <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
-            {isResumen ? (
+            {isResumen && editable ? (
               <button
                 onClick={() => setEditarResumenWarning(true)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-medium transition-all"
@@ -1793,7 +1794,7 @@ export default function PantallaCanvas({
                 <Pencil size={12} />
                 Editar resumen
               </button>
-            ) : getActionBar()}
+            ) : !isResumen ? getActionBar() : null}
           </div>
         </div>
 
@@ -1912,8 +1913,8 @@ export default function PantallaCanvas({
                   onCreacionDataConsumed={onCreacionDataConsumed}
                   onGenerarResumen={() => {
                     setResumenPrefill(creacionData?.resumen || null)
-                    setEstadosSeccion(prev => ({ ...prev, indice: 'aprobado', resumen: 'aprobado' }))
-                    setSeccionActiva('resumen')
+                    setEstadosSeccion(prev => ({ ...prev, indice: 'aprobado', resumen: 'aprobado', 'instrucciones-t1': 'sin_comenzar' }))
+                    setSeccionActiva('instrucciones-t1')
                   }}
                 />
               ) : seccionActiva === 'indice' ? (
@@ -2598,7 +2599,11 @@ export default function PantallaCanvas({
                 Cancelar
               </button>
               <button
-                onClick={() => setEditarResumenWarning(false)}
+                onClick={() => {
+                  setEditarResumenWarning(false)
+                  setResumenEditando(true)
+                  setEstadosSeccion(prev => ({ ...prev, resumen: 'borrador' }))
+                }}
                 className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
                 style={{ background: '#DC2626' }}
                 onMouseEnter={e => e.currentTarget.style.background = '#B91C1C'}
