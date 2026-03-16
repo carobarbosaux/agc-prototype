@@ -1188,6 +1188,65 @@ export const shortcutsComandos = [
   },
 ]
 
+export const shortcutsDashboard = [
+  {
+    id: 'mis-pendientes',
+    comando: '/mis-pendientes',
+    descripcion: 'Filtrar asignaturas pendientes de ti',
+    accion: 'filtrarPendientes',
+    icon: 'CheckSquare',
+    roles: ['autor', 'coordinador', 'editor'],
+  },
+  {
+    id: 'nueva-asignatura',
+    comando: '/nueva-asignatura',
+    descripcion: 'Crear nueva asignatura con IA',
+    accion: 'crearAsignatura',
+    icon: 'BookOpen',
+    roles: ['coordinador'],
+  },
+  {
+    id: 'generar-asignatura-dash',
+    comando: '/generar-asignatura',
+    descripcion: 'Crear nueva asignatura con IA',
+    accion: 'crearAsignatura',
+    icon: 'BookOpen',
+    roles: ['autor'],
+  },
+  {
+    id: 'seguimiento',
+    comando: '/seguimiento',
+    descripcion: 'Ver seguimiento de contenidos y obsolescencia',
+    accion: 'seguimiento',
+    icon: 'BarChart2',
+    roles: ['coordinador'],
+  },
+  {
+    id: 'alertas-normativas',
+    comando: '/alertas-normativas',
+    descripcion: 'Ver asignaturas con comentarios o alertas',
+    accion: 'filtrarAlertas',
+    icon: 'ShieldAlert',
+    roles: ['autor', 'coordinador', 'editor'],
+  },
+  {
+    id: 'asignaturas-en-revision',
+    comando: '/asignaturas-en-revision',
+    descripcion: 'Filtrar asignaturas en revisión activa',
+    accion: 'filtrarRevision',
+    icon: 'ClipboardCheck',
+    roles: ['editor'],
+  },
+  {
+    id: 'para-enriquecer',
+    comando: '/para-enriquecer',
+    descripcion: 'Ver asignaturas disponibles para enriquecer',
+    accion: 'placeholder',
+    icon: 'Edit3',
+    roles: ['disenador'],
+  },
+]
+
 export const respuestasIAChatbar = [
   'Veo que tienes 2 asignaturas en borrador. ¿Quieres continuar con Fundamentos de ML o crear una nueva?',
   'Tengo acceso al contexto de tus asignaturas. Puedo ayudarte a mejorar contenido, buscar referencias o generar nuevas secciones.',

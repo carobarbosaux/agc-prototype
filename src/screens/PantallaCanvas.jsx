@@ -1389,30 +1389,6 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
           </div>
         )}
 
-        {/* CTA — Generar contenido */}
-        <div className="flex items-center justify-between pt-2">
-          <button
-            onClick={() => onChange('_editarInstrucciones', true)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-all"
-            style={{ background: '#F1F5F9', color: '#374151' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
-            onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
-          >
-            <ChevronRight size={12} style={{ transform: 'rotate(180deg)' }} />
-            Volver a instrucciones
-          </button>
-          <button
-            onClick={() => onChange('_generarContenido', true)}
-            className="flex items-center gap-2 px-5 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-            style={{ background: '#367CFF' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
-          >
-            <Sparkles size={14} />
-            Generar contenido del tema
-            <ChevronRight size={14} />
-          </button>
-        </div>
       </div>
     )
   }
@@ -1538,17 +1514,6 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         </p>
       </div>
 
-      {/* CTA */}
-      <button
-        onClick={() => onChange('_generarResumen', true)}
-        className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-[10px] text-sm font-semibold text-white transition-all"
-        style={{ background: '#367CFF' }}
-        onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-        onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
-      >
-        <Sparkles size={14} />
-        Generar resumen del tema
-      </button>
     </div>
   )
 }
@@ -2154,8 +2119,75 @@ export default function PantallaCanvas({
   const getActionBar = () => {
     const estado = estadoMostrado
 
-    // DL instrucciones-t1 has its own CTA buttons inside SeccionDLInstrucciones
-    if (esAsignaturaNueva && seccionActiva === 'instrucciones-t1') return null
+    // ─ Instrucciones sections (all topics) ─
+    if (seccionActiva.startsWith('instrucciones-')) {
+      const datosInstr = instruccionesData[seccionActiva] ?? {}
+      if (datosInstr.generando) return null
+      if (datosInstr.resumenGenerado) {
+        return (
+          <>
+            <button
+              onClick={() => {
+                if (esAsignaturaNueva && seccionActiva === 'instrucciones-t1') {
+                  setEditarResumenWarning(true)
+                } else {
+                  setInstruccionesData(prev => ({ ...prev, [seccionActiva]: { ...prev[seccionActiva], resumenGenerado: false } }))
+                }
+              }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              style={{ background: '#F1F5F9', color: '#374151', border: '1px solid #E5E7EB' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+              onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
+            >
+              <ChevronRight size={14} style={{ transform: 'rotate(180deg)' }} />
+              Volver
+            </button>
+            <button
+              onClick={() => {
+                const tNum = parseInt(seccionActiva.replace('instrucciones-t', ''), 10)
+                if (tNum === 1) {
+                  setDlGenerandoContenido(true)
+                  setTimeout(() => {
+                    setBloquesState(prev => ({ ...prev, t1: dlBloquesTema1 }))
+                    setEstadosSeccion(prev => ({ ...prev, t1: prev.t1 ?? 'borrador' }))
+                    setDlGenerandoContenido(false)
+                    setSeccionActiva('t1')
+                  }, 1600)
+                } else {
+                  setSeccionActiva(`t${tNum}`)
+                }
+              }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
+              style={{ background: '#367CFF' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+              onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+            >
+              <Sparkles size={14} />
+              Generar contenido del tema
+              <ChevronRight size={14} />
+            </button>
+          </>
+        )
+      }
+      // Part 1: form — show "Generar resumen" primary CTA
+      return (
+        <button
+          onClick={() => {
+            setInstruccionesData(prev => ({ ...prev, [seccionActiva]: { ...prev[seccionActiva], generando: true } }))
+            setTimeout(() => {
+              setInstruccionesData(prev => ({ ...prev, [seccionActiva]: { ...prev[seccionActiva], generando: false, resumenGenerado: true } }))
+            }, 1500)
+          }}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
+          style={{ background: '#367CFF' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+          onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+        >
+          <Sparkles size={14} />
+          Generar resumen del tema
+        </button>
+      )
+    }
 
     // ─ Autor ─
     if (rolActivo === 'autor') {
@@ -2167,7 +2199,7 @@ export default function PantallaCanvas({
             <div className="relative" ref={herramientasMenuRef}>
               <button
                 onClick={() => setHerramientasMenuAbierto(v => !v)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
                 style={{
                   background: herramientasMenuAbierto ? '#E7EFFE' : '#F8F9FA',
                   color: herramientasMenuAbierto ? '#367CFF' : '#6B7280',
@@ -2180,9 +2212,9 @@ export default function PantallaCanvas({
                   }
                 }}
               >
-                <Sparkles size={13} />
+                <Sparkles size={14} />
                 Herramientas IA
-                <ChevronDown size={11} />
+                <ChevronDown size={12} />
               </button>
 
               {herramientasMenuAbierto && (
@@ -2241,30 +2273,15 @@ export default function PantallaCanvas({
               )}
             </div>
 
-            {/* Autosave toggle */}
-            <button
-              onClick={toggleAutosave}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-              style={{
-                background: autosaveOn ? '#F0FDF4' : '#F8F9FA',
-                color: autosaveOn ? '#16A34A' : '#9CA3AF',
-                border: `1px solid ${autosaveOn ? '#BBF7D0' : '#E5E7EB'}`,
-              }}
-              title={autosaveOn ? 'Desactivar guardado automático' : 'Activar guardado automático'}
-            >
-              {autosaveOn ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
-              {autosaveStatus === 'saving' ? 'Guardando…' : autosaveOn ? 'Autoguardado' : 'Sin guardar'}
-              {autosaveStatus === 'saved' && autosaveOn && <Check size={11} />}
-            </button>
             <button
               onClick={showSentToast}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-semibold text-white transition-all"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
               style={{ background: '#367CFF' }}
               onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
               onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
             >
               Enviar a revisión
-              <ChevronRight size={13} />
+              <ChevronRight size={14} />
             </button>
           </>
         )
@@ -2273,12 +2290,12 @@ export default function PantallaCanvas({
       if (estado === 'revision') {
         return (
           <button
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
             style={{ background: '#FFFBEB', color: '#F59E0B', border: '1px solid #FDE68A' }}
             onMouseEnter={e => e.currentTarget.style.background = '#FEF3C7'}
             onMouseLeave={e => e.currentTarget.style.background = '#FFFBEB'}
           >
-            <Eye size={13} />
+            <Eye size={14} />
             Solicitar permiso de edición
           </button>
         )
@@ -2287,12 +2304,12 @@ export default function PantallaCanvas({
       if (estado === 'aprobado') {
         return (
           <button
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
             style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
             onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
             onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
           >
-            <Eye size={13} />
+            <Eye size={14} />
             Solicitar permiso de edición
           </button>
         )
@@ -2309,22 +2326,22 @@ export default function PantallaCanvas({
           <>
             <button
               onClick={showSavedToast}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{ background: '#FFF7ED', color: '#F97316', border: '1px solid #FED7AA' }}
               onMouseEnter={e => e.currentTarget.style.background = '#FFEDD5'}
               onMouseLeave={e => e.currentTarget.style.background = '#FFF7ED'}
             >
-              <MessageSquare size={13} />
+              <MessageSquare size={14} />
               Enviar correcciones
             </button>
             <button
               onClick={showSentToast}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all"
               style={{ background: '#10B981' }}
               onMouseEnter={e => e.currentTarget.style.background = '#059669'}
               onMouseLeave={e => e.currentTarget.style.background = '#10B981'}
             >
-              <ChevronRight size={13} />
+              <ChevronRight size={14} />
               Aprobar contenido
             </button>
           </>
@@ -2335,12 +2352,12 @@ export default function PantallaCanvas({
         return (
           <button
             onClick={showSavedToast}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
             style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
             onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
             onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
           >
-            <Eye size={13} />
+            <Eye size={14} />
             Comprobar actualizaciones
           </button>
         )
@@ -2356,12 +2373,12 @@ export default function PantallaCanvas({
         return (
           <button
             onClick={showSavedToast}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
             style={{ background: '#FFF7ED', color: '#F97316', border: '1px solid #FED7AA' }}
             onMouseEnter={e => e.currentTarget.style.background = '#FFEDD5'}
             onMouseLeave={e => e.currentTarget.style.background = '#FFF7ED'}
           >
-            <MessageSquare size={13} />
+            <MessageSquare size={14} />
             Enviar correcciones
           </button>
         )
@@ -2371,12 +2388,12 @@ export default function PantallaCanvas({
         return (
           <button
             onClick={showSavedToast}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
             style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
             onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
             onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
           >
-            <Eye size={13} />
+            <Eye size={14} />
             Comprobar actualizaciones
           </button>
         )
@@ -2393,12 +2410,12 @@ export default function PantallaCanvas({
           <>
             <button
               onClick={() => { setEnrichmentPanelAbierto(true); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false) }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all"
               style={{ background: '#7C3AED' }}
               onMouseEnter={e => e.currentTarget.style.background = '#6D28D9'}
               onMouseLeave={e => e.currentTarget.style.background = '#7C3AED'}
             >
-              <Layers size={13} />
+              <Layers size={14} />
               Crear experiencia didáctica
             </button>
           </>
@@ -2417,22 +2434,68 @@ export default function PantallaCanvas({
       {/* Page header — single row */}
       <div className="flex-shrink-0" style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}>
 
-        <div className="flex items-center gap-2 px-5 py-2.5 min-w-0">
+        <div className="flex items-center gap-2 py-2.5 min-w-0" style={{ paddingLeft: '20px', paddingRight: '68px' }}>
           {/* Breadcrumb text — truncates with ellipsis */}
           <span className="text-xs font-medium truncate min-w-0 flex-shrink" style={{ color: '#9CA3AF' }}>
             {[asignaturaData?.nombre, isResumen ? 'Resumen general' : seccion.label].filter(Boolean).join(' · ')}
           </span>
           <StatusIndicator status={toStatusKey(estadoMostrado)} variant="badge" className="flex-shrink-0" />
+          {/* Autosave inline switcher */}
+          <button
+            role="switch"
+            aria-checked={autosaveOn}
+            onClick={toggleAutosave}
+            className="flex items-center gap-1.5 flex-shrink-0 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: '2px 4px',
+              cursor: 'pointer',
+              color: autosaveOn ? '#16A34A' : '#9CA3AF',
+              '--tw-ring-color': '#367CFF',
+            }}
+            aria-label={autosaveOn ? 'Desactivar guardado automático' : 'Activar guardado automático'}
+          >
+            {/* Toggle pill */}
+            <span
+              aria-hidden="true"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '28px',
+                height: '16px',
+                borderRadius: '8px',
+                background: autosaveOn ? '#16A34A' : '#D1D5DB',
+                position: 'relative',
+                transition: 'background 0.2s',
+                flexShrink: 0,
+              }}
+            >
+              <span style={{
+                position: 'absolute',
+                left: autosaveOn ? '14px' : '2px',
+                width: '12px',
+                height: '12px',
+                borderRadius: '50%',
+                background: '#FFFFFF',
+                transition: 'left 0.2s',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+              }} />
+            </span>
+            <span className="text-xs font-medium" style={{ color: autosaveOn ? '#374151' : '#9CA3AF' }}>
+              {autosaveStatus === 'saving' ? 'Guardando…' : autosaveOn ? 'Autoguardado' : 'Sin guardar'}
+            </span>
+          </button>
           <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
             {isResumen && editable ? (
               <button
                 onClick={() => setEditarResumenWarning(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-medium transition-all"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-sm font-medium transition-all"
                 style={{ background: 'transparent', color: '#6B7280', border: '1px solid #E5E7EB' }}
                 onMouseEnter={e => { e.currentTarget.style.background = '#F3F4F6'; e.currentTarget.style.borderColor = '#D1D5DB' }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#E5E7EB' }}
               >
-                <Pencil size={12} />
+                <Pencil size={14} />
                 Editar resumen
               </button>
             ) : !isResumen ? getActionBar() : null}

@@ -5,7 +5,7 @@ import Chatbar from '../components/Chatbar'
 import CalidadContenidosCards from '../components/CalidadContenidosCards'
 import PanelMisPendientes from '../components/PanelMisPendientes'
 import OnboardingProdi from '../components/OnboardingProdi'
-import { dashboardStats, estadoConfig, tagsFiltrablesDashboard, coordinatorTrackingData } from '../mockData'
+import { dashboardStats, estadoConfig, tagsFiltrablesDashboard, coordinatorTrackingData, shortcutsDashboard } from '../mockData'
 
 const rolLabel = {
   autor: 'Autor',
@@ -797,6 +797,15 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
   const esCoordinador = rolActivo === 'coordinador' || rolActivo === 'editor'
   const esDisenador = rolActivo === 'disenador'
 
+  const dashShortcuts = shortcutsDashboard.filter(s => s.roles.includes(rolActivo))
+
+  const chatbarPlaceholder = {
+    autor: 'Pregunta qué necesitas o usa /mis-pendientes…',
+    coordinador: 'Pregunta qué necesitas o usa /nueva-asignatura…',
+    editor: 'Pregunta qué necesitas o usa /mis-pendientes…',
+    disenador: '¿En qué puedo ayudarte?',
+  }[rolActivo] ?? 'Pregunta qué necesitas…'
+
   const subtitulo = {
     autor: 'Tu trabajo como autor en todas las titulaciones asignadas',
     coordinador: 'Seguimiento completo de asignaturas por titulación, filial y estado',
@@ -821,9 +830,16 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
         <div className="mb-6">
           <Chatbar
             onNavigate={onNavigate}
-            placeholder="Pregunta qué necesitas o usa /generar-asignatura…"
+            placeholder={chatbarPlaceholder}
             chatHistorial={chatHistorial}
             setChatHistorial={setChatHistorial}
+            shortcuts={dashShortcuts}
+            onShortcutAction={(accion) => {
+              if (accion === 'filtrarPendientes') setFiltroTag('pendientes')
+              if (accion === 'filtrarAlertas') setFiltroTag('comentarios')
+              if (accion === 'filtrarRevision') setFiltroTag('revision')
+              if (accion === 'seguimiento') setDashTab('seguimiento')
+            }}
           />
         </div>
 

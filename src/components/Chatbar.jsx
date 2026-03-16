@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, Sparkles, BookOpen, Edit3, ClipboardCheck, FlaskConical, CheckSquare, MessageSquare, X, Plus, ExternalLink } from 'lucide-react'
+import { Send, Sparkles, BookOpen, Edit3, ClipboardCheck, FlaskConical, CheckSquare, MessageSquare, X, Plus, ExternalLink, BarChart2, ShieldAlert } from 'lucide-react'
 import { shortcutsComandos, respuestasIAChatbar } from '../mockData'
 
 const iconMap = {
@@ -8,12 +8,15 @@ const iconMap = {
   ClipboardCheck,
   FlaskConical,
   CheckSquare,
+  BarChart2,
+  ShieldAlert,
 }
 
-export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHistorial, setChatHistorial }) {
+export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHistorial, setChatHistorial, shortcuts, onShortcutAction }) {
+  const shortcutList = shortcuts ?? shortcutsComandos
   const [valor, setValor] = useState('')
   const [dropdownAbierto, setDropdownAbierto] = useState(false)
-  const [dropdownFiltrado, setDropdownFiltrado] = useState(shortcutsComandos)
+  const [dropdownFiltrado, setDropdownFiltrado] = useState(shortcutList)
   const [historialVisible, setHistorialVisible] = useState(false)
   const [focused, setFocused] = useState(false)
   const [conectoresAbierto, setConectoresAbierto] = useState(false)
@@ -28,7 +31,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
 
     if (val.startsWith('/')) {
       const query = val.slice(1).toLowerCase()
-      const filtrados = shortcutsComandos.filter(s =>
+      const filtrados = shortcutList.filter(s =>
         s.comando.toLowerCase().includes(query) || s.descripcion.toLowerCase().includes(query)
       )
       setDropdownFiltrado(filtrados)
@@ -43,6 +46,8 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
     setValor('')
     if (shortcut.accion === 'crearAsignatura') {
       onNavigate('crearAsignatura')
+    } else if (['filtrarPendientes', 'seguimiento', 'filtrarAlertas', 'filtrarRevision'].includes(shortcut.accion)) {
+      onShortcutAction?.(shortcut.accion)
     } else {
       const msg = { id: Date.now(), rol: 'usuario', mensaje: shortcut.comando }
       const resp = {
@@ -60,7 +65,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
     if (!texto) return
 
     if (texto.startsWith('/')) {
-      const match = shortcutsComandos.find(s => s.comando === texto || texto.startsWith(s.comando))
+      const match = shortcutList.find(s => s.comando === texto || texto.startsWith(s.comando))
       if (match) {
         handleSelectShortcut(match)
         return
@@ -113,7 +118,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
       {/* Chat history bubble */}
       {historialVisible && chatHistorial.length > 0 && (
         <div
-          className="absolute bottom-full mb-2 left-0 right-0 rounded-2xl overflow-hidden"
+          className="absolute top-full mt-2 left-0 right-0 rounded-2xl overflow-hidden"
           style={{
             background: '#FFFFFF',
             border: '1px solid #E5E7EB',
@@ -165,7 +170,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
       {dropdownAbierto && dropdownFiltrado.length > 0 && (
         <div
           ref={dropdownRef}
-          className="absolute bottom-full mb-1 left-0 right-0 rounded-xl overflow-hidden"
+          className="absolute top-full mt-1 left-0 right-0 rounded-xl overflow-hidden"
           style={{
             background: '#FFFFFF',
             border: '1px solid #E5E7EB',
