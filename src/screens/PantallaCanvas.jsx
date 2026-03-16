@@ -1228,7 +1228,7 @@ const TEMA_KEYWORDS = {
   6: ['Proyecto final', 'Pipeline completo', 'Producción', 'MLOps', 'Despliegue', 'Evaluación'],
 }
 
-function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, temaLabel, resumenData }) {
+function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, temaLabel, resumenData, readOnly }) {
   const [archivosSimulados, setArchivosSimulados] = useState(datos.archivos || [])
   const [urls, setUrls] = useState(datos.urls || [''])
   const [expandidosMindMap, setExpandidosMindMap] = useState(false)
@@ -1296,15 +1296,17 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
             </div>
             <p className="text-xs" style={{ color: '#9CA3AF' }}>Revisa la estructura antes de generar el contenido completo</p>
           </div>
-          <button
-            onClick={() => onChange('_editarInstrucciones', true)}
-            className="text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
-            style={{ background: '#F1F5F9', color: '#6B7280' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
-            onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
-          >
-            Editar instrucciones
-          </button>
+          {!readOnly && (
+            <button
+              onClick={() => onChange('_editarInstrucciones', true)}
+              className="text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
+              style={{ background: '#F1F5F9', color: '#6B7280' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+              onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
+            >
+              Editar instrucciones
+            </button>
+          )}
         </div>
 
         {/* Mind map toggle */}
@@ -1404,19 +1406,27 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         <p className="text-xs" style={{ color: '#9CA3AF' }}>Proporciona contexto al asistente para generar el resumen del tema</p>
       </div>
 
+      {readOnly && (
+        <div className="flex items-center gap-2 text-xs px-3.5 py-2.5 rounded-xl" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB', color: '#9CA3AF' }}>
+          <Eye size={13} style={{ flexShrink: 0 }} />
+          Solo lectura — solicita permiso de edición para modificar estas instrucciones
+        </div>
+      )}
+
       {/* Indicaciones para la IA */}
       <div>
         <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Indicaciones para la IA</label>
         <textarea
           value={datos.indicacionesIA}
-          onChange={e => onChange('indicacionesIA', e.target.value)}
+          onChange={readOnly ? undefined : e => onChange('indicacionesIA', e.target.value)}
+          readOnly={readOnly}
           rows={3}
           className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
-          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
-          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.background = '#F8FAFC' }}
-          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
-          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#367CFF' }}
-          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
+          style={{ border: '1px solid #CBD5E1', background: readOnly ? '#F8F9FA' : '#FFFFFF', color: '#334155', lineHeight: '1.6', cursor: readOnly ? 'default' : undefined }}
+          onFocus={readOnly ? undefined : e => { e.target.style.borderColor = '#367CFF'; e.target.style.background = '#F8FAFC' }}
+          onBlur={readOnly ? undefined : e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={readOnly ? undefined : e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#367CFF' }}
+          onMouseLeave={readOnly ? undefined : e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
         />
       </div>
 
@@ -1426,11 +1436,11 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         <p className="text-xs mb-2" style={{ color: '#9CA3AF' }}>Sube documentos o añade enlaces que la IA tendrá en cuenta para generar el contenido.</p>
         {/* Upload area */}
         <div
-          onClick={handleSimularSubida}
-          className="flex flex-col items-center justify-center gap-2 rounded-xl cursor-pointer transition-colors px-4 py-5 mb-3"
-          style={{ border: '1.5px dashed #CBD5E1', background: '#FAFBFC' }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = '#367CFF'; e.currentTarget.style.background = '#F5F8FF' }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = '#CBD5E1'; e.currentTarget.style.background = '#FAFBFC' }}
+          onClick={readOnly ? undefined : handleSimularSubida}
+          className="flex flex-col items-center justify-center gap-2 rounded-xl transition-colors px-4 py-5 mb-3"
+          style={{ border: '1.5px dashed #CBD5E1', background: '#FAFBFC', cursor: readOnly ? 'default' : 'pointer' }}
+          onMouseEnter={readOnly ? undefined : e => { e.currentTarget.style.borderColor = '#367CFF'; e.currentTarget.style.background = '#F5F8FF' }}
+          onMouseLeave={readOnly ? undefined : e => { e.currentTarget.style.borderColor = '#CBD5E1'; e.currentTarget.style.background = '#FAFBFC' }}
         >
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#E7EFFE' }}>
             <BookOpen size={15} style={{ color: '#367CFF' }} />
@@ -1447,9 +1457,11 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
               <div key={i} className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
                 <BookOpen size={12} style={{ color: '#367CFF' }} />
                 <span className="text-xs flex-1 truncate" style={{ color: '#374151' }}>{f}</span>
-                <button onClick={() => setArchivosSimulados(prev => prev.filter((_, j) => j !== i))} style={{ color: '#9CA3AF' }}>
-                  <X size={12} />
-                </button>
+                {!readOnly && (
+                  <button onClick={() => setArchivosSimulados(prev => prev.filter((_, j) => j !== i))} style={{ color: '#9CA3AF' }}>
+                    <X size={12} />
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -1463,15 +1475,16 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
                 <input
                   type="url"
                   value={url}
-                  onChange={e => handleUrlChange(i, e.target.value)}
+                  onChange={readOnly ? undefined : e => handleUrlChange(i, e.target.value)}
+                  readOnly={readOnly}
                   placeholder="https://…"
                   className="flex-1 text-xs outline-none bg-transparent"
-                  style={{ color: '#374151' }}
-                  onFocus={e => e.currentTarget.parentElement.style.borderColor = '#367CFF'}
-                  onBlur={e => e.currentTarget.parentElement.style.borderColor = '#CBD5E1'}
+                  style={{ color: '#374151', cursor: readOnly ? 'default' : undefined }}
+                  onFocus={readOnly ? undefined : e => e.currentTarget.parentElement.style.borderColor = '#367CFF'}
+                  onBlur={readOnly ? undefined : e => e.currentTarget.parentElement.style.borderColor = '#CBD5E1'}
                 />
               </div>
-              {urls.length > 1 && (
+              {!readOnly && urls.length > 1 && (
                 <button onClick={() => handleRemoveUrl(i)} className="flex-shrink-0" style={{ color: '#9CA3AF' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
                   onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}>
@@ -1480,15 +1493,17 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
               )}
             </div>
           ))}
-          <button
-            onClick={handleAddUrl}
-            className="flex items-center gap-1.5 text-xs font-medium mt-1"
-            style={{ color: '#367CFF' }}
-            onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
-            onMouseLeave={e => e.currentTarget.style.color = '#367CFF'}
-          >
-            <Plus size={13} /> Añadir enlace
-          </button>
+          {!readOnly && (
+            <button
+              onClick={handleAddUrl}
+              className="flex items-center gap-1.5 text-xs font-medium mt-1"
+              style={{ color: '#367CFF' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
+              onMouseLeave={e => e.currentTarget.style.color = '#367CFF'}
+            >
+              <Plus size={13} /> Añadir enlace
+            </button>
+          )}
         </div>
       </div>
 
@@ -1497,24 +1512,27 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Notas pedagógicas e instrucciones</label>
         <textarea
           value={datos.notasPedagogicas}
-          onChange={e => onChange('notasPedagogicas', e.target.value)}
+          onChange={readOnly ? undefined : e => onChange('notasPedagogicas', e.target.value)}
+          readOnly={readOnly}
           rows={3}
           className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
-          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
-          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.background = '#F8FAFC' }}
-          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
-          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#367CFF' }}
-          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
+          style={{ border: '1px solid #CBD5E1', background: readOnly ? '#F8F9FA' : '#FFFFFF', color: '#334155', lineHeight: '1.6', cursor: readOnly ? 'default' : undefined }}
+          onFocus={readOnly ? undefined : e => { e.target.style.borderColor = '#367CFF'; e.target.style.background = '#F8FAFC' }}
+          onBlur={readOnly ? undefined : e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={readOnly ? undefined : e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#367CFF' }}
+          onMouseLeave={readOnly ? undefined : e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
         />
       </div>
 
       {/* AI hint */}
-      <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
-        <ProdiMark size={14} className="flex-shrink-0 mt-0.5" />
-        <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
-          Al hacer clic en <strong>Generar resumen</strong>, el asistente analizará las instrucciones y creará un resumen estructurado del tema con objetivos, epígrafes e ideas didácticas.
-        </p>
-      </div>
+      {!readOnly && (
+        <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
+          <ProdiMark size={14} className="flex-shrink-0 mt-0.5" />
+          <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
+            Al hacer clic en <strong>Generar resumen</strong>, el asistente analizará las instrucciones y creará un resumen estructurado del tema con objetivos, epígrafes e ideas didácticas.
+          </p>
+        </div>
+      )}
 
     </div>
   )
@@ -2388,7 +2406,7 @@ export default function PantallaCanvas({
     const estado = estadoMostrado
 
     // ─ Instrucciones sections (all topics) ─
-    if (seccionActiva.startsWith('instrucciones-')) {
+    if (seccionActiva.startsWith('instrucciones-') && estado !== 'aprobado') {
       const datosInstr = instruccionesData[seccionActiva] ?? {}
       if (datosInstr.generando) return null
       if (datosInstr.resumenGenerado) {
@@ -2413,15 +2431,17 @@ export default function PantallaCanvas({
             <button
               onClick={() => {
                 const tNum = parseInt(seccionActiva.replace('instrucciones-t', ''), 10)
+                const instrSecId = seccionActiva
                 if (tNum === 1) {
                   setDlGenerandoContenido(true)
                   setTimeout(() => {
                     setBloquesState(prev => ({ ...prev, t1: dlBloquesTema1 }))
-                    setEstadosSeccion(prev => ({ ...prev, t1: prev.t1 ?? 'borrador' }))
+                    setEstadosSeccion(prev => ({ ...prev, t1: prev.t1 ?? 'borrador', [instrSecId]: 'aprobado' }))
                     setDlGenerandoContenido(false)
                     setSeccionActiva('t1')
                   }, 1600)
                 } else {
+                  setEstadosSeccion(prev => ({ ...prev, [instrSecId]: 'aprobado' }))
                   setSeccionActiva(`t${tNum}`)
                 }
               }}
@@ -2872,6 +2892,7 @@ export default function PantallaCanvas({
                     indicacionesIA: '', notasPedagogicas: '', archivos: [], urls: [''], resumenGenerado: false, generando: false
                   }}
                   resumenData={seccionActiva === 'instrucciones-t1' ? dlResumenTema1 : null}
+                  readOnly={estadoMostrado === 'aprobado'}
                   onChange={(key, val) => {
                     if (key === '_generarResumen') {
                       setInstruccionesData(prev => ({ ...prev, [seccionActiva]: { ...prev[seccionActiva], generando: true } }))
@@ -2882,15 +2903,17 @@ export default function PantallaCanvas({
                       setEditarResumenWarning(true)
                     } else if (key === '_generarContenido') {
                       const tNum = parseInt(seccionActiva.replace('instrucciones-t', ''), 10)
+                      const instrSecId = seccionActiva
                       if (tNum === 1) {
                         setDlGenerandoContenido(true)
                         setTimeout(() => {
                           setBloquesState(prev => ({ ...prev, t1: dlBloquesTema1 }))
-                          setEstadosSeccion(prev => ({ ...prev, t1: prev.t1 ?? 'borrador' }))
+                          setEstadosSeccion(prev => ({ ...prev, t1: prev.t1 ?? 'borrador', [instrSecId]: 'aprobado' }))
                           setDlGenerandoContenido(false)
                           setSeccionActiva('t1')
                         }, 1600)
                       } else {
+                        setEstadosSeccion(prev => ({ ...prev, [instrSecId]: 'aprobado' }))
                         setSeccionActiva(`t${tNum}`)
                       }
                     } else {
