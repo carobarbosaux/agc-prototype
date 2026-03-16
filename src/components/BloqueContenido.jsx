@@ -28,6 +28,8 @@ export default function BloqueContenido({
   onTipoChange,
   onAccionIA,
   textoReemplazando = null,
+  citaciones = null,
+  onCitaInteraction = null,
 }) {
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const [toolbarPos, setToolbarPos] = useState({ top: 0, left: 0 })
@@ -56,6 +58,94 @@ export default function BloqueContenido({
       el.innerHTML = bloque.contenido
     }
   }, [bloque.contenido])
+
+  // Post-render DOM pass: transform [N] text markers into clickable citation spans
+  useEffect(() => {
+    const el = editableRef.current
+    if (!el || !citaciones?.length) return
+    if (tipo === 'code' || tipo === 'hr') return
+
+    // Idempotent cleanup: unwrap any existing citation spans back to plain text
+    el.querySelectorAll('.cita-marker').forEach(span => {
+      span.replaceWith(document.createTextNode(span.textContent))
+    })
+
+    // Collect all text nodes that contain citation markers
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null)
+    const replacements = []
+    let node
+    while ((node = walker.nextNode())) {
+      const text = node.nodeValue
+      if (/\[\d+\]/.test(text)) {
+        replacements.push({ node, text })
+      }
+    }
+
+    // Process replacements (separate loop to avoid tree walker invalidation)
+    replacements.forEach(({ node, text }) => {
+      const regex = /\[(\d+)\]/g
+      const fragment = document.createDocumentFragment()
+      let lastIndex = 0
+      let match
+      while ((match = regex.exec(text)) !== null) {
+        const num = parseInt(match[1], 10)
+        const cita = citaciones.find(c => c.num === num)
+
+        // Always advance past this match — emit plain text if no cita found
+        if (match.index > lastIndex) {
+          fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)))
+        }
+
+        if (!cita) {
+          fragment.appendChild(document.createTextNode(match[0]))
+        } else {
+          const span = document.createElement('span')
+          span.className = 'cita-marker'
+          span.setAttribute('contenteditable', 'false')
+          span.setAttribute('data-cita-num', num)
+          span.textContent = `[${num}]`
+          span.style.cssText = [
+            'display:inline-block',
+            'padding:0 3px',
+            'border-radius:3px',
+            'font-size:0.78em',
+            'font-weight:600',
+            'vertical-align:super',
+            'line-height:1',
+            'cursor:pointer',
+            'user-select:none',
+            'background:#E7EFFE',
+            'color:#367CFF',
+            'border:1px solid #BAD2FF',
+            'transition:background 0.12s',
+          ].join(';')
+
+          span.addEventListener('mouseenter', () => {
+            span.style.background = '#BAD2FF'
+            onCitaInteraction?.({ type: 'hover', num, anchorEl: span })
+          })
+          span.addEventListener('mouseleave', () => {
+            span.style.background = '#E7EFFE'
+            onCitaInteraction?.({ type: 'leave', num, anchorEl: span })
+          })
+          span.addEventListener('click', (e) => {
+            e.stopPropagation()
+            onCitaInteraction?.({ type: 'click', num, anchorEl: span })
+          })
+
+          fragment.appendChild(span)
+        }
+
+        lastIndex = match.index + match[0].length
+      }
+
+      if (lastIndex < text.length) {
+        fragment.appendChild(document.createTextNode(text.slice(lastIndex)))
+      }
+
+      node.parentNode.replaceChild(fragment, node)
+    })
+  }, [bloque.contenido, citaciones])
 
   const handleMouseUp = useCallback(() => {
     setTimeout(() => {

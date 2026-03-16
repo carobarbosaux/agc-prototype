@@ -318,18 +318,19 @@ export const bloquesTema2 = [
     etiquetas: ['Machine Learning'],
     comentarios: [],
   },
-  {
-    id: 'b0b',
-    tipo: 'quote',
-    contenido: 'El objetivo del aprendizaje supervisado es generalizar a partir de ejemplos etiquetados para predecir con precisión sobre datos no vistos. — Tom Mitchell, 1997',
-    etiquetas: ['Machine Learning', 'Cita'],
-    comentarios: [],
-  },
+
   {
     id: 'b1',
     tipo: 'p',
     contenido:
       'La regresión y la clasificación son las dos tareas supervisadas fundamentales del machine learning. En la regresión, el objetivo es predecir un valor numérico continuo —como el precio de una vivienda, la temperatura de mañana o la demanda energética de una ciudad—. En la clasificación, el objetivo es asignar una categoría discreta: determinar si un email es spam, si una imagen contiene un tumor o si un cliente abandonará el servicio.',
+    etiquetas: ['Machine Learning', 'Concepto'],
+    comentarios: [],
+  },
+  {
+    id: 'b1q-t2',
+    tipo: 'quote',
+    contenido: '"Se dice que un programa informático aprende a partir de la experiencia respecto a una clase de tareas y una medida de rendimiento si su desempeño en dichas tareas mejora con la experiencia." [1]',
     etiquetas: ['Machine Learning', 'Concepto'],
     comentarios: [],
   },
@@ -359,7 +360,7 @@ export const bloquesTema2 = [
     id: 'b3',
     tipo: 'p',
     contenido:
-      'La regresión logística, a pesar de su nombre, es un algoritmo de clasificación binaria. Transforma la salida de una regresión lineal mediante la función sigmoide σ(z) = 1 / (1 + e⁻ᶻ), produciendo una probabilidad entre 0 y 1. Si la probabilidad supera el umbral 0.5, el modelo predice la clase positiva. Es el punto de partida para comprender redes neuronales, ya que la neurona logística es su unidad básica.',
+      'La regresión logística, a pesar de su nombre, es un algoritmo de clasificación binaria. Transforma la salida de una regresión lineal mediante la función sigmoide σ(z) = 1 / (1 + e⁻ᶻ), produciendo una probabilidad entre 0 y 1. Si la probabilidad supera el umbral 0.5, el modelo predice la clase positiva. Es el punto de partida para comprender redes neuronales, ya que la neurona logística es su unidad básica [2].',
     etiquetas: ['Clasificación', 'Algoritmo'],
     comentarios: [],
   },
@@ -414,7 +415,7 @@ export const bloquesTema1 = [
     id: 'b1t1',
     tipo: 'p',
     contenido:
-      'El aprendizaje automático es una rama de la inteligencia artificial que permite a los sistemas aprender y mejorar a partir de la experiencia sin ser programados explícitamente para cada tarea. A través de algoritmos y modelos estadísticos, los sistemas identifican patrones en los datos y generalizan ese conocimiento para tomar decisiones sobre datos nuevos. La definición más citada es la de Tom Mitchell (1997): un programa aprende de la experiencia E con respecto a una clase de tareas T y una medida de rendimiento P, si su rendimiento en T medido con P mejora con la experiencia E.',
+      'El aprendizaje automático es una rama de la inteligencia artificial que permite a los sistemas aprender y mejorar a partir de la experiencia sin ser programados explícitamente para cada tarea. A través de algoritmos y modelos estadísticos, los sistemas identifican patrones en los datos y generalizan ese conocimiento para tomar decisiones sobre datos nuevos. La definición clásica que mejor captura esta idea es la de Tom Mitchell:',
     etiquetas: ['Machine Learning', 'Concepto'],
     comentarios: [],
   },
@@ -422,24 +423,52 @@ export const bloquesTema1 = [
     id: 'b2t1',
     tipo: 'p',
     contenido:
-      'Existen tres paradigmas principales de aprendizaje. En el aprendizaje supervisado, el modelo aprende de pares (entrada, etiqueta) y su objetivo es predecir la etiqueta correcta para entradas nuevas; es el más utilizado en aplicaciones industriales. En el aprendizaje no supervisado, los datos no tienen etiquetas y el algoritmo descubre estructura latente: agrupaciones, distribuciones o representaciones comprimidas. En el aprendizaje por refuerzo, un agente aprende a tomar decisiones interactuando con un entorno: recibe recompensas por acciones positivas y penalizaciones por negativas, buscando maximizar la recompensa acumulada.',
+      'Existen tres paradigmas principales de aprendizaje: supervisado, no supervisado y por refuerzo. En el aprendizaje supervisado, el modelo aprende de pares (entrada, etiqueta); en el no supervisado descubre estructura latente sin etiquetas; en el por refuerzo, un agente maximiza recompensas acumuladas interactuando con un entorno. La distinción entre paradigmas es fundamental para elegir el enfoque adecuado en cada problema.',
     etiquetas: ['Machine Learning', 'Paradigmas'],
+    comentarios: [],
+  },
+  {
+    id: 'b1q-t1',
+    tipo: 'quote',
+    contenido: '"Deep learning permite que modelos computacionales compuestos por múltiples capas de procesamiento aprendan representaciones de datos con distintos niveles de abstracción." [1]',
+    etiquetas: ['Machine Learning', 'Deep Learning'],
+    comentarios: [],
+  },
+  {
+    id: 'b2q-t1',
+    tipo: 'quote',
+    contenido: '"El deep learning es un campo específico del aprendizaje automático que se centra en aprender capas sucesivas de representaciones cada vez más significativas." [2]',
+    etiquetas: ['Machine Learning', 'Deep Learning'],
     comentarios: [],
   },
   {
     id: 'b3t1',
     tipo: 'p',
     contenido:
-      'El pipeline típico de un proyecto de machine learning sigue una secuencia bien definida: (1) definición del problema y recogida de datos, (2) exploración y análisis exploratorio (EDA), (3) preprocesamiento y limpieza, (4) selección e ingeniería de variables (feature engineering), (5) selección del algoritmo, (6) entrenamiento y validación cruzada, (7) optimización de hiperparámetros, (8) evaluación final sobre el conjunto de test, (9) despliegue y monitorización. Cada etapa puede consumir hasta el 80% del tiempo total del proyecto, siendo el preprocesamiento y la ingeniería de variables las más costosas.',
+      'El pipeline típico de un proyecto de machine learning sigue una secuencia bien definida: definición del problema, recogida de datos, exploración (EDA), preprocesamiento, ingeniería de variables, selección del algoritmo, entrenamiento, validación cruzada, optimización de hiperparámetros, evaluación final y despliegue. Cada etapa puede consumir hasta el 80% del tiempo total, siendo el preprocesamiento la más costosa.',
     etiquetas: ['Machine Learning', 'Pipeline'],
+    comentarios: [],
+  },
+  {
+    id: 'b3q-t1',
+    tipo: 'quote',
+    contenido: '"Se dice que un programa informático aprende a partir de la experiencia respecto a una clase de tareas y una medida de rendimiento si su desempeño en dichas tareas mejora con la experiencia." [3]',
+    etiquetas: ['Machine Learning', 'Concepto'],
     comentarios: [],
   },
   {
     id: 'b4t1',
     tipo: 'p',
     contenido:
-      'El sobreajuste (overfitting) ocurre cuando el modelo memoriza el conjunto de entrenamiento y pierde capacidad de generalización. Se detecta porque el error de entrenamiento es bajo pero el error de validación es alto. El infraajuste (underfitting) ocurre cuando el modelo es demasiado simple para capturar la estructura real de los datos. La solución al sobreajuste incluye técnicas de regularización (L1, L2), dropout en redes neuronales, y el aumento de datos. El equilibrio entre sesgo y varianza —el bias-variance tradeoff— es uno de los conceptos más importantes del ML clásico.',
+      'El sobreajuste (overfitting) ocurre cuando el modelo memoriza el conjunto de entrenamiento y pierde capacidad de generalización: el error de entrenamiento es bajo pero el error de validación es alto. El infraajuste (underfitting) ocurre cuando el modelo es demasiado simple. La solución incluye regularización (L1, L2), dropout y aumento de datos. El equilibrio entre sesgo y varianza —el bias-variance tradeoff— es uno de los conceptos más importantes del ML clásico.',
     etiquetas: ['Overfitting', 'Generalización'],
+    comentarios: [],
+  },
+  {
+    id: 'b4q-t1',
+    tipo: 'quote',
+    contenido: '"El deep learning hace referencia a redes neuronales con múltiples capas capaces de extraer progresivamente características de mayor nivel a partir de datos sin procesar." [4]',
+    etiquetas: ['Redes Neuronales'],
     comentarios: [],
   },
 ]
@@ -476,6 +505,13 @@ export const bloquesTema3 = [
     comentarios: [],
   },
   {
+    id: 'b4q-t3',
+    tipo: 'quote',
+    contenido: '"Los bosques aleatorios son un método de aprendizaje ensemble que opera construyendo una multitud de árboles de decisión en el momento del entrenamiento y devolviendo la clase que es la moda de las clases de los árboles individuales." [1]',
+    etiquetas: ['Ensemble', 'Random Forest'],
+    comentarios: [],
+  },
+  {
     id: 'b5t3',
     tipo: 'h2',
     contenido: 'Gradient Boosting',
@@ -488,6 +524,13 @@ export const bloquesTema3 = [
     contenido:
       'A diferencia del bagging, el boosting construye árboles de forma secuencial: cada árbol nuevo se entrena para corregir los errores del modelo anterior. Gradient Boosting implementa este principio mediante descenso de gradiente en el espacio funcional, optimizando una función de pérdida arbitraria. Implementaciones modernas como XGBoost, LightGBM y CatBoost añaden regularización, tratamiento eficiente de valores faltantes y optimizaciones computacionales que los convierten en el estado del arte para datos tabulares estructurados.',
     etiquetas: [],
+    comentarios: [],
+  },
+  {
+    id: 'b6q-t3',
+    tipo: 'quote',
+    contenido: '"XGBoost es un sistema escalable de boosting de árboles que ha dominado la competición de aprendizaje automático aplicado gracias a su rendimiento y eficiencia de cómputo superiores." [2]',
+    etiquetas: ['Ensemble', 'XGBoost'],
     comentarios: [],
   },
 ]
@@ -1690,18 +1733,123 @@ export const dlBloquesTema1 = [
   { id: 'dl-t1-b7', tipo: 'hr', contenido: '', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b8', tipo: 'h2', contenido: '1.2. Naturaleza y alcance del deep learning', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b9', tipo: 'p', contenido: '*Deep learning* es una expresión de origen anglosajón que se traduce en español como \'aprendizaje profundo\'. Se trata de una rama del *machine learning* basada en el uso de redes neuronales artificiales con múltiples capas capaces de aprender representaciones complejas de los datos. Mientras que otros enfoques de aprendizaje automático suelen apoyarse en la extracción manual de características, el aprendizaje profundo permite que el propio modelo aprenda automáticamente las representaciones más útiles a partir de la información disponible.', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-q1', tipo: 'quote', contenido: '"Deep learning permite que modelos computacionales compuestos por múltiples capas de procesamiento aprendan representaciones de datos con distintos niveles de abstracción." [1]', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b10', tipo: 'p', contenido: 'Durante los últimos años se han producido importantes avances en este ámbito y, en ocasiones, se percibe una cierta confusión sobre sus límites y diferencias respecto a otros conceptos cercanos. Sin embargo, existe un acuerdo generalizado en situar el *deep learning* dentro del campo del *machine learning*, y a este, a su vez, dentro del ámbito más amplio de la inteligencia artificial.', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b11', tipo: 'p', contenido: 'La inteligencia artificial engloba el conjunto de métodos y técnicas orientados a diseñar sistemas capaces de realizar tareas que normalmente requerirían inteligencia humana, como reconocer patrones, tomar decisiones, comprender lenguaje o generar contenido. Dentro de este campo, el *machine learning* hace referencia a la capacidad de los sistemas para aprender a partir de datos, sin necesidad de ser programados de manera explícita para cada tarea. El *deep learning*, por su parte, constituye un enfoque específico basado en arquitecturas neuronales profundas.', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-q2', tipo: 'quote', contenido: '"El deep learning es un campo específico del aprendizaje automático que se centra en aprender capas sucesivas de representaciones cada vez más significativas." [2]', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b12', tipo: 'p', contenido: 'El aprendizaje profundo se encarga de estudiar cómo un sistema computacional puede transformar datos de entrada en representaciones internas cada vez más abstractas. De esta forma, un modelo puede aprender desde rasgos simples hasta estructuras complejas. Por ejemplo, en una tarea de reconocimiento de imágenes, una red neuronal puede aprender primero bordes y texturas, después formas básicas y finalmente objetos completos. En el caso del lenguaje, puede aprender primero relaciones entre palabras, después estructuras sintácticas y finalmente significados más complejos.', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b13', tipo: 'p', contenido: 'Existen numerosas definiciones de *deep learning*. Goodfellow, Bengio y Courville (2016) lo describen como un enfoque del *machine learning* que permite a los modelos aprender representaciones múltiples de los datos mediante el uso de capas sucesivas de procesamiento. Desde una perspectiva más aplicada, puede señalarse que el *deep learning* es el conjunto de técnicas que permiten entrenar redes neuronales profundas para resolver tareas de clasificación, predicción, reconocimiento o generación de información.', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-q3', tipo: 'quote', contenido: '"Se dice que un programa informático aprende a partir de la experiencia respecto a una clase de tareas y una medida de rendimiento si su desempeño en dichas tareas mejora con la experiencia." [3]', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b14', tipo: 'p', contenido: 'A partir de estas definiciones se identifican dos niveles:', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b15', tipo: 'ul', contenido: [
     'Es una técnica computacional, ya que proporciona modelos, algoritmos y arquitecturas concretas para aprender a partir de datos.',
     'Es también un marco metodológico, porque ha modificado la forma en que se abordan múltiples problemas dentro de la inteligencia artificial, sustituyendo reglas manuales por aprendizaje basado en ejemplos.',
   ], etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b16', tipo: 'p', contenido: 'En este contexto, el elemento central del *deep learning* pasa a ser la representación automática de la información. Los modelos no solo producen una salida, sino que construyen internamente distintas capas de abstracción que permiten captar patrones complejos. Esta capacidad ha sido clave para el éxito del aprendizaje profundo en tareas donde los datos son abundantes y poco estructurados, como imágenes, texto, audio o vídeo.', etiquetas: [], comentarios: [] },
-  { id: 'dl-t1-b17', tipo: 'h3', contenido: 'Evolución del concepto de deep learning', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b18', tipo: 'p', contenido: 'Existen distintos hitos que marcan el desarrollo del *deep learning*. Sus orígenes pueden situarse en las primeras investigaciones sobre neuronas artificiales y modelos conexionistas a mediados del siglo XX. Uno de los antecedentes más conocidos es el perceptrón, propuesto por Rosenblatt, que sentó las bases de las primeras redes neuronales.', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b19', tipo: 'p', contenido: 'Posteriormente, el desarrollo de estas técnicas experimentó etapas de avance y retroceso. Durante algunos periodos, el interés por las redes neuronales disminuyó debido a limitaciones matemáticas, falta de capacidad computacional y escasez de datos adecuados para el entrenamiento. Sin embargo, a partir de finales del siglo XX y especialmente durante el siglo XXI, el crecimiento de la potencia de cálculo, el uso de GPU y la disponibilidad de grandes conjuntos de datos permitieron revitalizar este campo.', etiquetas: [], comentarios: [] },
   { id: 'dl-t1-b20', tipo: 'p', contenido: 'En la actualidad, el *deep learning* constituye una de las áreas más dinámicas de la inteligencia artificial. Su expansión ha estado relacionada con el éxito de arquitecturas como las redes convolucionales para visión por computador, las redes recurrentes para secuencias y, más recientemente, los modelos basados en mecanismos de atención y *transformers*.', etiquetas: [], comentarios: [] },
+  { id: 'dl-t1-q4', tipo: 'quote', contenido: '"El deep learning hace referencia a redes neuronales con múltiples capas capaces de extraer progresivamente características de mayor nivel a partir de datos sin procesar." [4]', etiquetas: [], comentarios: [] },
 ]
+
+export const citacionesPorTemaDL = {
+  1: [
+    {
+      num: 1,
+      apaFormatted: 'Goodfellow, I., Bengio, Y. y Courville, A. (2016). Deep Learning. MIT Press.',
+      url: null,
+      extracto: '"El aprendizaje profundo es una forma de aprendizaje automático que permite a los ordenadores aprender de la experiencia y entender el mundo en términos de una jerarquía de conceptos."',
+      epigrafe: 'Epígrafe 1.1 · Introducción al aprendizaje profundo (p. 1)',
+    },
+    {
+      num: 2,
+      apaFormatted: 'Chollet, F. (2021). Deep Learning with Python (2.ª ed.). Manning Publications.',
+      url: null,
+      extracto: '"Las redes neuronales profundas son capaces de aprender representaciones jerárquicas de los datos, lo que les permite resolver problemas que antes se consideraban intratables."',
+      epigrafe: 'Epígrafe 1.3 · Redes neuronales y representaciones (p. 18)',
+    },
+    {
+      num: 3,
+      apaFormatted: 'Mitchell, T. M. (1997). Machine Learning. McGraw-Hill.',
+      url: null,
+      extracto: null,
+      epigrafe: null,
+    },
+    {
+      num: 4,
+      apaFormatted: 'Schmidhuber, J. (2015). Deep learning in neural networks: An overview. Neural Networks, 61, 85–117.',
+      url: null,
+      extracto: '"Los avances recientes en el aprendizaje profundo han transformado campos como la visión artificial y el procesamiento del lenguaje natural."',
+      epigrafe: 'Epígrafe 2.1 · Evolución histórica del deep learning (p. 86)',
+    },
+  ],
+  2: [], 3: [], 4: [], 5: [], 6: [],
+}
+
+export const citacionesPorTema = {
+  1: [
+    {
+      num: 1,
+      apaFormatted: 'Goodfellow, I., Bengio, Y. y Courville, A. (2016). Deep Learning. MIT Press.',
+      url: null,
+      extracto: '"El aprendizaje automático es esencialmente un proceso de optimización: encontrar los valores de parámetros que minimizan una función de pérdida sobre el conjunto de entrenamiento."',
+      epigrafe: 'Epígrafe 1.2 · Fundamentos del aprendizaje automático (p. 3)',
+    },
+    {
+      num: 2,
+      apaFormatted: 'Chollet, F. (2021). Deep Learning with Python (2.ª ed.). Manning Publications.',
+      url: null,
+      extracto: '"La inteligencia artificial, el aprendizaje automático y el aprendizaje profundo son campos relacionados pero distintos, cada uno más específico que el anterior."',
+      epigrafe: 'Epígrafe 1.1 · IA, ML y DL: una visión panorámica (p. 5)',
+    },
+    {
+      num: 3,
+      apaFormatted: 'Mitchell, T. M. (1997). Machine Learning. McGraw-Hill.',
+      url: null,
+      extracto: null,
+      epigrafe: null,
+    },
+    {
+      num: 4,
+      apaFormatted: 'Schmidhuber, J. (2015). Deep learning in neural networks: An overview. Neural Networks, 61, 85–117.',
+      url: null,
+      extracto: '"Se dice que un programa aprende de la experiencia E con respecto a una clase de tareas T y una medida de rendimiento P, si su rendimiento en T mejora con la experiencia E."',
+      epigrafe: 'Epígrafe 1.4 · Definición formal del aprendizaje (p. 2)',
+    },
+  ],
+  2: [
+    {
+      num: 1,
+      apaFormatted: 'Mitchell, T.M. (1997). Machine Learning. McGraw-Hill.',
+      url: null,
+      extracto: '"La regresión lineal, a pesar de su simplicidad, sigue siendo uno de los algoritmos más utilizados en la práctica por su interpretabilidad y eficiencia computacional."',
+      epigrafe: 'Epígrafe 2.1 · Regresión lineal y sus variantes (p. 41)',
+    },
+    {
+      num: 2,
+      apaFormatted: 'Hastie, T., Tibshirani, R. y Friedman, J. (2009). The Elements of Statistical Learning (2.ª ed.). Springer.',
+      url: 'https://hastie.su.domains/ElemStatLearn/',
+      extracto: '"La clasificación es el problema de identificar a qué conjunto de categorías pertenece una nueva observación, sobre la base de un conjunto de datos de entrenamiento."',
+      epigrafe: 'Epígrafe 2.3 · Métodos de clasificación supervisada (p. 101)',
+    },
+  ],
+  3: [
+    {
+      num: 1,
+      apaFormatted: 'Breiman, L. (2001). Random Forests. Machine Learning, 45(1), 5–32.',
+      url: null,
+      extracto: '"Los bosques aleatorios combinan múltiples árboles de decisión para reducir la varianza sin aumentar el sesgo, logrando una precisión notablemente superior a cualquier árbol individual."',
+      epigrafe: 'Epígrafe 3.2 · Métodos de ensemble y bagging (p. 8)',
+    },
+    {
+      num: 2,
+      apaFormatted: 'Chen, T. y Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting System. Proceedings of the 22nd ACM SIGKDD, 785–794.',
+      url: null,
+      extracto: null,
+      epigrafe: null,
+    },
+  ],
+  4: [],
+  5: [],
+  6: [],
+}

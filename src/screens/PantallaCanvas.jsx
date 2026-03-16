@@ -28,6 +28,8 @@ import {
   dlIndicacionesDidacticasT1,
   dlResumenTema1,
   dlBloquesTema1,
+  citacionesPorTema,
+  citacionesPorTemaDL,
 } from '../mockData'
 
 const SECCION_CONFIG = {
@@ -1607,8 +1609,131 @@ function EpigrafeConBibliografia({ ep, index }) {
 
 // ─── Referencias bibliográficas section ───────────────────────────────────────
 
-function SeccionReferencias({ temaNum }) {
+function RefBibCard({ ref: r, temaNum, onNavigateToContent }) {
+  const [dismissed, setDismissed] = useState(false)
+  if (dismissed) return null
+  return (
+    <div
+      id={`ref-${r.num}-t${temaNum}`}
+      className="rounded-2xl px-5 py-4"
+      style={{ border: '1px solid #E5E7EB', background: '#FFFFFF', transition: 'border-color 0.12s' }}
+      onMouseEnter={e => e.currentTarget.style.borderColor = '#D1D5DB'}
+      onMouseLeave={e => e.currentTarget.style.borderColor = '#E5E7EB'}
+    >
+      {/* Header row */}
+      <div className="flex items-center justify-between mb-3">
+        <span
+          className="text-xs font-semibold px-2.5 py-1 rounded-full"
+          style={{ background: '#EFF6FF', color: '#2563EB' }}
+        >
+          Bibliografía del tema
+        </span>
+        <div className="flex items-center gap-1">
+          <button
+            className="p-1.5 rounded-lg transition-colors"
+            style={{ color: '#9CA3AF' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#374151'}
+            onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+            title="Editar referencia"
+          >
+            <Pencil size={13} />
+          </button>
+          <button
+            onClick={() => setDismissed(true)}
+            className="p-1.5 rounded-lg transition-colors"
+            style={{ color: '#9CA3AF' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#374151'}
+            onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+            title="Eliminar referencia"
+          >
+            <X size={13} />
+          </button>
+        </div>
+      </div>
+
+      {/* APA citation */}
+      <p className="text-sm leading-relaxed mb-3" style={{ color: '#1F2937' }}>
+        <ApaFormattedText text={r.apaFormatted} />
+      </p>
+
+      {/* Extracto blockquote */}
+      {r.extracto && (
+        <div
+          className="rounded-xl px-4 py-3 mb-3"
+          style={{ background: '#F0F6FF', borderLeft: '3px solid #93C5FD' }}
+        >
+          <p className="text-sm italic leading-relaxed" style={{ color: '#374151' }}>
+            {r.extracto}
+          </p>
+        </div>
+      )}
+
+      {/* Epígrafe + actions */}
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        {r.epigrafe ? (
+          <div className="flex items-center gap-1.5">
+            <div
+              className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ border: '1.5px solid #9CA3AF' }}
+            >
+              <div className="w-1 h-1 rounded-full" style={{ background: '#9CA3AF' }} />
+            </div>
+            <span className="text-xs" style={{ color: '#6B7280' }}>{r.epigrafe}</span>
+          </div>
+        ) : (
+          <span />
+        )}
+        <div className="flex items-center gap-3">
+          {r.url && (
+            <a
+              href={r.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs font-medium"
+              style={{ color: '#9CA3AF' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#367CFF'}
+              onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+            >
+              <ExternalLink size={11} />
+              Enlace
+            </a>
+          )}
+          <button
+            onClick={() => onNavigateToContent?.(temaNum, r.num)}
+            className="inline-flex items-center gap-1 text-xs font-medium"
+            style={{ color: '#367CFF' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
+            onMouseLeave={e => e.currentTarget.style.color = '#367CFF'}
+            title="Ir a la primera mención en el texto"
+          >
+            <ArrowUpRight size={11} />
+            Ir al texto
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ApaFormattedText({ text }) {
+  // Italicize the title portion — the part between ". " and ". " or "," that looks like a book/journal title
+  // APA: Authors (Year). *Title*. Publisher. or Authors (Year). Title. *Journal*, vol(num), pages.
+  // Simple heuristic: italicize content between the year closing paren and first following period's next segment
+  const parts = []
+  // Split on italic markers — we detect italics by finding the segment after "(YYYY). " up to the next ". " or ", "
+  const italicMatch = text.match(/^(.+?\(\d{4}[a-z]?\)\.\s)(.+?)(\.\s.+|,\s.+|$)/)
+  if (italicMatch) {
+    parts.push(<span key="pre">{italicMatch[1]}</span>)
+    parts.push(<em key="title">{italicMatch[2]}</em>)
+    parts.push(<span key="post">{italicMatch[3]}</span>)
+    return <>{parts}</>
+  }
+  return <>{text}</>
+}
+
+function SeccionReferencias({ temaNum, referencias = [], onNavigateToContent }) {
   const [buscando, setBuscando] = useState(false)
+  const hasRefs = referencias.length > 0
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
@@ -1628,31 +1753,34 @@ function SeccionReferencias({ temaNum }) {
             ))}
           </div>
         </div>
+      ) : hasRefs ? (
+        <div className="space-y-3">
+          {referencias.map((ref) => (
+            <RefBibCard key={ref.num} ref={ref} temaNum={temaNum} onNavigateToContent={onNavigateToContent} />
+          ))}
+        </div>
       ) : (
-        <>
-          {/* Empty state */}
-          <div className="flex flex-col items-center justify-center py-16 text-center gap-4" style={{ border: '1.5px dashed #E5E7EB', borderRadius: '16px', background: '#FAFBFC' }}>
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: '#F1F5F9' }}>
-              <BookOpen size={20} style={{ color: '#CBD5E1' }} />
-            </div>
-            <div>
-              <p className="text-sm font-medium mb-1" style={{ color: '#6B7280' }}>Sin referencias añadidas</p>
-              <p className="text-xs leading-relaxed max-w-xs" style={{ color: '#9CA3AF' }}>
-                Usa la IA para buscar referencias académicas relevantes para este tema, o añade las tuyas manualmente.
-              </p>
-            </div>
-            <button
-              onClick={() => { setBuscando(true); setTimeout(() => setBuscando(false), 2400) }}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold text-white transition-all"
-              style={{ background: '#367CFF' }}
-              onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-              onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
-            >
-              <Sparkles size={14} />
-              Buscar referencias con IA
-            </button>
+        <div className="flex flex-col items-center justify-center py-16 text-center gap-4" style={{ border: '1.5px dashed #E5E7EB', borderRadius: '16px', background: '#FAFBFC' }}>
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: '#F1F5F9' }}>
+            <BookOpen size={20} style={{ color: '#CBD5E1' }} />
           </div>
-        </>
+          <div>
+            <p className="text-sm font-medium mb-1" style={{ color: '#6B7280' }}>Sin referencias añadidas</p>
+            <p className="text-xs leading-relaxed max-w-xs" style={{ color: '#9CA3AF' }}>
+              Usa la IA para buscar referencias académicas relevantes para este tema, o añade las tuyas manualmente.
+            </p>
+          </div>
+          <button
+            onClick={() => { setBuscando(true); setTimeout(() => setBuscando(false), 2400) }}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold text-white transition-all"
+            style={{ background: '#367CFF' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+          >
+            <Sparkles size={14} />
+            Buscar referencias con IA
+          </button>
+        </div>
       )}
     </div>
   )
@@ -1762,6 +1890,91 @@ function PanelContextoTemas({ seccionActiva, bloquesState, SECCION_CFG, resumenD
   )
 }
 
+// ─── Citation hover popover ────────────────────────────────────────────────────
+
+function CitaPopover({ citaPopover, onClose, onMouseEnter, onMouseLeave, onVerReferencias }) {
+  const { num, anchorRect, apaFormatted, url } = citaPopover
+  const popoverRef = useRef(null)
+
+  // Click-outside to close
+  useEffect(() => {
+    const handler = (e) => {
+      if (popoverRef.current && !popoverRef.current.contains(e.target)) {
+        onClose()
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [onClose])
+
+  // Position: above the anchor by default, flip below if near top of viewport
+  const POPOVER_HEIGHT = 110
+  const MARGIN = 10
+  const top = anchorRect.top - POPOVER_HEIGHT - MARGIN > 0
+    ? anchorRect.top - POPOVER_HEIGHT - MARGIN
+    : anchorRect.bottom + MARGIN
+  const left = Math.max(8, Math.min(anchorRect.left, window.innerWidth - 296))
+
+  return (
+    <div
+      ref={popoverRef}
+      className="animate-fade-in"
+      style={{
+        position: 'fixed',
+        top: `${top}px`,
+        left: `${left}px`,
+        width: '280px',
+        background: '#FFFFFF',
+        border: '1px solid #E5E7EB',
+        borderRadius: '12px',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+        padding: '12px 14px',
+        zIndex: 300,
+      }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <div className="flex items-start gap-2.5">
+        <span
+          className="flex-shrink-0 font-semibold text-xs rounded px-1.5 py-0.5"
+          style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}
+        >
+          [{num}]
+        </span>
+        <p className="text-xs leading-relaxed flex-1" style={{ color: '#374151' }}>
+          {apaFormatted}
+        </p>
+      </div>
+      <div className="flex items-center justify-end gap-2 mt-3">
+        {url && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs font-medium"
+            style={{ color: '#9CA3AF' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#6B7280'}
+            onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+          >
+            <ExternalLink size={11} />
+            Enlace
+          </a>
+        )}
+        <button
+          onClick={onVerReferencias}
+          className="inline-flex items-center gap-1 text-xs font-semibold"
+          style={{ color: '#367CFF' }}
+          onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
+          onMouseLeave={e => e.currentTarget.style.color = '#367CFF'}
+        >
+          Ver referencias
+          <ArrowUpRight size={11} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
 // ─── Main canvas ──────────────────────────────────────────────────────────────
 
 export default function PantallaCanvas({
@@ -1824,9 +2037,10 @@ export default function PantallaCanvas({
       })
       return { indice: indiceParaAsignatura, ...emptyTopicSections }
     }
+    const t1Bloques = isDL ? dlBloquesTema1 : bloquesTema1
     return {
       t2: bloquesTema2.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
-      t1: bloquesTema1.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
+      t1: t1Bloques.map(b => ({ ...b, comentarios: (b.comentarios || []).map(c => ({ ...c, respuestas: [] })) })),
       t3: bloquesTema3.map(b => ({ ...b, comentarios: [] })),
       t4: bloquesTema4.map(b => ({ ...b, comentarios: b.comentarios.map(c => ({ ...c, respuestas: [] })) })),
       indice: indiceParaAsignatura,
@@ -1859,6 +2073,10 @@ export default function PantallaCanvas({
   const [enrichmentsGenerados, setEnrichmentsGenerados] = useState([]) // [{ tipo, titulo, descripcion }]
   // Inline IA suggestion state
   const [iaInline, setIaInline] = useState(null) // { bloqueId, accion, textoOriginal, textoGenerado, generando }
+  // Citation popover state
+  const [citaPopover, setCitaPopover] = useState(null) // { num, temaNum, anchorRect, apaFormatted }
+  const citaHoverTimerRef = useRef(null)
+  const pendingCitaScrollRef = useRef(null) // { type: 'referencias'|'content', temaNum, refNum }
 
   useEffect(() => {
     const handler = (e) => {
@@ -1869,6 +2087,52 @@ export default function PantallaCanvas({
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
   }, [])
+
+  // Citation interaction handler — called by BloqueContenido spans
+  const handleCitaInteraction = ({ type, num, anchorEl }) => {
+    const temaMatch = seccionActiva.match(/^t(\d+)$/)
+    const temaNum = temaMatch ? parseInt(temaMatch[1], 10) : null
+    if (!temaNum) return
+
+    if (type === 'hover') {
+      clearTimeout(citaHoverTimerRef.current)
+      const refs = (isDL ? citacionesPorTemaDL : citacionesPorTema)[temaNum] || []
+      const cita = refs.find(c => c.num === num)
+      if (!cita) return
+      const anchorRect = anchorEl.getBoundingClientRect()
+      setCitaPopover({ num, temaNum, anchorRect, apaFormatted: cita.apaFormatted, url: cita.url })
+    } else if (type === 'leave') {
+      citaHoverTimerRef.current = setTimeout(() => setCitaPopover(null), 200)
+    } else if (type === 'click') {
+      setCitaPopover(null)
+      pendingCitaScrollRef.current = { type: 'referencias', temaNum, refNum: num }
+      setSeccionActiva(`referencias-t${temaNum}`)
+    }
+  }
+
+  const handleNavigateToContent = (temaNum, refNum) => {
+    pendingCitaScrollRef.current = { type: 'content', temaNum, refNum }
+    setSeccionActiva(`t${temaNum}`)
+  }
+
+  // Scroll to pending citation target after section change
+  useEffect(() => {
+    if (!pendingCitaScrollRef.current) return
+    const pending = pendingCitaScrollRef.current
+    pendingCitaScrollRef.current = null
+    requestAnimationFrame(() => {
+      let el
+      if (pending.type === 'referencias') {
+        el = document.getElementById(`ref-${pending.refNum}-t${pending.temaNum}`)
+      } else {
+        el = document.querySelector(`[data-cita-num="${pending.refNum}"]`)
+      }
+      if (!el) return
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      el.classList.add('cita-highlight')
+      setTimeout(() => el.classList.remove('cita-highlight'), 1600)
+    })
+  }, [seccionActiva])
 
   // Resolve active asignatura for resumen section
   const asignaturaData = (() => {
@@ -1882,6 +2146,10 @@ export default function PantallaCanvas({
   // When coming from creation flow, topic section blocks are explicitly empty []
   const bloques = bloquesState[seccionActiva] !== undefined ? bloquesState[seccionActiva] : seccion.bloques
   const editable = rolActivo === 'autor'
+  const isTemaSection = /^t\d+$/.test(seccionActiva)
+  const temaNumActivo = isTemaSection ? parseInt(seccionActiva.replace('t', ''), 10) : null
+  const citacionesMap = isDL ? citacionesPorTemaDL : citacionesPorTema
+  const citacionesActivas = isTemaSection ? (citacionesMap[temaNumActivo] ?? []) : null
 
   const estadoMostrado = esAsignaturaNueva
     ? (estadosSeccion[seccionActiva] ?? 'sin_comenzar')
@@ -2589,7 +2857,11 @@ export default function PantallaCanvas({
                   editable={editable}
                 />
               ) : seccionActiva.startsWith('referencias-') ? (
-                <SeccionReferencias temaNum={parseInt(seccionActiva.replace('referencias-t', ''), 10)} />
+                <SeccionReferencias
+                  temaNum={parseInt(seccionActiva.replace('referencias-t', ''), 10)}
+                  referencias={(isDL ? citacionesPorTemaDL : citacionesPorTema)[parseInt(seccionActiva.replace('referencias-t', ''), 10)] ?? []}
+                  onNavigateToContent={handleNavigateToContent}
+                />
               ) : seccionActiva.startsWith('instrucciones-') ? (
                 <SeccionInstruccionesGeneral
                   key={seccionActiva}
@@ -2708,6 +2980,8 @@ export default function PantallaCanvas({
                             }))
                           }}
                           textoReemplazando={iaInline?.bloqueId === bloque.id ? iaInline.textoOriginal : null}
+                          citaciones={citacionesActivas}
+                          onCitaInteraction={handleCitaInteraction}
                         />
 
                         {/* Inline IA suggestion */}
@@ -3293,6 +3567,21 @@ export default function PantallaCanvas({
           />
         )}
       </div>
+
+      {/* Citation hover popover */}
+      {citaPopover && (
+        <CitaPopover
+          citaPopover={citaPopover}
+          onClose={() => setCitaPopover(null)}
+          onMouseEnter={() => clearTimeout(citaHoverTimerRef.current)}
+          onMouseLeave={() => { citaHoverTimerRef.current = setTimeout(() => setCitaPopover(null), 200) }}
+          onVerReferencias={() => {
+            setCitaPopover(null)
+            pendingCitaScrollRef.current = { type: 'referencias', temaNum: citaPopover.temaNum, refNum: citaPopover.num }
+            setSeccionActiva(`referencias-t${citaPopover.temaNum}`)
+          }}
+        />
+      )}
 
       {savedToast && (
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white shadow-xl animate-fade-in"

@@ -84,3 +84,12 @@ body {
   z-index: 200;
 }
 [data-tooltip]:hover::after { opacity: 1; }
+
+/* Citation highlight animation — used when scrolling to a citation or reference entry */
+@keyframes citaHighlight {
+  0%   { background: #FEF9C3; border-color: #FDE047; }
+  100% { background: #E7EFFE; border-color: #BAD2FF; }
+}
+.cita-highlight {
+  animation: citaHighlight 1.5s ease-out forwards;
+}
