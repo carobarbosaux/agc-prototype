@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, ChevronRight, Sparkles, X, SquarePen, History, Search, MessageSquare } from 'lucide-react'
+import { Send, ChevronRight, Sparkles, X, SquarePen, History, Search, MessageSquare, Plus, ExternalLink } from 'lucide-react'
 import { respuestasIA, respuestasCalidadIA } from '../mockData'
 import { ProdiMark } from './ProdiLogo'
 
@@ -87,6 +87,8 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
   const [esperando, setEsperando] = useState(false)
   const [respIdx, setRespIdx] = useState(0)
   const [vistaHistorial, setVistaHistorial] = useState(false)
+  const [conectoresAbierto, setConectoresAbierto] = useState(false)
+  const conectoresRef = useRef(null)
   const [busqueda, setBusqueda] = useState('')
   const [mostrarTodo, setMostrarTodo] = useState(false)
   const chatRef = useRef(null)
@@ -407,6 +409,54 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
               className="flex items-end gap-2 rounded-xl px-3 py-2"
               style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}
             >
+              {/* Connectors (+) button */}
+              <div className="relative flex-shrink-0" ref={conectoresRef}>
+                <button
+                  onClick={() => setConectoresAbierto(v => !v)}
+                  className="p-1.5 rounded-lg transition-all"
+                  style={{ color: conectoresAbierto ? '#367CFF' : '#9CA3AF', background: conectoresAbierto ? '#E7EFFE' : 'transparent' }}
+                  onMouseEnter={e => { if (!conectoresAbierto) { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#374151' } }}
+                  onMouseLeave={e => { if (!conectoresAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9CA3AF' } }}
+                  title="Conectores — adjuntar desde SharePoint o Drive"
+                >
+                  <Plus size={15} />
+                </button>
+                {conectoresAbierto && (
+                  <div
+                    className="absolute bottom-full left-0 mb-2 rounded-xl overflow-hidden"
+                    style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', minWidth: '200px', zIndex: 50 }}
+                  >
+                    <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
+                      <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#9CA3AF' }}>Conectores</p>
+                    </div>
+                    {[
+                      { id: 'sharepoint', label: 'SharePoint', color: '#0078D4', letter: 'SP' },
+                      { id: 'drive', label: 'Google Drive', color: '#34A853', letter: 'GD' },
+                    ].map(c => (
+                      <button
+                        key={c.id}
+                        onClick={() => {
+                          setInput(prev => prev + (prev ? ' ' : '') + `[Documento de ${c.label}]`)
+                          setConectoresAbierto(false)
+                        }}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 text-left transition-colors"
+                        style={{ background: 'transparent' }}
+                        onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 text-white text-xs font-bold" style={{ background: c.color, fontSize: '9px' }}>
+                          {c.letter}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-medium" style={{ color: '#111827' }}>{c.label}</p>
+                          <p className="text-xs" style={{ color: '#10B981' }}>● Conectado</p>
+                        </div>
+                        <ExternalLink size={11} style={{ color: '#CBD5E1' }} />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <textarea
                 ref={inputRef}
                 value={input}

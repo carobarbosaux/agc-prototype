@@ -61,16 +61,16 @@ const SECCION_CONFIG = {
     bloques: bloquesTema1,
     chat: chatHistorialTema1,
   },
-  'recursos-t1': {
-    label: 'Recursos a fondo · Tema 1',
-    labelCorto: 'Recursos T1',
-    estado: 'aprobado',
+  'referencias-t1': {
+    label: 'Referencias bibliográficas · Tema 1',
+    labelCorto: 'Referencias T1',
+    estado: 'borrador',
     bloques: [],
     chat: chatHistorialTema1,
   },
-  'test-t1': {
-    label: 'Tests · Tema 1',
-    labelCorto: 'Tests T1',
+  'recursos-t1': {
+    label: 'A fondo · Tema 1',
+    labelCorto: 'A fondo T1',
     estado: 'borrador',
     bloques: [],
     chat: chatHistorialTema1,
@@ -90,21 +90,21 @@ const SECCION_CONFIG = {
     bloques: bloquesTema2,
     chat: chatHistorialTema2,
   },
+  'referencias-t2': {
+    label: 'Referencias bibliográficas · Tema 2',
+    labelCorto: 'Referencias T2',
+    estado: 'revision',
+    bloques: [],
+    chat: chatHistorialTema2,
+  },
   'recursos-t2': {
-    label: 'Recursos a fondo · Tema 2',
-    labelCorto: 'Recursos T2',
-    estado: 'borrador',
+    label: 'A fondo · Tema 2',
+    labelCorto: 'A fondo T2',
+    estado: 'revision',
     bloques: [],
     chat: chatHistorialTema2,
   },
-  'test-t2': {
-    label: 'Tests · Tema 2',
-    labelCorto: 'Tests T2',
-    estado: 'bloqueado',
-    bloques: [],
-    chat: chatHistorialTema2,
-  },
-  // ─ Temas 3-6 (instrucciones only — temarios blocked) ─
+  // ─ Tema 3 ─
   'instrucciones-t3': {
     label: 'Instrucciones didácticas · Tema 3',
     labelCorto: 'Instrucciones T3',
@@ -112,68 +112,61 @@ const SECCION_CONFIG = {
     bloques: instruccionesTema3,
     chat: chatHistorialTema2,
   },
-  'instrucciones-t4': {
-    label: 'Instrucciones didácticas · Tema 4',
-    labelCorto: 'Instrucciones T4',
-    estado: 'aprobado',
-    bloques: instruccionesTema4,
-    chat: chatHistorialTema2,
-  },
-  'instrucciones-t5': {
-    label: 'Instrucciones didácticas · Tema 5',
-    labelCorto: 'Instrucciones T5',
-    estado: 'aprobado',
-    bloques: instruccionesTema5,
-    chat: chatHistorialTema2,
-  },
-  'instrucciones-t6': {
-    label: 'Instrucciones didácticas · Tema 6',
-    labelCorto: 'Instrucciones T6',
-    estado: 'aprobado',
-    bloques: instruccionesTema6,
-    chat: chatHistorialTema2,
-  },
-  // ─ Temas 3-6 (temarios and subsections — all blocked) ─
   t3: {
     label: 'Temario · Tema 3',
     labelCorto: 'Temario T3',
-    estado: 'revision',
+    estado: 'comentarios',
     bloques: bloquesTema3,
     chat: chatHistorialTema2,
   },
-  'recursos-t3': {
-    label: 'Recursos a fondo · Tema 3',
-    labelCorto: 'Recursos T3',
-    estado: 'borrador',
+  'referencias-t3': {
+    label: 'Referencias bibliográficas · Tema 3',
+    labelCorto: 'Referencias T3',
+    estado: 'comentarios',
     bloques: [],
     chat: chatHistorialTema2,
   },
-  'test-t3': {
-    label: 'Tests · Tema 3',
-    labelCorto: 'Tests T3',
+  'recursos-t3': {
+    label: 'A fondo · Tema 3',
+    labelCorto: 'A fondo T3',
     estado: 'bloqueado',
     bloques: [],
+    chat: chatHistorialTema2,
+  },
+  // ─ Temas 4-6 (locked — sequential progression) ─
+  'instrucciones-t4': {
+    label: 'Instrucciones didácticas · Tema 4',
+    labelCorto: 'Instrucciones T4',
+    estado: 'bloqueado',
+    bloques: instruccionesTema4,
     chat: chatHistorialTema2,
   },
   t4: {
     label: 'Temario · Tema 4',
     labelCorto: 'Temario T4',
-    estado: 'comentarios',
+    estado: 'bloqueado',
     bloques: bloquesTema4,
     chat: chatHistorialTema2,
   },
-  'recursos-t4': {
-    label: 'Recursos a fondo · Tema 4',
-    labelCorto: 'Recursos T4',
+  'referencias-t4': {
+    label: 'Referencias bibliográficas · Tema 4',
+    labelCorto: 'Referencias T4',
     estado: 'bloqueado',
     bloques: [],
     chat: chatHistorialTema2,
   },
-  'test-t4': {
-    label: 'Tests · Tema 4',
-    labelCorto: 'Tests T4',
+  'recursos-t4': {
+    label: 'A fondo · Tema 4',
+    labelCorto: 'A fondo T4',
     estado: 'bloqueado',
     bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'instrucciones-t5': {
+    label: 'Instrucciones didácticas · Tema 5',
+    labelCorto: 'Instrucciones T5',
+    estado: 'bloqueado',
+    bloques: instruccionesTema5,
     chat: chatHistorialTema2,
   },
   t5: {
@@ -183,18 +176,25 @@ const SECCION_CONFIG = {
     bloques: [],
     chat: chatHistorialTema2,
   },
-  'recursos-t5': {
-    label: 'Recursos a fondo · Tema 5',
-    labelCorto: 'Recursos T5',
+  'referencias-t5': {
+    label: 'Referencias bibliográficas · Tema 5',
+    labelCorto: 'Referencias T5',
     estado: 'bloqueado',
     bloques: [],
     chat: chatHistorialTema2,
   },
-  'test-t5': {
-    label: 'Tests · Tema 5',
-    labelCorto: 'Tests T5',
+  'recursos-t5': {
+    label: 'A fondo · Tema 5',
+    labelCorto: 'A fondo T5',
     estado: 'bloqueado',
     bloques: [],
+    chat: chatHistorialTema2,
+  },
+  'instrucciones-t6': {
+    label: 'Instrucciones didácticas · Tema 6',
+    labelCorto: 'Instrucciones T6',
+    estado: 'bloqueado',
+    bloques: instruccionesTema6,
     chat: chatHistorialTema2,
   },
   t6: {
@@ -204,16 +204,16 @@ const SECCION_CONFIG = {
     bloques: [],
     chat: chatHistorialTema2,
   },
-  'recursos-t6': {
-    label: 'Recursos a fondo · Tema 6',
-    labelCorto: 'Recursos T6',
+  'referencias-t6': {
+    label: 'Referencias bibliográficas · Tema 6',
+    labelCorto: 'Referencias T6',
     estado: 'bloqueado',
     bloques: [],
     chat: chatHistorialTema2,
   },
-  'test-t6': {
-    label: 'Tests · Tema 6',
-    labelCorto: 'Tests T6',
+  'recursos-t6': {
+    label: 'A fondo · Tema 6',
+    labelCorto: 'A fondo T6',
     estado: 'bloqueado',
     bloques: [],
     chat: chatHistorialTema2,
@@ -360,9 +360,9 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
       <button
         onClick={handleGenerarResumen}
         className="w-full flex items-center justify-center gap-2 py-3 rounded-[10px] text-sm font-semibold transition-all"
-        style={{ background: '#0A5CF5', color: '#FFFFFF' }}
-        onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
-        onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
+        style={{ background: '#367CFF', color: '#FFFFFF' }}
+        onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+        onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
       >
         <Sparkles size={14} />
         Generar resumen de la asignatura
@@ -513,7 +513,7 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, showEdit, onDelete,
                 onClick={handleSave}
                 className="text-xs px-3 py-1.5 rounded-lg font-medium transition-all text-white"
                 style={{ background: '#367CFF' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
+                onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
                 onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
               >Guardar</button>
             </div>
@@ -674,9 +674,9 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
           <button
             onClick={() => setScreen('loading')}
             className="flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-sm font-semibold text-white transition-all"
-            style={{ background: '#0A5CF5' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
-            onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
+            style={{ background: '#367CFF' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
           >
             <Sparkles size={14} /> Generar referencias con IA
           </button>
@@ -820,46 +820,81 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
 
 // ─── Índice fijo (sección aprobada, vista normal) ─────────────────────────────
 
-function SeccionIndiceFija({ bloques }) {
+function SeccionIndiceFija({ bloques, resumenData }) {
+  const [expandidos, setExpandidos] = useState({})
+  const temaDescripciones = resumenData?.temasConDescripcion ?? []
+
+  const toggleExpand = (id) => setExpandidos(prev => ({ ...prev, [id]: !prev[id] }))
+
   return (
     <div className="space-y-3">
-      {bloques.map((tema) => (
-        <div
-          key={tema.id}
-          className="flex gap-4 rounded-xl px-5 py-4 transition-colors"
-          style={{ border: '1px solid #E5E7EB', background: '#FFFFFF' }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = '#D1D5DB'}
-          onMouseLeave={e => e.currentTarget.style.borderColor = '#E5E7EB'}
-        >
-          {/* Number badge */}
+      {bloques.map((tema) => {
+        const resumenTema = temaDescripciones.find(t => t.numero === tema.numero)
+        const isExpanded = !!expandidos[tema.id]
+        return (
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-sm font-bold"
-            style={{ background: '#E7EFFE', color: '#367CFF' }}
+            key={tema.id}
+            className="rounded-xl transition-colors"
+            style={{ border: '1px solid #E5E7EB', background: '#FFFFFF' }}
           >
-            {tema.numero}
-          </div>
-          {/* Content */}
-          <div className="min-w-0">
-            <p className="text-sm font-semibold leading-snug mb-2" style={{ color: '#111827' }}>
-              {tema.nombre}
-            </p>
-            {tema.epigrafes ? (
-              <div className="space-y-0.5">
-                {tema.epigrafes.map((ep, j) => (
-                  <div key={j} className="flex items-center gap-2">
-                    <span style={{ fontSize: '10px', color: '#D1D5DB' }}>—</span>
-                    <span className="text-xs" style={{ color: '#6B7280' }}>{ep}</span>
-                  </div>
-                ))}
+            <div
+              className="flex gap-4 px-5 py-4"
+            >
+              {/* Number badge */}
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 text-sm font-bold"
+                style={{ background: '#E7EFFE', color: '#367CFF' }}
+              >
+                {tema.numero}
               </div>
-            ) : tema.descripcion ? (
-              <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
-                {tema.descripcion}
-              </p>
-            ) : null}
+              {/* Content */}
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold leading-snug mb-2" style={{ color: '#111827' }}>
+                  {tema.nombre ?? tema.titulo}
+                </p>
+                {tema.epigrafes ? (
+                  <div className="space-y-0.5">
+                    {tema.epigrafes.map((ep, j) => (
+                      <div key={j} className="flex items-center gap-2">
+                        <span style={{ fontSize: '10px', color: '#D1D5DB' }}>—</span>
+                        <span className="text-xs" style={{ color: '#6B7280' }}>{ep}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : tema.descripcion ? (
+                  <p className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>
+                    {tema.descripcion}
+                  </p>
+                ) : null}
+              </div>
+              {/* Expand toggle */}
+              {resumenTema?.descripcion && (
+                <button
+                  onClick={() => toggleExpand(tema.id)}
+                  className="flex items-center gap-1 flex-shrink-0 mt-0.5 text-xs font-medium rounded-md px-2 py-1 transition-colors"
+                  style={{ color: isExpanded ? '#367CFF' : '#9CA3AF', background: isExpanded ? '#E7EFFE' : 'transparent' }}
+                  onMouseEnter={e => { if (!isExpanded) { e.currentTarget.style.color = '#367CFF'; e.currentTarget.style.background = '#F5F8FF' } }}
+                  onMouseLeave={e => { if (!isExpanded) { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' } }}
+                  title={isExpanded ? 'Ocultar resumen' : 'Ver resumen del tema'}
+                >
+                  {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                  <span>Resumen</span>
+                </button>
+              )}
+            </div>
+            {/* Collapsible resumen */}
+            {isExpanded && resumenTema?.descripcion && (
+              <div
+                className="px-5 pb-4"
+                style={{ borderTop: '1px solid #F3F4F6', paddingTop: '12px', marginLeft: '48px' }}
+              >
+                <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.06em' }}>Resumen del tema</p>
+                <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{resumenTema.descripcion}</p>
+              </div>
+            )}
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
@@ -1076,9 +1111,9 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
           <button
             onClick={onGenerarResumen}
             className="flex items-center gap-2 px-5 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-            style={{ background: '#0A5CF5' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
-            onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
+            style={{ background: '#367CFF' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
           >
             <ProdiMark size={14} />
             Generar resumen del tema
@@ -1167,14 +1202,596 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
         <button
           onClick={onGenerarContenido}
           className="flex items-center gap-2 px-5 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-          style={{ background: '#0A5CF5' }}
-          onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
-          onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
+          style={{ background: '#367CFF' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+          onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
         >
           <ProdiMark size={14} />
           Generar contenido del tema
           <ChevronRight size={14} />
         </button>
+      </div>
+    </div>
+  )
+}
+
+// ─── Instrucciones generales (t1-t6) unified form + inline resumen ────────────
+
+const TEMA_KEYWORDS = {
+  1: ['Machine Learning', 'Supervisado', 'No supervisado', 'Pipeline', 'Overfitting', 'Bias-Variance'],
+  2: ['Regresión lineal', 'Clasificación', 'KNN', 'Logística', 'MSE', 'F1-score'],
+  3: ['Árboles de decisión', 'Random Forest', 'Ensemble', 'Gradient Boosting', 'XGBoost', 'Bagging'],
+  4: ['Redes neuronales', 'Backpropagation', 'Activación', 'Capas ocultas', 'Perceptrón', 'Deep Learning'],
+  5: ['Validación cruzada', 'Curva ROC', 'AUC', 'Regularización', 'Hyperparámetros', 'Grid Search'],
+  6: ['Proyecto final', 'Pipeline completo', 'Producción', 'MLOps', 'Despliegue', 'Evaluación'],
+}
+
+function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, temaLabel, resumenData }) {
+  const [archivosSimulados, setArchivosSimulados] = useState(datos.archivos || [])
+  const [urls, setUrls] = useState(datos.urls || [''])
+  const [expandidosMindMap, setExpandidosMindMap] = useState(false)
+
+  const handleSimularSubida = () => {
+    const nombres = ['bibliografia_tema.pdf', 'articulo_referencia.pdf', 'notas_didacticas.docx']
+    const nuevo = nombres[archivosSimulados.length % nombres.length]
+    if (!archivosSimulados.includes(nuevo)) {
+      setArchivosSimulados(prev => {
+        const next = [...prev, nuevo]
+        onChange('archivos', next)
+        return next
+      })
+    }
+  }
+
+  const handleAddUrl = () => {
+    const next = [...urls, '']
+    setUrls(next)
+    onChange('urls', next)
+  }
+  const handleUrlChange = (i, val) => {
+    const next = urls.map((u, idx) => idx === i ? val : u)
+    setUrls(next)
+    onChange('urls', next)
+  }
+  const handleRemoveUrl = (i) => {
+    const next = urls.filter((_, idx) => idx !== i)
+    setUrls(next.length ? next : [''])
+    onChange('urls', next.length ? next : [''])
+  }
+
+  if (datos.generando) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 gap-4">
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
+          <ProdiMark size={28} />
+        </div>
+        <div className="text-center">
+          <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando resumen del tema…</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está procesando las instrucciones…</p>
+        </div>
+        <div className="flex gap-1.5 mt-2">
+          {[0, 1, 2].map(i => (
+            <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  // Part 2: resumen generated — show it below (form hidden)
+  if (datos.resumenGenerado && resumenData) {
+    const r = resumenData
+    return (
+      <div className="space-y-6 max-w-2xl">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="text-base font-semibold" style={{ color: '#1A1A1A' }}>{temaLabel ?? `Tema ${temaNum}`}</h3>
+              <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>
+                <ProdiMark size={10} /> Generado por IA
+              </span>
+            </div>
+            <p className="text-xs" style={{ color: '#9CA3AF' }}>Revisa la estructura antes de generar el contenido completo</p>
+          </div>
+          <button
+            onClick={() => onChange('_editarInstrucciones', true)}
+            className="text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
+            style={{ background: '#F1F5F9', color: '#6B7280' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+            onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
+          >
+            Editar instrucciones
+          </button>
+        </div>
+
+        {/* Mind map toggle */}
+        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
+          <button
+            onClick={() => setExpandidosMindMap(p => !p)}
+            className="w-full flex items-center justify-between px-4 py-3 text-left transition-colors"
+            style={{ background: expandidosMindMap ? '#F5F8FF' : '#F8F9FA' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#F0F4FF'}
+            onMouseLeave={e => e.currentTarget.style.background = expandidosMindMap ? '#F5F8FF' : '#F8F9FA'}
+          >
+            <div className="flex items-center gap-2">
+              <BrainCircuit size={14} style={{ color: '#367CFF' }} />
+              <span className="text-xs font-semibold" style={{ color: '#374151' }}>Mapa mental del tema</span>
+            </div>
+            {expandidosMindMap ? <ChevronDown size={14} style={{ color: '#9CA3AF' }} /> : <ChevronRight size={14} style={{ color: '#9CA3AF' }} />}
+          </button>
+          {expandidosMindMap && (
+            <div className="px-4 py-5" style={{ background: '#FAFBFF', borderTop: '1px solid #E5E7EB' }}>
+              {/* Static SVG mind map placeholder */}
+              <svg viewBox="0 0 480 200" className="w-full" style={{ maxHeight: '180px' }}>
+                {/* Center node */}
+                <ellipse cx="240" cy="100" rx="54" ry="22" fill="#367CFF" />
+                <text x="240" y="104" textAnchor="middle" fill="white" fontSize="10" fontWeight="600">{temaLabel ?? `Tema ${temaNum}`}</text>
+                {/* Branch lines + nodes */}
+                {(r.epigrafes ?? []).slice(0, 4).map((ep, i) => {
+                  const angles = [-130, -50, 50, 130]
+                  const rad = (angles[i] * Math.PI) / 180
+                  const nx = 240 + Math.cos(rad) * 130
+                  const ny = 100 + Math.sin(rad) * 65
+                  const lx = 240 + Math.cos(rad) * 95
+                  const ly = 100 + Math.sin(rad) * 30
+                  return (
+                    <g key={i}>
+                      <line x1={lx} y1={ly} x2={nx} y2={ny} stroke="#BAD2FF" strokeWidth="1.5" />
+                      <ellipse cx={nx} cy={ny} rx="48" ry="16" fill="#E7EFFE" stroke="#BAD2FF" strokeWidth="1" />
+                      <text x={nx} y={ny + 4} textAnchor="middle" fill="#0047CC" fontSize="8.5" fontWeight="500"
+                        style={{ overflow: 'hidden' }}>
+                        {(ep.titulo ?? ep).length > 18 ? (ep.titulo ?? ep).slice(0, 16) + '…' : (ep.titulo ?? ep)}
+                      </text>
+                    </g>
+                  )
+                })}
+              </svg>
+              <p className="text-xs text-center mt-1" style={{ color: '#9CA3AF' }}>Vista previa · Mapa generado por IA</p>
+            </div>
+          )}
+        </div>
+
+        {/* Introducción */}
+        {r.introduccionYObjetivos && (
+          <div className="rounded-xl p-4 space-y-2" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
+            <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Introducción y objetivos</p>
+            {r.introduccionYObjetivos.split('\n\n').map((par, i) => (
+              <p key={i} className="text-sm leading-relaxed" style={{ color: '#374151' }}>{par}</p>
+            ))}
+          </div>
+        )}
+
+        {/* Objetivos */}
+        {r.objetivos?.length > 0 && (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Objetivos de aprendizaje</p>
+            <div className="space-y-1.5">
+              {r.objetivos.map((obj, i) => (
+                <div key={i} className="flex items-start gap-2.5">
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-0.5" style={{ background: '#E7EFFE', color: '#367CFF' }}>{i + 1}</span>
+                  <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{obj}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Epígrafes con bibliografía */}
+        {r.epigrafes?.length > 0 && (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF' }}>Estructura propuesta del tema</p>
+            <div className="space-y-3">
+              {r.epigrafes.map((ep, i) => (
+                <EpigrafeConBibliografia key={i} ep={ep} index={i} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* CTA — Generar contenido */}
+        <div className="flex items-center justify-between pt-2">
+          <button
+            onClick={() => onChange('_editarInstrucciones', true)}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-all"
+            style={{ background: '#F1F5F9', color: '#374151' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+            onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
+          >
+            <ChevronRight size={12} style={{ transform: 'rotate(180deg)' }} />
+            Volver a instrucciones
+          </button>
+          <button
+            onClick={() => onChange('_generarContenido', true)}
+            className="flex items-center gap-2 px-5 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
+            style={{ background: '#367CFF' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+          >
+            <Sparkles size={14} />
+            Generar contenido del tema
+            <ChevronRight size={14} />
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Part 1: form
+  return (
+    <div className="space-y-6 max-w-2xl">
+      {/* Header */}
+      <div>
+        <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Instrucciones para la IA</h3>
+        <p className="text-xs" style={{ color: '#9CA3AF' }}>Proporciona contexto al asistente para generar el resumen del tema</p>
+      </div>
+
+      {/* Indicaciones para la IA */}
+      <div>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Indicaciones para la IA</label>
+        <textarea
+          value={datos.indicacionesIA}
+          onChange={e => onChange('indicacionesIA', e.target.value)}
+          rows={3}
+          className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
+          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.background = '#F8FAFC' }}
+          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#367CFF' }}
+          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
+        />
+      </div>
+
+      {/* Fuentes y bibliografía */}
+      <div>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Fuentes y bibliografía</label>
+        <p className="text-xs mb-2" style={{ color: '#9CA3AF' }}>Sube documentos o añade enlaces que la IA tendrá en cuenta para generar el contenido.</p>
+        {/* Upload area */}
+        <div
+          onClick={handleSimularSubida}
+          className="flex flex-col items-center justify-center gap-2 rounded-xl cursor-pointer transition-colors px-4 py-5 mb-3"
+          style={{ border: '1.5px dashed #CBD5E1', background: '#FAFBFC' }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = '#367CFF'; e.currentTarget.style.background = '#F5F8FF' }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = '#CBD5E1'; e.currentTarget.style.background = '#FAFBFC' }}
+        >
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#E7EFFE' }}>
+            <BookOpen size={15} style={{ color: '#367CFF' }} />
+          </div>
+          <p className="text-xs font-medium text-center" style={{ color: '#374151' }}>
+            Arrastra archivos aquí o <span style={{ color: '#367CFF' }}>haz clic para subir</span>
+          </p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>PDF, Docs, URL — máx. 25 MB</p>
+        </div>
+        {/* Uploaded files */}
+        {archivosSimulados.length > 0 && (
+          <div className="space-y-1.5 mb-3">
+            {archivosSimulados.map((f, i) => (
+              <div key={i} className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
+                <BookOpen size={12} style={{ color: '#367CFF' }} />
+                <span className="text-xs flex-1 truncate" style={{ color: '#374151' }}>{f}</span>
+                <button onClick={() => setArchivosSimulados(prev => prev.filter((_, j) => j !== i))} style={{ color: '#9CA3AF' }}>
+                  <X size={12} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        {/* URL inputs */}
+        <div className="space-y-2">
+          {urls.map((url, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <div className="flex items-center flex-1 gap-2 px-3 py-2 rounded-[10px]" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF' }}>
+                <Link size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+                <input
+                  type="url"
+                  value={url}
+                  onChange={e => handleUrlChange(i, e.target.value)}
+                  placeholder="https://…"
+                  className="flex-1 text-xs outline-none bg-transparent"
+                  style={{ color: '#374151' }}
+                  onFocus={e => e.currentTarget.parentElement.style.borderColor = '#367CFF'}
+                  onBlur={e => e.currentTarget.parentElement.style.borderColor = '#CBD5E1'}
+                />
+              </div>
+              {urls.length > 1 && (
+                <button onClick={() => handleRemoveUrl(i)} className="flex-shrink-0" style={{ color: '#9CA3AF' }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}>
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+          ))}
+          <button
+            onClick={handleAddUrl}
+            className="flex items-center gap-1.5 text-xs font-medium mt-1"
+            style={{ color: '#367CFF' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
+            onMouseLeave={e => e.currentTarget.style.color = '#367CFF'}
+          >
+            <Plus size={13} /> Añadir enlace
+          </button>
+        </div>
+      </div>
+
+      {/* Notas pedagógicas */}
+      <div>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Notas pedagógicas e instrucciones</label>
+        <textarea
+          value={datos.notasPedagogicas}
+          onChange={e => onChange('notasPedagogicas', e.target.value)}
+          rows={3}
+          className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
+          onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.background = '#F8FAFC' }}
+          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#367CFF' }}
+          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
+        />
+      </div>
+
+      {/* AI hint */}
+      <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
+        <ProdiMark size={14} className="flex-shrink-0 mt-0.5" />
+        <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
+          Al hacer clic en <strong>Generar resumen</strong>, el asistente analizará las instrucciones y creará un resumen estructurado del tema con objetivos, epígrafes e ideas didácticas.
+        </p>
+      </div>
+
+      {/* CTA */}
+      <button
+        onClick={() => onChange('_generarResumen', true)}
+        className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-[10px] text-sm font-semibold text-white transition-all"
+        style={{ background: '#367CFF' }}
+        onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+        onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+      >
+        <Sparkles size={14} />
+        Generar resumen del tema
+      </button>
+    </div>
+  )
+}
+
+// ─── Epígrafe con bibliografía (used in instrucciones resumen view) ────────────
+
+function EpigrafeConBibliografia({ ep, index }) {
+  const [mostrarAddRef, setMostrarAddRef] = useState(false)
+  const [refUrl, setRefUrl] = useState('')
+  const [refDoi, setRefDoi] = useState('')
+  const [refUso, setRefUso] = useState('')
+
+  return (
+    <div className="rounded-xl p-4" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+      <div className="flex items-center gap-2 mb-2">
+        <span className="text-xs font-bold" style={{ color: '#367CFF' }}>Epígrafe {index + 1}</span>
+        <span className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{ep.titulo}</span>
+      </div>
+      {ep.descripcion && ep.descripcion.split('\n\n').map((par, j) => (
+        <p key={j} className="text-xs leading-relaxed mb-2" style={{ color: '#6B7280' }}>{par}</p>
+      ))}
+      {ep.ideasDidacticas?.length > 0 && (
+        <div className="mt-2 pt-2" style={{ borderTop: '1px solid #F1F5F9' }}>
+          <p className="text-xs font-medium mb-1.5" style={{ color: '#9CA3AF' }}>Ideas didácticas</p>
+          <div className="flex flex-wrap gap-1.5">
+            {ep.ideasDidacticas.map((idea, k) => (
+              <span key={k} className="text-xs px-2 py-1 rounded-lg" style={{ background: '#F0FDF4', color: '#16A34A', border: '1px solid #BBF7D0' }}>{idea}</span>
+            ))}
+          </div>
+        </div>
+      )}
+      {/* Bibliography section */}
+      <div className="mt-3 pt-3" style={{ borderTop: '1px solid #F1F5F9' }}>
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#9CA3AF' }}>Bibliografía</p>
+          <button
+            onClick={() => setMostrarAddRef(p => !p)}
+            className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-lg transition-all"
+            style={{ color: '#367CFF', background: mostrarAddRef ? '#E7EFFE' : 'transparent', border: '1px solid transparent' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.borderColor = '#BAD2FF' }}
+            onMouseLeave={e => { if (!mostrarAddRef) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent' } }}
+          >
+            <Plus size={11} /> Añadir referencia
+          </button>
+        </div>
+        {/* Empty state */}
+        <p className="text-xs italic" style={{ color: '#CBD5E1' }}>Sin referencias añadidas. Usa el botón para agregar fuentes bibliográficas.</p>
+        {/* Add reference form */}
+        {mostrarAddRef && (
+          <div className="mt-3 space-y-2 p-3 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
+            <div>
+              <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>URL</label>
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF' }}>
+                <Link size={11} style={{ color: '#9CA3AF' }} />
+                <input type="url" value={refUrl} onChange={e => setRefUrl(e.target.value)} placeholder="https://…"
+                  className="flex-1 text-xs outline-none bg-transparent" style={{ color: '#374151' }} />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>DOI</label>
+              <input type="text" value={refDoi} onChange={e => setRefDoi(e.target.value)} placeholder="10.xxxx/…"
+                className="w-full px-3 py-2 rounded-lg text-xs outline-none" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#374151' }} />
+            </div>
+            <div>
+              <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>¿Para qué se usa esta fuente?</label>
+              <input type="text" value={refUso} onChange={e => setRefUso(e.target.value)} placeholder="Ej. Marco teórico del epígrafe…"
+                className="w-full px-3 py-2 rounded-lg text-xs outline-none" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#374151' }} />
+            </div>
+            <div className="flex justify-end gap-2 pt-1">
+              <button onClick={() => setMostrarAddRef(false)}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                style={{ background: '#F1F5F9', color: '#374151' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+                onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}>
+                Cancelar
+              </button>
+              <button onClick={() => { setMostrarAddRef(false); setRefUrl(''); setRefDoi(''); setRefUso('') }}
+                className="px-3 py-1.5 rounded-[10px] text-xs font-semibold text-white transition-all"
+                style={{ background: '#367CFF' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+                onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}>
+                Guardar referencia
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ─── Referencias bibliográficas section ───────────────────────────────────────
+
+function SeccionReferencias({ temaNum }) {
+  const [buscando, setBuscando] = useState(false)
+  return (
+    <div className="space-y-6 max-w-2xl">
+      <div>
+        <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Referencias bibliográficas</h3>
+        <p className="text-xs" style={{ color: '#9CA3AF' }}>Fuentes académicas del Tema {temaNum}</p>
+      </div>
+      {buscando ? (
+        <div className="flex flex-col items-center justify-center py-16 gap-4">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
+            <ProdiMark size={24} />
+          </div>
+          <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Buscando referencias…</p>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está buscando fuentes relevantes para este tema.</p>
+          <div className="flex gap-1.5">
+            {[0, 1, 2].map(i => (
+              <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Empty state */}
+          <div className="flex flex-col items-center justify-center py-16 text-center gap-4" style={{ border: '1.5px dashed #E5E7EB', borderRadius: '16px', background: '#FAFBFC' }}>
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: '#F1F5F9' }}>
+              <BookOpen size={20} style={{ color: '#CBD5E1' }} />
+            </div>
+            <div>
+              <p className="text-sm font-medium mb-1" style={{ color: '#6B7280' }}>Sin referencias añadidas</p>
+              <p className="text-xs leading-relaxed max-w-xs" style={{ color: '#9CA3AF' }}>
+                Usa la IA para buscar referencias académicas relevantes para este tema, o añade las tuyas manualmente.
+              </p>
+            </div>
+            <button
+              onClick={() => { setBuscando(true); setTimeout(() => setBuscando(false), 2400) }}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold text-white transition-all"
+              style={{ background: '#367CFF' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+              onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+            >
+              <Sparkles size={14} />
+              Buscar referencias con IA
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+// ─── Accumulated context panel ─────────────────────────────────────────────────
+
+const TEMA_LABELS = {
+  1: 'Introducción al aprendizaje automático',
+  2: 'Regresión y clasificación',
+  3: 'Árboles de decisión y ensemble methods',
+  4: 'Redes neuronales básicas',
+  5: 'Evaluación y validación de modelos',
+  6: 'Proyecto práctico final',
+}
+
+function PanelContextoTemas({ seccionActiva, bloquesState, SECCION_CFG, resumenData, onCerrar }) {
+  const temaActualNum = (() => {
+    const m = seccionActiva.match(/t(\d+)$/)
+    if (!m) return null
+    return parseInt(m[1], 10)
+  })()
+
+  const temasAprobados = [1,2,3,4,5,6]
+    .filter(n => (SECCION_CFG[`t${n}`]?.estado === 'aprobado') && (temaActualNum === null || n < temaActualNum))
+    .map(n => ({ num: n, label: TEMA_LABELS[n] ?? `Tema ${n}` }))
+
+  return (
+    <div
+      className="flex flex-col h-full"
+      style={{ width: '280px', background: '#FFFFFF', borderLeft: '1px solid #E5E7EB', flexShrink: 0 }}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid #F1F5F9' }}>
+        <div className="flex items-center gap-2">
+          <BrainCircuit size={14} style={{ color: '#367CFF' }} />
+          <span className="text-sm font-semibold" style={{ color: '#111827' }}>Contexto acumulado</span>
+        </div>
+        <button onClick={onCerrar} style={{ color: '#9CA3AF' }}
+          onMouseEnter={e => e.currentTarget.style.color = '#374151'}
+          onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}>
+          <X size={16} />
+        </button>
+      </div>
+      {/* Body */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+        {temasAprobados.length === 0 ? (
+          <p className="text-xs text-center py-8" style={{ color: '#9CA3AF' }}>
+            No hay temas completados anteriores.<br />El contexto se irá acumulando conforme avances.
+          </p>
+        ) : (
+          <>
+            {/* AI student knowledge summary */}
+            {(() => {
+              const allKeywords = temasAprobados.flatMap(t => (TEMA_KEYWORDS[t.num] || []).slice(0, 3))
+              const summaryByCount = {
+                1: `En este punto el estudiante ha completado el ${TEMA_LABELS[temasAprobados[0].num]}. Conoce los fundamentos del aprendizaje automático, los tres paradigmas principales y el pipeline estándar de un proyecto ML. Puede distinguir sobreajuste de subajuste y tiene experiencia práctica con cuadernos interactivos.`,
+                2: `El estudiante domina los fundamentos del ML y los modelos supervisados de regresión y clasificación. Comprende métricas de evaluación como MSE y F1-score, y ha aplicado algoritmos como KNN y regresión logística. Está listo para abordar métodos más complejos basados en estructuras de árbol.`,
+                3: `El estudiante ha consolidado una base sólida en ML clásico, incluyendo modelos lineales, árboles de decisión y métodos ensemble (Random Forest, XGBoost). Comprende el trade-off sesgo-varianza y sabe evaluar modelos con métricas estándar. Está preparado para explorar arquitecturas de redes neuronales.`,
+                4: `Con cuatro temas completados, el estudiante tiene un perfil robusto: domina ML clásico y ha entrado en el Deep Learning con perceptrones y backpropagation. Comprende funciones de activación y ha entrenado redes básicas. El siguiente paso es consolidar la evaluación y validación rigurosa de modelos complejos.`,
+                5: `El estudiante ha recorrido casi todo el currículo: desde fundamentos hasta redes neuronales, con validación cruzada, curvas ROC y técnicas de regularización. Tiene criterio para seleccionar y comparar modelos. Está en condiciones óptimas para aplicar todo lo aprendido en un proyecto de producción real.`,
+              }
+              const count = Math.min(temasAprobados.length, 5)
+              const summaryText = summaryByCount[count]
+              return (
+                <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #BAD2FF', background: '#F5F8FF' }}>
+                  <div className="flex items-center gap-2 px-3 py-2.5" style={{ borderBottom: '1px solid #BAD2FF', background: '#E7EFFE' }}>
+                    <ProdiMark size={13} />
+                    <span className="text-xs font-semibold" style={{ color: '#0047CC' }}>Qué sabe el estudiante hasta aquí</span>
+                  </div>
+                  <div className="px-3 py-3">
+                    <p className="text-xs leading-relaxed" style={{ color: '#1E3A8A' }}>{summaryText}</p>
+                    <div className="flex flex-wrap gap-1 mt-2.5">
+                      {allKeywords.slice(0, 9).map(kw => (
+                        <span key={kw} className="text-xs px-1.5 py-0.5 rounded" style={{ background: '#DBEAFE', color: '#1D4ED8', fontSize: '10px' }}>{kw}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            })()}
+
+            {/* Per-topic breakdown */}
+            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#9CA3AF', letterSpacing: '0.06em' }}>Temas completados</p>
+            {temasAprobados.map(tema => {
+              const keywords = TEMA_KEYWORDS[tema.num] || []
+              const desc = resumenData?.temasConDescripcion?.find(t => t.numero === tema.num)?.descripcion
+              return (
+                <div key={tema.num} className="rounded-xl p-3 space-y-2" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold" style={{ background: '#E7EFFE', color: '#367CFF', padding: '2px 8px', borderRadius: '6px' }}>T{tema.num}</span>
+                    <span className="text-xs font-semibold truncate" style={{ color: '#111827' }}>{tema.label}</span>
+                  </div>
+                  {desc && <p className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>{desc.slice(0, 120)}…</p>}
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {keywords.map(kw => (
+                      <span key={kw} className="text-xs px-1.5 py-0.5 rounded" style={{ background: '#E7EFFE', color: '#0047CC', fontSize: '10px' }}>{kw}</span>
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+          </>
+        )}
       </div>
     </div>
   )
@@ -1201,6 +1818,30 @@ export default function PantallaCanvas({
   const [dlInstruccionesData, setDlInstruccionesData] = useState({ ...dlIndicacionesDidacticasT1 })
   const [dlGenerandoResumen, setDlGenerandoResumen] = useState(false)
   const [dlGenerandoContenido, setDlGenerandoContenido] = useState(false)
+  // General instrucciones form state — keyed by section ID ('instrucciones-t2' etc.)
+  const [instruccionesData, setInstruccionesData] = useState(() => {
+    const temas = [
+      { id: 'instrucciones-t1', bloques: instruccionesTema1 },
+      { id: 'instrucciones-t2', bloques: instruccionesTema2 },
+      { id: 'instrucciones-t3', bloques: instruccionesTema3 },
+      { id: 'instrucciones-t4', bloques: instruccionesTema4 },
+      { id: 'instrucciones-t5', bloques: instruccionesTema5 },
+      { id: 'instrucciones-t6', bloques: instruccionesTema6 },
+    ]
+    const result = {}
+    temas.forEach(({ id, bloques: bqs }) => {
+      result[id] = {
+        indicacionesIA: bqs[0]?.contenido ?? '',
+        notasPedagogicas: bqs[1]?.contenido ?? '',
+        archivos: [],
+        urls: [''],
+        resumenGenerado: false,
+        generando: false,
+      }
+    })
+    return result
+  })
+  const [panelContextoTemaAbierto, setPanelContextoTemaAbierto] = useState(false)
   const [comentarioActivoBloque, setComentarioActivoBloque] = useState(null)
   const [nuevoComentarioTexto, setNuevoComentarioTexto] = useState('')
   const [nuevoComentarioAnchor, setNuevoComentarioAnchor] = useState(null)
@@ -1213,8 +1854,8 @@ export default function PantallaCanvas({
       const emptyTopicSections = {}
       ;['t1','t2','t3','t4','t5','t6'].forEach(t => {
         emptyTopicSections[t] = []
+        emptyTopicSections[`referencias-${t}`] = []
         emptyTopicSections[`recursos-${t}`] = []
-        emptyTopicSections[`test-${t}`] = []
       })
       return { indice: indiceParaAsignatura, ...emptyTopicSections }
     }
@@ -1380,12 +2021,12 @@ export default function PantallaCanvas({
     if (esAsignaturaNueva) {
       const order = [
         'indice',
-        'instrucciones-t1', 't1', 'recursos-t1',
-        'instrucciones-t2', 't2', 'recursos-t2',
-        'instrucciones-t3', 't3', 'recursos-t3',
-        'instrucciones-t4', 't4', 'recursos-t4',
-        'instrucciones-t5', 't5', 'recursos-t5',
-        'instrucciones-t6', 't6', 'recursos-t6',
+        'instrucciones-t1', 't1', 'referencias-t1', 'recursos-t1',
+        'instrucciones-t2', 't2', 'referencias-t2', 'recursos-t2',
+        'instrucciones-t3', 't3', 'referencias-t3', 'recursos-t3',
+        'instrucciones-t4', 't4', 'referencias-t4', 'recursos-t4',
+        'instrucciones-t5', 't5', 'referencias-t5', 'recursos-t5',
+        'instrucciones-t6', 't6', 'referencias-t6', 'recursos-t6',
       ]
       const idx = order.indexOf(seccionActiva)
       const next = order[idx + 1]
@@ -1618,9 +2259,9 @@ export default function PantallaCanvas({
             <button
               onClick={showSentToast}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-semibold text-white transition-all"
-              style={{ background: '#0A5CF5' }}
-              onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
-              onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
+              style={{ background: '#367CFF' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+              onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
             >
               Enviar a revisión
               <ChevronRight size={13} />
@@ -1884,27 +2525,43 @@ export default function PantallaCanvas({
                   initialScreen={seccion.estado === 'aprobado' || seccionActiva === 'recursos-t1' || seccionActiva === 'recursos-t2' ? 'list' : 'idle'}
                   editable={editable}
                 />
-              ) : esAsignaturaNueva && seccionActiva === 'instrucciones-t1' ? (
-                <SeccionDLInstrucciones
-                  parte={dlInstruccionesParte}
-                  datos={dlInstruccionesData}
-                  onChange={(key, val) => setDlInstruccionesData(prev => ({ ...prev, [key]: val }))}
-                  generandoResumen={dlGenerandoResumen}
-                  dlGenerandoContenido={dlGenerandoContenido}
-                  onGenerarResumen={() => {
-                    setDlGenerandoResumen(true)
-                    setTimeout(() => { setDlGenerandoResumen(false); setDlInstruccionesParte(2) }, 1400)
+              ) : seccionActiva.startsWith('referencias-') ? (
+                <SeccionReferencias temaNum={parseInt(seccionActiva.replace('referencias-t', ''), 10)} />
+              ) : seccionActiva.startsWith('instrucciones-') ? (
+                <SeccionInstruccionesGeneral
+                  key={seccionActiva}
+                  seccionId={seccionActiva}
+                  temaNum={parseInt(seccionActiva.replace('instrucciones-t', ''), 10)}
+                  temaLabel={TEMA_LABELS[parseInt(seccionActiva.replace('instrucciones-t', ''), 10)] ?? null}
+                  datos={instruccionesData[seccionActiva] ?? {
+                    indicacionesIA: '', notasPedagogicas: '', archivos: [], urls: [''], resumenGenerado: false, generando: false
                   }}
-                  onGenerarContenido={() => {
-                    setDlGenerandoContenido(true)
-                    setTimeout(() => {
-                      setBloquesState(prev => ({ ...prev, t1: dlBloquesTema1 }))
-                      setEstadosSeccion(prev => ({ ...prev, t1: prev.t1 ?? 'borrador' }))
-                      setDlGenerandoContenido(false)
-                      setSeccionActiva('t1')
-                    }, 1600)
+                  resumenData={seccionActiva === 'instrucciones-t1' ? dlResumenTema1 : null}
+                  onChange={(key, val) => {
+                    if (key === '_generarResumen') {
+                      setInstruccionesData(prev => ({ ...prev, [seccionActiva]: { ...prev[seccionActiva], generando: true } }))
+                      setTimeout(() => {
+                        setInstruccionesData(prev => ({ ...prev, [seccionActiva]: { ...prev[seccionActiva], generando: false, resumenGenerado: true } }))
+                      }, 1500)
+                    } else if (key === '_editarInstrucciones') {
+                      setEditarResumenWarning(true)
+                    } else if (key === '_generarContenido') {
+                      const tNum = parseInt(seccionActiva.replace('instrucciones-t', ''), 10)
+                      if (tNum === 1) {
+                        setDlGenerandoContenido(true)
+                        setTimeout(() => {
+                          setBloquesState(prev => ({ ...prev, t1: dlBloquesTema1 }))
+                          setEstadosSeccion(prev => ({ ...prev, t1: prev.t1 ?? 'borrador' }))
+                          setDlGenerandoContenido(false)
+                          setSeccionActiva('t1')
+                        }, 1600)
+                      } else {
+                        setSeccionActiva(`t${tNum}`)
+                      }
+                    } else {
+                      setInstruccionesData(prev => ({ ...prev, [seccionActiva]: { ...prev[seccionActiva], [key]: val } }))
+                    }
                   }}
-                  onVolverAInstrucciones={() => setDlInstruccionesParte(1)}
                 />
               ) : seccionActiva === 'indice' && creacionData?.indice ? (
                 <SeccionIndice
@@ -1918,7 +2575,7 @@ export default function PantallaCanvas({
                   }}
                 />
               ) : seccionActiva === 'indice' ? (
-                <SeccionIndiceFija bloques={bloques} />
+                <SeccionIndiceFija bloques={bloques} resumenData={creacionData?.resumen ?? getResumenData(asignaturaData?.nombre)} />
               ) : estadoMostrado === 'bloqueado' ? (
                 <div className="flex flex-col items-center justify-center py-24 text-center">
                   <div
@@ -2167,7 +2824,7 @@ export default function PantallaCanvas({
           {/* Experiencias (disenador only) */}
           {rolActivo === 'disenador' && (
             <button
-              onClick={() => { setEnrichmentPanelAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false) }}
+              onClick={() => { setEnrichmentPanelAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false); setPanelContextoTemaAbierto(false) }}
               className="flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
               style={{ color: enrichmentPanelAbierto ? '#7C3AED' : '#9CA3AF' }}
               onMouseEnter={e => { if (!enrichmentPanelAbierto) e.currentTarget.style.background = '#F1F5F9' }}
@@ -2182,6 +2839,21 @@ export default function PantallaCanvas({
                 )}
               </div>
               <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: enrichmentPanelAbierto ? '600' : '500' }}>Experiencias</span>
+            </button>
+          )}
+
+          {/* Contexto acumulado — visible in instrucciones and temario sections */}
+          {(seccionActiva.startsWith('instrucciones-') || /^t\d+$/.test(seccionActiva)) && (
+            <button
+              onClick={() => { setPanelContextoTemaAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false); setEnrichmentPanelAbierto(false) }}
+              className="flex flex-col items-center gap-1 w-full py-2.5 rounded-lg transition-colors"
+              style={{ color: panelContextoTemaAbierto ? '#367CFF' : '#4B5563', background: panelContextoTemaAbierto ? '#E7EFFE' : 'transparent' }}
+              onMouseEnter={e => { if (!panelContextoTemaAbierto) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
+              onMouseLeave={e => { if (!panelContextoTemaAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#4B5563' } }}
+              title="Contexto acumulado de temas anteriores"
+            >
+              <BrainCircuit size={16} />
+              <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelContextoTemaAbierto ? '700' : '500' }}>Contexto</span>
             </button>
           )}
         </div>
@@ -2537,6 +3209,16 @@ export default function PantallaCanvas({
           </div>
         )}
 
+        {/* Right panel: Contexto acumulado */}
+        {panelContextoTemaAbierto && !comentarioActivoBloque && !panelIAabierto && (
+          <PanelContextoTemas
+            seccionActiva={seccionActiva}
+            SECCION_CFG={SECCION_CONFIG}
+            resumenData={creacionData?.resumen ?? getResumenData(asignaturaData?.nombre)}
+            onCerrar={() => setPanelContextoTemaAbierto(false)}
+          />
+        )}
+
         {/* Right panel: IA */}
         {panelIAabierto && !comentarioActivoBloque && (
           <PanelIA
@@ -2602,14 +3284,18 @@ export default function PantallaCanvas({
                 onClick={() => {
                   setEditarResumenWarning(false)
                   setResumenEditando(true)
-                  setEstadosSeccion(prev => ({ ...prev, resumen: 'borrador' }))
+                  if (seccionActiva.startsWith('instrucciones-')) {
+                    setInstruccionesData(prev => ({ ...prev, [seccionActiva]: { ...prev[seccionActiva], resumenGenerado: false } }))
+                  } else {
+                    setEstadosSeccion(prev => ({ ...prev, resumen: 'borrador' }))
+                  }
                 }}
                 className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
                 style={{ background: '#DC2626' }}
                 onMouseEnter={e => e.currentTarget.style.background = '#B91C1C'}
                 onMouseLeave={e => e.currentTarget.style.background = '#DC2626'}
               >
-                Sí, editar resumen
+                Sí, editar instrucciones
               </button>
             </div>
           </div>

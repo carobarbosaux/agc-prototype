@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, Sparkles, BookOpen, Edit3, ClipboardCheck, FlaskConical, CheckSquare, MessageSquare, X, Plus } from 'lucide-react'
+import { Send, Sparkles, BookOpen, Edit3, ClipboardCheck, FlaskConical, CheckSquare, MessageSquare, X, Plus, ExternalLink } from 'lucide-react'
 import { shortcutsComandos, respuestasIAChatbar } from '../mockData'
 
 const iconMap = {
@@ -16,9 +16,11 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
   const [dropdownFiltrado, setDropdownFiltrado] = useState(shortcutsComandos)
   const [historialVisible, setHistorialVisible] = useState(false)
   const [focused, setFocused] = useState(false)
+  const [conectoresAbierto, setConectoresAbierto] = useState(false)
   const inputRef = useRef(null)
   const dropdownRef = useRef(null)
   const containerRef = useRef(null)
+  const conectoresRef = useRef(null)
 
   const handleChange = (e) => {
     const val = e.target.value
@@ -86,14 +88,18 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
     if (e.key === 'Escape') {
       setDropdownAbierto(false)
       setHistorialVisible(false)
+      setConectoresAbierto(false)
     }
   }
 
-  // Close dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target) && !inputRef.current.contains(e.target)) {
         setDropdownAbierto(false)
+      }
+      if (conectoresRef.current && !conectoresRef.current.contains(e.target)) {
+        setConectoresAbierto(false)
       }
     }
     document.addEventListener('mousedown', handler)
@@ -226,24 +232,63 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
 
         {/* Bottom row: + button (left) + [history badge] + send button (right) */}
         <div className="flex items-center justify-between">
-          {/* Left: + / attach button */}
+          {/* Left: + / connectors button */}
           <div className="flex items-center gap-2">
-            <button
-              className="flex items-center justify-center rounded-[10px] transition-colors"
-              style={{
-                width: 36,
-                height: 36,
-                border: '1px solid transparent',
-                background: 'transparent',
-                color: '#64748B',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.borderColor = '#E2E8F0' }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent' }}
-              title="Adjuntar"
-              onClick={e => e.stopPropagation()}
-            >
-              <Plus size={20} />
-            </button>
+            <div className="relative" ref={conectoresRef}>
+              <button
+                className="flex items-center justify-center rounded-[10px] transition-colors"
+                style={{
+                  width: 36,
+                  height: 36,
+                  border: `1px solid ${conectoresAbierto ? '#BAD2FF' : 'transparent'}`,
+                  background: conectoresAbierto ? '#E7EFFE' : 'transparent',
+                  color: conectoresAbierto ? '#367CFF' : '#64748B',
+                }}
+                onMouseEnter={e => { if (!conectoresAbierto) { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.borderColor = '#E2E8F0' } }}
+                onMouseLeave={e => { if (!conectoresAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent' } }}
+                title="Conectores — adjuntar desde SharePoint o Drive"
+                onClick={e => { e.stopPropagation(); setConectoresAbierto(v => !v) }}
+              >
+                <Plus size={20} />
+              </button>
+              {conectoresAbierto && (
+                <div
+                  className="absolute bottom-full left-0 mb-2 rounded-xl overflow-hidden"
+                  style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', minWidth: '200px', zIndex: 50 }}
+                >
+                  <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
+                    <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#9CA3AF' }}>Conectores</p>
+                  </div>
+                  {[
+                    { id: 'sharepoint', label: 'SharePoint', color: '#0078D4', letter: 'SP' },
+                    { id: 'drive', label: 'Google Drive', color: '#34A853', letter: 'GD' },
+                  ].map(c => (
+                    <button
+                      key={c.id}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setValor(prev => prev + (prev ? ' ' : '') + `[Documento de ${c.label}]`)
+                        setConectoresAbierto(false)
+                        inputRef.current?.focus()
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 text-left transition-colors"
+                      style={{ background: 'transparent' }}
+                      onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '9px' }}>
+                        {c.letter}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium" style={{ color: '#111827' }}>{c.label}</p>
+                        <p className="text-xs" style={{ color: '#10B981' }}>● Conectado</p>
+                      </div>
+                      <ExternalLink size={11} style={{ color: '#CBD5E1' }} />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {chatHistorial.length > 0 && !historialVisible && (
               <button

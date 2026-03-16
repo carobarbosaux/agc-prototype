@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import {
   Sparkles, Check, BookOpen, X, ArrowLeft, Search, ChevronRight, Send,
-  GraduationCap, FileText, Upload, CheckSquare, Square, Info, Paperclip,
+  GraduationCap, FileText, Upload, CheckSquare, Square, Info, Paperclip, Link, Plus,
 } from 'lucide-react'
 import { tagsSugerenciasPorArea } from '../mockData'
 import { ProdiMark } from '../components/ProdiLogo'
@@ -252,6 +252,32 @@ function PasoContextoAcademico({ datos, onChange }) {
         <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Temas o contenidos a tratar</label>
         <textarea value={datos.temasTratar || ''} onChange={e => onChange('temasTratar', e.target.value)}
           placeholder="Ej. Regresión lineal, clasificación, árboles de decisión, redes neuronales, evaluación de modelos…"
+          rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
+          onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
+        />
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Descriptor</label>
+        <textarea value={datos.descriptor || ''} onChange={e => onChange('descriptor', e.target.value)}
+          placeholder="Describe el propósito y alcance de la asignatura…"
+          rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
+          onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
+          onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
+          onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
+          onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
+        />
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Resultados de aprendizaje</label>
+        <textarea value={datos.resultadosAprendizaje || ''} onChange={e => onChange('resultadosAprendizaje', e.target.value)}
+          placeholder="Ej. Al finalizar, el estudiante será capaz de…"
           rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
           style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
           onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
@@ -789,6 +815,7 @@ function PanelIADescriptor({ contexto, onContexto }) {
 
 function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto }) {
   const [archivosSimulados, setArchivosSimulados] = useState([])
+  const [urls, setUrls] = useState([''])
 
   const toggleOpcion = (opcion) => {
     const current = datos.opciones || []
@@ -854,19 +881,18 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
           </label>
           <CtaBtn ctxKey="nivel" label="Sugerir nivel" />
         </div>
-        <select
+        <input
+          type="text"
           value={datos.nivelConocimiento || ''}
           onChange={e => onChange('nivelConocimiento', e.target.value)}
+          placeholder="Ej. Intermedio — familiaridad con Python y estadística básica…"
           className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none"
-          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: datos.nivelConocimiento ? '#334155' : '#94A3B8' }}
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155' }}
           onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
           onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
           onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
           onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
-        >
-          <option value="">Seleccionar nivel…</option>
-          {['Inicial', 'Intermedio', 'Avanzado', 'Experto'].map(o => <option key={o} value={o}>{o}</option>)}
-        </select>
+        />
       </div>
 
       {/* Número de temas */}
@@ -946,11 +972,14 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
         />
       </div>
 
-      {/* Archivos de referencia */}
+      {/* Fuentes y bibliografía */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>
-          Archivos de referencia
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>
+          Fuentes y bibliografía
         </label>
+        <p className="text-xs mb-2" style={{ color: '#9CA3AF' }}>
+          Sube documentos o añade enlaces que la IA tendrá en cuenta para generar el contenido.
+        </p>
         <button
           onClick={handleSimularSubida}
           className="w-full flex flex-col items-center gap-2 px-4 py-5 rounded-xl transition-all"
@@ -961,7 +990,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
           <Upload size={18} style={{ color: '#6B7280' }} />
           <div className="text-center">
             <p className="text-xs font-medium" style={{ color: '#374151' }}>Arrastra archivos aquí o haz clic para subir</p>
-            <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>Bibliografía, documentos, imágenes</p>
+            <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>PDF, Docs, URL — máx. 25 MB</p>
           </div>
         </button>
         {archivosSimulados.length > 0 && (
@@ -977,6 +1006,48 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
             ))}
           </div>
         )}
+        {/* URL inputs */}
+        <div className="mt-3 space-y-2">
+          {urls.map((url, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <div className="flex items-center flex-1 gap-2 px-3 py-2 rounded-[10px]" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF' }}>
+                <Link size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+                <input
+                  type="url"
+                  value={url}
+                  onChange={e => {
+                    const next = urls.map((u, idx) => idx === i ? e.target.value : u)
+                    setUrls(next)
+                  }}
+                  placeholder="https://…"
+                  className="flex-1 text-xs outline-none bg-transparent"
+                  style={{ color: '#374151' }}
+                  onFocus={e => e.currentTarget.parentElement.style.borderColor = '#367CFF'}
+                  onBlur={e => e.currentTarget.parentElement.style.borderColor = '#CBD5E1'}
+                />
+              </div>
+              {urls.length > 1 && (
+                <button
+                  onClick={() => setUrls(prev => prev.length > 1 ? prev.filter((_, idx) => idx !== i) : [''])}
+                  style={{ color: '#9CA3AF', flexShrink: 0 }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+          ))}
+          <button
+            onClick={() => setUrls(prev => [...prev, ''])}
+            className="flex items-center gap-1.5 text-xs font-medium mt-1"
+            style={{ color: '#367CFF' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
+            onMouseLeave={e => e.currentTarget.style.color = '#367CFF'}
+          >
+            <Plus size={13} /> Añadir enlace
+          </button>
+        </div>
       </div>
 
       {/* Opciones de la comisión */}
@@ -1389,9 +1460,9 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
                 <button
                   onClick={() => handlePasoChange(2)}
                   className="flex items-center gap-1.5 px-6 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-                  style={{ background: '#0A5CF5' }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#0039A3'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}>
+                  style={{ background: '#367CFF' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}>
                   Siguiente
                   <ChevronRight size={14} />
                 </button>

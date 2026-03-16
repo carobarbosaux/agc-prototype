@@ -244,8 +244,8 @@ export const pipeline = [
     secciones: [
       { id: 'instrucciones-t1', label: 'Instrucciones didácticas', estado: 'aprobado' },
       { id: 't1', label: 'Temario', estado: 'aprobado' },
-      { id: 'recursos-t1', label: 'Recursos a fondo', estado: 'borrador' },
-      { id: 'test-t1', label: 'Tests', estado: 'borrador' },
+      { id: 'referencias-t1', label: 'Referencias bibliográficas', estado: 'borrador' },
+      { id: 'recursos-t1', label: 'A fondo', estado: 'borrador' },
     ],
   },
   {
@@ -256,8 +256,8 @@ export const pipeline = [
     secciones: [
       { id: 'instrucciones-t2', label: 'Instrucciones didácticas', estado: 'aprobado' },
       { id: 't2', label: 'Temario', estado: 'aprobado' },
-      { id: 'recursos-t2', label: 'Recursos a fondo', estado: 'borrador' },
-      { id: 'test-t2', label: 'Tests', estado: 'bloqueado' },
+      { id: 'referencias-t2', label: 'Referencias bibliográficas', estado: 'revision' },
+      { id: 'recursos-t2', label: 'A fondo', estado: 'revision' },
     ],
   },
   {
@@ -267,9 +267,9 @@ export const pipeline = [
     tipo: 'tema',
     secciones: [
       { id: 'instrucciones-t3', label: 'Instrucciones didácticas', estado: 'aprobado' },
-      { id: 't3', label: 'Temario', estado: 'revision' },
-      { id: 'recursos-t3', label: 'Recursos a fondo', estado: 'bloqueado' },
-      { id: 'test-t3', label: 'Tests', estado: 'bloqueado' },
+      { id: 't3', label: 'Temario', estado: 'comentarios' },
+      { id: 'referencias-t3', label: 'Referencias bibliográficas', estado: 'comentarios' },
+      { id: 'recursos-t3', label: 'A fondo', estado: 'bloqueado' },
     ],
   },
   {
@@ -278,10 +278,10 @@ export const pipeline = [
     labelCorto: 'Redes neuronales básicas',
     tipo: 'tema',
     secciones: [
-      { id: 'instrucciones-t4', label: 'Instrucciones didácticas', estado: 'aprobado' },
-      { id: 't4', label: 'Temario', estado: 'comentarios' },
-      { id: 'recursos-t4', label: 'Recursos a fondo', estado: 'bloqueado' },
-      { id: 'test-t4', label: 'Tests', estado: 'bloqueado' },
+      { id: 'instrucciones-t4', label: 'Instrucciones didácticas', estado: 'bloqueado' },
+      { id: 't4', label: 'Temario', estado: 'bloqueado' },
+      { id: 'referencias-t4', label: 'Referencias bibliográficas', estado: 'bloqueado' },
+      { id: 'recursos-t4', label: 'A fondo', estado: 'bloqueado' },
     ],
   },
   {
@@ -290,10 +290,10 @@ export const pipeline = [
     labelCorto: 'Evaluación y validación de modelos',
     tipo: 'tema',
     secciones: [
-      { id: 'instrucciones-t5', label: 'Instrucciones didácticas', estado: 'aprobado' },
+      { id: 'instrucciones-t5', label: 'Instrucciones didácticas', estado: 'bloqueado' },
       { id: 't5', label: 'Temario', estado: 'bloqueado' },
-      { id: 'recursos-t5', label: 'Recursos a fondo', estado: 'bloqueado' },
-      { id: 'test-t5', label: 'Tests', estado: 'bloqueado' },
+      { id: 'referencias-t5', label: 'Referencias bibliográficas', estado: 'bloqueado' },
+      { id: 'recursos-t5', label: 'A fondo', estado: 'bloqueado' },
     ],
   },
   {
@@ -302,10 +302,10 @@ export const pipeline = [
     labelCorto: 'Proyecto práctico final',
     tipo: 'tema',
     secciones: [
-      { id: 'instrucciones-t6', label: 'Instrucciones didácticas', estado: 'aprobado' },
+      { id: 'instrucciones-t6', label: 'Instrucciones didácticas', estado: 'bloqueado' },
       { id: 't6', label: 'Temario', estado: 'bloqueado' },
-      { id: 'recursos-t6', label: 'Recursos a fondo', estado: 'bloqueado' },
-      { id: 'test-t6', label: 'Tests', estado: 'bloqueado' },
+      { id: 'referencias-t6', label: 'Referencias bibliográficas', estado: 'bloqueado' },
+      { id: 'recursos-t6', label: 'A fondo', estado: 'bloqueado' },
     ],
   },
 ]
