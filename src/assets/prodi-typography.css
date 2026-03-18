@@ -1,0 +1,237 @@
+/* ==========================================================================
+   PRODI DESIGN SYSTEM — Typography Tokens & Utilities
+   Source: Design System / Prodi (Figma)
+   Font: Proeduca Sans
+   
+   Usage:
+     - Import this file globally in your app
+     - Use CSS variables for custom compositions
+     - Use utility classes for rapid prototyping
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. FONT FACE (update src paths to match your project)
+   -------------------------------------------------------------------------- */
+/*
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('../fonts/ProeducaSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('../fonts/ProeducaSans-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('../fonts/ProeducaSans-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+
+/* --------------------------------------------------------------------------
+   2. DESIGN TOKENS (CSS Custom Properties)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Font Family */
+  --prodi-font-family: 'Proeduca Sans', system-ui, -apple-system, sans-serif;
+
+  /* Font Weights */
+  --prodi-fw-regular:  400;
+  --prodi-fw-medium:   500;
+  --prodi-fw-semibold: 600;
+
+  /* Font Sizes */
+  --prodi-fs-h1:       1.875rem; /* 30px */
+  --prodi-fs-h2:       1.75rem;  /* 28px */
+  --prodi-fs-h3:       1.625rem; /* 26px */
+  --prodi-fs-h4:       1.5rem;   /* 24px */
+  --prodi-fs-h5:       1.375rem; /* 22px */
+  --prodi-fs-h6:       1.125rem; /* 18px */
+  --prodi-fs-text-m:   1rem;     /* 16px */
+  --prodi-fs-text-s:   0.875rem; /* 14px */
+  --prodi-fs-text-xs:  0.75rem;  /* 12px */
+  --prodi-fs-footnote: 0.625rem; /* 10px */
+
+  /* Line Heights (recommended — adjust per project) */
+  --prodi-lh-heading:  1.3;
+  --prodi-lh-body:     1.5;
+  --prodi-lh-tight:    1.2;
+
+  /* Letter Spacing — all 0% per spec, but tokenised for overrides */
+  --prodi-ls-default:  0;
+}
+
+/* --------------------------------------------------------------------------
+   3. COMPOSITE TOKENS (font shorthand references)
+   -------------------------------------------------------------------------- */
+
+/* --- Headers ------------------------------------------------------------ */
+.prodi-h1 {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-semibold);
+  font-size: var(--prodi-fs-h1);
+  line-height: var(--prodi-lh-heading);
+  letter-spacing: var(--prodi-ls-default);
+}
+
+.prodi-h2 {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-semibold);
+  font-size: var(--prodi-fs-h2);
+  line-height: var(--prodi-lh-heading);
+  letter-spacing: var(--prodi-ls-default);
+}
+
+.prodi-h3 {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-semibold);
+  font-size: var(--prodi-fs-h3);
+  line-height: var(--prodi-lh-heading);
+  letter-spacing: var(--prodi-ls-default);
+}
+
+.prodi-h4 {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-semibold);
+  font-size: var(--prodi-fs-h4);
+  line-height: var(--prodi-lh-heading);
+  letter-spacing: var(--prodi-ls-default);
+}
+
+.prodi-h5 {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-semibold);
+  font-size: var(--prodi-fs-h5);
+  line-height: var(--prodi-lh-heading);
+  letter-spacing: var(--prodi-ls-default);
+}
+
+.prodi-h6 {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-semibold);
+  font-size: var(--prodi-fs-h6);
+  line-height: var(--prodi-lh-heading);
+  letter-spacing: var(--prodi-ls-default);
+}
+
+/* --- Text M (16px) ------------------------------------------------------ */
+.prodi-text-m-bold {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-semibold);
+  font-size: var(--prodi-fs-text-m);
+  line-height: var(--prodi-lh-body);
+}
+
+.prodi-text-m-medium {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-medium);
+  font-size: var(--prodi-fs-text-m);
+  line-height: var(--prodi-lh-body);
+}
+
+.prodi-text-m-regular {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-regular);
+  font-size: var(--prodi-fs-text-m);
+  line-height: var(--prodi-lh-body);
+}
+
+/* --- Text S (14px) ------------------------------------------------------ */
+.prodi-text-s-bold {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-semibold);
+  font-size: var(--prodi-fs-text-s);
+  line-height: var(--prodi-lh-body);
+}
+
+.prodi-text-s-medium {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-medium);
+  font-size: var(--prodi-fs-text-s);
+  line-height: var(--prodi-lh-body);
+}
+
+.prodi-text-s-regular {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-regular);
+  font-size: var(--prodi-fs-text-s);
+  line-height: var(--prodi-lh-body);
+}
+
+/* --- Text XS (12px) ----------------------------------------------------- */
+.prodi-text-xs-bold {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-semibold);
+  font-size: var(--prodi-fs-text-xs);
+  line-height: var(--prodi-lh-body);
+}
+
+.prodi-text-xs-medium {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-medium);
+  font-size: var(--prodi-fs-text-xs);
+  line-height: var(--prodi-lh-body);
+}
+
+.prodi-text-xs-regular {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-regular);
+  font-size: var(--prodi-fs-text-xs);
+  line-height: var(--prodi-lh-body);
+}
+
+/* --- Footnote (10px) ---------------------------------------------------- */
+.prodi-footnote-bold {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-semibold);
+  font-size: var(--prodi-fs-footnote);
+  line-height: var(--prodi-lh-tight);
+}
+
+.prodi-footnote-medium {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-medium);
+  font-size: var(--prodi-fs-footnote);
+  line-height: var(--prodi-lh-tight);
+}
+
+.prodi-footnote-regular {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-regular);
+  font-size: var(--prodi-fs-footnote);
+  line-height: var(--prodi-lh-tight);
+}
+
+/* --- Forms (aliases — same sizes as Text M / Text S) -------------------- */
+.prodi-form-m-medium {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-medium);
+  font-size: var(--prodi-fs-text-m);
+  line-height: var(--prodi-lh-body);
+}
+.prodi-form-m-regular {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-regular);
+  font-size: var(--prodi-fs-text-m);
+  line-height: var(--prodi-lh-body);
+}
+.prodi-form-s-medium {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-medium);
+  font-size: var(--prodi-fs-text-s);
+  line-height: var(--prodi-lh-body);
+}
+.prodi-form-s-regular {
+  font-family: var(--prodi-font-family);
+  font-weight: var(--prodi-fw-regular);
+  font-size: var(--prodi-fs-text-s);
+  line-height: var(--prodi-lh-body);
+}

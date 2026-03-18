@@ -1,18 +1,28 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, Sparkles, BookOpen, Edit3, ClipboardCheck, FlaskConical, CheckSquare, MessageSquare, X, Plus, ExternalLink, BarChart2, ShieldAlert } from 'lucide-react'
+import { PaperPlaneTilt, Sparkle, BookOpen, PencilSimple, ClipboardText, Flask, CheckSquare, Chat, X, Plus, ChartBar, ShieldWarning } from '@phosphor-icons/react'
 import { shortcutsComandos, respuestasIAChatbar } from '../mockData'
+import Tooltip from './Tooltip'
+
+const SUGERENCIAS = {
+  teams:      ['Resumir comentarios del coordinador', 'Identificar cambios solicitados'],
+  sharepoint: ['Buscar documentación relevante', 'Extraer conceptos clave', 'Verificar alineación con guías'],
+  outlook:    ['Extraer correcciones', 'Detectar puntos críticos'],
+  onedrive:   ['Buscar archivos relacionados', 'Reutilizar contenido previo', 'Resumir documentos', 'Detectar inconsistencias'],
+  canva:      ['Proponer estructura visual', 'Simplificar contenido'],
+  genially:   ['Crear actividad interactiva', 'Proponer experiencia dinámica'],
+}
 
 const iconMap = {
   BookOpen,
-  Edit3,
-  ClipboardCheck,
-  FlaskConical,
+  PencilSimple,
+  ClipboardText,
+  Flask,
   CheckSquare,
-  BarChart2,
-  ShieldAlert,
+  ChartBar,
+  ShieldWarning,
 }
 
-export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHistorial, setChatHistorial, shortcuts, onShortcutAction }) {
+export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHistorial, setChatHistorial, shortcuts, onShortcutAction, conectoresHaciaArriba = false }) {
   const shortcutList = shortcuts ?? shortcutsComandos
   const [valor, setValor] = useState('')
   const [dropdownAbierto, setDropdownAbierto] = useState(false)
@@ -20,10 +30,38 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
   const [historialVisible, setHistorialVisible] = useState(false)
   const [focused, setFocused] = useState(false)
   const [conectoresAbierto, setConectoresAbierto] = useState(false)
+  const [companyKnowledgeOn, setCompanyKnowledgeOn] = useState(false)
+  const [selectedConectores, setSelectedConectores] = useState(new Set())
+  const [sugerenciasOcultas, setSugerenciasOcultas] = useState(false)
   const inputRef = useRef(null)
   const dropdownRef = useRef(null)
   const containerRef = useRef(null)
   const conectoresRef = useRef(null)
+
+  const CK_CHILDREN_IDS = ['teams', 'sharepoint', 'outlook', 'onedrive']
+
+  function toggleCompanyKnowledge() {
+    if (companyKnowledgeOn) {
+      setSelectedConectores(prev => {
+        const next = new Set(prev)
+        CK_CHILDREN_IDS.forEach(id => next.delete(id))
+        return next
+      })
+      setCompanyKnowledgeOn(false)
+    } else {
+      setCompanyKnowledgeOn(true)
+    }
+  }
+
+  function toggleConector(id) {
+    setSelectedConectores(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+    setSugerenciasOcultas(false)
+    setConectoresAbierto(false)
+  }
 
   const handleChange = (e) => {
     const val = e.target.value
@@ -112,9 +150,11 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
   }, [])
 
   const canSend = !!valor.trim()
+  const suggestedChips = [...selectedConectores].flatMap(id => (SUGERENCIAS[id] || []).map(text => ({ text, id })))
+  const hasChips = suggestedChips.length > 0 && !sugerenciasOcultas
 
   return (
-    <div className="w-full relative" style={{ fontFamily: "'Inter', 'Arial', sans-serif", zIndex: 40 }}>
+    <div className="w-full relative" style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif", zIndex: 40 }}>
       {/* Chat history bubble */}
       {historialVisible && chatHistorial.length > 0 && (
         <div
@@ -129,7 +169,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
         >
           <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid #F1F5F9' }}>
             <div className="flex items-center gap-2">
-              <Sparkles size={13} style={{ color: '#367CFF' }} />
+              <Sparkle size={13} style={{ color: '#367CFF' }} />
               <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Asistente AGC</span>
             </div>
             <button
@@ -147,7 +187,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                 {msg.rol === 'ia' && (
                   <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mr-2 mt-0.5"
                     style={{ background: '#E7EFFE' }}>
-                    <Sparkles size={10} style={{ color: '#367CFF' }} />
+                    <Sparkle size={10} style={{ color: '#367CFF' }} />
                   </div>
                 )}
                 <div
@@ -210,11 +250,15 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
       {/* Chatbar container — Figma spec: white bg, #CBD5E1 border, 24px radius, 16px padding */}
       <div
         ref={containerRef}
-        className="w-full flex flex-col gap-4 p-4 rounded-[24px]"
+        className="w-full flex flex-col gap-4 p-4"
         style={{
           background: '#FFFFFF',
-          border: `1px solid ${focused ? '#0A5CF5' : '#CBD5E1'}`,
-          transition: 'border-color 150ms ease',
+          borderStyle: 'solid',
+          borderWidth: '1px',
+          borderColor: focused ? '#0A5CF5' : '#CBD5E1',
+          borderBottomColor: hasChips ? 'transparent' : (focused ? '#0A5CF5' : '#CBD5E1'),
+          borderRadius: hasChips ? '24px 24px 0 0' : '24px',
+          transition: 'border-color 150ms ease, border-radius 150ms ease',
         }}
         onClick={() => inputRef.current?.focus()}
       >
@@ -240,60 +284,139 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
           {/* Left: + / connectors button */}
           <div className="flex items-center gap-2">
             <div className="relative" ref={conectoresRef}>
-              <button
-                className="flex items-center justify-center rounded-[10px] transition-colors"
-                style={{
-                  width: 36,
-                  height: 36,
-                  border: `1px solid ${conectoresAbierto ? '#BAD2FF' : 'transparent'}`,
-                  background: conectoresAbierto ? '#E7EFFE' : 'transparent',
-                  color: conectoresAbierto ? '#367CFF' : '#64748B',
-                }}
-                onMouseEnter={e => { if (!conectoresAbierto) { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.borderColor = '#E2E8F0' } }}
-                onMouseLeave={e => { if (!conectoresAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent' } }}
-                title="Conectores — adjuntar desde SharePoint o Drive"
-                onClick={e => { e.stopPropagation(); setConectoresAbierto(v => !v) }}
-              >
-                <Plus size={20} />
-              </button>
+              <Tooltip text="Conectores" side="top">
+                <button
+                  className="flex items-center justify-center rounded-[10px] transition-colors"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    border: `1px solid ${conectoresAbierto ? '#BAD2FF' : 'transparent'}`,
+                    background: conectoresAbierto ? '#E7EFFE' : 'transparent',
+                    color: conectoresAbierto ? '#367CFF' : '#64748B',
+                  }}
+                  onMouseEnter={e => { if (!conectoresAbierto) { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.borderColor = '#E2E8F0' } }}
+                  onMouseLeave={e => { if (!conectoresAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent' } }}
+                  onClick={e => { e.stopPropagation(); setConectoresAbierto(v => !v) }}
+                >
+                  <Plus size={20} />
+                </button>
+              </Tooltip>
               {conectoresAbierto && (
                 <div
-                  className="absolute bottom-full left-0 mb-2 rounded-xl overflow-hidden"
-                  style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', minWidth: '200px', zIndex: 50 }}
+                  className={`absolute ${conectoresHaciaArriba ? 'bottom-full mb-2' : 'top-full mt-2'} left-0 rounded-xl overflow-hidden`}
+                  style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: conectoresHaciaArriba ? '0 -8px 24px rgba(0,0,0,0.12)' : '0 8px 24px rgba(0,0,0,0.12)', minWidth: '280px', zIndex: 50 }}
                 >
+                  {/* Header */}
                   <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
                     <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#9CA3AF' }}>Conectores</p>
                   </div>
-                  {[
-                    { id: 'sharepoint', label: 'SharePoint', color: '#0078D4', letter: 'SP' },
-                    { id: 'drive', label: 'Google Drive', color: '#34A853', letter: 'GD' },
-                  ].map(c => (
-                    <button
-                      key={c.id}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setValor(prev => prev + (prev ? ' ' : '') + `[Documento de ${c.label}]`)
-                        setConectoresAbierto(false)
-                        inputRef.current?.focus()
-                      }}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 text-left transition-colors"
-                      style={{ background: 'transparent' }}
-                      onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
-                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                    >
-                      <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '9px' }}>
-                        {c.letter}
-                      </div>
+
+                  {/* Section: Company Knowledge */}
+                  <div className="px-3 pt-1.5 pb-1" style={{ borderBottom: '1px solid #F3F4F6' }}>
+                    {/* Parent row — toggle only */}
+                    <div className="flex items-center gap-2.5 py-1">
+                      <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: '#0078D4', fontSize: '7px' }}>CK</div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium" style={{ color: '#111827' }}>{c.label}</p>
-                        <p className="text-xs" style={{ color: '#10B981' }}>● Conectado</p>
+                        <p className="text-xs font-medium" style={{ color: '#111827' }}>Company Knowledge</p>
+                        <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>Fuentes institucionales de tu organización</p>
                       </div>
-                      <ExternalLink size={11} style={{ color: '#CBD5E1' }} />
-                    </button>
-                  ))}
+                      <button
+                        onClick={e => { e.stopPropagation(); toggleCompanyKnowledge() }}
+                        style={{ width: 28, height: 16, borderRadius: 8, background: companyKnowledgeOn ? '#367CFF' : '#D1D5DB', position: 'relative', flexShrink: 0, border: 'none', cursor: 'pointer' }}
+                      >
+                        <span style={{ position: 'absolute', top: 2, left: companyKnowledgeOn ? 14 : 2, width: 12, height: 12, borderRadius: '50%', background: '#FFF', transition: 'left 0.15s' }} />
+                      </button>
+                    </div>
+
+                    {/* Child connectors — clickable selectors */}
+                    <div style={{ opacity: companyKnowledgeOn ? 1 : 0.35, pointerEvents: companyKnowledgeOn ? 'auto' : 'none', transition: 'opacity 0.15s' }}>
+                      {[
+                        { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams', desc: 'Conversaciones y archivos' },
+                        { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint', desc: 'Documentos institucionales' },
+                        { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook', desc: 'Correos y adjuntos' },
+                        { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive', desc: 'Archivos personales' },
+                      ].map(c => {
+                        const active = selectedConectores.has(c.id)
+                        return (
+                          <button
+                            key={c.id}
+                            onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
+                            className="w-full flex items-center gap-2.5 py-1 pl-3 rounded-lg text-left"
+                            style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
+                            onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F8F9FA' }}
+                            onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
+                          >
+                            <div className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '6px' }}>{c.letter}</div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-medium" style={{ color: active ? c.color : '#374151' }}>{c.label}</p>
+                              <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>{c.desc}</p>
+                            </div>
+                            {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
+                          </button>
+                        )
+                      })}
+                    </div>
+
+                    {!companyKnowledgeOn && (
+                      <p className="pb-1 pl-3" style={{ fontSize: '10px', color: '#9CA3AF', fontStyle: 'italic' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
+                    )}
+                  </div>
+
+                  {/* Section: Otros conectores — clickable selectors */}
+                  <div className="px-3 pt-1.5 pb-2">
+                    {[
+                      { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva', desc: 'Diseños y recursos visuales' },
+                      { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially', desc: 'Contenidos interactivos' },
+                    ].map(c => {
+                      const active = selectedConectores.has(c.id)
+                      return (
+                        <button
+                          key={c.id}
+                          onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
+                          className="w-full flex items-center gap-2.5 py-1 rounded-lg text-left"
+                          style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
+                          onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F8F9FA' }}
+                          onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
+                        >
+                          <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '7px' }}>{c.letter}</div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-medium" style={{ color: active ? c.color : '#111827' }}>{c.label}</p>
+                            <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>{c.desc}</p>
+                          </div>
+                          {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
+                        </button>
+                      )
+                    })}
+                  </div>
                 </div>
               )}
             </div>
+
+            {/* Connector tags — inline, right of + button */}
+            {[...selectedConectores].map(id => {
+              const all = [
+                { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams' },
+                { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint' },
+                { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook' },
+                { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive' },
+                { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva' },
+                { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially' },
+              ]
+              const c = all.find(x => x.id === id)
+              if (!c) return null
+              return (
+                <button
+                  key={id}
+                  onClick={e => { e.stopPropagation(); setSelectedConectores(prev => { const n = new Set(prev); n.delete(id); return n }) }}
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                  style={{ background: c.color + '18', color: c.color, border: `1px solid ${c.color}40` }}
+                >
+                  <span style={{ fontSize: '9px', fontWeight: 700 }}>{c.letter}</span>
+                  {c.label}
+                  <X size={10} />
+                </button>
+              )
+            })}
 
             {chatHistorial.length > 0 && !historialVisible && (
               <button
@@ -303,7 +426,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                 onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
                 onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
               >
-                <MessageSquare size={11} />
+                <Chat size={11} />
                 {chatHistorial.length}
               </button>
             )}
@@ -324,10 +447,42 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
             onMouseEnter={e => { if (canSend) e.currentTarget.style.background = '#0039A3' }}
             onMouseLeave={e => { if (canSend) e.currentTarget.style.background = '#0A5CF5' }}
           >
-            <Send size={16} style={{ color: canSend ? '#FFFFFF' : '#9CA3AF' }} />
+            <PaperPlaneTilt size={16} style={{ color: canSend ? '#FFFFFF' : '#9CA3AF' }} />
           </button>
         </div>
       </div>
+
+      {/* Suggested prompts — attached below chatbar, floats over content */}
+      {hasChips && (
+          <div
+            className="absolute left-0 right-0 overflow-hidden"
+            style={{
+              top: '100%',
+              background: '#FFFFFF',
+              border: `1px solid ${focused ? '#0A5CF5' : '#CBD5E1'}`,
+              borderTop: '1px solid #F1F5F9',
+              borderRadius: '0 0 24px 24px',
+              boxShadow: '0 8px 20px rgba(0,0,0,0.07)',
+              zIndex: 30,
+            }}
+          >
+            <div className="flex items-center gap-1.5 px-4 py-2.5 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+              <Sparkle size={11} style={{ color: '#BAD2FF', flexShrink: 0 }} />
+              {suggestedChips.map(({ text }, i) => (
+                <button
+                  key={i}
+                  onClick={() => { setValor(text); setSugerenciasOcultas(true); inputRef.current?.focus() }}
+                  className="flex-shrink-0 px-2.5 py-1 rounded-full text-xs whitespace-nowrap"
+                  style={{ background: '#F1F5F9', color: '#374151', border: '1px solid #E2E8F0' }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.borderColor = '#BAD2FF'; e.currentTarget.style.color = '#367CFF' }}
+                  onMouseLeave={e => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.borderColor = '#E2E8F0'; e.currentTarget.style.color = '#374151' }}
+                >
+                  {text}
+                </button>
+              ))}
+            </div>
+          </div>
+      )}
     </div>
   )
 }

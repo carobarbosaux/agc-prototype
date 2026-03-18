@@ -16,7 +16,7 @@ export default function EstadoBadge({ estado, size = 'md' }) {
         background: cfg.bg,
         color: cfg.text,
         border: `1px solid ${cfg.border}`,
-        fontFamily: "'Arial', sans-serif",
+        fontFamily: "'Proeduca Sans', system-ui, sans-serif",
         letterSpacing: '0.01em',
       }}
     >

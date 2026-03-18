@@ -1,4 +1,4 @@
-import { Bell, ChevronRight, ChevronDown } from 'lucide-react'
+import { Bell, CaretRight, CaretDown } from '@phosphor-icons/react'
 import { useState } from 'react'
 import { roles } from '../mockData'
 import { ProdiWordmark } from './ProdiLogo'
@@ -22,7 +22,7 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
         height: '56px',
         background: '#FFFFFF',
         borderBottom: '1px solid #E5E7EB',
-        fontFamily: "'Inter', 'Arial', sans-serif",
+        fontFamily: "'Proeduca Sans', system-ui, sans-serif",
       }}
     >
       {/* Left: Logo + Breadcrumb */}
@@ -43,7 +43,7 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
         <nav className="flex items-center gap-1">
           {breadcrumb.map((item, i) => (
             <div key={i} className="flex items-center gap-1">
-              {i > 0 && <ChevronRight size={12} className="text-slate-300" />}
+              {i > 0 && <CaretRight size={12} className="text-slate-300" />}
               {item.onClick ? (
                 <button
                   onClick={item.onClick}
@@ -73,11 +73,11 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
               background: rc.bg,
               color: rc.text,
               border: `1px solid ${rc.border}`,
-              fontFamily: "'Arial', sans-serif",
+              fontFamily: "'Proeduca Sans', system-ui, sans-serif",
             }}
           >
             <span>{rolActualLabel}</span>
-            <ChevronDown size={12} />
+            <CaretDown size={12} />
           </button>
           {rolMenuAbierto && (
             <div
@@ -95,7 +95,7 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
                     setRolMenuAbierto(false)
                   }}
                   className="w-full text-left px-3 py-2 transition-colors flex items-center justify-between"
-                  style={{ fontFamily: "'Inter', 'Arial', sans-serif" }}
+                  style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                   onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                 >

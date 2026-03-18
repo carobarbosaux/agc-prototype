@@ -15,7 +15,7 @@ export default function GravedadTag({ gravedad, size = 'md' }) {
         background: cfg.bg,
         color: cfg.color,
         border: `1px solid ${cfg.border}`,
-        fontFamily: "'Arial', sans-serif",
+        fontFamily: "'Proeduca Sans', system-ui, sans-serif",
       }}
     >
       {cfg.label}

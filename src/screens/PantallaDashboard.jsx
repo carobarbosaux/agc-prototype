@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ArrowRight, AlertCircle, Clock, Plus, BookOpen, Lock, Filter, Globe, CheckCircle, XCircle, AlertTriangle, GitBranch, ChevronRight, X } from 'lucide-react'
+import { ArrowRight, Warning, Clock, Plus, BookOpen, Lock, Funnel, Globe, CheckCircle, XCircle, GitBranch, CaretRight, X, CaretRight as ChevronRight } from '@phosphor-icons/react'
 import StatusIndicator, { toStatusKey } from '../components/StatusIndicator'
 import Chatbar from '../components/Chatbar'
 import CalidadContenidosCards from '../components/CalidadContenidosCards'
@@ -65,7 +65,7 @@ function SidebarTitulaciones({ titulaciones, seleccionada, onSelect }) {
                 >
                   {t.nombre}
                 </p>
-                <p className="text-xs mt-0.5" style={{ color: '#CBD5E1', fontFamily: "'Arial', sans-serif" }}>
+                <p className="text-xs mt-0.5" style={{ color: '#CBD5E1', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
                   {t.codigo} · {t.asignaturas_count} asig.
                 </p>
               </div>
@@ -484,7 +484,7 @@ const calcStatus = pct => pct <= 60 ? 'healthy' : pct <= 90 ? 'approaching' : pc
 const STATUS_CONFIG = {
   healthy:    { label: 'Saludable',  bg: '#DCFCE7', color: '#16A34A', border: '#BBF7D0', dot: '#16A34A', Icon: CheckCircle },
   approaching:{ label: 'Próximo',    bg: '#FFFBEB', color: '#D97706', border: '#FDE68A', dot: '#D97706', Icon: Clock },
-  critical:   { label: 'Crítico',    bg: '#FEF2F2', color: '#DC2626', border: '#FECACA', dot: '#DC2626', Icon: AlertTriangle },
+  critical:   { label: 'Crítico',    bg: '#FEF2F2', color: '#DC2626', border: '#FECACA', dot: '#DC2626', Icon: Warning },
   overdue:    { label: 'Caducado',   bg: '#F5F3FF', color: '#7C3AED', border: '#DDD6FE', dot: '#7C3AED', Icon: XCircle },
 }
 
@@ -735,7 +735,7 @@ function TrackingDashboard({ onNavigate }) {
                     const ac = ALARM_CONFIG[a]
                     return (
                       <div key={a} className="flex items-center gap-2 rounded-lg px-3 py-2" style={{ background: '#F8F9FA', border: `1px solid ${ac?.color}22` }}>
-                        <AlertTriangle size={11} style={{ color: ac?.color, flexShrink: 0 }} />
+                        <Warning size={11} style={{ color: ac?.color, flexShrink: 0 }} />
                         <span className="text-xs" style={{ color: ac?.color }}>{ac?.label}</span>
                       </div>
                     )
@@ -814,7 +814,7 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#F8F9FA', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+    <div className="min-h-screen" style={{ background: '#F8F9FA', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
       {onboardingVisible && (
         <OnboardingProdi onClose={() => setOnboardingVisible(false)} />
       )}

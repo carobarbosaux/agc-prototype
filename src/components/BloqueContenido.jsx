@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
-import { ZoomIn, Minimize2, RefreshCw, Search, BookMarked, MessageSquare, StickyNote, MessageCircle, ArrowUpRight, Bold, Italic, Quote, List, ListOrdered } from 'lucide-react'
+import { MagnifyingGlassPlus, CornersIn, ArrowsClockwise, MagnifyingGlass, BookmarkSimple, Note, Chat, ArrowUpRight, TextB, TextItalic, Quotes, ListBullets, ListNumbers, TextAa } from '@phosphor-icons/react'
 import { gravedadConfig } from '../mockData'
-import { ProdiMark } from './ProdiLogo'
+import Tooltip from './Tooltip'
 
 // ─── Block type config ─────────────────────────────────────────────────────────
 
@@ -34,9 +34,11 @@ export default function BloqueContenido({
   const [toolbarVisible, setToolbarVisible] = useState(false)
   const [toolbarPos, setToolbarPos] = useState({ top: 0, left: 0 })
   const [selectedText, setSelectedText] = useState('')
+  const [menuFormato, setMenuFormato] = useState(false)
   const contenedorRef = useRef(null)
   const toolbarRef = useRef(null)
   const editableRef = useRef(null)
+  const menuFormatoRef = useRef(null)
 
   const tipo = bloque.tipo || 'p'
 
@@ -172,6 +174,9 @@ export default function BloqueContenido({
     if (toolbarRef.current && !toolbarRef.current.contains(e.target)) {
       setToolbarVisible(false)
     }
+    if (menuFormatoRef.current && !menuFormatoRef.current.contains(e.target)) {
+      setMenuFormato(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -199,20 +204,19 @@ export default function BloqueContenido({
 
   const toolbarActionsIA = editable
     ? [
-        { label: 'Buscar fuentes bibliográficas', icon: BookMarked },
-        { label: 'Expandir', icon: ZoomIn },
-        { label: 'Resumir', icon: Minimize2 },
-        { label: 'Regenerar', icon: RefreshCw },
-        { label: 'Realizar investigación profunda', icon: Search },
-        { label: 'Llevar al chat', icon: ArrowUpRight },
+        { label: 'Buscar fuentes bibliográficas', icon: BookmarkSimple },
+        { label: 'Expandir', icon: MagnifyingGlassPlus },
+        { label: 'Resumir', icon: CornersIn },
+        { label: 'Regenerar', icon: ArrowsClockwise },
+        { label: 'Realizar investigación profunda', icon: MagnifyingGlass },
       ]
-    : [
-        { label: 'Llevar al chat', icon: ArrowUpRight },
-      ]
+    : []
+
+  const toolbarActionsChat = [{ label: 'Llevar al chat', icon: ArrowUpRight }]
 
   const toolbarActionsAnotaciones = [
-    { label: 'Añadir comentario', icon: MessageSquare },
-    { label: 'Añadir nota', icon: StickyNote },
+    { label: 'Añadir comentario', icon: Chat },
+    { label: 'Añadir nota', icon: Note },
   ]
 
   // ── Content render ─────────────────────────────────────────────────────────────
@@ -275,7 +279,7 @@ export default function BloqueContenido({
       className="group relative"
       ref={contenedorRef}
       onMouseUp={handleMouseUp}
-      style={{ fontFamily: "'Inter', 'Arial', sans-serif" }}
+style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
     >
       {/* Left accent for critical comments */}
       {tieneComentarioCritico && (
@@ -292,6 +296,114 @@ export default function BloqueContenido({
       >
         {index + 1}
       </div>
+
+      {/* ── Block format handle (author only, left gutter) ── */}
+      {editable && (
+        <div
+          ref={menuFormatoRef}
+          style={{ position: 'absolute', left: '-76px', top: '0px', zIndex: 40 }}
+        >
+          <Tooltip text="Editar formato" side="bottom">
+            <button
+              onMouseDown={e => e.preventDefault()}
+              onClick={() => setMenuFormato(prev => !prev)}
+              className={menuFormato ? '' : 'opacity-0 group-hover:opacity-100 transition-opacity'}
+              style={{
+                height: '26px',
+                padding: '0 8px',
+                display: 'flex', alignItems: 'center', gap: '5px',
+                borderRadius: '7px',
+                border: '1px solid #0A5CF5',
+                background: menuFormato ? '#dbeafe' : '#F0F6FF',
+                color: '#0A5CF5', cursor: 'pointer',
+                fontSize: '11px', fontWeight: '600', whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#dbeafe' }}
+              onMouseLeave={e => { e.currentTarget.style.background = menuFormato ? '#dbeafe' : '#F0F6FF' }}
+            >
+              <TextAa size={14} weight="bold" />
+            </button>
+          </Tooltip>
+
+          {menuFormato && (
+            <div
+              className="animate-fade-in"
+              style={{
+                position: 'absolute', top: '0', left: '60px', zIndex: 50,
+                background: '#FFFFFF', border: '1px solid #E5E7EB',
+                borderRadius: '8px', boxShadow: '0 8px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)',
+                padding: '5px', width: '170px',
+              }}
+            >
+              <p style={{ fontSize: '10px', fontWeight: '600', color: '#9CA3AF', padding: '2px 6px 4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Tipo de bloque
+              </p>
+
+              {TIPO_ORDER.map(t => {
+                const conf = TIPO_CONFIG[t]
+                const active = tipo === t
+                return (
+                  <button
+                    key={t}
+                    title={conf.title}
+                    onMouseDown={e => e.preventDefault()}
+                    onClick={() => { handleTipoChange(t); setMenuFormato(false) }}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '8px',
+                      width: '100%', padding: '5px 8px', borderRadius: '5px',
+                      fontSize: '12px', background: active ? '#E7EFFE' : 'transparent',
+                      color: active ? '#367CFF' : '#374151',
+                      fontWeight: active ? '600' : '400',
+                      textAlign: 'left', cursor: 'pointer', border: 'none',
+                    }}
+                    onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F3F4F6' }}
+                    onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
+                  >
+                    <span style={{
+                      minWidth: '22px', height: '18px',
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '10px', fontWeight: '700', borderRadius: '3px',
+                      background: active ? '#367CFF' : '#F3F4F6',
+                      color: active ? '#FFFFFF' : '#6B7280', flexShrink: 0,
+                    }}>
+                      {t === 'ul' ? <ListBullets size={10} />
+                        : t === 'ol' ? <ListNumbers size={10} />
+                        : t === 'quote' ? <Quotes size={9} />
+                        : conf.label}
+                    </span>
+                    {conf.title}
+                  </button>
+                )
+              })}
+
+              <div style={{ height: '1px', background: '#F3F4F6', margin: '4px 0' }} />
+
+              <div style={{ display: 'flex', gap: '4px', padding: '2px 4px' }}>
+                <Tooltip text="Negrita">
+                  <button
+                    onMouseDown={e => { e.preventDefault(); applyMark('bold'); setMenuFormato(false) }}
+                    style={{ width: '28px', height: '28px', borderRadius: '5px', background: '#F3F4F6', color: '#374151', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer' }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+                    onMouseLeave={e => e.currentTarget.style.background = '#F3F4F6'}
+                  >
+                    <TextB size={13} />
+                  </button>
+                </Tooltip>
+                <Tooltip text="Cursiva">
+                  <button
+                    onMouseDown={e => { e.preventDefault(); applyMark('italic'); setMenuFormato(false) }}
+                    style={{ width: '28px', height: '28px', borderRadius: '5px', background: '#F3F4F6', color: '#374151', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer' }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+                    onMouseLeave={e => e.currentTarget.style.background = '#F3F4F6'}
+                  >
+                    <TextItalic size={13} />
+                  </button>
+                </Tooltip>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Comment badge in right gutter */}
       {comentariosActivos.length > 0 && (
@@ -312,7 +424,7 @@ export default function BloqueContenido({
           }}
           title={`${comentariosActivos.length} comentario${comentariosActivos.length > 1 ? 's' : ''}`}
         >
-          <MessageCircle size={10} />
+          <Chat size={10} />
           {comentariosActivos.length}
         </button>
       )}
@@ -346,113 +458,100 @@ export default function BloqueContenido({
             top: `${toolbarPos.top}px`,
             left: `${Math.max(0, toolbarPos.left)}px`,
             transform: 'translateY(calc(-100% - 8px))',
-            width: editable ? '220px' : '180px',
-            background: '#FFFFFF',
-            border: '1px solid #E5E7EB',
-            borderRadius: '8px',
-            boxShadow: '0 8px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)',
-            overflow: 'hidden',
+            width: 200,
+            paddingTop: 10,
+            paddingBottom: 4,
+            paddingLeft: 8,
+            paddingRight: 8,
+            background: 'white',
+            borderRadius: 10,
+            outline: '1px #DCDFEB solid',
+            outlineOffset: '-1px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 6,
           }}
         >
-          {/* ── Format section (author only) ──────────────────────── */}
-          {editable && (
+          {/* ── IA section ──────────────────────────────────────────── */}
+          {toolbarActionsIA.length > 0 && (
             <>
-              <div style={{ padding: '6px 6px 4px' }}>
-                {/* Block type pills */}
-                <div className="flex items-center gap-1 flex-wrap mb-2">
-                  {TIPO_ORDER.map(t => {
-                    const conf = TIPO_CONFIG[t]
-                    const active = tipo === t
-                    return (
-                      <button
-                        key={t}
-                        title={conf.title}
-                        onMouseDown={e => e.preventDefault()}
-                        onClick={() => handleTipoChange(t)}
-                        className="flex items-center justify-center rounded transition-colors"
-                        style={{
-                          minWidth: '24px',
-                          height: '24px',
-                          padding: '0 5px',
-                          fontSize: '11px',
-                          fontWeight: '700',
-                          background: active ? '#367CFF' : '#F3F4F6',
-                          color: active ? '#FFFFFF' : '#374151',
-                        }}
-                        onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#E5E7EB' }}
-                        onMouseLeave={e => { if (!active) e.currentTarget.style.background = '#F3F4F6' }}
-                      >
-                        {t === 'ul'
-                          ? <List size={11} />
-                          : t === 'ol'
-                          ? <ListOrdered size={11} />
-                          : t === 'quote'
-                          ? <Quote size={10} />
-                          : conf.label}
-                      </button>
-                    )
-                  })}
-                </div>
-
-                {/* Inline marks row */}
-                <div className="flex items-center gap-1">
-                  <button
-                    title="Negrita"
-                    onMouseDown={e => { e.preventDefault(); applyMark('bold') }}
-                    className="flex items-center justify-center rounded transition-colors"
-                    style={{ width: '24px', height: '24px', background: '#F3F4F6', color: '#374151' }}
-                    onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
-                    onMouseLeave={e => e.currentTarget.style.background = '#F3F4F6'}
-                  >
-                    <Bold size={11} />
-                  </button>
-                  <button
-                    title="Cursiva"
-                    onMouseDown={e => { e.preventDefault(); applyMark('italic') }}
-                    className="flex items-center justify-center rounded transition-colors"
-                    style={{ width: '24px', height: '24px', background: '#F3F4F6', color: '#374151' }}
-                    onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
-                    onMouseLeave={e => e.currentTarget.style.background = '#F3F4F6'}
-                  >
-                    <Italic size={11} />
-                  </button>
-                </div>
+              <div style={{ paddingLeft: 8, paddingRight: 8, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '16px', background: 'linear-gradient(90deg, #A956D5 0%, #066EE0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                  Herramientas IA
+                </span>
               </div>
-
-              {/* Separator */}
-              <div style={{ height: '1px', background: '#F3F4F6' }} />
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {toolbarActionsIA.map(({ label, icon: Icon }) => (
+                  <button
+                    key={label}
+                    onMouseDown={e => e.preventDefault()}
+                    onClick={() => {
+                      const texto = selectedText
+                      setToolbarVisible(false)
+                      setSelectedText('')
+                      window.getSelection()?.removeAllRanges()
+                      if (texto && onAccionIA) onAccionIA(texto, label, bloque)
+                    }}
+                    style={{
+                      paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6,
+                      borderRadius: 6,
+                      border: 'none',
+                      background: 'transparent',
+                      display: 'inline-flex', alignItems: 'center', gap: 8,
+                      cursor: 'pointer',
+                      width: '100%',
+                      textAlign: 'left',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = '#F3F4F6' }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+                  >
+                    <Icon size={20} style={{ color: '#566077', flexShrink: 0 }} />
+                    <span style={{ color: '#566077', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }}>
+                      {label}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </>
           )}
 
-          {/* ── IA + Annotation actions ──────────────────────────────── */}
-          <div style={{ padding: '3px' }}>
-            {editable && (
-              <div className="px-2 pt-1.5 pb-0.5 flex items-center gap-1.5">
-                <ProdiMark size={14} />
-                <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
-                  Asistente de contenidos
-                </p>
-              </div>
-            )}
-            {[...toolbarActionsIA, ...toolbarActionsAnotaciones].map(({ label, icon: Icon }) => (
-              <button
-                key={label}
-                onMouseDown={e => e.preventDefault()}
-                onClick={() => {
-                  const texto = selectedText
-                  setToolbarVisible(false)
-                  setSelectedText('')
-                  window.getSelection()?.removeAllRanges()
-                  if (texto && onAccionIA) onAccionIA(texto, label, bloque)
-                }}
-                className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs transition-colors text-left"
-                style={{ color: '#374151' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-              >
-                <Icon size={13} style={{ color: '#6B7280', flexShrink: 0 }} />
-                <span>{label}</span>
-              </button>
+          {/* ── Chat + annotations section ──────────────────────────── */}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {[...toolbarActionsChat, ...toolbarActionsAnotaciones].map(({ label, icon: Icon }, idx) => (
+              <>
+                <button
+                  key={label}
+                  onMouseDown={e => e.preventDefault()}
+                  onClick={() => {
+                    const texto = selectedText
+                    setToolbarVisible(false)
+                    setSelectedText('')
+                    window.getSelection()?.removeAllRanges()
+                    if (texto && onAccionIA) onAccionIA(texto, label, bloque)
+                  }}
+                  style={{
+                    paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6,
+                    borderRadius: 6,
+                    border: 'none',
+                    background: 'transparent',
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    cursor: 'pointer',
+                    width: '100%',
+                    textAlign: 'left',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#F3F4F6' }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+                >
+                  <Icon size={20} style={{ color: '#566077', flexShrink: 0 }} />
+                  <span style={{ color: '#566077', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }}>
+                    {label}
+                  </span>
+                </button>
+                {idx === toolbarActionsChat.length - 1 && (
+                  <div key="sep" style={{ height: 1, background: '#DCDFEB', marginLeft: 8, marginRight: 8, marginTop: 2, marginBottom: 2 }} />
+                )}
+              </>
             ))}
           </div>
         </div>

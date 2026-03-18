@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import {
-  Sparkles, X, ChevronRight, ChevronLeft,
-  MessageSquare, StickyNote, Expand, RotateCcw,
+  Sparkle, X, CaretRight, CaretLeft,
+  Chat, Note, ArrowsOut, ArrowCounterClockwise,
   BookOpen, Microscope, ArrowUpRight, Check,
-} from 'lucide-react'
+} from '@phosphor-icons/react'
 import { onboardingSlides } from '../data/onboardingProdiData'
 import { ProdiMark, ProdiWordmark } from './ProdiLogo'
 
@@ -20,7 +20,7 @@ function VisualEditorZoom() {
           <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#4ADE80' }} />
           <div className="flex-1 mx-3 h-5 rounded-md" style={{ background: '#F1F5F9' }} />
           <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-            <Sparkles size={11} style={{ color: '#367CFF' }} />
+            <Sparkle size={11} style={{ color: '#367CFF' }} />
           </div>
         </div>
         {/* Content mockup */}
@@ -68,7 +68,7 @@ function VisualCanvasOverview() {
             <div className="h-3 w-full rounded-md" style={{ background: '#F8F9FA' }} />
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
               style={{ background: '#E7EFFE', color: '#0047CC', border: '1px solid #BAD2FF' }}>
-              <Sparkles size={10} style={{ color: '#367CFF' }} />
+              <Sparkle size={10} style={{ color: '#367CFF' }} />
               Generar contenido
             </div>
           </div>
@@ -89,9 +89,9 @@ function VisualContextualSelection() {
   }, [])
 
   const actions = [
-    { icon: RotateCcw, label: 'Corregir redacción', color: '#367CFF' },
-    { icon: Expand, label: 'Expandir o resumir', color: '#367CFF' },
-    { icon: Sparkles, label: 'Regenerar texto', color: '#7C3AED' },
+    { icon: ArrowCounterClockwise, label: 'Corregir redacción', color: '#367CFF' },
+    { icon: ArrowsOut, label: 'Expandir o resumir', color: '#367CFF' },
+    { icon: Sparkle, label: 'Regenerar texto', color: '#7C3AED' },
     { icon: BookOpen, label: 'Buscar bibliografía', color: '#059669' },
     { icon: Microscope, label: 'Deep research', color: '#D97706' },
   ]
@@ -112,9 +112,9 @@ function VisualContextualSelection() {
             <div className="absolute left-4 -top-10 flex items-center gap-1 px-2 py-1.5 rounded-lg"
               style={{ background: '#1A1A1A', boxShadow: '0 4px 16px rgba(0,0,0,0.2)', animation: 'fadeInUp 0.25s ease' }}>
               {[
-                { icon: Sparkles, label: 'IA' },
-                { icon: MessageSquare, label: 'Comentar' },
-                { icon: StickyNote, label: 'Nota' },
+                { icon: Sparkle, label: 'IA' },
+                { icon: Chat, label: 'Comentar' },
+                { icon: Note, label: 'Nota' },
               ].map(({ icon: Icon, label }) => (
                 <div key={label} className="flex items-center gap-1 px-2 py-1 rounded-md"
                   style={{ color: '#E5E7EB' }}>
@@ -162,7 +162,7 @@ function VisualSidePanel() {
           <div className="p-3 space-y-2" style={{ background: '#FFFFFF' }}>
             <div className="flex items-start gap-2">
               <div className="w-4 h-4 rounded-md flex-shrink-0 flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-                <Sparkles size={7} style={{ color: '#367CFF' }} />
+                <Sparkle size={7} style={{ color: '#367CFF' }} />
               </div>
               <div className="px-2.5 py-1.5 rounded-xl text-xs leading-relaxed" style={{ background: '#F8F9FA', color: '#374151', maxWidth: '140px' }}>
                 ¿En qué puedo ayudarte hoy?
@@ -186,14 +186,14 @@ function VisualSidePanel() {
         {/* Notes + Comments */}
         <div className="flex gap-2">
           <div className="flex-1 rounded-xl p-2.5 flex items-start gap-2" style={{ background: '#FFFBEB', border: '1px solid #FDE68A' }}>
-            <StickyNote size={11} style={{ color: '#CA8A04', flexShrink: 0, marginTop: '1px' }} />
+            <Note size={11} style={{ color: '#CA8A04', flexShrink: 0, marginTop: '1px' }} />
             <div>
               <p className="text-xs font-semibold" style={{ color: '#92400E' }}>Nota</p>
               <p className="text-xs leading-snug mt-0.5" style={{ color: '#78350F' }}>Revisar con más ejemplos</p>
             </div>
           </div>
           <div className="flex-1 rounded-xl p-2.5 flex items-start gap-2" style={{ background: '#EFF6FF', border: '1px solid #BFDBFE' }}>
-            <MessageSquare size={11} style={{ color: '#2563EB', flexShrink: 0, marginTop: '1px' }} />
+            <Chat size={11} style={{ color: '#2563EB', flexShrink: 0, marginTop: '1px' }} />
             <div>
               <p className="text-xs font-semibold" style={{ color: '#1E40AF' }}>Comentario</p>
               <p className="text-xs leading-snug mt-0.5" style={{ color: '#1E3A8A' }}>¿Ampliamos el 2.3?</p>
@@ -433,7 +433,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
               onMouseEnter={e => { if (!isFirst) e.currentTarget.style.background = '#E5E7EB' }}
               onMouseLeave={e => { if (!isFirst) e.currentTarget.style.background = '#F1F5F9' }}
             >
-              <ChevronLeft size={15} />
+              <CaretLeft size={15} />
               Anterior
             </button>
 
@@ -456,7 +456,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
                 onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
               >
                 Siguiente
-                <ChevronRight size={15} />
+                <CaretRight size={15} />
               </button>
             )}
           </div>

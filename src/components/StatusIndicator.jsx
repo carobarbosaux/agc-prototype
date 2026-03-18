@@ -1,4 +1,4 @@
-import { Clock, Pencil, Eye, CheckCircle, Lock } from 'lucide-react'
+import { Clock, Pencil, Eye, CheckCircle, Lock } from '@phosphor-icons/react'
 import { useState } from 'react'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
@@ -138,7 +138,7 @@ export default function StatusIndicator({
           letterSpacing: '0.01em',
           background: cfg.bg,
           color: cfg.color,
-          fontFamily: "'Inter', 'Arial', sans-serif",
+          fontFamily: "'Proeduca Sans', system-ui, sans-serif",
           '--tw-ring-color': cfg.color + '44',
         }}
       >

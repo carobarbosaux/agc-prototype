@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, Sparkles, BookOpen, Edit3, ClipboardCheck, FlaskConical, CheckSquare } from 'lucide-react'
+import { Bell, CaretDown, BookOpen, PencilSimple, ClipboardText, Flask, CheckSquare, ArrowRight } from '@phosphor-icons/react'
 import { useState } from 'react'
 import { roles } from '../mockData'
 import Chatbar from '../components/Chatbar'
@@ -17,7 +17,7 @@ const herramientas = [
     id: 'actividades',
     label: 'Diseñador de Actividades',
     descripcion: 'Genera actividades de aprendizaje adaptadas a los objetivos didácticos de tu asignatura.',
-    icon: Edit3,
+    icon: PencilSimple,
     activa: false,
     clickable: false,
   },
@@ -25,7 +25,7 @@ const herramientas = [
     id: 'rubricas',
     label: 'Mejora de Rúbricas',
     descripcion: 'Optimiza y refina criterios de evaluación con asistencia inteligente.',
-    icon: ClipboardCheck,
+    icon: ClipboardText,
     activa: false,
     clickable: false,
   },
@@ -33,7 +33,7 @@ const herramientas = [
     id: 'tests',
     label: 'Generador de Tests',
     descripcion: 'Crea preguntas de evaluación alineadas con el contenido de la asignatura.',
-    icon: FlaskConical,
+    icon: Flask,
     activa: false,
     clickable: false,
   },
@@ -60,7 +60,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
   const rc = rolColors[rolActivo] || rolColors.autor
 
   return (
-    <div className="min-h-screen" style={{ background: '#F8F9FA', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+    <div className="min-h-screen" style={{ background: '#F8F9FA', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
       {/* Custom topbar for herramientas (no breadcrumb) */}
       <header
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5"
@@ -71,7 +71,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
             className="w-7 h-7 rounded-lg flex items-center justify-center"
             style={{ background: '#367CFF' }}
           >
-            <span className="text-white text-xs font-bold" style={{ fontFamily: "'Arial', sans-serif" }}>A</span>
+            <span className="text-white text-xs font-bold" style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>A</span>
           </div>
           <span className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>AGC</span>
           <span className="ml-1 mr-1" style={{ color: '#E5E7EB' }}>·</span>
@@ -83,10 +83,10 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
             <button
               onClick={() => setRolMenuAbierto(!rolMenuAbierto)}
               className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-              style={{ background: rc.bg, color: rc.text, border: `1px solid ${rc.border}`, fontFamily: "'Arial', sans-serif" }}
+              style={{ background: rc.bg, color: rc.text, border: `1px solid ${rc.border}`, fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
             >
               <span>{rolActualLabel}</span>
-              <ChevronDown size={12} />
+              <CaretDown size={12} />
             </button>
             {rolMenuAbierto && (
               <>
@@ -136,10 +136,10 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
       <div className="pt-14 px-8 pb-8 max-w-5xl mx-auto">
         <div className="pt-10 pb-6">
           <h1 className="text-2xl font-semibold mb-1" style={{ color: '#1A1A1A' }}>Herramientas</h1>
-          <p className="text-sm mb-6" style={{ color: '#6B7280' }}>Selecciona una herramienta o usa el asistente para empezar</p>
+          <p className="text-sm mb-6" style={{ color: '#6B7280' }}>Selecciona una herramienta o usa el Asistente IA de Contenidos para empezar</p>
           <Chatbar
             onNavigate={onNavigate}
-            placeholder="Pregunta qué necesitas o usa /generar-asignatura…"
+            placeholder="Pregunta qué necesitas o usa @ para conectores…"
             chatHistorial={chatHistorial}
             setChatHistorial={setChatHistorial}
           />
@@ -182,7 +182,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
                     style={{
                       background: '#E7EFFE',
                       color: '#367CFF',
-                      fontFamily: "'Arial', sans-serif",
+                      fontFamily: "'Proeduca Sans', system-ui, sans-serif",
                     }}
                   >
                     {h.badge}
@@ -207,10 +207,24 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
                 </p>
 
                 {h.activa && (
-                  <div className="mt-5 flex items-center gap-1.5">
-                    <Sparkles size={12} style={{ color: '#367CFF' }} />
-                    <span className="text-xs font-medium" style={{ color: '#367CFF' }}>
-                      Abrir herramienta →
+                  <div className="mt-5">
+                    <span
+                      className="inline-flex items-center gap-2 transition-all"
+                      style={{
+                        padding: '8px',
+                        color: '#0A5CF5',
+                        fontSize: 14,
+                        fontWeight: 500,
+                        lineHeight: '20px',
+                        borderRadius: 10,
+                        background: 'transparent',
+                        marginLeft: -8,
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <span>Acceder</span>
+                      <ArrowRight size={16} style={{ color: '#0A5CF5' }} />
                     </span>
                   </div>
                 )}

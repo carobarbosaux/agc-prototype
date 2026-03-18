@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import {
-  Sparkles, Check, BookOpen, X, ArrowLeft, Search, ChevronRight, Send,
+  Sparkle, Check, BookOpen, X, ArrowLeft, MagnifyingGlass, CaretRight, PaperPlaneTilt,
   GraduationCap, FileText, Upload, CheckSquare, Square, Info, Paperclip, Link, Plus,
-} from 'lucide-react'
+} from '@phosphor-icons/react'
 import { tagsSugerenciasPorArea } from '../mockData'
 import { ProdiMark } from '../components/ProdiLogo'
 import PanelIA from '../components/PanelIA'
@@ -161,7 +161,7 @@ function PasoContextoAcademico({ datos, onChange }) {
           Titulación
         </label>
         <div className="flex items-center gap-2 px-[13px] py-[9px] rounded-[10px] mb-3" style={{ background: '#FFFFFF', border: '1px solid #CBD5E1' }}>
-          <Search size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+          <MagnifyingGlass size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
           <input
             type="text"
             value={busqueda}
@@ -347,7 +347,7 @@ function PasoDefinicionTematica({ datos, onChange }) {
       </div>
 
       <div className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
-        <Sparkles size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
+        <Sparkle size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
         <p className="text-xs" style={{ color: '#0047CC', lineHeight: '1.5' }}>
           Al hacer clic en <strong>Ver vista previa</strong>, la IA generará un resumen preliminar de la asignatura que podrás revisar y ajustar antes de continuar.
         </p>
@@ -473,7 +473,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
           {cargandoIA && (
             <div className="flex justify-start">
               <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#E7EFFE' }}>
-                <Sparkles size={9} style={{ color: '#367CFF' }} />
+                <Sparkle size={9} style={{ color: '#367CFF' }} />
               </div>
               <div className="px-3 py-2 rounded-xl" style={{ background: '#F8F9FA', borderRadius: '4px 12px 12px 12px' }}>
                 <div className="flex gap-1">
@@ -493,7 +493,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
           <button onClick={enviarMensaje} disabled={!inputChat.trim() || cargandoIA}
             className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
             style={{ background: inputChat.trim() && !cargandoIA ? '#367CFF' : '#E5E7EB', color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#9CA3AF' }}>
-            <Send size={12} />
+            <PaperPlaneTilt size={12} />
           </button>
         </div>
         <div className="mt-2 space-y-1">
@@ -806,7 +806,7 @@ function PanelIADescriptor({ contexto, onContexto }) {
           className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
           style={{ background: input.trim() && !cargando ? '#0A5CF5' : '#E5E7EB', color: input.trim() && !cargando ? '#FFFFFF' : '#6B7280' }}
         >
-          <Send size={12} />
+          <PaperPlaneTilt size={12} />
         </button>
       </div>
     </div>
@@ -1086,7 +1086,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
 
       {/* AI hint */}
       <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
-        <Sparkles size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
+        <Sparkle size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
         <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
           Al hacer clic en <strong>Generar resumen</strong>, la IA procesará toda esta información para crear un resumen de la asignatura que podrás revisar y ajustar.
         </p>
@@ -1219,7 +1219,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
           {cargandoIA && (
             <div className="flex justify-start">
               <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#E7EFFE' }}>
-                <Sparkles size={9} style={{ color: '#367CFF' }} />
+                <Sparkle size={9} style={{ color: '#367CFF' }} />
               </div>
               <div className="px-3 py-2 rounded-xl" style={{ background: '#F8F9FA', borderRadius: '4px 12px 12px 12px' }}>
                 <div className="flex gap-1">
@@ -1251,7 +1251,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
           <button onClick={enviarMensaje} disabled={!inputChat.trim() || cargandoIA}
             className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
             style={{ background: inputChat.trim() && !cargandoIA ? '#367CFF' : '#E5E7EB', color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#9CA3AF' }}>
-            <Send size={12} />
+            <PaperPlaneTilt size={12} />
           </button>
         </div>
       </div>
@@ -1337,7 +1337,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden" style={{ background: '#F8F9FA', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+    <div className="h-screen flex flex-col overflow-hidden" style={{ background: '#F8F9FA', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
       {modalVolver && (
         <ModalConfirmVolver
           onConfirm={handleModalConfirm}
@@ -1359,7 +1359,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
           <span style={{ color: '#E5E7EB' }}>·</span>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-              <Sparkles size={12} style={{ color: '#367CFF' }} />
+              <Sparkle size={12} style={{ color: '#367CFF' }} />
             </div>
             <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Deep Learning y Redes Neuronales</p>
           </div>
@@ -1419,7 +1419,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
             {(generando || generandoResumen) ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
-                  <Sparkles size={24} style={{ color: '#367CFF' }} />
+                  <Sparkle size={24} style={{ color: '#367CFF' }} />
                 </div>
                 <div className="text-center">
                   <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
@@ -1464,7 +1464,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
                   onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
                   onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}>
                   Siguiente
-                  <ChevronRight size={14} />
+                  <CaretRight size={14} />
                 </button>
               )}
               {paso === 2 && (
@@ -1477,7 +1477,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
                     color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF',
                     cursor: puedeAvanzar() ? 'pointer' : 'default',
                   }}>
-                  <Sparkles size={13} />
+                  <Sparkle size={13} />
                   Generar resumen
                 </button>
               )}
@@ -1566,7 +1566,7 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#F8F9FA', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#F8F9FA', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
       {modalVolver && (
         <ModalConfirmVolver
           onConfirm={handleModalConfirmCoord}
@@ -1587,7 +1587,7 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
           <span style={{ color: '#E5E7EB' }}>·</span>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-              <Sparkles size={12} style={{ color: '#367CFF' }} />
+              <Sparkle size={12} style={{ color: '#367CFF' }} />
             </div>
             <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Crear nueva asignatura</p>
           </div>
@@ -1645,7 +1645,7 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
             {(generando || generandoPreview) ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
-                  <Sparkles size={24} style={{ color: '#367CFF' }} />
+                  <Sparkle size={24} style={{ color: '#367CFF' }} />
                 </div>
                 <div className="text-center">
                   <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
@@ -1700,14 +1700,14 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
                   className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold transition-all"
                   style={{ background: puedeAvanzar() ? '#367CFF' : '#E5E7EB', color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF', cursor: puedeAvanzar() ? 'pointer' : 'default' }}>
                   Siguiente
-                  <ChevronRight size={14} />
+                  <CaretRight size={14} />
                 </button>
               )}
               {paso === 2 && (
                 <button onClick={handleAvanzarA3} disabled={!puedeAvanzar()}
                   className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold transition-all"
                   style={{ background: puedeAvanzar() ? '#367CFF' : '#E5E7EB', color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF', cursor: puedeAvanzar() ? 'pointer' : 'default' }}>
-                  <Sparkles size={13} />
+                  <Sparkle size={13} />
                   Ver vista previa
                 </button>
               )}

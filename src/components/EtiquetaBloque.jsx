@@ -6,7 +6,7 @@ export default function EtiquetaBloque({ label }) {
         background: '#E7EFFE',
         color: '#367CFF',
         border: '1px solid #BAD2FF',
-        fontFamily: "'Arial', sans-serif",
+        fontFamily: "'Proeduca Sans', system-ui, sans-serif",
         letterSpacing: '0.01em',
       }}
     >

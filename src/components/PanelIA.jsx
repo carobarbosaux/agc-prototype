@@ -1,6 +1,16 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, ChevronRight, Sparkles, X, SquarePen, History, Search, MessageSquare, Plus, ExternalLink } from 'lucide-react'
+import { PaperPlaneTilt, CaretRight, Sparkle, X, NotePencil, ClockCounterClockwise, MagnifyingGlass, Chat, Plus } from '@phosphor-icons/react'
 import { respuestasIA, respuestasCalidadIA } from '../mockData'
+import Tooltip from './Tooltip'
+
+const SUGERENCIAS = {
+  teams:      ['Resumir comentarios del coordinador', 'Identificar cambios solicitados'],
+  sharepoint: ['Buscar documentación relevante', 'Extraer conceptos clave', 'Verificar alineación con guías'],
+  outlook:    ['Extraer correcciones', 'Detectar puntos críticos'],
+  onedrive:   ['Buscar archivos relacionados', 'Reutilizar contenido previo', 'Resumir documentos', 'Detectar inconsistencias'],
+  canva:      ['Proponer estructura visual', 'Simplificar contenido'],
+  genially:   ['Crear actividad interactiva', 'Proponer experiencia dinámica'],
+}
 import { ProdiMark } from './ProdiLogo'
 
 const historialConversaciones = [
@@ -88,7 +98,33 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
   const [respIdx, setRespIdx] = useState(0)
   const [vistaHistorial, setVistaHistorial] = useState(false)
   const [conectoresAbierto, setConectoresAbierto] = useState(false)
+  const [companyKnowledgeOn, setCompanyKnowledgeOn] = useState(false)
+  const [selectedConectores, setSelectedConectores] = useState(new Set())
   const conectoresRef = useRef(null)
+
+  const CK_CHILDREN_IDS = ['teams', 'sharepoint', 'outlook', 'onedrive']
+
+  function toggleCompanyKnowledge() {
+    if (companyKnowledgeOn) {
+      setSelectedConectores(prev => {
+        const next = new Set(prev)
+        CK_CHILDREN_IDS.forEach(id => next.delete(id))
+        return next
+      })
+      setCompanyKnowledgeOn(false)
+    } else {
+      setCompanyKnowledgeOn(true)
+    }
+  }
+
+  function toggleConector(id) {
+    setSelectedConectores(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+    setConectoresAbierto(false)
+  }
   const [busqueda, setBusqueda] = useState('')
   const [mostrarTodo, setMostrarTodo] = useState(false)
   const chatRef = useRef(null)
@@ -172,7 +208,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
         minWidth: '320px',
         background: '#FAFAFA',
         borderLeft: '1px solid #E5E7EB',
-        fontFamily: "'Inter', 'Arial', sans-serif",
+        fontFamily: "'Proeduca Sans', system-ui, sans-serif",
       }}
     >
       {/* Header */}
@@ -192,38 +228,41 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
 
         <div className="flex items-center gap-0.5">
           {/* Nueva conversación */}
-          <button
-            onClick={nuevaConversacion}
-            title="Nueva conversación"
-            className="p-1.5 rounded-lg transition-colors"
-            onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          >
-            <SquarePen size={14} style={{ color: '#9CA3AF' }} />
-          </button>
+          <Tooltip text="Nueva conversación" side="bottom">
+            <button
+              onClick={nuevaConversacion}
+              className="p-1.5 rounded-lg transition-colors"
+              onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <NotePencil size={14} style={{ color: '#9CA3AF' }} />
+            </button>
+          </Tooltip>
 
           {/* Historial toggle */}
-          <button
-            onClick={() => { setVistaHistorial(v => !v); setBusqueda(''); setMostrarTodo(false) }}
-            title="Historial de conversaciones"
-            className="p-1.5 rounded-lg transition-colors"
-            style={{ background: vistaHistorial ? '#F3F4F6' : 'transparent' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
-            onMouseLeave={e => e.currentTarget.style.background = vistaHistorial ? '#F3F4F6' : 'transparent'}
-          >
-            <History size={14} style={{ color: vistaHistorial ? '#374151' : '#9CA3AF' }} />
-          </button>
+          <Tooltip text="Historial de conversaciones" side="bottom">
+            <button
+              onClick={() => { setVistaHistorial(v => !v); setBusqueda(''); setMostrarTodo(false) }}
+              className="p-1.5 rounded-lg transition-colors"
+              style={{ background: vistaHistorial ? '#F3F4F6' : 'transparent' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
+              onMouseLeave={e => e.currentTarget.style.background = vistaHistorial ? '#F3F4F6' : 'transparent'}
+            >
+              <ClockCounterClockwise size={14} style={{ color: vistaHistorial ? '#374151' : '#9CA3AF' }} />
+            </button>
+          </Tooltip>
 
           {/* Collapse */}
-          <button
-            onClick={onCerrar}
-            title="Cerrar"
-            className="p-1.5 rounded-lg transition-colors"
-            onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          >
-            <ChevronRight size={16} style={{ color: '#9CA3AF' }} />
-          </button>
+          <Tooltip text="Cerrar" side="bottom">
+            <button
+              onClick={onCerrar}
+              className="p-1.5 rounded-lg transition-colors"
+              onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <CaretRight size={16} style={{ color: '#9CA3AF' }} />
+            </button>
+          </Tooltip>
         </div>
       </div>
 
@@ -237,7 +276,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
               className="flex items-center gap-2 px-3 py-2 rounded-lg"
               style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
             >
-              <Search size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+              <MagnifyingGlass size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
               <input
                 value={busqueda}
                 onChange={e => { setBusqueda(e.target.value); setMostrarTodo(false) }}
@@ -278,7 +317,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 <>
                   {visibles.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-10 gap-2">
-                      <Search size={20} style={{ color: '#D1D5DB' }} />
+                      <MagnifyingGlass size={20} style={{ color: '#D1D5DB' }} />
                       <p className="text-xs" style={{ color: '#9CA3AF' }}>Sin resultados</p>
                     </div>
                   ) : (
@@ -295,7 +334,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                             onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
                             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                           >
-                            <MessageSquare size={13} style={{ color: '#D1D5DB', flexShrink: 0 }} />
+                            <Chat size={13} style={{ color: '#D1D5DB', flexShrink: 0 }} />
                             <span className="text-xs truncate flex-1" style={{ color: '#374151' }}>
                               {conv.titulo}
                             </span>
@@ -336,7 +375,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                     className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mr-2 mt-0.5"
                     style={{ background: '#E7EFFE' }}
                   >
-                    <Sparkles size={11} style={{ color: '#367CFF' }} />
+                    <Sparkle size={11} style={{ color: '#367CFF' }} />
                   </div>
                 )}
                 <div
@@ -358,7 +397,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
             {esperando && (
               <div className="flex items-center gap-2 animate-fade-in">
                 <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E7EFFE' }}>
-                  <Sparkles size={11} style={{ color: '#367CFF' }} />
+                  <Sparkle size={11} style={{ color: '#367CFF' }} />
                 </div>
                 <div className="px-3 py-2.5 rounded-xl flex items-center gap-1" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
                   {[0, 1, 2].map(i => (
@@ -374,7 +413,44 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
           </div>
 
           {/* ── Input ─────────────────────────────────────────────────────── */}
-          <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid #E5E7EB', background: '#FFFFFF' }}>
+          <div className="relative flex-shrink-0">
+          {/* Suggested prompts — floats above input, does not push content */}
+          {selectedConectores.size > 0 && (() => {
+            const chips = [...selectedConectores].flatMap(id => (SUGERENCIAS[id] || []).map(text => ({ text, id })))
+            if (!chips.length) return null
+            return (
+              <div
+                className="absolute left-0 right-0 overflow-hidden"
+                style={{
+                  bottom: '100%',
+                  background: '#FFFFFF',
+                  borderTop: '1px solid #E5E7EB',
+                  borderLeft: '1px solid #E5E7EB',
+                  borderRight: '1px solid #E5E7EB',
+                  borderRadius: '12px 12px 0 0',
+                  boxShadow: '0 -4px 16px rgba(0,0,0,0.06)',
+                  zIndex: 10,
+                }}
+              >
+                <div className="flex items-center gap-1.5 px-3 py-2 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+                  <Sparkle size={11} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+                  {chips.map(({ text }, i) => (
+                    <button
+                      key={i}
+                      onClick={() => { setInput(text); inputRef.current?.focus() }}
+                      className="flex-shrink-0 px-2 py-0.5 rounded-full whitespace-nowrap transition-colors"
+                      style={{ fontSize: '10px', background: '#F1F5F9', color: '#374151', border: '1px solid #E2E8F0' }}
+                      onMouseEnter={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.borderColor = '#BAD2FF'; e.currentTarget.style.color = '#367CFF' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.borderColor = '#E2E8F0'; e.currentTarget.style.color = '#374151' }}
+                    >
+                      {text}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )
+          })()}
+          <div className="px-3 py-3" style={{ borderTop: '1px solid #E5E7EB', background: '#FFFFFF' }}>
             {/* Quote block */}
             {quote && (
               <div
@@ -384,7 +460,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 <div className="flex-1 min-w-0">
                   <span
                     className="inline-block text-xs font-semibold px-1.5 py-0.5 rounded mb-1"
-                    style={{ background: '#367CFF', color: '#FFFFFF', fontFamily: "'Arial', sans-serif" }}
+                    style={{ background: '#367CFF', color: '#FFFFFF', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                   >
                     {quote.accion}
                   </span>
@@ -405,55 +481,140 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 </button>
               </div>
             )}
+            {/* Connector tags */}
+            {selectedConectores.size > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-2">
+                {[...selectedConectores].map(id => {
+                  const all = [
+                    { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams' },
+                    { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint' },
+                    { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook' },
+                    { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive' },
+                    { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva' },
+                    { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially' },
+                  ]
+                  const c = all.find(x => x.id === id)
+                  if (!c) return null
+                  return (
+                    <button
+                      key={id}
+                      onClick={() => setSelectedConectores(prev => { const n = new Set(prev); n.delete(id); return n })}
+                      className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                      style={{ background: c.color + '18', color: c.color, border: `1px solid ${c.color}40` }}
+                    >
+                      <span style={{ fontSize: '9px', fontWeight: 700 }}>{c.letter}</span>
+                      {c.label}
+                      <X size={10} />
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+
             <div
               className="flex items-end gap-2 rounded-xl px-3 py-2"
               style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}
             >
               {/* Connectors (+) button */}
               <div className="relative flex-shrink-0" ref={conectoresRef}>
+                <Tooltip text="Conectores" side="top">
                 <button
                   onClick={() => setConectoresAbierto(v => !v)}
                   className="p-1.5 rounded-lg transition-all"
                   style={{ color: conectoresAbierto ? '#367CFF' : '#9CA3AF', background: conectoresAbierto ? '#E7EFFE' : 'transparent' }}
                   onMouseEnter={e => { if (!conectoresAbierto) { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#374151' } }}
                   onMouseLeave={e => { if (!conectoresAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9CA3AF' } }}
-                  title="Conectores — adjuntar desde SharePoint o Drive"
                 >
                   <Plus size={15} />
                 </button>
+                </Tooltip>
                 {conectoresAbierto && (
                   <div
-                    className="absolute bottom-full left-0 mb-2 rounded-xl overflow-hidden"
-                    style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', minWidth: '200px', zIndex: 50 }}
+                    className="absolute top-full left-0 mt-2 rounded-xl overflow-hidden"
+                    style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', minWidth: '280px', zIndex: 50 }}
                   >
+                    {/* Header */}
                     <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
                       <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#9CA3AF' }}>Conectores</p>
                     </div>
-                    {[
-                      { id: 'sharepoint', label: 'SharePoint', color: '#0078D4', letter: 'SP' },
-                      { id: 'drive', label: 'Google Drive', color: '#34A853', letter: 'GD' },
-                    ].map(c => (
-                      <button
-                        key={c.id}
-                        onClick={() => {
-                          setInput(prev => prev + (prev ? ' ' : '') + `[Documento de ${c.label}]`)
-                          setConectoresAbierto(false)
-                        }}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 text-left transition-colors"
-                        style={{ background: 'transparent' }}
-                        onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
-                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                      >
-                        <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 text-white text-xs font-bold" style={{ background: c.color, fontSize: '9px' }}>
-                          {c.letter}
-                        </div>
+
+                    {/* Section: Company Knowledge */}
+                    <div className="px-3 pt-1.5 pb-1" style={{ borderBottom: '1px solid #F3F4F6' }}>
+                      {/* Parent row — toggle only */}
+                      <div className="flex items-center gap-2.5 py-1">
+                        <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: '#0078D4', fontSize: '7px' }}>CK</div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-medium" style={{ color: '#111827' }}>{c.label}</p>
-                          <p className="text-xs" style={{ color: '#10B981' }}>● Conectado</p>
+                          <p className="text-xs font-medium" style={{ color: '#111827' }}>Company Knowledge</p>
+                          <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>Fuentes institucionales de tu organización</p>
                         </div>
-                        <ExternalLink size={11} style={{ color: '#CBD5E1' }} />
-                      </button>
-                    ))}
+                        <button
+                          onClick={e => { e.stopPropagation(); toggleCompanyKnowledge() }}
+                          style={{ width: 28, height: 16, borderRadius: 8, background: companyKnowledgeOn ? '#367CFF' : '#D1D5DB', position: 'relative', flexShrink: 0, border: 'none', cursor: 'pointer' }}
+                        >
+                          <span style={{ position: 'absolute', top: 2, left: companyKnowledgeOn ? 14 : 2, width: 12, height: 12, borderRadius: '50%', background: '#FFF', transition: 'left 0.15s' }} />
+                        </button>
+                      </div>
+
+                      {/* Child connectors — clickable selectors */}
+                      <div style={{ opacity: companyKnowledgeOn ? 1 : 0.35, pointerEvents: companyKnowledgeOn ? 'auto' : 'none', transition: 'opacity 0.15s' }}>
+                        {[
+                          { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams', desc: 'Conversaciones y archivos' },
+                          { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint', desc: 'Documentos institucionales' },
+                          { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook', desc: 'Correos y adjuntos' },
+                          { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive', desc: 'Archivos personales' },
+                        ].map(c => {
+                          const active = selectedConectores.has(c.id)
+                          return (
+                            <button
+                              key={c.id}
+                              onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
+                              className="w-full flex items-center gap-2.5 py-1 pl-3 rounded-lg text-left"
+                              style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
+                              onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F1F5F9' }}
+                              onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
+                            >
+                              <div className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '6px' }}>{c.letter}</div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs font-medium" style={{ color: active ? c.color : '#374151' }}>{c.label}</p>
+                                <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>{c.desc}</p>
+                              </div>
+                              {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
+                            </button>
+                          )
+                        })}
+                      </div>
+
+                      {!companyKnowledgeOn && (
+                        <p className="pb-1 pl-3" style={{ fontSize: '10px', color: '#9CA3AF', fontStyle: 'italic' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
+                      )}
+                    </div>
+
+                    {/* Section: Otros conectores — clickable selectors */}
+                    <div className="px-3 pt-1.5 pb-2">
+                      {[
+                        { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva', desc: 'Diseños y recursos visuales' },
+                        { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially', desc: 'Contenidos interactivos' },
+                      ].map(c => {
+                        const active = selectedConectores.has(c.id)
+                        return (
+                          <button
+                            key={c.id}
+                            onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
+                            className="w-full flex items-center gap-2.5 py-1 rounded-lg text-left"
+                            style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
+                            onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F1F5F9' }}
+                            onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
+                          >
+                            <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '7px' }}>{c.letter}</div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-medium" style={{ color: active ? c.color : '#111827' }}>{c.label}</p>
+                              <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>{c.desc}</p>
+                            </div>
+                            {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
+                          </button>
+                        )
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
@@ -464,7 +625,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 onKeyDown={handleKeyDown}
                 placeholder={quote ? 'Añade más contexto (opcional)...' : 'Escribe o pregunta algo...'}
                 className="flex-1 text-sm outline-none resize-none bg-transparent"
-                style={{ color: '#374151', minHeight: '20px', maxHeight: '80px', fontFamily: "'Inter', 'Arial', sans-serif" }}
+                style={{ color: '#374151', minHeight: '20px', maxHeight: '80px', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                 rows={1}
               />
               <button
@@ -476,10 +637,11 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                   color: (input.trim() || quote) && !esperando ? '#FFFFFF' : '#9CA3AF',
                 }}
               >
-                <Send size={14} />
+                <PaperPlaneTilt size={14} />
               </button>
             </div>
             <p className="text-xs mt-1.5 text-center" style={{ color: '#CBD5E1' }}>Enter para enviar · Shift+Enter para nueva línea</p>
+          </div>
           </div>
         </>
       )}

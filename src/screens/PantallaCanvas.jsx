@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronDown, Plus, MessageSquare, Eye, Sparkles, X, Lock, Wand2, ShieldCheck, BookOpenCheck, Check, ToggleLeft, ToggleRight, StickyNote, Pencil, Trash2, RefreshCw, ArrowUpRight, FlaskConical, BrainCircuit, Mic, Save, Layers, BookOpen, Link, Send, ExternalLink, AlertTriangle } from 'lucide-react'
+import { CaretRight, CaretDown, Plus, Chat, Eye, Sparkle, X, Lock, MagicWand, ShieldCheck, BookBookmark, Check, ToggleLeft, ToggleRight, Note, Pencil, Trash, ArrowsClockwise, ArrowUpRight, Flask, Brain, Microphone, FloppyDisk, StackSimple, BookOpen, Link, PaperPlaneTilt, ArrowSquareOut, Warning } from '@phosphor-icons/react'
 import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
@@ -7,6 +7,7 @@ import ComentarioHilo from '../components/ComentarioHilo'
 import StatusIndicator, { toStatusKey } from '../components/StatusIndicator'
 import EtiquetaBloque from '../components/EtiquetaBloque'
 import { ProdiMark } from '../components/ProdiLogo'
+import Tooltip from '../components/Tooltip'
 import {
   bloquesTema2,
   bloquesTema1,
@@ -260,7 +261,7 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
           className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse"
           style={{ background: '#E7EFFE' }}
         >
-          <Sparkles size={24} style={{ color: '#367CFF' }} />
+          <Sparkle size={24} style={{ color: '#367CFF' }} />
         </div>
         <div className="text-center">
           <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando índice de temas…</p>
@@ -286,7 +287,7 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
           className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse"
           style={{ background: '#E7EFFE' }}
         >
-          <Sparkles size={24} style={{ color: '#367CFF' }} />
+          <Sparkle size={24} style={{ color: '#367CFF' }} />
         </div>
         <div className="text-center">
           <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando resumen preliminar…</p>
@@ -314,7 +315,7 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
       >
         <div className="flex items-center gap-2 mb-3 pb-3" style={{ borderBottom: '1px solid #E5E7EB' }}>
           <div className="w-5 h-5 rounded flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-            <Sparkles size={11} style={{ color: '#367CFF' }} />
+            <Sparkle size={11} style={{ color: '#367CFF' }} />
           </div>
           <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Índice generado por IA · Solo lectura</span>
         </div>
@@ -352,7 +353,7 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
         className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg mb-6"
         style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}
       >
-        <Sparkles size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
+        <Sparkle size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
         <p className="text-xs" style={{ color: '#0047CC', lineHeight: '1.5' }}>
           El índice se ha generado en base al área temática y los contenidos indicados. Podrás reorganizar y editar los temas desde el Canvas.
         </p>
@@ -366,9 +367,9 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
         onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
         onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
       >
-        <Sparkles size={14} />
+        <Sparkle size={14} />
         Generar resumen de la asignatura
-        <ChevronRight size={14} />
+        <CaretRight size={14} />
       </button>
     </div>
   )
@@ -407,7 +408,7 @@ function RecursosLoadingScreen({ onCancel }) {
     <div className="rounded-xl p-8" style={{ border: '1px solid #E5E7EB', background: '#FAFAFA' }}>
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
-          <Sparkles size={16} style={{ color: '#367CFF' }} />
+          <Sparkle size={16} style={{ color: '#367CFF' }} />
         </div>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Generando referencias académicas…</p>
@@ -543,36 +544,38 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, showEdit, onDelete,
               style={{ color: '#367CFF' }}
             >
               {draft.title}
-              <ExternalLink size={11} style={{ flexShrink: 0, opacity: 0.6 }} />
+              <ArrowSquareOut size={11} style={{ flexShrink: 0, opacity: 0.6 }} />
             </a>
             <div className="flex items-center gap-1 flex-shrink-0">
               {showEdit && (
-                <button
-                  onClick={() => setEditing(true)}
-                  className="p-1 rounded transition-colors"
-                  style={{ color: '#D1D5DB' }}
-                  title="Editar referencia"
-                  onMouseEnter={e => e.currentTarget.style.color = '#374151'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
-                >
-                  <Pencil size={13} />
-                </button>
+                <Tooltip text="Editar referencia" side="top">
+                  <button
+                    onClick={() => setEditing(true)}
+                    className="p-1 rounded transition-colors"
+                    style={{ color: '#D1D5DB' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#374151'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
+                  >
+                    <Pencil size={13} />
+                  </button>
+                </Tooltip>
               )}
               {showRegenerate && (
+                <Tooltip text="Regenerar esta referencia" side="top">
                 <button
                   onClick={() => onRegenerate(r.id)}
                   disabled={regeneratingId === r.id}
                   className="p-1 rounded transition-colors"
                   style={{ color: '#D1D5DB' }}
-                  title="Regenerar esta referencia"
                   onMouseEnter={e => e.currentTarget.style.color = '#367CFF'}
                   onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
                 >
                   {regeneratingId === r.id
                     ? <div className="w-3 h-3 rounded-full border-2 border-indigo-300 border-t-indigo-600 animate-spin" />
-                    : <RefreshCw size={13} />
+                    : <ArrowsClockwise size={13} />
                   }
                 </button>
+                </Tooltip>
               )}
               {showDelete && (
                 <button
@@ -582,7 +585,7 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, showEdit, onDelete,
                   onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
                   onMouseLeave={e => e.currentTarget.style.color = '#D1D5DB'}
                 >
-                  <Trash2 size={13} />
+                  <Trash size={13} />
                 </button>
               )}
             </div>
@@ -680,7 +683,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
             onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
             onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
           >
-            <Sparkles size={14} /> Generar referencias con IA
+            <Sparkle size={14} /> Generar referencias con IA
           </button>
         )}
       </div>
@@ -707,7 +710,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
       {editable && (
         <div className="flex items-center gap-3 px-4 py-3 rounded-xl mb-5" style={{ background: '#F0F9FF', border: '1px solid #BAE6FD' }}>
           <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E0F2FE' }}>
-            <Wand2 size={14} style={{ color: '#0284C7' }} />
+            <MagicWand size={14} style={{ color: '#0284C7' }} />
           </div>
           <div className="flex-1">
             <p className="text-xs font-semibold" style={{ color: '#0C4A6E' }}>Edición libre</p>
@@ -747,7 +750,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
         <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
           <div className="flex items-center justify-between px-4 py-3" style={{ background: '#F8F9FA', borderBottom: '1px solid #E5E7EB' }}>
             <div className="flex items-center gap-2">
-              <Sparkles size={13} style={{ color: '#367CFF' }} />
+              <Sparkle size={13} style={{ color: '#367CFF' }} />
               <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Refinar referencias con IA</span>
             </div>
             <button onClick={() => setScreen('list')} className="p-1 rounded hover:bg-gray-200 transition-colors">
@@ -773,7 +776,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
                 <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'ai' && (
                     <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#E7EFFE' }}>
-                      <Sparkles size={10} style={{ color: '#367CFF' }} />
+                      <Sparkle size={10} style={{ color: '#367CFF' }} />
                     </div>
                   )}
                   <div className="text-xs leading-relaxed rounded-xl px-3 py-2 max-w-xs"
@@ -784,7 +787,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
               {chatLoading && (
                 <div className="flex gap-2 justify-start">
                   <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#E7EFFE' }}>
-                    <Sparkles size={10} style={{ color: '#367CFF' }} />
+                    <Sparkle size={10} style={{ color: '#367CFF' }} />
                   </div>
                   <div className="flex items-center gap-1 px-3 py-2 rounded-xl" style={{ background: '#F3F4F6' }}>
                     {[0,1,2].map(i => (
@@ -811,7 +814,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
               className="flex items-center justify-center w-7 h-7 rounded-lg transition-all flex-shrink-0"
               style={{ background: chatInput.trim() && !chatLoading ? '#367CFF' : '#E5E7EB' }}
             >
-              <Send size={12} style={{ color: chatInput.trim() && !chatLoading ? '#FFFFFF' : '#9CA3AF' }} />
+              <PaperPlaneTilt size={12} style={{ color: chatInput.trim() && !chatLoading ? '#FFFFFF' : '#9CA3AF' }} />
             </button>
           </div>
         </div>
@@ -879,7 +882,7 @@ function SeccionIndiceFija({ bloques, resumenData }) {
                   onMouseLeave={e => { if (!isExpanded) { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' } }}
                   title={isExpanded ? 'Ocultar resumen' : 'Ver resumen del tema'}
                 >
-                  {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                  {isExpanded ? <CaretDown size={14} /> : <CaretRight size={14} />}
                   <span>Resumen</span>
                 </button>
               )}
@@ -1068,7 +1071,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
             onChange={e => onChange('bibliografiaT1', e.target.value)}
             rows={4}
             className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
-            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6', fontFamily: "'Arial', sans-serif" }}
+            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
             onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
             onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
             onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
@@ -1119,7 +1122,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
           >
             <ProdiMark size={14} />
             Generar resumen del tema
-            <ChevronRight size={14} />
+            <CaretRight size={14} />
           </button>
         </div>
       </div>
@@ -1198,7 +1201,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
           onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
           onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
         >
-          <ChevronRight size={12} style={{ transform: 'rotate(180deg)' }} />
+          <CaretRight size={12} style={{ transform: 'rotate(180deg)' }} />
           Volver a instrucciones
         </button>
         <button
@@ -1210,7 +1213,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
         >
           <ProdiMark size={14} />
           Generar contenido del tema
-          <ChevronRight size={14} />
+          <CaretRight size={14} />
         </button>
       </div>
     </div>
@@ -1319,10 +1322,10 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
             onMouseLeave={e => e.currentTarget.style.background = expandidosMindMap ? '#F5F8FF' : '#F8F9FA'}
           >
             <div className="flex items-center gap-2">
-              <BrainCircuit size={14} style={{ color: '#367CFF' }} />
+              <Brain size={14} style={{ color: '#367CFF' }} />
               <span className="text-xs font-semibold" style={{ color: '#374151' }}>Mapa mental del tema</span>
             </div>
-            {expandidosMindMap ? <ChevronDown size={14} style={{ color: '#9CA3AF' }} /> : <ChevronRight size={14} style={{ color: '#9CA3AF' }} />}
+            {expandidosMindMap ? <CaretDown size={14} style={{ color: '#9CA3AF' }} /> : <CaretRight size={14} style={{ color: '#9CA3AF' }} />}
           </button>
           {expandidosMindMap && (
             <div className="px-4 py-5" style={{ background: '#FAFBFF', borderTop: '1px solid #E5E7EB' }}>
@@ -1647,25 +1650,27 @@ function RefBibCard({ ref: r, temaNum, onNavigateToContent }) {
           Bibliografía del tema
         </span>
         <div className="flex items-center gap-1">
-          <button
-            className="p-1.5 rounded-lg transition-colors"
-            style={{ color: '#9CA3AF' }}
-            onMouseEnter={e => e.currentTarget.style.color = '#374151'}
-            onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
-            title="Editar referencia"
-          >
-            <Pencil size={13} />
-          </button>
-          <button
-            onClick={() => setDismissed(true)}
-            className="p-1.5 rounded-lg transition-colors"
-            style={{ color: '#9CA3AF' }}
-            onMouseEnter={e => e.currentTarget.style.color = '#374151'}
-            onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
-            title="Eliminar referencia"
-          >
-            <X size={13} />
-          </button>
+          <Tooltip text="Editar referencia" side="top">
+            <button
+              className="p-1.5 rounded-lg transition-colors"
+              style={{ color: '#9CA3AF' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#374151'}
+              onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+            >
+              <Pencil size={13} />
+            </button>
+          </Tooltip>
+          <Tooltip text="Eliminar referencia" side="top">
+            <button
+              onClick={() => setDismissed(true)}
+              className="p-1.5 rounded-lg transition-colors"
+              style={{ color: '#9CA3AF' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#374151'}
+              onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+            >
+              <X size={13} />
+            </button>
+          </Tooltip>
         </div>
       </div>
 
@@ -1707,22 +1712,21 @@ function RefBibCard({ ref: r, temaNum, onNavigateToContent }) {
               href={r.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs font-medium"
-              style={{ color: '#9CA3AF' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#367CFF'}
-              onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+              className="inline-flex items-center gap-1 text-xs font-medium transition-all"
+              style={{ color: '#0A5CF5', padding: '4px 8px', borderRadius: 10, background: 'transparent' }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
             >
-              <ExternalLink size={11} />
+              <ArrowSquareOut size={11} />
               Enlace
             </a>
           )}
           <button
             onClick={() => onNavigateToContent?.(temaNum, r.num)}
-            className="inline-flex items-center gap-1 text-xs font-medium"
-            style={{ color: '#367CFF' }}
-            onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
-            onMouseLeave={e => e.currentTarget.style.color = '#367CFF'}
-            title="Ir a la primera mención en el texto"
+            className="inline-flex items-center gap-1 text-xs font-medium transition-all"
+            style={{ color: '#0A5CF5', padding: '4px 8px', borderRadius: 10, background: 'transparent' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
           >
             <ArrowUpRight size={11} />
             Ir al texto
@@ -1795,7 +1799,7 @@ function SeccionReferencias({ temaNum, referencias = [], onNavigateToContent }) 
             onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
             onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
           >
-            <Sparkles size={14} />
+            <Sparkle size={14} />
             Buscar referencias con IA
           </button>
         </div>
@@ -1834,7 +1838,7 @@ function PanelContextoTemas({ seccionActiva, bloquesState, SECCION_CFG, resumenD
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid #F1F5F9' }}>
         <div className="flex items-center gap-2">
-          <BrainCircuit size={14} style={{ color: '#367CFF' }} />
+          <Brain size={14} style={{ color: '#367CFF' }} />
           <span className="text-sm font-semibold" style={{ color: '#111827' }}>Contexto acumulado</span>
         </div>
         <button onClick={onCerrar} style={{ color: '#9CA3AF' }}
@@ -1969,21 +1973,21 @@ function CitaPopover({ citaPopover, onClose, onMouseEnter, onMouseLeave, onVerRe
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs font-medium"
-            style={{ color: '#9CA3AF' }}
-            onMouseEnter={e => e.currentTarget.style.color = '#6B7280'}
-            onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+            className="inline-flex items-center gap-1 text-xs font-medium transition-all"
+            style={{ color: '#0A5CF5', padding: '4px 8px', borderRadius: 10, background: 'transparent' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
           >
-            <ExternalLink size={11} />
+            <ArrowSquareOut size={11} />
             Enlace
           </a>
         )}
         <button
           onClick={onVerReferencias}
-          className="inline-flex items-center gap-1 text-xs font-semibold"
-          style={{ color: '#367CFF' }}
-          onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
-          onMouseLeave={e => e.currentTarget.style.color = '#367CFF'}
+          className="inline-flex items-center gap-1 text-xs font-semibold transition-all"
+          style={{ color: '#0A5CF5', padding: '4px 8px', borderRadius: 10, background: 'transparent' }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#F1F5F9' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
         >
           Ver referencias
           <ArrowUpRight size={11} />
@@ -2425,7 +2429,7 @@ export default function PantallaCanvas({
               onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
               onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
             >
-              <ChevronRight size={14} style={{ transform: 'rotate(180deg)' }} />
+              <CaretRight size={14} style={{ transform: 'rotate(180deg)' }} />
               Volver
             </button>
             <button
@@ -2450,9 +2454,9 @@ export default function PantallaCanvas({
               onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
               onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
             >
-              <Sparkles size={14} />
+              <Sparkle size={14} />
               Generar contenido del tema
-              <ChevronRight size={14} />
+              <CaretRight size={14} />
             </button>
           </>
         )
@@ -2471,7 +2475,7 @@ export default function PantallaCanvas({
           onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
           onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
         >
-          <Sparkles size={14} />
+          <Sparkle size={14} />
           Generar resumen del tema
         </button>
       )
@@ -2500,63 +2504,88 @@ export default function PantallaCanvas({
                   }
                 }}
               >
-                <Sparkles size={14} />
-                Herramientas IA
-                <ChevronDown size={12} />
+                <Sparkle size={14} />
+                <span style={{ background: 'linear-gradient(90deg, #A956D5 0%, #066EE0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Herramientas IA</span>
+                <CaretDown size={12} />
               </button>
 
               {herramientasMenuAbierto && (
                 <div
-                  className="absolute left-0 top-full mt-1 rounded-xl overflow-hidden"
+                  className="absolute left-0 top-full mt-1"
                   style={{
-                    background: '#FFFFFF',
-                    border: '1px solid #E5E7EB',
+                    width: 200,
+                    paddingTop: 10,
+                    paddingBottom: 4,
+                    paddingLeft: 8,
+                    paddingRight: 8,
+                    background: 'white',
+                    borderRadius: 10,
+                    outline: '1px #DCDFEB solid',
+                    outlineOffset: '-1px',
                     boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
-                    width: '210px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 6,
                     zIndex: 50,
                   }}
                 >
-                  <div className="px-3 py-2" style={{ borderBottom: '1px solid #F1F5F9' }}>
-                    <span className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>Asistente de contenido</span>
+                  {/* Header label */}
+                  <div style={{ paddingLeft: 8, paddingRight: 8, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '16px', background: 'linear-gradient(90deg, #A956D5 0%, #066EE0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                      Herramientas IA
+                    </span>
                   </div>
-                  {/* Revisar calidad — active */}
-                  <button
-                    onClick={() => { setHerramientasMenuAbierto(false); handleRevisarCalidad() }}
-                    disabled={revisandoCalidad}
-                    className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm transition-colors"
-                    style={{ color: revisandoCalidad ? '#9CA3AF' : '#374151', cursor: revisandoCalidad ? 'default' : 'pointer' }}
-                    onMouseEnter={e => { if (!revisandoCalidad) e.currentTarget.style.background = '#F8F9FA' }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
-                  >
-                    <Wand2 size={14} style={{ color: revisandoCalidad ? '#CBD5E1' : '#367CFF' }} />
-                    <div className="text-left">
-                      <p className="text-xs font-medium" style={{ color: revisandoCalidad ? '#9CA3AF' : '#374151' }}>
-                        {revisandoCalidad ? 'Analizando…' : 'Revisar calidad'}
-                      </p>
-                      <p className="text-xs" style={{ color: '#9CA3AF' }}>Detectar incumplimientos normativos</p>
-                    </div>
-                  </button>
-                  {/* Future tools — disabled */}
-                  {[
-                    { icon: ShieldCheck, label: 'Verificar coherencia', desc: 'Comprobar coherencia curricular' },
-                    { icon: BookOpenCheck, label: 'Sugerir referencias', desc: 'Buscar fuentes académicas' },
-                  ].map(({ icon: Icon, label, desc }) => (
+
+                  {/* Items */}
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {/* Revisar calidad — active */}
                     <button
-                      key={label}
-                      disabled
-                      className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm"
-                      style={{ color: '#CBD5E1', cursor: 'default' }}
+                      onClick={() => { setHerramientasMenuAbierto(false); handleRevisarCalidad() }}
+                      disabled={revisandoCalidad}
+                      style={{
+                        paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6,
+                        borderRadius: 6,
+                        border: 'none',
+                        background: 'transparent',
+                        display: 'inline-flex', alignItems: 'center', gap: 8,
+                        cursor: revisandoCalidad ? 'default' : 'pointer',
+                        width: '100%',
+                      }}
+                      onMouseEnter={e => { if (!revisandoCalidad) e.currentTarget.style.background = '#F3F4F6' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
                     >
-                      <Icon size={14} style={{ color: '#E2E8F0' }} />
-                      <div className="text-left">
-                        <p className="text-xs font-medium" style={{ color: '#CBD5E1' }}>{label}</p>
-                        <p className="text-xs" style={{ color: '#E2E8F0' }}>{desc}</p>
-                      </div>
-                      <span className="ml-auto text-xs px-1.5 py-0.5 rounded" style={{ background: '#F1F5F9', color: '#CBD5E1', fontFamily: "'Arial', sans-serif" }}>
-                        Próx.
+                      <MagicWand size={20} style={{ color: revisandoCalidad ? '#CBD5E1' : '#566077', flexShrink: 0 }} />
+                      <span style={{ color: revisandoCalidad ? '#CBD5E1' : '#566077', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }}>
+                        {revisandoCalidad ? 'Analizando…' : 'Revisar calidad'}
                       </span>
                     </button>
-                  ))}
+
+                    {/* Future tools — disabled */}
+                    {[
+                      { icon: ShieldCheck, label: 'Verificar coherencia' },
+                      { icon: BookBookmark, label: 'Sugerir referencias' },
+                    ].map(({ icon: Icon, label }) => (
+                      <button
+                        key={label}
+                        disabled
+                        style={{
+                          paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6,
+                          borderRadius: 6,
+                          border: 'none',
+                          background: 'transparent',
+                          display: 'inline-flex', alignItems: 'center', gap: 8,
+                          cursor: 'default',
+                          width: '100%',
+                          opacity: 0.4,
+                        }}
+                      >
+                        <Icon size={20} style={{ color: '#566077', flexShrink: 0 }} />
+                        <span style={{ color: '#566077', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }}>
+                          {label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -2569,7 +2598,7 @@ export default function PantallaCanvas({
               onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
             >
               Enviar a revisión
-              <ChevronRight size={14} />
+              <CaretRight size={14} />
             </button>
           </>
         )
@@ -2619,7 +2648,7 @@ export default function PantallaCanvas({
               onMouseEnter={e => e.currentTarget.style.background = '#FFEDD5'}
               onMouseLeave={e => e.currentTarget.style.background = '#FFF7ED'}
             >
-              <MessageSquare size={14} />
+              <Chat size={14} />
               Enviar correcciones
             </button>
             <button
@@ -2629,7 +2658,7 @@ export default function PantallaCanvas({
               onMouseEnter={e => e.currentTarget.style.background = '#059669'}
               onMouseLeave={e => e.currentTarget.style.background = '#10B981'}
             >
-              <ChevronRight size={14} />
+              <CaretRight size={14} />
               Aprobar contenido
             </button>
           </>
@@ -2666,7 +2695,7 @@ export default function PantallaCanvas({
             onMouseEnter={e => e.currentTarget.style.background = '#FFEDD5'}
             onMouseLeave={e => e.currentTarget.style.background = '#FFF7ED'}
           >
-            <MessageSquare size={14} />
+            <Chat size={14} />
             Enviar correcciones
           </button>
         )
@@ -2703,7 +2732,7 @@ export default function PantallaCanvas({
               onMouseEnter={e => e.currentTarget.style.background = '#6D28D9'}
               onMouseLeave={e => e.currentTarget.style.background = '#7C3AED'}
             >
-              <Layers size={14} />
+              <StackSimple size={14} />
               Crear experiencia didáctica
             </button>
           </>
@@ -2717,7 +2746,7 @@ export default function PantallaCanvas({
   }
 
   return (
-    <div className="flex flex-col" style={{ height: 'calc(100vh - 56px)', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+    <div className="flex flex-col" style={{ height: 'calc(100vh - 56px)', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
 
       {/* Page header — single row */}
       <div className="flex-shrink-0" style={{ background: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}>
@@ -2834,7 +2863,7 @@ export default function PantallaCanvas({
                     return (
                       <div className="mt-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <Sparkles size={12} style={{ color: '#367CFF' }} />
+                          <Sparkle size={12} style={{ color: '#367CFF' }} />
                           <span className="text-xs font-medium" style={{ color: '#367CFF' }}>Etiquetas sugeridas por IA</span>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
@@ -2954,7 +2983,7 @@ export default function PantallaCanvas({
                       className="flex items-center gap-2 mb-8 text-sm animate-fade-in"
                       style={{ color: rolActivo === 'disenador' ? '#7C3AED' : '#9CA3AF' }}
                     >
-                      {rolActivo === 'disenador' ? <Layers size={13} /> : <Eye size={13} />}
+                      {rolActivo === 'disenador' ? <StackSimple size={13} /> : <Eye size={13} />}
                       <span>
                         {rolActivo === 'disenador'
                           ? 'Contenido aprobado · Solo lectura — crea experiencias didácticas con el panel derecho'
@@ -3023,7 +3052,7 @@ export default function PantallaCanvas({
                               <>
                                 {/* Label */}
                                 <div className="flex items-center gap-1.5 mb-2">
-                                  <Sparkles size={11} style={{ color: '#3B82F6' }} />
+                                  <Sparkle size={11} style={{ color: '#3B82F6' }} />
                                   <span className="text-xs font-semibold" style={{ color: '#3B82F6' }}>Sugerencia IA · {iaInline.accion}</span>
                                 </div>
 
@@ -3062,7 +3091,7 @@ export default function PantallaCanvas({
                                     onMouseEnter={e => e.currentTarget.style.background = '#DBEAFE'}
                                     onMouseLeave={e => e.currentTarget.style.background = '#EFF6FF'}
                                   >
-                                    <RefreshCw size={11} />
+                                    <ArrowsClockwise size={11} />
                                     Reintentar
                                   </button>
                                   <button
@@ -3152,7 +3181,7 @@ export default function PantallaCanvas({
             onMouseLeave={e => { if (!comentarioActivoBloque) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = tieneComentariosActivos ? '#4B5563' : '#9CA3AF' } }}
           >
             <div className="relative">
-              <MessageSquare size={16} />
+              <Chat size={16} />
               {totalComentariosCriticos > 0 && (
                 <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#EF4444', fontSize: '8px' }}>
                   {totalComentariosCriticos}
@@ -3171,7 +3200,7 @@ export default function PantallaCanvas({
             onMouseLeave={e => { if (!panelNotasAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#4B5563' } }}
           >
             <div className="relative">
-              <StickyNote size={16} />
+              <Note size={16} />
               {notasState.length > 0 && (
                 <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#D97706', fontSize: '8px' }}>
                   {notasState.length}
@@ -3191,7 +3220,7 @@ export default function PantallaCanvas({
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
               <div className="relative">
-                <Layers size={15} />
+                <StackSimple size={15} />
                 {enrichmentsGenerados.length > 0 && (
                   <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#7C3AED', fontSize: '8px' }}>
                     {enrichmentsGenerados.length}
@@ -3210,9 +3239,8 @@ export default function PantallaCanvas({
               style={{ color: panelContextoTemaAbierto ? '#367CFF' : '#4B5563', background: panelContextoTemaAbierto ? '#E7EFFE' : 'transparent' }}
               onMouseEnter={e => { if (!panelContextoTemaAbierto) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
               onMouseLeave={e => { if (!panelContextoTemaAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#4B5563' } }}
-              title="Contexto acumulado de temas anteriores"
             >
-              <BrainCircuit size={16} />
+              <Brain size={16} />
               <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelContextoTemaAbierto ? '700' : '500' }}>Contexto</span>
             </button>
           )}
@@ -3227,7 +3255,7 @@ export default function PantallaCanvas({
             <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #E5E7EB' }}>
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#FEF2F2' }}>
-                  <MessageSquare size={12} style={{ color: '#EF4444' }} />
+                  <Chat size={12} style={{ color: '#EF4444' }} />
                 </div>
                 <div>
                   <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Comentarios</p>
@@ -3251,7 +3279,7 @@ export default function PantallaCanvas({
               style={{ background: '#F8F9FA', border: '1px solid #E5E7EB', color: '#6B7280' }}
             >
               <p className="font-medium uppercase tracking-wide mb-1"
-                style={{ fontSize: '10px', color: '#9CA3AF', fontFamily: "'Arial', sans-serif" }}>
+                style={{ fontSize: '10px', color: '#9CA3AF', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
                 Bloque referenciado
               </p>
               {comentarioActivoBloque.contenido.substring(0, 120)}...
@@ -3314,7 +3342,7 @@ export default function PantallaCanvas({
             <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #FDE68A' }}>
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#FEF9C3' }}>
-                  <StickyNote size={12} style={{ color: '#D97706' }} />
+                  <Note size={12} style={{ color: '#D97706' }} />
                 </div>
                 <div>
                   <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Notas</p>
@@ -3371,7 +3399,7 @@ export default function PantallaCanvas({
             <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
               {notasState.length === 0 && !selectionAnchor && (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
-                  <StickyNote size={24} style={{ color: '#FDE68A', marginBottom: '8px' }} />
+                  <Note size={24} style={{ color: '#FDE68A', marginBottom: '8px' }} />
                   <p className="text-sm font-medium" style={{ color: '#9CA3AF' }}>Sin notas aún</p>
                   <p className="text-xs mt-1 leading-relaxed" style={{ color: '#CBD5E1' }}>
                     Selecciona texto en el Canvas y aparecerá la opción "Añadir nota"
@@ -3412,26 +3440,28 @@ export default function PantallaCanvas({
                     <>
                       <p className="text-sm" style={{ color: '#374151' }}>{nota.contenido}</p>
                       <div className="flex items-center gap-2 mt-2 justify-end">
-                        <button
-                          onClick={() => { setNotaEditandoId(nota.id); setNotaEditandoTexto(nota.contenido) }}
-                          className="p-1 rounded transition-colors"
-                          style={{ color: '#CBD5E1' }}
-                          onMouseEnter={e => e.currentTarget.style.color = '#D97706'}
-                          onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
-                          title="Editar"
-                        >
-                          <Pencil size={12} />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteNota(nota.id)}
-                          className="p-1 rounded transition-colors"
-                          style={{ color: '#CBD5E1' }}
-                          onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
-                          onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
-                          title="Eliminar"
-                        >
-                          <Trash2 size={12} />
-                        </button>
+                        <Tooltip text="Editar" side="top">
+                          <button
+                            onClick={() => { setNotaEditandoId(nota.id); setNotaEditandoTexto(nota.contenido) }}
+                            className="p-1 rounded transition-colors"
+                            style={{ color: '#CBD5E1' }}
+                            onMouseEnter={e => e.currentTarget.style.color = '#D97706'}
+                            onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
+                          >
+                            <Pencil size={12} />
+                          </button>
+                        </Tooltip>
+                        <Tooltip text="Eliminar" side="top">
+                          <button
+                            onClick={() => handleDeleteNota(nota.id)}
+                            className="p-1 rounded transition-colors"
+                            style={{ color: '#CBD5E1' }}
+                            onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
+                            onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
+                          >
+                            <Trash size={12} />
+                          </button>
+                        </Tooltip>
                       </div>
                     </>
                   )}
@@ -3451,7 +3481,7 @@ export default function PantallaCanvas({
             <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #E5E7EB' }}>
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#F3E8FF' }}>
-                  <Layers size={12} style={{ color: '#7C3AED' }} />
+                  <StackSimple size={12} style={{ color: '#7C3AED' }} />
                 </div>
                 <div>
                   <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Experiencias Didácticas</p>
@@ -3474,9 +3504,9 @@ export default function PantallaCanvas({
               <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#9CA3AF' }}>Generar para este tema</p>
               <div className="space-y-2">
                 {[
-                  { tipo: 'test', icon: FlaskConical, label: 'Test de autoevaluación', desc: 'Preguntas de opción múltiple', color: '#7C3AED', bg: '#F3E8FF' },
-                  { tipo: 'mapa', icon: BrainCircuit, label: 'Mapa mental', desc: 'Estructura visual de conceptos', color: '#0EA5E9', bg: '#E0F2FE' },
-                  { tipo: 'podcast', icon: Mic, label: 'Resumen en podcast', desc: 'Guion de audio con síntesis del tema', color: '#10B981', bg: '#ECFDF5' },
+                  { tipo: 'test', icon: Flask, label: 'Test de autoevaluación', desc: 'Preguntas de opción múltiple', color: '#7C3AED', bg: '#F3E8FF' },
+                  { tipo: 'mapa', icon: Brain, label: 'Mapa mental', desc: 'Estructura visual de conceptos', color: '#0EA5E9', bg: '#E0F2FE' },
+                  { tipo: 'podcast', icon: Microphone, label: 'Resumen en podcast', desc: 'Guion de audio con síntesis del tema', color: '#10B981', bg: '#ECFDF5' },
                 ].map(({ tipo, icon: Icon, label, desc, color, bg }) => (
                   <button
                     key={tipo}
@@ -3523,7 +3553,7 @@ export default function PantallaCanvas({
               {enrichmentsGenerados.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: '#F3E8FF' }}>
-                    <Layers size={18} style={{ color: '#C4B5FD' }} />
+                    <StackSimple size={18} style={{ color: '#C4B5FD' }} />
                   </div>
                   <p className="text-sm font-medium mb-1" style={{ color: '#9CA3AF' }}>Sin experiencias todavía</p>
                   <p className="text-xs" style={{ color: '#CBD5E1' }}>Genera un test, mapa mental o podcast para este tema</p>
@@ -3533,7 +3563,7 @@ export default function PantallaCanvas({
                   <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#9CA3AF' }}>Experiencias generadas</p>
                   <div className="space-y-2">
                     {enrichmentsGenerados.map((e, i) => {
-                      const iconMap = { test: FlaskConical, mapa: BrainCircuit, podcast: Mic }
+                      const iconMap = { test: Flask, mapa: Brain, podcast: Microphone }
                       const colorMap = { test: '#7C3AED', mapa: '#0EA5E9', podcast: '#10B981' }
                       const bgMap = { test: '#F3E8FF', mapa: '#E0F2FE', podcast: '#ECFDF5' }
                       const Icon = iconMap[e.tipo]
@@ -3556,7 +3586,7 @@ export default function PantallaCanvas({
                             onMouseEnter={e => e.currentTarget.style.background = '#EDE9FE'}
                             onMouseLeave={e => e.currentTarget.style.background = '#F3E8FF'}
                           >
-                            <Save size={10} />
+                            <FloppyDisk size={10} />
                             Publicar
                           </button>
                         </div>
@@ -3634,7 +3664,7 @@ export default function PantallaCanvas({
             {/* Icon + title */}
             <div className="flex items-start gap-3 mb-4">
               <div className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#FEF3C7' }}>
-                <AlertTriangle size={18} style={{ color: '#D97706' }} />
+                <Warning size={18} style={{ color: '#D97706' }} />
               </div>
               <div>
                 <p className="text-sm font-semibold mb-1" style={{ color: '#111827' }}>¿Editar el resumen general?</p>

@@ -1,4 +1,4 @@
-import { AlertTriangle, RefreshCw, BarChart2, Flame } from 'lucide-react'
+import { Warning, ArrowsClockwise, ChartBar, Fire } from '@phosphor-icons/react'
 import { calidadContenidosIndicadores } from '../mockData'
 
 const cards = [
@@ -7,7 +7,7 @@ const cards = [
     label: 'Alertas normativas',
     tooltip: 'Asignaturas con contenido desactualizado respecto a normativa vigente',
     getValue: (d) => d.alertasNormativas,
-    icon: AlertTriangle,
+    icon: Warning,
     color: '#F97316',
     bgColor: '#FFF7ED',
     borderColor: '#FED7AA',
@@ -20,7 +20,7 @@ const cards = [
     label: 'Revisión profunda',
     tooltip: 'Porcentaje de contenido que ha superado revisión profunda de calidad',
     getValue: (d) => `${d.revisionProfunda}%`,
-    icon: RefreshCw,
+    icon: ArrowsClockwise,
     color: '#367CFF',
     bgColor: '#E7EFFE',
     borderColor: '#BAD2FF',
@@ -33,7 +33,7 @@ const cards = [
     label: 'ISE medio ponderado',
     tooltip: 'Índice de Satisfacción Estudiantil medio de todas las asignaturas activas',
     getValue: (d) => d.iseMediaPonderado.toFixed(1),
-    icon: BarChart2,
+    icon: ChartBar,
     color: '#10B981',
     bgColor: '#F0FDF4',
     borderColor: '#A7F3D0',
@@ -46,7 +46,7 @@ const cards = [
     label: 'Estado crítico',
     tooltip: 'Asignaturas con comentarios críticos no resueltos o bloqueadas en el pipeline',
     getValue: (d) => d.asignaturasEstadoCritico,
-    icon: Flame,
+    icon: Fire,
     color: '#EF4444',
     bgColor: '#FEF2F2',
     borderColor: '#FECACA',
@@ -108,7 +108,7 @@ export default function CalidadContenidosCards({ onCardClick }) {
               <div className="flex items-baseline gap-1 mb-1">
                 <span
                   className="text-2xl font-bold"
-                  style={{ color: card.color, fontFamily: "'Inter', sans-serif" }}
+                  style={{ color: card.color, fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                 >
                   {valor}
                 </span>

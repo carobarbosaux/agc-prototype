@@ -13,7 +13,7 @@ export function ProdiWordmark({ height = 24, className = '' }) {
         alt=""
         style={{ height: `${height}px`, width: 'auto', display: 'block' }}
       />
-      <span style={{ fontSize: `${Math.round(height * 0.6)}px`, fontWeight: '600', color: '#1A1A1A', whiteSpace: 'nowrap', fontFamily: "'Inter', 'Arial', sans-serif" }}>
+      <span style={{ fontSize: `${Math.round(height * 0.6)}px`, fontWeight: '600', color: '#1A1A1A', whiteSpace: 'nowrap', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
         Asistente de contenidos
       </span>
     </div>

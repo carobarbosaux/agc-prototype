@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, AlertCircle, CheckCircle, Info, ChevronRight } from 'lucide-react'
+import { X, Warning, CheckCircle, Info, CaretRight } from '@phosphor-icons/react'
 import { notificaciones } from '../mockData'
 
 const FILTROS = [
@@ -9,7 +9,7 @@ const FILTROS = [
 ]
 
 const tipoIconos = {
-  comentarios: { Icon: AlertCircle, color: '#F97316', bg: '#FFF7ED' },
+  comentarios: { Icon: Warning, color: '#F97316', bg: '#FFF7ED' },
   aprobado: { Icon: CheckCircle, color: '#10B981', bg: '#F0FDF4' },
   info: { Icon: Info, color: '#367CFF', bg: '#E7EFFE' },
 }
@@ -50,7 +50,7 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
           width: '380px',
           background: '#FFFFFF',
           boxShadow: '-8px 0 32px rgba(0,0,0,0.12)',
-          fontFamily: "'Inter', 'Arial', sans-serif",
+          fontFamily: "'Proeduca Sans', system-ui, sans-serif",
         }}
       >
         {/* Header */}
@@ -98,7 +98,7 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
             <div key={asignatura}>
               <p
                 className="text-xs font-semibold uppercase tracking-wider mb-2"
-                style={{ color: '#9CA3AF', fontFamily: "'Arial', sans-serif", letterSpacing: '0.06em' }}
+                style={{ color: '#9CA3AF', fontFamily: "'Proeduca Sans', system-ui, sans-serif", letterSpacing: '0.06em' }}
               >
                 {asignatura}
               </p>
@@ -134,14 +134,14 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
                             {notif.accionRequerida && (
                               <span
                                 className="text-xs font-medium px-2 py-0.5 rounded"
-                                style={{ background: '#FFF7ED', color: '#F97316', fontFamily: "'Arial', sans-serif" }}
+                                style={{ background: '#FFF7ED', color: '#F97316', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                               >
                                 Acción requerida
                               </span>
                             )}
                           </div>
                         </div>
-                        <ChevronRight size={14} style={{ color: '#CBD5E1' }} className="flex-shrink-0 mt-2 group-hover:text-slate-400 transition-colors" />
+                        <CaretRight size={14} style={{ color: '#CBD5E1' }} className="flex-shrink-0 mt-2 group-hover:text-slate-400 transition-colors" />
                       </div>
                     </button>
                   )

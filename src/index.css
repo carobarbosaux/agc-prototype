@@ -1,13 +1,129 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "./assets/prodi-typography.css";
+
+/* Proeduca Sans — local font faces */
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-ExtraLight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-ExtraLightItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-RegularItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-SemiBoldItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Proeduca Sans';
+  src: url('/fonts/desktop:otf/ProeducaSans-ExtraBoldItalic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+}
+
+/* Prodi Design System — typography tokens (from prodi-tailwind-typography.js) */
+@theme {
+  --font-prodi: 'Proeduca Sans', system-ui, -apple-system, sans-serif;
+
+  --text-prodi-h1: 1.875rem;
+  --text-prodi-h1--line-height: 1.3;
+  --text-prodi-h2: 1.75rem;
+  --text-prodi-h2--line-height: 1.3;
+  --text-prodi-h3: 1.625rem;
+  --text-prodi-h3--line-height: 1.3;
+  --text-prodi-h4: 1.5rem;
+  --text-prodi-h4--line-height: 1.3;
+  --text-prodi-h5: 1.375rem;
+  --text-prodi-h5--line-height: 1.3;
+  --text-prodi-h6: 1.125rem;
+  --text-prodi-h6--line-height: 1.3;
+  --text-prodi-m: 1rem;
+  --text-prodi-m--line-height: 1.5;
+  --text-prodi-s: 0.875rem;
+  --text-prodi-s--line-height: 1.5;
+  --text-prodi-xs: 0.75rem;
+  --text-prodi-xs--line-height: 1.5;
+  --text-prodi-footnote: 0.625rem;
+  --text-prodi-footnote--line-height: 1.2;
+
+  --font-weight-prodi-regular: 400;
+  --font-weight-prodi-medium: 500;
+  --font-weight-prodi-semibold: 600;
+}
 
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 :root {
-  --font-ui: 'Inter', 'Arial', sans-serif;
-  --font-mono: 'Arial', sans-serif;
+  --font-ui: 'Proeduca Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Proeduca Sans', system-ui, sans-serif;
 
   /* UNIR brand */
   --color-primary:        #367CFF;
@@ -34,11 +150,15 @@
 
 body {
   font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
   background-color: var(--color-bg);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

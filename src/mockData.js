@@ -1206,21 +1206,21 @@ export const shortcutsComandos = [
     comando: '/mejora-rúbricas',
     descripcion: 'Mejorar rúbricas de evaluación',
     accion: 'placeholder',
-    icon: 'ClipboardCheck',
+    icon: 'ClipboardText',
   },
   {
     id: 'disenador-actividades',
     comando: '/diseñador-actividades',
     descripcion: 'Diseñar actividades de aprendizaje',
     accion: 'placeholder',
-    icon: 'Edit3',
+    icon: 'PencilSimple',
   },
   {
     id: 'crear-test',
     comando: '/crear-test',
     descripcion: 'Generar test de evaluación',
     accion: 'placeholder',
-    icon: 'FlaskConical',
+    icon: 'Flask',
   },
   {
     id: 'corregir-actividades',
@@ -1261,7 +1261,7 @@ export const shortcutsDashboard = [
     comando: '/seguimiento',
     descripcion: 'Ver seguimiento de contenidos y obsolescencia',
     accion: 'seguimiento',
-    icon: 'BarChart2',
+    icon: 'ChartBar',
     roles: ['coordinador'],
   },
   {
@@ -1269,7 +1269,7 @@ export const shortcutsDashboard = [
     comando: '/alertas-normativas',
     descripcion: 'Ver asignaturas con comentarios o alertas',
     accion: 'filtrarAlertas',
-    icon: 'ShieldAlert',
+    icon: 'ShieldWarning',
     roles: ['autor', 'coordinador', 'editor'],
   },
   {
@@ -1277,7 +1277,7 @@ export const shortcutsDashboard = [
     comando: '/asignaturas-en-revision',
     descripcion: 'Filtrar asignaturas en revisión activa',
     accion: 'filtrarRevision',
-    icon: 'ClipboardCheck',
+    icon: 'ClipboardText',
     roles: ['editor'],
   },
   {
@@ -1285,7 +1285,7 @@ export const shortcutsDashboard = [
     comando: '/para-enriquecer',
     descripcion: 'Ver asignaturas disponibles para enriquecer',
     accion: 'placeholder',
-    icon: 'Edit3',
+    icon: 'PencilSimple',
     roles: ['disenador'],
   },
 ]

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CheckCircle, RotateCcw } from 'lucide-react'
+import { CheckCircle, ArrowCounterClockwise } from '@phosphor-icons/react'
 import GravedadTag from './GravedadTag'
 
 export default function ComentarioHilo({ comentario, onMarcarResuelto, onResponder, compact = false }) {
@@ -93,7 +93,7 @@ export default function ComentarioHilo({ comentario, onMarcarResuelto, onRespond
               border: '1px solid #CBD5E1',
               color: '#334155',
               minHeight: '72px',
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Proeduca Sans', system-ui, sans-serif",
             }}
             rows={3}
             onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}

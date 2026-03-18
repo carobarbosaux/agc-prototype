@@ -1,12 +1,12 @@
-import { ArrowRight, AlertCircle, AlertTriangle, Lightbulb, Info, ShieldAlert } from 'lucide-react'
+import { ArrowRight, Warning, Lightbulb, Info, ShieldWarning } from '@phosphor-icons/react'
 import { misPendientes, gravedadConfig } from '../mockData'
 
 const gravedadIcon = {
-  critico: AlertCircle,
-  importante: AlertTriangle,
+  critico: Warning,
+  importante: Warning,
   sugerencia: Lightbulb,
   nota: Info,
-  alertaNormativa: ShieldAlert,
+  alertaNormativa: ShieldWarning,
 }
 
 export default function PanelMisPendientes({ rolActivo, onNavigate }) {
@@ -27,7 +27,7 @@ export default function PanelMisPendientes({ rolActivo, onNavigate }) {
         </div>
         <div
           className="text-xs font-semibold px-2 py-0.5 rounded-md"
-          style={{ background: '#FEF2F2', color: '#EF4444', fontFamily: "'Arial', sans-serif" }}
+          style={{ background: '#FEF2F2', color: '#EF4444', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
         >
           {items.filter(i => i.gravedad === 'critico').length} críticos
         </div>
@@ -81,7 +81,7 @@ export default function PanelMisPendientes({ rolActivo, onNavigate }) {
                     style={{
                       background: cfg.bg,
                       color: cfg.color,
-                      fontFamily: "'Arial', sans-serif",
+                      fontFamily: "'Proeduca Sans', system-ui, sans-serif",
                     }}
                   >
                     {cfg.label}
