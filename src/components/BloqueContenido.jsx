@@ -250,7 +250,7 @@ export default function BloqueContenido({
       return maybeWrapList(
         <p className={tipoConf.className} style={tipoConf.style}>
           {contenido.slice(0, idx)}
-          <span style={{ color: '#9CA3AF', textDecoration: 'line-through' }}>{textoReemplazando}</span>
+          <span style={{ color: '#6B7280', textDecoration: 'line-through' }}>{textoReemplazando}</span>
           {contenido.slice(idx + textoReemplazando.length)}
         </p>
       )
@@ -335,7 +335,7 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                 padding: '5px', width: '170px',
               }}
             >
-              <p style={{ fontSize: '10px', fontWeight: '600', color: '#9CA3AF', padding: '2px 6px 4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <p style={{ fontSize: '10px', fontWeight: '600', color: '#6B7280', padding: '2px 6px 4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Tipo de bloque
               </p>
 
@@ -406,7 +406,7 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
       )}
 
       {/* Comment badge in right gutter */}
-      {comentariosActivos.length > 0 && (
+      {comentariosActivos.length > 0 ? (
         <button
           onClick={() => onComentarioClick?.(bloque)}
           className="absolute flex items-center gap-1 transition-all hover:scale-105"
@@ -427,7 +427,29 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
           <Chat size={10} />
           {comentariosActivos.length}
         </button>
-      )}
+      ) : onAccionIA ? (
+        <button
+          onClick={() => onAccionIA('', 'Añadir comentario', bloque)}
+          className="absolute flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+          style={{
+            right: '-44px',
+            top: '2px',
+            background: '#F3F4F6',
+            color: '#6B7280',
+            border: '1px solid #E5E7EB',
+            borderRadius: '6px',
+            padding: '2px 6px',
+            fontSize: '11px',
+            fontWeight: '500',
+            cursor: 'pointer',
+          }}
+          title="Añadir comentario"
+          onMouseEnter={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.color = '#367CFF'; e.currentTarget.style.borderColor = '#BFDBFE' }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#F3F4F6'; e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.borderColor = '#E5E7EB' }}
+        >
+          <Chat size={10} />
+        </button>
+      ) : null}
 
       {/* Content area */}
       <div className="relative py-1">
@@ -506,7 +528,7 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                     onMouseEnter={e => { e.currentTarget.style.background = '#F3F4F6' }}
                     onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
                   >
-                    <Icon size={20} style={{ color: '#566077', flexShrink: 0 }} />
+                    <Icon size={16} style={{ color: '#566077', flexShrink: 0 }} />
                     <span style={{ color: '#566077', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }}>
                       {label}
                     </span>
@@ -528,7 +550,7 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                     setToolbarVisible(false)
                     setSelectedText('')
                     window.getSelection()?.removeAllRanges()
-                    if (texto && onAccionIA) onAccionIA(texto, label, bloque)
+                    if (onAccionIA && (texto || label === 'Añadir comentario')) onAccionIA(texto || '', label, bloque)
                   }}
                   style={{
                     paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6,
@@ -543,7 +565,7 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                   onMouseEnter={e => { e.currentTarget.style.background = '#F3F4F6' }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
                 >
-                  <Icon size={20} style={{ color: '#566077', flexShrink: 0 }} />
+                  <Icon size={16} style={{ color: '#566077', flexShrink: 0 }} />
                   <span style={{ color: '#566077', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }}>
                     {label}
                   </span>

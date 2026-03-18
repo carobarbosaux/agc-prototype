@@ -62,7 +62,7 @@ export default function CalidadContenidosCards({ onCardClick }) {
   return (
     <div>
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-xs font-semibold" style={{ color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <span className="text-xs font-semibold" style={{ color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           Calidad de contenidos
         </span>
         <div className="flex-1 h-px" style={{ background: '#F1F5F9' }} />
@@ -122,7 +122,7 @@ export default function CalidadContenidosCards({ onCardClick }) {
               <p className="text-xs font-semibold mb-0.5" style={{ color: '#374151' }}>
                 {card.label}
               </p>
-              <p className="text-xs" style={{ color: '#9CA3AF' }}>
+              <p className="text-xs" style={{ color: '#6B7280' }}>
                 {card.description}
               </p>
             </button>

@@ -43,14 +43,14 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
         <nav className="flex items-center gap-1">
           {breadcrumb.map((item, i) => (
             <div key={i} className="flex items-center gap-1">
-              {i > 0 && <CaretRight size={12} className="text-slate-300" />}
+              {i > 0 && <CaretRight size={12} className="text-slate-400" />}
               {item.onClick ? (
                 <button
                   onClick={item.onClick}
                   className="text-sm transition-colors"
-                  style={{ color: '#6B7280' }}
+                  style={{ color: '#4B5563' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#1A1A1A'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#4B5563'}
                 >
                   {item.label}
                 </button>
@@ -85,7 +85,7 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
               style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
             >
               <div className="px-3 py-2 mb-1" style={{ borderBottom: '1px solid #F1F5F9' }}>
-                <p className="text-xs font-medium" style={{ color: '#6B7280' }}>Vista de demo — cambiar rol</p>
+                <p className="text-xs font-medium" style={{ color: '#4B5563' }}>Vista de demo — cambiar rol</p>
               </div>
               {roles.map(rol => (
                 <button
@@ -101,7 +101,7 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
                 >
                   <div>
                     <p className="text-sm font-medium" style={{ color: '#1A1A1A' }}>{rol.label}</p>
-                    <p className="text-xs" style={{ color: '#6B7280' }}>{rol.description}</p>
+                    <p className="text-xs" style={{ color: '#4B5563' }}>{rol.description}</p>
                   </div>
                   {rolActivo === rol.id && (
                     <div className="w-1.5 h-1.5 rounded-full" style={{ background: rc.text }} />
@@ -119,7 +119,7 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
           onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
-          <Bell size={18} style={{ color: '#6B7280' }} />
+          <Bell size={18} style={{ color: '#4B5563' }} />
           {notifCount > 0 && (
             <span
               className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-white"

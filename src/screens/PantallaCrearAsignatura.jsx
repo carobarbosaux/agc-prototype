@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import {
-  Sparkle, Check, BookOpen, X, ArrowLeft, MagnifyingGlass, CaretRight, PaperPlaneTilt,
+  Check, BookOpen, X, ArrowLeft, MagnifyingGlass, CaretRight, PaperPlaneTilt,
   GraduationCap, FileText, Upload, CheckSquare, Square, Info, Paperclip, Link, Plus,
 } from '@phosphor-icons/react'
 import { tagsSugerenciasPorArea } from '../mockData'
@@ -157,11 +157,11 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>
           Titulación
         </label>
         <div className="flex items-center gap-2 px-[13px] py-[9px] rounded-[10px] mb-3" style={{ background: '#FFFFFF', border: '1px solid #CBD5E1' }}>
-          <MagnifyingGlass size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+          <MagnifyingGlass size={13} style={{ color: '#6B7280', flexShrink: 0 }} />
           <input
             type="text"
             value={busqueda}
@@ -183,10 +183,10 @@ function PasoContextoAcademico({ datos, onChange }) {
                 className="w-full text-left px-3 py-2.5 rounded-lg flex items-center gap-3 transition-all"
                 style={{ background: sel ? '#E7EFFE' : '#F8F9FA', border: sel ? '2px solid #367CFF' : '2px solid transparent' }}
               >
-                <BookOpen size={14} style={{ color: sel ? '#367CFF' : '#94A3B8' }} />
+                <BookOpen size={14} style={{ color: sel ? '#367CFF' : '#6B7280' }} />
                 <div className="flex-1 min-w-0 text-left">
                   <p className="text-sm font-medium truncate" style={{ color: sel ? '#367CFF' : '#1A1A1A' }}>{t.nombre}</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>{t.codigo}</p>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>{t.codigo}</p>
                 </div>
                 {sel && <Check size={14} style={{ color: '#367CFF' }} />}
               </button>
@@ -196,10 +196,10 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Nivel de estudio</label>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Nivel de estudio</label>
         <select value={datos.nivel || ''} onChange={e => onChange('nivel', e.target.value)}
           className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none"
-          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: datos.nivel ? '#334155' : '#94A3B8' }}
+          style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: datos.nivel ? '#334155' : '#6B7280' }}
           onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
           onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
           onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
@@ -211,7 +211,7 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Público objetivo</label>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Público objetivo</label>
         <textarea value={datos.publicoObjetivo || ''} onChange={e => onChange('publicoObjetivo', e.target.value)}
           placeholder="Ej. Profesionales de TI con 2+ años de experiencia que quieren especializarse en IA aplicada…"
           rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
@@ -225,7 +225,7 @@ function PasoContextoAcademico({ datos, onChange }) {
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Número de créditos (ECTS)</label>
+          <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Número de créditos (ECTS)</label>
           <input type="number" value={datos.creditos || ''} onChange={e => onChange('creditos', e.target.value)}
             min={1} max={30} placeholder="6" className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none"
             style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155' }}
@@ -236,7 +236,7 @@ function PasoContextoAcademico({ datos, onChange }) {
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Nombre provisional</label>
+          <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Nombre provisional</label>
           <input type="text" value={datos.nombre || ''} onChange={e => onChange('nombre', e.target.value)}
             placeholder="Ej. Fundamentos de ML" className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none"
             style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155' }}
@@ -249,7 +249,7 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Temas o contenidos a tratar</label>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Temas o contenidos a tratar</label>
         <textarea value={datos.temasTratar || ''} onChange={e => onChange('temasTratar', e.target.value)}
           placeholder="Ej. Regresión lineal, clasificación, árboles de decisión, redes neuronales, evaluación de modelos…"
           rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
@@ -262,7 +262,7 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Descriptor</label>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Descriptor</label>
         <textarea value={datos.descriptor || ''} onChange={e => onChange('descriptor', e.target.value)}
           placeholder="Describe el propósito y alcance de la asignatura…"
           rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
@@ -275,7 +275,7 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Resultados de aprendizaje</label>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Resultados de aprendizaje</label>
         <textarea value={datos.resultadosAprendizaje || ''} onChange={e => onChange('resultadosAprendizaje', e.target.value)}
           placeholder="Ej. Al finalizar, el estudiante será capaz de…"
           rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
@@ -300,7 +300,7 @@ function PasoDefinicionTematica({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Área de conocimiento</label>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Área de conocimiento</label>
         <div className="grid grid-cols-2 gap-2">
           {areas.map(area => {
             const sel = datos.areaConocimiento === area
@@ -317,10 +317,10 @@ function PasoDefinicionTematica({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Tipo de asignatura</label>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Tipo de asignatura</label>
         <select value={datos.tipoAsignatura || ''} onChange={e => onChange('tipoAsignatura', e.target.value)}
           className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
-          style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: datos.tipoAsignatura ? '#1A1A1A' : '#9CA3AF' }}
+          style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: datos.tipoAsignatura ? '#1A1A1A' : '#6B7280' }}
           onFocus={e => { e.target.style.borderColor = '#367CFF'; e.target.style.boxShadow = '0 0 0 3px rgba(0,152,205,0.12)' }}
           onBlur={e => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none' }}
         >
@@ -330,7 +330,7 @@ function PasoDefinicionTematica({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Enfoque principal</label>
+        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Enfoque principal</label>
         <div className="grid grid-cols-3 gap-2">
           {['Teórico', 'Práctico', 'Mixto', 'Basado en casos', 'Por proyectos', 'Investigación'].map(enfoque => {
             const sel = datos.enfoque === enfoque
@@ -347,8 +347,7 @@ function PasoDefinicionTematica({ datos, onChange }) {
       </div>
 
       <div className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
-        <Sparkle size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
-        <p className="text-xs" style={{ color: '#0047CC', lineHeight: '1.5' }}>
+                <p className="text-xs" style={{ color: '#0047CC', lineHeight: '1.5' }}>
           Al hacer clic en <strong>Ver vista previa</strong>, la IA generará un resumen preliminar de la asignatura que podrás revisar y ajustar antes de continuar.
         </p>
       </div>
@@ -416,18 +415,18 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
       <div className="flex-1 min-w-0 pr-6 overflow-y-auto space-y-5" style={{ borderRight: '1px solid #F1F5F9' }}>
         <div>
           <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Resumen preliminar</h3>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Generado por IA · Puedes ajustarlo con el asistente →</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>Generado por IA · Puedes ajustarlo con el asistente →</p>
         </div>
         <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-          <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: '#9CA3AF' }}>Asignatura</p>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: '#6B7280' }}>Asignatura</p>
           <p className="text-base font-semibold" style={{ color: '#111827' }}>{resumenPreview.nombre}</p>
         </div>
         <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-          <p className="text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#9CA3AF' }}>Descripción</p>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Descripción</p>
           <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{resumenPreview.descripcion}</p>
         </div>
         <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Objetivos de aprendizaje</p>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Objetivos de aprendizaje</p>
           <div className="space-y-1.5">
             {resumenPreview.objetivos.map((obj, i) => (
               <div key={i} className="flex items-start gap-2">
@@ -438,7 +437,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
           </div>
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Etiquetas sugeridas</p>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Etiquetas sugeridas</p>
           <div className="flex flex-wrap gap-1.5">
             {resumenPreview.tags.map(tag => (
               <span key={tag} className="inline-flex items-center rounded-full text-xs font-medium"
@@ -454,7 +453,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
         <div className="flex items-center gap-2 mb-3 pb-3" style={{ borderBottom: '1px solid #F1F5F9' }}>
           <ProdiMark size={20} />
           <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Asistente de contenidos</p>
-          <p className="text-xs ml-auto" style={{ color: '#9CA3AF' }}>Ajusta el resumen</p>
+          <p className="text-xs ml-auto" style={{ color: '#6B7280' }}>Ajusta el resumen</p>
         </div>
         <div className="flex-1 overflow-y-auto space-y-3" style={{ minHeight: 0 }}>
           {chatMensajes.map(msg => (
@@ -473,8 +472,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
           {cargandoIA && (
             <div className="flex justify-start">
               <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#E7EFFE' }}>
-                <Sparkle size={9} style={{ color: '#367CFF' }} />
-              </div>
+                              </div>
               <div className="px-3 py-2 rounded-xl" style={{ background: '#F8F9FA', borderRadius: '4px 12px 12px 12px' }}>
                 <div className="flex gap-1">
                   {[0, 1, 2].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />)}
@@ -492,7 +490,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange }) {
           />
           <button onClick={enviarMensaje} disabled={!inputChat.trim() || cargandoIA}
             className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
-            style={{ background: inputChat.trim() && !cargandoIA ? '#367CFF' : '#E5E7EB', color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#9CA3AF' }}>
+            style={{ background: inputChat.trim() && !cargandoIA ? '#367CFF' : '#E5E7EB', color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#6B7280' }}>
             <PaperPlaneTilt size={12} />
           </button>
         </div>
@@ -621,7 +619,7 @@ function AutorPaso1Metadata() {
               background: f.highlight ? '#F0F9FF' : i % 2 === 0 ? '#FFFFFF' : '#FAFAFA',
             }}
           >
-            <span className="text-xs font-medium w-40 flex-shrink-0" style={{ color: '#9CA3AF' }}>{f.label}</span>
+            <span className="text-xs font-medium w-40 flex-shrink-0" style={{ color: '#6B7280' }}>{f.label}</span>
             <span
               className={`text-sm ${f.highlight ? 'font-semibold' : 'font-medium'}`}
               style={{ color: f.highlight ? '#367CFF' : '#1A1A1A' }}
@@ -848,7 +846,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
         style={{
           ...ctaStyle.base,
           color: '#0A5CF5',
-          opacity: active ? 1 : hovered ? 0.85 : 0.65,
+          opacity: active ? 1 : hovered ? 0.9 : 0.8,
           fontWeight: active ? '600' : '500',
         }}
         onMouseEnter={() => setHovered(true)}
@@ -977,20 +975,20 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
         <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>
           Fuentes y bibliografía
         </label>
-        <p className="text-xs mb-2" style={{ color: '#9CA3AF' }}>
+        <p className="text-xs mb-2" style={{ color: '#6B7280' }}>
           Sube documentos o añade enlaces que la IA tendrá en cuenta para generar el contenido.
         </p>
         <button
           onClick={handleSimularSubida}
           className="w-full flex flex-col items-center gap-2 px-4 py-5 rounded-xl transition-all"
-          style={{ border: '2px dashed #E5E7EB', background: '#FAFAFA', color: '#9CA3AF' }}
+          style={{ border: '2px dashed #E5E7EB', background: '#FAFAFA', color: '#6B7280' }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = '#367CFF'; e.currentTarget.style.background = '#F5F3FF' }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.background = '#FAFAFA' }}
         >
           <Upload size={18} style={{ color: '#6B7280' }} />
           <div className="text-center">
             <p className="text-xs font-medium" style={{ color: '#374151' }}>Arrastra archivos aquí o haz clic para subir</p>
-            <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>PDF, Docs, URL — máx. 25 MB</p>
+            <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>PDF, Docs, URL — máx. 25 MB</p>
           </div>
         </button>
         {archivosSimulados.length > 0 && (
@@ -1000,7 +998,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
                 <Paperclip size={12} style={{ color: '#0284C7', flexShrink: 0 }} />
                 <span className="text-xs flex-1" style={{ color: '#0C4A6E' }}>{archivo}</span>
                 <button onClick={() => setArchivosSimulados(prev => prev.filter(a => a !== archivo))}>
-                  <X size={11} style={{ color: '#94A3B8' }} />
+                  <X size={11} style={{ color: '#6B7280' }} />
                 </button>
               </div>
             ))}
@@ -1011,7 +1009,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
           {urls.map((url, i) => (
             <div key={i} className="flex items-center gap-2">
               <div className="flex items-center flex-1 gap-2 px-3 py-2 rounded-[10px]" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF' }}>
-                <Link size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+                <Link size={12} style={{ color: '#6B7280', flexShrink: 0 }} />
                 <input
                   type="url"
                   value={url}
@@ -1029,9 +1027,9 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
               {urls.length > 1 && (
                 <button
                   onClick={() => setUrls(prev => prev.length > 1 ? prev.filter((_, idx) => idx !== i) : [''])}
-                  style={{ color: '#9CA3AF', flexShrink: 0 }}
+                  style={{ color: '#6B7280', flexShrink: 0 }}
                   onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}
                 >
                   <X size={14} />
                 </button>
@@ -1086,8 +1084,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
 
       {/* AI hint */}
       <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
-        <Sparkle size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
-        <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
+                <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
           Al hacer clic en <strong>Generar resumen</strong>, la IA procesará toda esta información para crear un resumen de la asignatura que podrás revisar y ajustar.
         </p>
       </div>
@@ -1148,24 +1145,24 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
       <div className="flex-1 min-w-0 pr-6 overflow-y-auto space-y-5" style={{ borderRight: '1px solid #F1F5F9' }}>
         <div>
           <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Resumen de la asignatura</h3>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Generado por IA · Revisa y ajusta antes de generar el índice →</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>Generado por IA · Revisa y ajusta antes de generar el índice →</p>
         </div>
 
         {/* Subject name */}
         <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-          <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: '#9CA3AF' }}>Asignatura</p>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: '#6B7280' }}>Asignatura</p>
           <p className="text-base font-semibold" style={{ color: '#111827' }}>{resumen.nombre}</p>
         </div>
 
         {/* Description */}
         <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-          <p className="text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#9CA3AF' }}>Descripción</p>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Descripción</p>
           <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{resumen.descripcion}</p>
         </div>
 
         {/* Topics preview */}
         <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Estructura de temas propuesta</p>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Estructura de temas propuesta</p>
           <div className="space-y-2">
             {(resumen.temasConDescripcion || resumen.temas.map((t, i) => ({ numero: i + 1, titulo: t, descripcion: null }))).map((tema) => (
               <div key={tema.numero} className="px-3 py-2.5 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #F1F5F9' }}>
@@ -1183,7 +1180,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
 
         {/* Tags */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Etiquetas clave</p>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Etiquetas clave</p>
           <div className="flex flex-wrap gap-1.5">
             {resumen.tags.map(tag => (
               <span key={tag} className="inline-flex items-center rounded-full text-xs font-medium"
@@ -1200,7 +1197,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
         <div className="flex items-center gap-2 mb-3 pb-3" style={{ borderBottom: '1px solid #F1F5F9' }}>
           <ProdiMark size={20} />
           <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>Asistente de contenidos</p>
-          <p className="text-xs ml-auto" style={{ color: '#9CA3AF' }}>Ajusta el resumen</p>
+          <p className="text-xs ml-auto" style={{ color: '#6B7280' }}>Ajusta el resumen</p>
         </div>
         <div className="flex-1 overflow-y-auto space-y-3" style={{ minHeight: 0 }}>
           {chatMensajes.map(msg => (
@@ -1219,8 +1216,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
           {cargandoIA && (
             <div className="flex justify-start">
               <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mr-1.5 mt-0.5" style={{ background: '#E7EFFE' }}>
-                <Sparkle size={9} style={{ color: '#367CFF' }} />
-              </div>
+                              </div>
               <div className="px-3 py-2 rounded-xl" style={{ background: '#F8F9FA', borderRadius: '4px 12px 12px 12px' }}>
                 <div className="flex gap-1">
                   {[0, 1, 2].map(i => <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />)}
@@ -1250,7 +1246,7 @@ function AutorPaso3Preview({ resumen, onResumenChange }) {
           />
           <button onClick={enviarMensaje} disabled={!inputChat.trim() || cargandoIA}
             className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
-            style={{ background: inputChat.trim() && !cargandoIA ? '#367CFF' : '#E5E7EB', color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#9CA3AF' }}>
+            style={{ background: inputChat.trim() && !cargandoIA ? '#367CFF' : '#E5E7EB', color: inputChat.trim() && !cargandoIA ? '#FFFFFF' : '#6B7280' }}>
             <PaperPlaneTilt size={12} />
           </button>
         </div>
@@ -1359,12 +1355,11 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
           <span style={{ color: '#E5E7EB' }}>·</span>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-              <Sparkle size={12} style={{ color: '#367CFF' }} />
-            </div>
+                          </div>
             <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Deep Learning y Redes Neuronales</p>
           </div>
         </div>
-        <p className="text-xs font-medium" style={{ color: '#9CA3AF' }}>
+        <p className="text-xs font-medium" style={{ color: '#6B7280' }}>
           Paso {paso} de {AUTOR_TOTAL_PASOS} · {AUTOR_PASO_LABELS[paso]}
         </p>
       </div>
@@ -1419,13 +1414,12 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
             {(generando || generandoResumen) ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
-                  <Sparkle size={24} style={{ color: '#367CFF' }} />
-                </div>
+                                  </div>
                 <div className="text-center">
                   <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
                     {generandoResumen ? 'Generando resumen de la asignatura…' : 'Generando índice de temas…'}
                   </p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está procesando tu solicitud…</p>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>La IA está procesando tu solicitud…</p>
                 </div>
                 <div className="flex gap-1.5 mt-2">
                   {[0, 1, 2].map(i => (
@@ -1474,11 +1468,10 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
                   className="flex items-center gap-1.5 px-6 py-2 rounded-[10px] text-sm font-semibold transition-all"
                   style={{
                     background: puedeAvanzar() ? '#0A5CF5' : '#E5E7EB',
-                    color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF',
+                    color: puedeAvanzar() ? '#FFFFFF' : '#6B7280',
                     cursor: puedeAvanzar() ? 'pointer' : 'default',
                   }}>
-                  <Sparkle size={13} />
-                  Generar resumen
+                                    Generar resumen
                 </button>
               )}
               {paso === 3 && (
@@ -1587,12 +1580,11 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
           <span style={{ color: '#E5E7EB' }}>·</span>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-              <Sparkle size={12} style={{ color: '#367CFF' }} />
-            </div>
+                          </div>
             <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Crear nueva asignatura</p>
           </div>
         </div>
-        <p className="text-xs font-medium" style={{ color: '#9CA3AF' }}>
+        <p className="text-xs font-medium" style={{ color: '#6B7280' }}>
           Paso {paso} de {COORD_TOTAL_PASOS} · {COORD_PASO_LABELS[paso]}
         </p>
       </div>
@@ -1645,13 +1637,12 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
             {(generando || generandoPreview) ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
-                  <Sparkle size={24} style={{ color: '#367CFF' }} />
-                </div>
+                                  </div>
                 <div className="text-center">
                   <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
                     {generandoPreview ? 'Generando vista previa…' : 'Generando índice de temas…'}
                   </p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está procesando tu solicitud…</p>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>La IA está procesando tu solicitud…</p>
                 </div>
                 <div className="flex gap-1.5 mt-2">
                   {[0, 1, 2].map(i => (
@@ -1698,7 +1689,7 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
               {paso === 1 && (
                 <button onClick={() => setPaso(2)} disabled={!puedeAvanzar()}
                   className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold transition-all"
-                  style={{ background: puedeAvanzar() ? '#367CFF' : '#E5E7EB', color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF', cursor: puedeAvanzar() ? 'pointer' : 'default' }}>
+                  style={{ background: puedeAvanzar() ? '#367CFF' : '#E5E7EB', color: puedeAvanzar() ? '#FFFFFF' : '#6B7280', cursor: puedeAvanzar() ? 'pointer' : 'default' }}>
                   Siguiente
                   <CaretRight size={14} />
                 </button>
@@ -1706,9 +1697,8 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
               {paso === 2 && (
                 <button onClick={handleAvanzarA3} disabled={!puedeAvanzar()}
                   className="flex items-center gap-1.5 px-6 py-2 rounded-lg text-sm font-semibold transition-all"
-                  style={{ background: puedeAvanzar() ? '#367CFF' : '#E5E7EB', color: puedeAvanzar() ? '#FFFFFF' : '#9CA3AF', cursor: puedeAvanzar() ? 'pointer' : 'default' }}>
-                  <Sparkle size={13} />
-                  Ver vista previa
+                  style={{ background: puedeAvanzar() ? '#367CFF' : '#E5E7EB', color: puedeAvanzar() ? '#FFFFFF' : '#6B7280', cursor: puedeAvanzar() ? 'pointer' : 'default' }}>
+                                    Ver vista previa
                 </button>
               )}
               {paso === 3 && (

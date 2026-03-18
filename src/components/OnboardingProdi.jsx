@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import {
-  Sparkle, X, CaretRight, CaretLeft,
+  X, CaretRight, CaretLeft,
   Chat, Note, ArrowsOut, ArrowCounterClockwise,
-  BookOpen, Microscope, ArrowUpRight, Check,
+  BookOpen, Microscope, ArrowUpRight, Check, MagicWand,
 } from '@phosphor-icons/react'
 import { onboardingSlides } from '../data/onboardingProdiData'
 import { ProdiMark, ProdiWordmark } from './ProdiLogo'
@@ -20,8 +20,7 @@ function VisualEditorZoom() {
           <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#4ADE80' }} />
           <div className="flex-1 mx-3 h-5 rounded-md" style={{ background: '#F1F5F9' }} />
           <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-            <Sparkle size={11} style={{ color: '#367CFF' }} />
-          </div>
+                      </div>
         </div>
         {/* Content mockup */}
         <div className="px-5 py-4 space-y-3" style={{ background: '#FFFFFF' }}>
@@ -68,8 +67,7 @@ function VisualCanvasOverview() {
             <div className="h-3 w-full rounded-md" style={{ background: '#F8F9FA' }} />
             <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
               style={{ background: '#E7EFFE', color: '#0047CC', border: '1px solid #BAD2FF' }}>
-              <Sparkle size={10} style={{ color: '#367CFF' }} />
-              Generar contenido
+                            Generar contenido
             </div>
           </div>
         </div>
@@ -91,8 +89,8 @@ function VisualContextualSelection() {
   const actions = [
     { icon: ArrowCounterClockwise, label: 'Corregir redacción', color: '#367CFF' },
     { icon: ArrowsOut, label: 'Expandir o resumir', color: '#367CFF' },
-    { icon: Sparkle, label: 'Regenerar texto', color: '#7C3AED' },
-    { icon: BookOpen, label: 'Buscar bibliografía', color: '#059669' },
+    { icon: MagicWand, label: 'Regenerar texto', color: '#7C3AED' },
+    { icon: BookOpen, label: 'Buscar bibliografía', color: '#24A859' },
     { icon: Microscope, label: 'Deep research', color: '#D97706' },
   ]
 
@@ -112,7 +110,7 @@ function VisualContextualSelection() {
             <div className="absolute left-4 -top-10 flex items-center gap-1 px-2 py-1.5 rounded-lg"
               style={{ background: '#1A1A1A', boxShadow: '0 4px 16px rgba(0,0,0,0.2)', animation: 'fadeInUp 0.25s ease' }}>
               {[
-                { icon: Sparkle, label: 'IA' },
+                { icon: MagicWand, label: 'IA' },
                 { icon: Chat, label: 'Comentar' },
                 { icon: Note, label: 'Nota' },
               ].map(({ icon: Icon, label }) => (
@@ -162,8 +160,7 @@ function VisualSidePanel() {
           <div className="p-3 space-y-2" style={{ background: '#FFFFFF' }}>
             <div className="flex items-start gap-2">
               <div className="w-4 h-4 rounded-md flex-shrink-0 flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-                <Sparkle size={7} style={{ color: '#367CFF' }} />
-              </div>
+                              </div>
               <div className="px-2.5 py-1.5 rounded-xl text-xs leading-relaxed" style={{ background: '#F8F9FA', color: '#374151', maxWidth: '140px' }}>
                 ¿En qué puedo ayudarte hoy?
               </div>
@@ -176,7 +173,7 @@ function VisualSidePanel() {
           </div>
           <div className="px-3 pb-3" style={{ background: '#FFFFFF' }}>
             <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
-              <span className="flex-1 text-xs" style={{ color: '#9CA3AF' }}>Escribe tu pregunta…</span>
+              <span className="flex-1 text-xs" style={{ color: '#6B7280' }}>Escribe tu pregunta…</span>
               <div className="w-4 h-4 rounded-md flex items-center justify-center" style={{ background: '#367CFF' }}>
                 <ArrowUpRight size={9} style={{ color: '#FFFFFF' }} />
               </div>
@@ -232,7 +229,7 @@ function VisualFinalState() {
               </div>
               <div>
                 <span className="text-xs font-semibold block" style={{ color: '#0047CC' }}>{label}</span>
-                <span className="text-xs leading-none" style={{ color: '#9CA3AF' }}>{desc}</span>
+                <span className="text-xs leading-none" style={{ color: '#6B7280' }}>{desc}</span>
               </div>
             </div>
           ))}
@@ -326,16 +323,16 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
                   >
                     <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all"
                       style={{
-                        background: isActive ? '#367CFF' : isPast ? '#DCFCE7' : '#E5E7EB',
-                        border: isActive ? '2px solid #367CFF' : isPast ? '2px solid #16A34A' : '2px solid #E5E7EB',
+                        background: isActive ? '#367CFF' : isPast ? '#D5F6E2' : '#E5E7EB',
+                        border: isActive ? '2px solid #367CFF' : isPast ? '2px solid #24A859' : '2px solid #E5E7EB',
                       }}>
                       {isPast
-                        ? <Check size={10} style={{ color: '#16A34A' }} />
-                        : <span className="text-xs font-semibold" style={{ color: isActive ? '#FFFFFF' : '#9CA3AF', fontSize: '10px' }}>{i + 1}</span>
+                        ? <Check size={10} style={{ color: '#24A859' }} />
+                        : <span className="text-xs font-semibold" style={{ color: isActive ? '#FFFFFF' : '#6B7280', fontSize: '10px' }}>{i + 1}</span>
                       }
                     </div>
                     <span className="text-xs font-medium truncate"
-                      style={{ color: isActive ? '#0047CC' : isPast ? '#374151' : '#9CA3AF' }}>
+                      style={{ color: isActive ? '#0047CC' : isPast ? '#374151' : '#6B7280' }}>
                       {s.title || s.stepLabel || `Paso ${i + 1}`}
                     </span>
                   </button>
@@ -347,7 +344,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
           {/* Progress bar */}
           <div>
             <div className="flex justify-between mb-1">
-              <span className="text-xs" style={{ color: '#9CA3AF' }}>{slideIndex + 1} de {onboardingSlides.length}</span>
+              <span className="text-xs" style={{ color: '#6B7280' }}>{slideIndex + 1} de {onboardingSlides.length}</span>
             </div>
             <div className="w-full rounded-full overflow-hidden" style={{ height: '4px', background: '#E5E7EB' }}>
               <div className="h-full rounded-full transition-all"
@@ -362,7 +359,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
           <div className="flex justify-end px-6 pt-5 pb-0 flex-shrink-0">
             <button onClick={handleClose}
               className="w-7 h-7 rounded-full flex items-center justify-center transition-all"
-              style={{ background: '#F1F5F9', color: '#9CA3AF' }}
+              style={{ background: '#F1F5F9', color: '#6B7280' }}
               onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
               onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}>
               <X size={13} />
@@ -403,7 +400,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
                   <div className="space-y-1">
                     {slide.additionalSection.items.map(item => (
                       <div key={item} className="flex items-center gap-2.5">
-                        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#9CA3AF' }} />
+                        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#6B7280' }} />
                         <span className="text-sm" style={{ color: '#374151' }}>{item}</span>
                       </div>
                     ))}
@@ -421,21 +418,18 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
 
           {/* Footer nav */}
           <div className="flex items-center justify-between px-8 py-5 flex-shrink-0" style={{ borderTop: '1px solid #F8F9FA' }}>
-            <button
-              onClick={goBack}
-              disabled={isFirst}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
-              style={{
-                color: isFirst ? '#CBD5E1' : '#6B7280',
-                background: isFirst ? 'transparent' : '#F1F5F9',
-                cursor: isFirst ? 'default' : 'pointer',
-              }}
-              onMouseEnter={e => { if (!isFirst) e.currentTarget.style.background = '#E5E7EB' }}
-              onMouseLeave={e => { if (!isFirst) e.currentTarget.style.background = '#F1F5F9' }}
-            >
-              <CaretLeft size={15} />
-              Anterior
-            </button>
+            {!isFirst ? (
+              <button
+                onClick={goBack}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                style={{ color: '#6B7280', background: '#F1F5F9', cursor: 'pointer' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
+                onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
+              >
+                <CaretLeft size={15} />
+                Anterior
+              </button>
+            ) : <div />}
 
             {isLast ? (
               <button
@@ -446,6 +440,7 @@ export default function OnboardingProdi({ onClose, onOpenAssistant }) {
                 onMouseLeave={e => e.currentTarget.style.opacity = '1'}
               >
                 {slide.cta}
+                <CaretRight size={15} />
               </button>
             ) : (
               <button

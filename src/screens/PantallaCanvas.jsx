@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { CaretRight, CaretDown, Plus, Chat, Eye, Sparkle, X, Lock, MagicWand, ShieldCheck, BookBookmark, Check, ToggleLeft, ToggleRight, Note, Pencil, Trash, ArrowsClockwise, ArrowUpRight, Flask, Brain, Microphone, FloppyDisk, StackSimple, BookOpen, Link, PaperPlaneTilt, ArrowSquareOut, Warning } from '@phosphor-icons/react'
+import { CaretRight, CaretDown, Plus, Chat, Eye, X, Lock, MagicWand, ShieldCheck, BookBookmark, Check, ToggleLeft, ToggleRight, Note, Pencil, Trash, ArrowsClockwise, ArrowUpRight, Flask, Brain, Microphone, FloppyDisk, StackSimple, BookOpen, Link, PaperPlaneTilt, ArrowSquareOut, Warning } from '@phosphor-icons/react'
 import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
@@ -261,11 +261,10 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
           className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse"
           style={{ background: '#E7EFFE' }}
         >
-          <Sparkle size={24} style={{ color: '#367CFF' }} />
-        </div>
+                  </div>
         <div className="text-center">
           <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando índice de temas…</p>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está creando la estructura del curso…</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>La IA está creando la estructura del curso…</p>
         </div>
         <div className="flex gap-1.5 mt-2">
           {[0, 1, 2].map(i => (
@@ -287,11 +286,10 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
           className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse"
           style={{ background: '#E7EFFE' }}
         >
-          <Sparkle size={24} style={{ color: '#367CFF' }} />
-        </div>
+                  </div>
         <div className="text-center">
           <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando resumen preliminar…</p>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está procesando tu solicitud…</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>La IA está procesando tu solicitud…</p>
         </div>
         <div className="flex gap-1.5 mt-2">
           {[0, 1, 2].map(i => (
@@ -315,8 +313,7 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
       >
         <div className="flex items-center gap-2 mb-3 pb-3" style={{ borderBottom: '1px solid #E5E7EB' }}>
           <div className="w-5 h-5 rounded flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-            <Sparkle size={11} style={{ color: '#367CFF' }} />
-          </div>
+                      </div>
           <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Índice generado por IA · Solo lectura</span>
         </div>
         <div className="space-y-3">
@@ -327,7 +324,7 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
                   className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5"
                   style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
                 >
-                  <span style={{ fontSize: '10px', fontWeight: '700', color: '#9CA3AF' }}>{i + 1}</span>
+                  <span style={{ fontSize: '10px', fontWeight: '700', color: '#6B7280' }}>{i + 1}</span>
                 </div>
                 <span className="text-sm font-semibold" style={{ color: '#374151' }}>
                   {typeof tema === 'string' ? tema.replace(/^Tema \d+: /, '') : tema.titulo}
@@ -353,8 +350,7 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
         className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg mb-6"
         style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}
       >
-        <Sparkle size={12} style={{ color: '#367CFF', flexShrink: 0, marginTop: '2px' }} />
-        <p className="text-xs" style={{ color: '#0047CC', lineHeight: '1.5' }}>
+                <p className="text-xs" style={{ color: '#0047CC', lineHeight: '1.5' }}>
           El índice se ha generado en base al área temática y los contenidos indicados. Podrás reorganizar y editar los temas desde el Canvas.
         </p>
       </div>
@@ -367,8 +363,7 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
         onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
         onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
       >
-        <Sparkle size={14} />
-        Generar resumen de la asignatura
+                Generar resumen de la asignatura
         <CaretRight size={14} />
       </button>
     </div>
@@ -408,11 +403,10 @@ function RecursosLoadingScreen({ onCancel }) {
     <div className="rounded-xl p-8" style={{ border: '1px solid #E5E7EB', background: '#FAFAFA' }}>
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
-          <Sparkle size={16} style={{ color: '#367CFF' }} />
-        </div>
+                  </div>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Generando referencias académicas…</p>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Paso {current.step} de {current.total}</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>Paso {current.step} de {current.total}</p>
         </div>
         <button
           onClick={onCancel}
@@ -438,7 +432,7 @@ function RecursosLoadingScreen({ onCancel }) {
             </div>
             <div>
               <p className="text-xs font-medium" style={{ color: i < thoughtStep ? '#6B7280' : '#1A1A1A' }}>{t.text}</p>
-              {i === thoughtStep && <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{t.detail}</p>}
+              {i === thoughtStep && <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>{t.detail}</p>}
             </div>
           </div>
         ))}
@@ -590,7 +584,7 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, showEdit, onDelete,
               )}
             </div>
           </div>
-          <p className="text-xs mb-1.5" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mb-1.5" style={{ color: '#6B7280' }}>
             {draft.authors.join(', ')} · {SOURCE_LABELS[r.source] || r.source} · {draft.year}
           </p>
           <p className="text-sm leading-relaxed mb-2" style={{ color: '#374151' }}>{draft.description}</p>
@@ -598,7 +592,7 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, showEdit, onDelete,
             <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: rel.bg, color: rel.color, border: `1px solid ${rel.border}` }}>
               {rel.label}
             </span>
-            <a href={draft.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs hover:underline" style={{ color: '#9CA3AF' }}>
+            <a href={draft.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs hover:underline" style={{ color: '#6B7280' }}>
               <Link size={10} />
               {draft.url.length > 50 ? draft.url.slice(0, 50) + '…' : draft.url}
             </a>
@@ -672,7 +666,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
           <BookOpen size={20} style={{ color: '#367CFF' }} />
         </div>
         <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Sin referencias generadas</p>
-        <p className="text-xs mb-5 text-center max-w-xs" style={{ color: '#9CA3AF' }}>
+        <p className="text-xs mb-5 text-center max-w-xs" style={{ color: '#6B7280' }}>
           La IA buscará 10 referencias académicas relevantes para este tema a partir del temario aprobado.
         </p>
         {editable && (
@@ -683,7 +677,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
             onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
             onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
           >
-            <Sparkle size={14} /> Generar referencias con IA
+            Generar referencias con IA
           </button>
         )}
       </div>
@@ -723,7 +717,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
       <div className="flex items-center justify-between mb-5">
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{visibleRefs.length} referencias académicas</p>
-          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Borrador · Puedes editar, regenerar o eliminar referencias individualmente</p>
+          <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>Borrador · Puedes editar, regenerar o eliminar referencias individualmente</p>
         </div>
       </div>
 
@@ -750,15 +744,14 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
         <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #E5E7EB' }}>
           <div className="flex items-center justify-between px-4 py-3" style={{ background: '#F8F9FA', borderBottom: '1px solid #E5E7EB' }}>
             <div className="flex items-center gap-2">
-              <Sparkle size={13} style={{ color: '#367CFF' }} />
-              <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Refinar referencias con IA</span>
+                            <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Refinar referencias con IA</span>
             </div>
             <button onClick={() => setScreen('list')} className="p-1 rounded hover:bg-gray-200 transition-colors">
               <X size={13} style={{ color: '#6B7280' }} />
             </button>
           </div>
           <div className="px-4 py-3" style={{ borderBottom: '1px solid #F3F4F6' }}>
-            <p className="text-xs mb-2" style={{ color: '#9CA3AF' }}>Sugerencias rápidas:</p>
+            <p className="text-xs mb-2" style={{ color: '#6B7280' }}>Sugerencias rápidas:</p>
             <div className="flex flex-wrap gap-1.5">
               {recursosRefinementSuggestions.map(s => (
                 <button key={s} onClick={() => setChatInput(s)}
@@ -776,8 +769,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
                 <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'ai' && (
                     <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#E7EFFE' }}>
-                      <Sparkle size={10} style={{ color: '#367CFF' }} />
-                    </div>
+                                          </div>
                   )}
                   <div className="text-xs leading-relaxed rounded-xl px-3 py-2 max-w-xs"
                     style={msg.role === 'user' ? { background: '#367CFF', color: '#FFFFFF' } : { background: '#F3F4F6', color: '#374151' }}
@@ -787,11 +779,10 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
               {chatLoading && (
                 <div className="flex gap-2 justify-start">
                   <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#E7EFFE' }}>
-                    <Sparkle size={10} style={{ color: '#367CFF' }} />
-                  </div>
+                                      </div>
                   <div className="flex items-center gap-1 px-3 py-2 rounded-xl" style={{ background: '#F3F4F6' }}>
                     {[0,1,2].map(i => (
-                      <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#9CA3AF', animationDelay: `${i * 0.15}s` }} />
+                      <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#6B7280', animationDelay: `${i * 0.15}s` }} />
                     ))}
                   </div>
                 </div>
@@ -814,7 +805,7 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
               className="flex items-center justify-center w-7 h-7 rounded-lg transition-all flex-shrink-0"
               style={{ background: chatInput.trim() && !chatLoading ? '#367CFF' : '#E5E7EB' }}
             >
-              <PaperPlaneTilt size={12} style={{ color: chatInput.trim() && !chatLoading ? '#FFFFFF' : '#9CA3AF' }} />
+              <PaperPlaneTilt size={12} style={{ color: chatInput.trim() && !chatLoading ? '#FFFFFF' : '#6B7280' }} />
             </button>
           </div>
         </div>
@@ -877,9 +868,9 @@ function SeccionIndiceFija({ bloques, resumenData }) {
                 <button
                   onClick={() => toggleExpand(tema.id)}
                   className="flex items-center gap-1 flex-shrink-0 mt-0.5 text-xs font-medium rounded-md px-2 py-1 transition-colors"
-                  style={{ color: isExpanded ? '#367CFF' : '#9CA3AF', background: isExpanded ? '#E7EFFE' : 'transparent' }}
+                  style={{ color: isExpanded ? '#367CFF' : '#6B7280', background: isExpanded ? '#E7EFFE' : 'transparent' }}
                   onMouseEnter={e => { if (!isExpanded) { e.currentTarget.style.color = '#367CFF'; e.currentTarget.style.background = '#F5F8FF' } }}
-                  onMouseLeave={e => { if (!isExpanded) { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' } }}
+                  onMouseLeave={e => { if (!isExpanded) { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = 'transparent' } }}
                   title={isExpanded ? 'Ocultar resumen' : 'Ver resumen del tema'}
                 >
                   {isExpanded ? <CaretDown size={14} /> : <CaretRight size={14} />}
@@ -893,7 +884,7 @@ function SeccionIndiceFija({ bloques, resumenData }) {
                 className="px-5 pb-4"
                 style={{ borderTop: '1px solid #F3F4F6', paddingTop: '12px', marginLeft: '48px' }}
               >
-                <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.06em' }}>Resumen del tema</p>
+                <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280', letterSpacing: '0.06em' }}>Resumen del tema</p>
                 <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{resumenTema.descripcion}</p>
               </div>
             )}
@@ -956,7 +947,7 @@ function SeccionResumen({ nombreAsignatura, creacionData }) {
 
   const Field = ({ label, children }) => (
     <div className="mb-8" style={{ borderBottom: '1px solid #F3F4F6', paddingBottom: '28px' }}>
-      <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF', letterSpacing: '0.07em' }}>{label}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#6B7280', letterSpacing: '0.07em' }}>{label}</p>
       {children}
     </div>
   )
@@ -966,7 +957,7 @@ function SeccionResumen({ nombreAsignatura, creacionData }) {
 
       {/* Header */}
       <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
-        <p className="text-xs font-medium mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.05em' }}>
+        <p className="text-xs font-medium mb-2" style={{ color: '#6B7280', letterSpacing: '0.05em' }}>
           {nombreAsignatura ?? nombre}
         </p>
         <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>Resumen general</h1>
@@ -997,7 +988,7 @@ function SeccionResumen({ nombreAsignatura, creacionData }) {
       {/* Etiquetas */}
       {tags.length > 0 && (
         <div className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF', letterSpacing: '0.07em' }}>Etiquetas clave</p>
+          <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#6B7280', letterSpacing: '0.07em' }}>Etiquetas clave</p>
           <div className="flex flex-wrap gap-1.5">
             {tags.map(tag => (
               <span key={tag} className="inline-flex items-center rounded-full text-xs font-medium"
@@ -1027,7 +1018,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
           <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
             {dlGenerandoContenido ? 'Generando contenido del tema…' : 'Generando resumen del tema…'}
           </p>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está procesando las instrucciones…</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>La IA está procesando las instrucciones…</p>
         </div>
         <div className="flex gap-1.5 mt-2">
           {[0, 1, 2].map(i => (
@@ -1044,7 +1035,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
         {/* Header */}
         <div>
           <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Instrucciones para la IA</h3>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Proporciona contexto al asistente para generar el resumen del tema</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>Proporciona contexto al asistente para generar el resumen del tema</p>
         </div>
 
         {/* Enfoque para la IA */}
@@ -1141,13 +1132,13 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
               <ProdiMark size={10} /> Generado por IA
             </span>
           </div>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Revisa la estructura antes de generar el contenido completo</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>Revisa la estructura antes de generar el contenido completo</p>
         </div>
       </div>
 
       {/* Introducción y objetivos */}
       <div className="rounded-xl p-4 space-y-2" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Introducción y objetivos</p>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Introducción y objetivos</p>
         {dlResumenTema1.introduccionYObjetivos.split('\n\n').map((par, i) => (
           <p key={i} className="text-sm leading-relaxed" style={{ color: '#374151' }}>{par}</p>
         ))}
@@ -1155,7 +1146,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
 
       {/* Objetivos list */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Objetivos de aprendizaje</p>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Objetivos de aprendizaje</p>
         <div className="space-y-1.5">
           {dlResumenTema1.objetivos.map((obj, i) => (
             <div key={i} className="flex items-start gap-2.5">
@@ -1168,7 +1159,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
 
       {/* Epígrafes */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF' }}>Estructura propuesta del tema</p>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#6B7280' }}>Estructura propuesta del tema</p>
         <div className="space-y-3">
           {dlResumenTema1.epigrafes.map((ep, i) => (
             <div key={i} className="rounded-xl p-4" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
@@ -1180,7 +1171,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
                 <p key={j} className="text-xs leading-relaxed mb-2" style={{ color: '#6B7280' }}>{par}</p>
               ))}
               <div className="mt-2 pt-2" style={{ borderTop: '1px solid #F1F5F9' }}>
-                <p className="text-xs font-medium mb-1.5" style={{ color: '#9CA3AF' }}>Ideas didácticas</p>
+                <p className="text-xs font-medium mb-1.5" style={{ color: '#6B7280' }}>Ideas didácticas</p>
                 <div className="flex flex-wrap gap-1.5">
                   {ep.ideasDidacticas.map((idea, k) => (
                     <span key={k} className="text-xs px-2 py-1 rounded-lg" style={{ background: '#F0FDF4', color: '#16A34A', border: '1px solid #BBF7D0' }}>{idea}</span>
@@ -1272,7 +1263,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         </div>
         <div className="text-center">
           <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando resumen del tema…</p>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está procesando las instrucciones…</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>La IA está procesando las instrucciones…</p>
         </div>
         <div className="flex gap-1.5 mt-2">
           {[0, 1, 2].map(i => (
@@ -1297,7 +1288,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
                 <ProdiMark size={10} /> Generado por IA
               </span>
             </div>
-            <p className="text-xs" style={{ color: '#9CA3AF' }}>Revisa la estructura antes de generar el contenido completo</p>
+            <p className="text-xs" style={{ color: '#6B7280' }}>Revisa la estructura antes de generar el contenido completo</p>
           </div>
           {!readOnly && (
             <button
@@ -1325,7 +1316,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
               <Brain size={14} style={{ color: '#367CFF' }} />
               <span className="text-xs font-semibold" style={{ color: '#374151' }}>Mapa mental del tema</span>
             </div>
-            {expandidosMindMap ? <CaretDown size={14} style={{ color: '#9CA3AF' }} /> : <CaretRight size={14} style={{ color: '#9CA3AF' }} />}
+            {expandidosMindMap ? <CaretDown size={14} style={{ color: '#6B7280' }} /> : <CaretRight size={14} style={{ color: '#6B7280' }} />}
           </button>
           {expandidosMindMap && (
             <div className="px-4 py-5" style={{ background: '#FAFBFF', borderTop: '1px solid #E5E7EB' }}>
@@ -1354,7 +1345,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
                   )
                 })}
               </svg>
-              <p className="text-xs text-center mt-1" style={{ color: '#9CA3AF' }}>Vista previa · Mapa generado por IA</p>
+              <p className="text-xs text-center mt-1" style={{ color: '#6B7280' }}>Vista previa · Mapa generado por IA</p>
             </div>
           )}
         </div>
@@ -1362,7 +1353,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         {/* Introducción */}
         {r.introduccionYObjetivos && (
           <div className="rounded-xl p-4 space-y-2" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
-            <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Introducción y objetivos</p>
+            <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Introducción y objetivos</p>
             {r.introduccionYObjetivos.split('\n\n').map((par, i) => (
               <p key={i} className="text-sm leading-relaxed" style={{ color: '#374151' }}>{par}</p>
             ))}
@@ -1372,7 +1363,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         {/* Objetivos */}
         {r.objetivos?.length > 0 && (
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Objetivos de aprendizaje</p>
+            <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Objetivos de aprendizaje</p>
             <div className="space-y-1.5">
               {r.objetivos.map((obj, i) => (
                 <div key={i} className="flex items-start gap-2.5">
@@ -1387,7 +1378,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         {/* Epígrafes con bibliografía */}
         {r.epigrafes?.length > 0 && (
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#9CA3AF' }}>Estructura propuesta del tema</p>
+            <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#6B7280' }}>Estructura propuesta del tema</p>
             <div className="space-y-3">
               {r.epigrafes.map((ep, i) => (
                 <EpigrafeConBibliografia key={i} ep={ep} index={i} />
@@ -1406,11 +1397,11 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
       {/* Header */}
       <div>
         <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Instrucciones para la IA</h3>
-        <p className="text-xs" style={{ color: '#9CA3AF' }}>Proporciona contexto al asistente para generar el resumen del tema</p>
+        <p className="text-xs" style={{ color: '#6B7280' }}>Proporciona contexto al asistente para generar el resumen del tema</p>
       </div>
 
       {readOnly && (
-        <div className="flex items-center gap-2 text-xs px-3.5 py-2.5 rounded-xl" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB', color: '#9CA3AF' }}>
+        <div className="flex items-center gap-2 text-xs px-3.5 py-2.5 rounded-xl" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB', color: '#6B7280' }}>
           <Eye size={13} style={{ flexShrink: 0 }} />
           Solo lectura — solicita permiso de edición para modificar estas instrucciones
         </div>
@@ -1436,7 +1427,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
       {/* Fuentes y bibliografía */}
       <div>
         <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Fuentes y bibliografía</label>
-        <p className="text-xs mb-2" style={{ color: '#9CA3AF' }}>Sube documentos o añade enlaces que la IA tendrá en cuenta para generar el contenido.</p>
+        <p className="text-xs mb-2" style={{ color: '#6B7280' }}>Sube documentos o añade enlaces que la IA tendrá en cuenta para generar el contenido.</p>
         {/* Upload area */}
         <div
           onClick={readOnly ? undefined : handleSimularSubida}
@@ -1451,7 +1442,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
           <p className="text-xs font-medium text-center" style={{ color: '#374151' }}>
             Arrastra archivos aquí o <span style={{ color: '#367CFF' }}>haz clic para subir</span>
           </p>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>PDF, Docs, URL — máx. 25 MB</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>PDF, Docs, URL — máx. 25 MB</p>
         </div>
         {/* Uploaded files */}
         {archivosSimulados.length > 0 && (
@@ -1461,7 +1452,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
                 <BookOpen size={12} style={{ color: '#367CFF' }} />
                 <span className="text-xs flex-1 truncate" style={{ color: '#374151' }}>{f}</span>
                 {!readOnly && (
-                  <button onClick={() => setArchivosSimulados(prev => prev.filter((_, j) => j !== i))} style={{ color: '#9CA3AF' }}>
+                  <button onClick={() => setArchivosSimulados(prev => prev.filter((_, j) => j !== i))} style={{ color: '#6B7280' }}>
                     <X size={12} />
                   </button>
                 )}
@@ -1474,7 +1465,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
           {urls.map((url, i) => (
             <div key={i} className="flex items-center gap-2">
               <div className="flex items-center flex-1 gap-2 px-3 py-2 rounded-[10px]" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF' }}>
-                <Link size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+                <Link size={12} style={{ color: '#6B7280', flexShrink: 0 }} />
                 <input
                   type="url"
                   value={url}
@@ -1488,9 +1479,9 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
                 />
               </div>
               {!readOnly && urls.length > 1 && (
-                <button onClick={() => handleRemoveUrl(i)} className="flex-shrink-0" style={{ color: '#9CA3AF' }}
+                <button onClick={() => handleRemoveUrl(i)} className="flex-shrink-0" style={{ color: '#6B7280' }}
                   onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}>
+                  onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}>
                   <X size={14} />
                 </button>
               )}
@@ -1560,7 +1551,7 @@ function EpigrafeConBibliografia({ ep, index }) {
       ))}
       {ep.ideasDidacticas?.length > 0 && (
         <div className="mt-2 pt-2" style={{ borderTop: '1px solid #F1F5F9' }}>
-          <p className="text-xs font-medium mb-1.5" style={{ color: '#9CA3AF' }}>Ideas didácticas</p>
+          <p className="text-xs font-medium mb-1.5" style={{ color: '#6B7280' }}>Ideas didácticas</p>
           <div className="flex flex-wrap gap-1.5">
             {ep.ideasDidacticas.map((idea, k) => (
               <span key={k} className="text-xs px-2 py-1 rounded-lg" style={{ background: '#F0FDF4', color: '#16A34A', border: '1px solid #BBF7D0' }}>{idea}</span>
@@ -1571,7 +1562,7 @@ function EpigrafeConBibliografia({ ep, index }) {
       {/* Bibliography section */}
       <div className="mt-3 pt-3" style={{ borderTop: '1px solid #F1F5F9' }}>
         <div className="flex items-center justify-between mb-2">
-          <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#9CA3AF' }}>Bibliografía</p>
+          <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>Bibliografía</p>
           <button
             onClick={() => setMostrarAddRef(p => !p)}
             className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-lg transition-all"
@@ -1583,14 +1574,14 @@ function EpigrafeConBibliografia({ ep, index }) {
           </button>
         </div>
         {/* Empty state */}
-        <p className="text-xs italic" style={{ color: '#CBD5E1' }}>Sin referencias añadidas. Usa el botón para agregar fuentes bibliográficas.</p>
+        <p className="text-xs italic" style={{ color: '#6B7280' }}>Sin referencias añadidas. Usa el botón para agregar fuentes bibliográficas.</p>
         {/* Add reference form */}
         {mostrarAddRef && (
           <div className="mt-3 space-y-2 p-3 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
             <div>
               <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>URL</label>
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF' }}>
-                <Link size={11} style={{ color: '#9CA3AF' }} />
+                <Link size={11} style={{ color: '#6B7280' }} />
                 <input type="url" value={refUrl} onChange={e => setRefUrl(e.target.value)} placeholder="https://…"
                   className="flex-1 text-xs outline-none bg-transparent" style={{ color: '#374151' }} />
               </div>
@@ -1653,9 +1644,9 @@ function RefBibCard({ ref: r, temaNum, onNavigateToContent }) {
           <Tooltip text="Editar referencia" side="top">
             <button
               className="p-1.5 rounded-lg transition-colors"
-              style={{ color: '#9CA3AF' }}
+              style={{ color: '#6B7280' }}
               onMouseEnter={e => e.currentTarget.style.color = '#374151'}
-              onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+              onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}
             >
               <Pencil size={13} />
             </button>
@@ -1664,9 +1655,9 @@ function RefBibCard({ ref: r, temaNum, onNavigateToContent }) {
             <button
               onClick={() => setDismissed(true)}
               className="p-1.5 rounded-lg transition-colors"
-              style={{ color: '#9CA3AF' }}
+              style={{ color: '#6B7280' }}
               onMouseEnter={e => e.currentTarget.style.color = '#374151'}
-              onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+              onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}
             >
               <X size={13} />
             </button>
@@ -1699,7 +1690,7 @@ function RefBibCard({ ref: r, temaNum, onNavigateToContent }) {
               className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
               style={{ border: '1.5px solid #9CA3AF' }}
             >
-              <div className="w-1 h-1 rounded-full" style={{ background: '#9CA3AF' }} />
+              <div className="w-1 h-1 rounded-full" style={{ background: '#6B7280' }} />
             </div>
             <span className="text-xs" style={{ color: '#6B7280' }}>{r.epigrafe}</span>
           </div>
@@ -1760,7 +1751,7 @@ function SeccionReferencias({ temaNum, referencias = [], onNavigateToContent }) 
     <div className="space-y-6 max-w-2xl">
       <div>
         <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Referencias bibliográficas</h3>
-        <p className="text-xs" style={{ color: '#9CA3AF' }}>Fuentes académicas del Tema {temaNum}</p>
+        <p className="text-xs" style={{ color: '#6B7280' }}>Fuentes académicas del Tema {temaNum}</p>
       </div>
       {buscando ? (
         <div className="flex flex-col items-center justify-center py-16 gap-4">
@@ -1768,7 +1759,7 @@ function SeccionReferencias({ temaNum, referencias = [], onNavigateToContent }) 
             <ProdiMark size={24} />
           </div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Buscando referencias…</p>
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>La IA está buscando fuentes relevantes para este tema.</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>La IA está buscando fuentes relevantes para este tema.</p>
           <div className="flex gap-1.5">
             {[0, 1, 2].map(i => (
               <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />
@@ -1784,11 +1775,11 @@ function SeccionReferencias({ temaNum, referencias = [], onNavigateToContent }) 
       ) : (
         <div className="flex flex-col items-center justify-center py-16 text-center gap-4" style={{ border: '1.5px dashed #E5E7EB', borderRadius: '16px', background: '#FAFBFC' }}>
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: '#F1F5F9' }}>
-            <BookOpen size={20} style={{ color: '#CBD5E1' }} />
+            <BookOpen size={20} style={{ color: '#6B7280' }} />
           </div>
           <div>
             <p className="text-sm font-medium mb-1" style={{ color: '#6B7280' }}>Sin referencias añadidas</p>
-            <p className="text-xs leading-relaxed max-w-xs" style={{ color: '#9CA3AF' }}>
+            <p className="text-xs leading-relaxed max-w-xs" style={{ color: '#6B7280' }}>
               Usa la IA para buscar referencias académicas relevantes para este tema, o añade las tuyas manualmente.
             </p>
           </div>
@@ -1799,8 +1790,7 @@ function SeccionReferencias({ temaNum, referencias = [], onNavigateToContent }) 
             onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
             onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
           >
-            <Sparkle size={14} />
-            Buscar referencias con IA
+                        Buscar referencias con IA
           </button>
         </div>
       )}
@@ -1841,16 +1831,16 @@ function PanelContextoTemas({ seccionActiva, bloquesState, SECCION_CFG, resumenD
           <Brain size={14} style={{ color: '#367CFF' }} />
           <span className="text-sm font-semibold" style={{ color: '#111827' }}>Contexto acumulado</span>
         </div>
-        <button onClick={onCerrar} style={{ color: '#9CA3AF' }}
+        <button onClick={onCerrar} style={{ color: '#6B7280' }}
           onMouseEnter={e => e.currentTarget.style.color = '#374151'}
-          onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}>
+          onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}>
           <X size={16} />
         </button>
       </div>
       {/* Body */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
         {temasAprobados.length === 0 ? (
-          <p className="text-xs text-center py-8" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs text-center py-8" style={{ color: '#6B7280' }}>
             No hay temas completados anteriores.<br />El contexto se irá acumulando conforme avances.
           </p>
         ) : (
@@ -1886,7 +1876,7 @@ function PanelContextoTemas({ seccionActiva, bloquesState, SECCION_CFG, resumenD
             })()}
 
             {/* Per-topic breakdown */}
-            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#9CA3AF', letterSpacing: '0.06em' }}>Temas completados</p>
+            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280', letterSpacing: '0.06em' }}>Temas completados</p>
             {temasAprobados.map(tema => {
               const keywords = TEMA_KEYWORDS[tema.num] || []
               const desc = resumenData?.temasConDescripcion?.find(t => t.numero === tema.num)?.descripcion
@@ -2086,6 +2076,7 @@ export default function PantallaCanvas({
   const [notaEditandoTexto, setNotaEditandoTexto] = useState('')
   const [selectionAnchor, setSelectionAnchor] = useState(null)
   const [nuevaNotaTexto, setNuevaNotaTexto] = useState('')
+  const [nuevaNotaAbierta, setNuevaNotaAbierta] = useState(false)
   const [herramientasMenuAbierto, setHerramientasMenuAbierto] = useState(false)
   const [editarResumenWarning, setEditarResumenWarning] = useState(false)
   const [resumenEditando, setResumenEditando] = useState(false)
@@ -2308,13 +2299,14 @@ export default function PantallaCanvas({
   }
 
   const handleAddNota = () => {
-    if (!nuevaNotaTexto.trim() || !selectionAnchor) return
+    if (!nuevaNotaTexto.trim()) return
     setNotasState(prev => [
       ...prev,
-      { id: `nota-${Date.now()}`, anchor: selectionAnchor, contenido: nuevaNotaTexto.trim(), bloqueId: seccionActiva },
+      { id: `nota-${Date.now()}`, anchor: selectionAnchor || null, contenido: nuevaNotaTexto.trim(), bloqueId: seccionActiva },
     ])
     setNuevaNotaTexto('')
     setSelectionAnchor(null)
+    setNuevaNotaAbierta(false)
     setPanelNotasAbierto(true)
   }
 
@@ -2454,8 +2446,7 @@ export default function PantallaCanvas({
               onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
               onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
             >
-              <Sparkle size={14} />
-              Generar contenido del tema
+                            Generar contenido del tema
               <CaretRight size={14} />
             </button>
           </>
@@ -2475,8 +2466,7 @@ export default function PantallaCanvas({
           onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
           onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
         >
-          <Sparkle size={14} />
-          Generar resumen del tema
+                    Generar resumen del tema
         </button>
       )
     }
@@ -2504,8 +2494,7 @@ export default function PantallaCanvas({
                   }
                 }}
               >
-                <Sparkle size={14} />
-                <span style={{ background: 'linear-gradient(90deg, #A956D5 0%, #066EE0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Herramientas IA</span>
+                                <span style={{ background: 'linear-gradient(90deg, #A956D5 0%, #066EE0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Herramientas IA</span>
                 <CaretDown size={12} />
               </button>
 
@@ -2554,8 +2543,8 @@ export default function PantallaCanvas({
                       onMouseEnter={e => { if (!revisandoCalidad) e.currentTarget.style.background = '#F3F4F6' }}
                       onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
                     >
-                      <MagicWand size={20} style={{ color: revisandoCalidad ? '#CBD5E1' : '#566077', flexShrink: 0 }} />
-                      <span style={{ color: revisandoCalidad ? '#CBD5E1' : '#566077', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }}>
+                      <MagicWand size={16} style={{ color: revisandoCalidad ? '#9CA3AF' : '#566077', flexShrink: 0 }} />
+                      <span style={{ color: revisandoCalidad ? '#9CA3AF' : '#566077', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }}>
                         {revisandoCalidad ? 'Analizando…' : 'Revisar calidad'}
                       </span>
                     </button>
@@ -2576,11 +2565,10 @@ export default function PantallaCanvas({
                           display: 'inline-flex', alignItems: 'center', gap: 8,
                           cursor: 'default',
                           width: '100%',
-                          opacity: 0.4,
                         }}
                       >
-                        <Icon size={20} style={{ color: '#566077', flexShrink: 0 }} />
-                        <span style={{ color: '#566077', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }}>
+                        <Icon size={16} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+                        <span style={{ color: '#9CA3AF', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }}>
                           {label}
                         </span>
                       </button>
@@ -2753,7 +2741,7 @@ export default function PantallaCanvas({
 
         <div className="flex items-center gap-2 py-2.5 min-w-0" style={{ paddingLeft: '20px', paddingRight: '68px' }}>
           {/* Breadcrumb text — truncates with ellipsis */}
-          <span className="text-xs font-medium truncate min-w-0 flex-shrink" style={{ color: '#9CA3AF' }}>
+          <span className="text-xs font-medium truncate min-w-0 flex-shrink" style={{ color: '#6B7280' }}>
             {[asignaturaData?.nombre, isResumen ? 'Resumen general' : seccion.label].filter(Boolean).join(' · ')}
           </span>
           <StatusIndicator status={toStatusKey(estadoMostrado)} variant="badge" className="flex-shrink-0" />
@@ -2768,7 +2756,7 @@ export default function PantallaCanvas({
               border: 'none',
               padding: '2px 4px',
               cursor: 'pointer',
-              color: autosaveOn ? '#16A34A' : '#9CA3AF',
+              color: autosaveOn ? '#16A34A' : '#6B7280',
               '--tw-ring-color': '#367CFF',
             }}
             aria-label={autosaveOn ? 'Desactivar guardado automático' : 'Activar guardado automático'}
@@ -2779,27 +2767,25 @@ export default function PantallaCanvas({
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                width: '28px',
-                height: '16px',
-                borderRadius: '8px',
-                background: autosaveOn ? '#16A34A' : '#D1D5DB',
-                position: 'relative',
-                transition: 'background 0.2s',
+                width: '40px',
+                height: '24px',
+                borderRadius: '30px',
+                background: autosaveOn ? '#0A5CF5' : '#DCDFEB',
                 flexShrink: 0,
+                justifyContent: autosaveOn ? 'flex-end' : 'flex-start',
+                padding: autosaveOn ? '0 4px 0 0' : '0 0 0 4px',
               }}
             >
               <span style={{
-                position: 'absolute',
-                left: autosaveOn ? '14px' : '2px',
-                width: '12px',
-                height: '12px',
-                borderRadius: '50%',
+                width: '16px',
+                height: '16px',
+                borderRadius: '8px',
                 background: '#FFFFFF',
-                transition: 'left 0.2s',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                display: 'block',
+                flexShrink: 0,
               }} />
             </span>
-            <span className="text-xs font-medium" style={{ color: autosaveOn ? '#374151' : '#9CA3AF' }}>
+            <span className="text-xs font-medium" style={{ color: autosaveOn ? '#374151' : '#6B7280' }}>
               {autosaveStatus === 'saving' ? 'Guardando…' : autosaveOn ? 'Autoguardado' : 'Sin guardar'}
             </span>
           </button>
@@ -2846,7 +2832,7 @@ export default function PantallaCanvas({
 
               {/* Document header */}
               <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
-                <p className="text-xs font-medium mb-2" style={{ color: '#9CA3AF', letterSpacing: '0.05em' }}>
+                <p className="text-xs font-medium mb-2" style={{ color: '#6B7280', letterSpacing: '0.05em' }}>
                   {asignaturaData?.nombre ?? 'Deep Learning y Redes Neuronales'} · Máster en IA
                 </p>
                 <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>
@@ -2863,8 +2849,7 @@ export default function PantallaCanvas({
                     return (
                       <div className="mt-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <Sparkle size={12} style={{ color: '#367CFF' }} />
-                          <span className="text-xs font-medium" style={{ color: '#367CFF' }}>Etiquetas sugeridas por IA</span>
+                                                    <span className="text-xs font-medium" style={{ color: '#367CFF' }}>Etiquetas sugeridas por IA</span>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {aiTags.map(tag => (
@@ -2879,7 +2864,7 @@ export default function PantallaCanvas({
                             </button>
                           ))}
                         </div>
-                        <p className="text-xs mt-2" style={{ color: '#9CA3AF' }}>Haz clic para añadir al temario</p>
+                        <p className="text-xs mt-2" style={{ color: '#6B7280' }}>Haz clic para añadir al temario</p>
                       </div>
                     )
                   }
@@ -2969,10 +2954,10 @@ export default function PantallaCanvas({
                     className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
                     style={{ background: '#F1F5F9' }}
                   >
-                    <Lock size={22} style={{ color: '#CBD5E1' }} />
+                    <Lock size={22} style={{ color: '#6B7280' }} />
                   </div>
-                  <p className="text-base font-medium mb-1.5" style={{ color: '#94A3B8' }}>Sección bloqueada</p>
-                  <p className="text-sm leading-relaxed max-w-xs" style={{ color: '#CBD5E1' }}>
+                  <p className="text-base font-medium mb-1.5" style={{ color: '#4B5563' }}>Sección bloqueada</p>
+                  <p className="text-sm leading-relaxed max-w-xs" style={{ color: '#6B7280' }}>
                     Esta sección se desbloqueará automáticamente cuando se aprueben las etapas previas del tema.
                   </p>
                 </div>
@@ -2981,7 +2966,7 @@ export default function PantallaCanvas({
                   {!editable && (
                     <div
                       className="flex items-center gap-2 mb-8 text-sm animate-fade-in"
-                      style={{ color: rolActivo === 'disenador' ? '#7C3AED' : '#9CA3AF' }}
+                      style={{ color: rolActivo === 'disenador' ? '#7C3AED' : '#6B7280' }}
                     >
                       {rolActivo === 'disenador' ? <StackSimple size={13} /> : <Eye size={13} />}
                       <span>
@@ -2996,10 +2981,10 @@ export default function PantallaCanvas({
                   {bloques.length === 0 && editable && (
                     <div className="flex flex-col items-center justify-center py-20 text-center">
                       <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#F1F5F9' }}>
-                        <BookOpen size={20} style={{ color: '#CBD5E1' }} />
+                        <BookOpen size={20} style={{ color: '#6B7280' }} />
                       </div>
-                      <p className="text-sm font-medium mb-1" style={{ color: '#9CA3AF' }}>Sección vacía</p>
-                      <p className="text-xs leading-relaxed max-w-xs" style={{ color: '#CBD5E1' }}>
+                      <p className="text-sm font-medium mb-1" style={{ color: '#6B7280' }}>Sección vacía</p>
+                      <p className="text-xs leading-relaxed max-w-xs" style={{ color: '#6B7280' }}>
                         Empieza a escribir el contenido de este tema o usa el Asistente de contenidos para generarlo.
                       </p>
                     </div>
@@ -3052,8 +3037,7 @@ export default function PantallaCanvas({
                               <>
                                 {/* Label */}
                                 <div className="flex items-center gap-1.5 mb-2">
-                                  <Sparkle size={11} style={{ color: '#3B82F6' }} />
-                                  <span className="text-xs font-semibold" style={{ color: '#3B82F6' }}>Sugerencia IA · {iaInline.accion}</span>
+                                                                    <span className="text-xs font-semibold" style={{ color: '#3B82F6' }}>Sugerencia IA · {iaInline.accion}</span>
                                 </div>
 
                                 {/* Generated text */}
@@ -3073,7 +3057,7 @@ export default function PantallaCanvas({
                                   <button
                                     onClick={() => setIaInline(null)}
                                     className="px-3 py-1.5 rounded-lg text-xs transition-colors"
-                                    style={{ color: '#9CA3AF' }}
+                                    style={{ color: '#6B7280' }}
                                     onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
                                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                                   >
@@ -3172,13 +3156,14 @@ export default function PantallaCanvas({
           {/* Comments */}
           <button
             onClick={() => {
-              const first = bloques.find(b => b.comentarios?.some(c => !c.resuelto))
-              if (first) { setComentarioActivoBloque(first); setPanelIAabierto(false); setPanelNotasAbierto(false) }
+              if (comentarioActivoBloque) { setComentarioActivoBloque(null); return }
+              const target = bloques.find(b => b.comentarios?.some(c => !c.resuelto)) || bloques[0]
+              if (target) { setComentarioActivoBloque(target); setPanelIAabierto(false); setPanelNotasAbierto(false) }
             }}
             className="relative flex flex-col items-center gap-1 w-full py-2.5 rounded-lg transition-colors"
-            style={{ color: comentarioActivoBloque ? '#EF4444' : tieneComentariosActivos ? '#4B5563' : '#9CA3AF', background: comentarioActivoBloque ? '#FEE2E2' : 'transparent', cursor: tieneComentariosActivos ? 'pointer' : 'default' }}
-            onMouseEnter={e => { if (tieneComentariosActivos && !comentarioActivoBloque) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
-            onMouseLeave={e => { if (!comentarioActivoBloque) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = tieneComentariosActivos ? '#4B5563' : '#9CA3AF' } }}
+            style={{ color: comentarioActivoBloque ? '#367CFF' : '#4B5563', background: comentarioActivoBloque ? '#E7EFFE' : 'transparent', cursor: 'pointer' }}
+            onMouseEnter={e => { if (!comentarioActivoBloque) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
+            onMouseLeave={e => { if (!comentarioActivoBloque) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#4B5563' } }}
           >
             <div className="relative">
               <Chat size={16} />
@@ -3188,7 +3173,7 @@ export default function PantallaCanvas({
                 </span>
               )}
             </div>
-            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: comentarioActivoBloque ? '700' : '500' }}>Comentarios</span>
+            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: comentarioActivoBloque ? '600' : '500' }}>Comentarios</span>
           </button>
 
           {/* Notas */}
@@ -3215,7 +3200,7 @@ export default function PantallaCanvas({
             <button
               onClick={() => { setEnrichmentPanelAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false); setPanelContextoTemaAbierto(false) }}
               className="flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
-              style={{ color: enrichmentPanelAbierto ? '#7C3AED' : '#9CA3AF' }}
+              style={{ color: enrichmentPanelAbierto ? '#7C3AED' : '#6B7280' }}
               onMouseEnter={e => { if (!enrichmentPanelAbierto) e.currentTarget.style.background = '#F1F5F9' }}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
@@ -3254,8 +3239,8 @@ export default function PantallaCanvas({
           >
             <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #E5E7EB' }}>
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#FEF2F2' }}>
-                  <Chat size={12} style={{ color: '#EF4444' }} />
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#E7EFFE' }}>
+                  <Chat size={12} style={{ color: '#367CFF' }} />
                 </div>
                 <div>
                   <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Comentarios</p>
@@ -3267,7 +3252,7 @@ export default function PantallaCanvas({
               <button
                 onClick={() => setComentarioActivoBloque(null)}
                 className="p-1.5 rounded-lg transition-colors text-xs"
-                style={{ color: '#9CA3AF' }}
+                style={{ color: '#6B7280' }}
                 onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
               >
@@ -3279,14 +3264,14 @@ export default function PantallaCanvas({
               style={{ background: '#F8F9FA', border: '1px solid #E5E7EB', color: '#6B7280' }}
             >
               <p className="font-medium uppercase tracking-wide mb-1"
-                style={{ fontSize: '10px', color: '#9CA3AF', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
+                style={{ fontSize: '10px', color: '#6B7280', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
                 Bloque referenciado
               </p>
               {comentarioActivoBloque.contenido.substring(0, 120)}...
             </div>
             <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
               {comentarioActivoBloque.comentarios?.filter(c => !c.resuelto).length === 0 && (
-                <p className="text-xs text-center py-4" style={{ color: '#9CA3AF' }}>No hay comentarios activos</p>
+                <p className="text-xs text-center py-4" style={{ color: '#6B7280' }}>No hay comentarios activos</p>
               )}
               {comentarioActivoBloque.comentarios?.map(comentario => (
                 <ComentarioHilo
@@ -3300,7 +3285,7 @@ export default function PantallaCanvas({
             {/* New comment compose */}
             <div className="px-3 pb-3 flex-shrink-0" style={{ borderTop: '1px solid #E5E7EB', paddingTop: '10px' }}>
               {nuevoComentarioAnchor && (
-                <p className="text-xs mb-1.5 truncate" style={{ color: '#9CA3AF' }}>
+                <p className="text-xs mb-1.5 truncate" style={{ color: '#6B7280' }}>
                   Sobre: <span className="italic">"{nuevoComentarioAnchor.slice(0, 50)}{nuevoComentarioAnchor.length > 50 ? '…' : ''}"</span>
                 </p>
               )}
@@ -3322,8 +3307,8 @@ export default function PantallaCanvas({
                 disabled={!nuevoComentarioTexto.trim()}
                 className="w-full mt-1.5 py-1.5 rounded-lg text-xs font-medium transition-colors"
                 style={{
-                  background: nuevoComentarioTexto.trim() ? '#EF4444' : '#E5E7EB',
-                  color: nuevoComentarioTexto.trim() ? '#FFFFFF' : '#9CA3AF',
+                  background: nuevoComentarioTexto.trim() ? '#0A5CF5' : '#E5E7EB',
+                  color: nuevoComentarioTexto.trim() ? '#FFFFFF' : '#6B7280',
                 }}
               >
                 Añadir comentario
@@ -3336,60 +3321,72 @@ export default function PantallaCanvas({
         {panelNotasAbierto && !comentarioActivoBloque && !panelIAabierto && (
           <div
             className="flex flex-col h-full animate-slide-in-right"
-            style={{ width: '300px', minWidth: '300px', background: '#FFFDF0', borderLeft: '1px solid #FDE68A' }}
+            style={{ width: '300px', minWidth: '300px', background: '#FFFFFF', borderLeft: '1px solid #E2E8F0' }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #FDE68A' }}>
+            <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #E2E8F0' }}>
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#FEF9C3' }}>
-                  <Note size={12} style={{ color: '#D97706' }} />
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: '#F1F5F9' }}>
+                  <Note size={12} style={{ color: '#475569' }} />
                 </div>
                 <div>
                   <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Notas</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>{notasState.length} nota{notasState.length !== 1 ? 's' : ''}</p>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>{notasState.length} nota{notasState.length !== 1 ? 's' : ''}</p>
                 </div>
               </div>
-              <button
-                onClick={() => setPanelNotasAbierto(false)}
-                className="p-1.5 rounded-lg transition-colors text-xs"
-                style={{ color: '#9CA3AF' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#FEF9C3'}
-                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-              >
-                <X size={14} />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => { setNuevaNotaAbierta(true); setSelectionAnchor(null); setNuevaNotaTexto('') }}
+                  className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg font-medium"
+                  style={{ background: '#F1F5F9', color: '#334155' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#E2E8F0'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
+                >
+                  <Plus size={12} />
+                  Nueva nota
+                </button>
+                <button
+                  onClick={() => setPanelNotasAbierto(false)}
+                  className="p-1.5 rounded-lg transition-colors text-xs"
+                  style={{ color: '#6B7280' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                >
+                  <X size={14} />
+                </button>
+              </div>
             </div>
 
-            {/* Add new note — shows only when text is selected */}
-            {selectionAnchor && (
-              <div className="mx-3 mt-3 p-3 rounded-lg" style={{ background: '#FFFFFF', border: '1px solid #FDE68A' }}>
-                <p className="text-xs font-semibold mb-1.5" style={{ color: '#D97706' }}>
-                  Nota para: <span className="font-normal italic" style={{ color: '#9CA3AF' }}>«{selectionAnchor.substring(0, 50)}{selectionAnchor.length > 50 ? '…' : ''}»</span>
-                </p>
+            {/* Add new note — shown when text is selected OR when user clicks "Nueva nota" */}
+            {(selectionAnchor || nuevaNotaAbierta) && (
+              <div className="mx-3 mt-3 p-3 rounded-lg" style={{ background: '#FFFFFF', border: '1px solid #DCDFEB', borderRadius: 12 }}>
+                {selectionAnchor && (
+                  <p className="text-xs font-semibold mb-1.5" style={{ color: '#566077' }}>
+                    Sobre: <span className="font-normal italic" style={{ color: '#6B7280' }}>«{selectionAnchor.substring(0, 50)}{selectionAnchor.length > 50 ? '…' : ''}»</span>
+                  </p>
+                )}
                 <textarea
                   value={nuevaNotaTexto}
                   onChange={e => setNuevaNotaTexto(e.target.value)}
                   placeholder="Escribe tu nota…"
                   rows={3}
                   className="w-full text-sm outline-none resize-none"
-                  style={{ color: '#374151', caretColor: '#D97706', background: 'transparent' }}
+                  style={{ color: '#3A455C', caretColor: '#334155', background: 'transparent' }}
                   autoFocus
                 />
-                <div className="flex justify-end gap-2 mt-2">
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', gap: 8 }}>
                   <button
-                    onClick={() => { setSelectionAnchor(null); setNuevaNotaTexto('') }}
-                    className="text-xs px-2 py-1 rounded"
-                    style={{ color: '#9CA3AF' }}
+                    onClick={() => { setSelectionAnchor(null); setNuevaNotaTexto(''); setNuevaNotaAbierta(false) }}
+                    style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6, borderRadius: 8, outline: '1px #C1C6D6 solid', outlineOffset: '-1px', color: '#6D758D', fontSize: 14, fontWeight: 500, lineHeight: '20px', background: 'transparent' }}
                   >
                     Cancelar
                   </button>
                   <button
                     onClick={handleAddNota}
                     disabled={!nuevaNotaTexto.trim()}
-                    className="text-xs px-3 py-1 rounded-lg font-semibold text-white"
-                    style={{ background: nuevaNotaTexto.trim() ? '#D97706' : '#E5E7EB', color: nuevaNotaTexto.trim() ? '#FFFFFF' : '#9CA3AF' }}
+                    style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6, borderRadius: 8, outline: `1px ${nuevaNotaTexto.trim() ? '#0053AF' : '#C1C6D6'} solid`, outlineOffset: '-1px', background: nuevaNotaTexto.trim() ? '#0053AF' : '#E5E7EB', color: nuevaNotaTexto.trim() ? 'white' : '#6B7280', fontSize: 14, fontWeight: 500, lineHeight: '20px' }}
                   >
-                    Guardar nota
+                    Guardar
                   </button>
                 </div>
               </div>
@@ -3399,72 +3396,92 @@ export default function PantallaCanvas({
             <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
               {notasState.length === 0 && !selectionAnchor && (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
-                  <Note size={24} style={{ color: '#FDE68A', marginBottom: '8px' }} />
-                  <p className="text-sm font-medium" style={{ color: '#9CA3AF' }}>Sin notas aún</p>
-                  <p className="text-xs mt-1 leading-relaxed" style={{ color: '#CBD5E1' }}>
-                    Selecciona texto en el Canvas y aparecerá la opción "Añadir nota"
+                  <Note size={24} style={{ color: '#CBD5E1', marginBottom: '8px' }} />
+                  <p className="text-sm font-medium" style={{ color: '#6B7280' }}>Sin notas aún</p>
+                  <p className="text-xs mt-1 leading-relaxed" style={{ color: '#6B7280' }}>
+                    Selecciona texto o pulsa "Nueva nota" para añadir una nota general
                   </p>
                 </div>
               )}
               {notasState.map(nota => (
                 <div
                   key={nota.id}
-                  className="rounded-xl p-3"
-                  style={{ background: '#FFFFFF', border: '1px solid #FDE68A' }}
+                  style={{
+                    width: '100%',
+                    background: 'white',
+                    boxShadow: '0px 6px 20px rgba(0, 0, 0, 0.08)',
+                    borderRadius: 12,
+                    outline: '1px #DCDFEB solid',
+                    outlineOffset: '-1px',
+                  }}
                 >
-                  <p className="text-xs mb-1.5 italic" style={{ color: '#CBD5E1' }}>
-                    «{nota.anchor.substring(0, 60)}{nota.anchor.length > 60 ? '…' : ''}»
-                  </p>
-                  {notaEditandoId === nota.id ? (
-                    <>
-                      <textarea
-                        value={notaEditandoTexto}
-                        onChange={e => setNotaEditandoTexto(e.target.value)}
-                        rows={3}
-                        className="w-full text-sm outline-none resize-none rounded px-2 py-1"
-                        style={{ color: '#374151', background: '#FFFDF0', border: '1px solid #FDE68A' }}
-                        autoFocus
-                      />
-                      <div className="flex justify-end gap-2 mt-2">
-                        <button onClick={() => setNotaEditandoId(null)} className="text-xs" style={{ color: '#9CA3AF' }}>Cancelar</button>
-                        <button
-                          onClick={() => handleSaveEditNota(nota.id)}
-                          className="text-xs px-2 py-1 rounded font-semibold text-white"
-                          style={{ background: '#D97706' }}
-                        >
-                          Guardar
-                        </button>
+                  <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {/* Header */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <Note size={16} style={{ color: '#334155', flexShrink: 0 }} />
+                        <span style={{ color: 'black', fontSize: 14, fontWeight: 500, lineHeight: '20px' }}>Nota</span>
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      <p className="text-sm" style={{ color: '#374151' }}>{nota.contenido}</p>
-                      <div className="flex items-center gap-2 mt-2 justify-end">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <Tooltip text="Editar" side="top">
                           <button
                             onClick={() => { setNotaEditandoId(nota.id); setNotaEditandoTexto(nota.contenido) }}
-                            className="p-1 rounded transition-colors"
-                            style={{ color: '#CBD5E1' }}
-                            onMouseEnter={e => e.currentTarget.style.color = '#D97706'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
+                            style={{ width: 28, height: 28, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#566077', background: 'transparent' }}
+                            onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
+                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                           >
-                            <Pencil size={12} />
+                            <Pencil size={14} />
                           </button>
                         </Tooltip>
                         <Tooltip text="Eliminar" side="top">
                           <button
                             onClick={() => handleDeleteNota(nota.id)}
-                            className="p-1 rounded transition-colors"
-                            style={{ color: '#CBD5E1' }}
-                            onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
-                            onMouseLeave={e => e.currentTarget.style.color = '#CBD5E1'}
+                            style={{ width: 28, height: 28, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9D182A', background: 'transparent' }}
+                            onMouseEnter={e => e.currentTarget.style.background = '#FEF2F2'}
+                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                           >
-                            <Trash size={12} />
+                            <Trash size={14} />
                           </button>
                         </Tooltip>
                       </div>
-                    </>
-                  )}
+                    </div>
+                    {/* Body */}
+                    {notaEditandoId === nota.id ? (
+                      <>
+                        <textarea
+                          value={notaEditandoTexto}
+                          onChange={e => setNotaEditandoTexto(e.target.value)}
+                          rows={3}
+                          className="w-full text-sm outline-none resize-none rounded px-2 py-1"
+                          style={{ color: '#3A455C', background: '#F8FAFC', border: '1px solid #DCDFEB', borderRadius: 6 }}
+                          autoFocus
+                        />
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', gap: 8 }}>
+                          <button
+                            onClick={() => setNotaEditandoId(null)}
+                            style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6, borderRadius: 8, outline: '1px #C1C6D6 solid', outlineOffset: '-1px', color: '#6D758D', fontSize: 14, fontWeight: 500, lineHeight: '20px', background: 'transparent' }}
+                          >
+                            Cancelar
+                          </button>
+                          <button
+                            onClick={() => handleSaveEditNota(nota.id)}
+                            style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6, borderRadius: 8, outline: '1px #0053AF solid', outlineOffset: '-1px', background: '#0053AF', color: 'white', fontSize: 14, fontWeight: 500, lineHeight: '20px' }}
+                          >
+                            Guardar
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {nota.anchor && (
+                          <p style={{ fontSize: 12, fontStyle: 'italic', color: '#6B7280', margin: 0 }}>
+                            «{nota.anchor.substring(0, 60)}{nota.anchor.length > 60 ? '…' : ''}»
+                          </p>
+                        )}
+                        <p style={{ color: '#3A455C', fontSize: 14, fontWeight: 400, lineHeight: '20px', margin: 0 }}>{nota.contenido}</p>
+                      </>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -3491,7 +3508,7 @@ export default function PantallaCanvas({
               <button
                 onClick={() => setEnrichmentPanelAbierto(false)}
                 className="p-1.5 rounded-lg transition-colors text-xs"
-                style={{ color: '#9CA3AF' }}
+                style={{ color: '#6B7280' }}
                 onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
               >
@@ -3501,7 +3518,7 @@ export default function PantallaCanvas({
 
             {/* Generator buttons */}
             <div className="px-4 pt-4 pb-3 flex-shrink-0" style={{ borderBottom: '1px solid #F3F4F6' }}>
-              <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#9CA3AF' }}>Generar para este tema</p>
+              <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#6B7280' }}>Generar para este tema</p>
               <div className="space-y-2">
                 {[
                   { tipo: 'test', icon: Flask, label: 'Test de autoevaluación', desc: 'Preguntas de opción múltiple', color: '#7C3AED', bg: '#F3E8FF' },
@@ -3541,7 +3558,7 @@ export default function PantallaCanvas({
                     </div>
                     <div>
                       <p className="text-xs font-semibold" style={{ color: '#1A1A1A' }}>{enrichmentGenerando === tipo ? 'Generando…' : label}</p>
-                      <p className="text-xs" style={{ color: '#9CA3AF' }}>{desc}</p>
+                      <p className="text-xs" style={{ color: '#6B7280' }}>{desc}</p>
                     </div>
                   </button>
                 ))}
@@ -3555,12 +3572,12 @@ export default function PantallaCanvas({
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: '#F3E8FF' }}>
                     <StackSimple size={18} style={{ color: '#C4B5FD' }} />
                   </div>
-                  <p className="text-sm font-medium mb-1" style={{ color: '#9CA3AF' }}>Sin experiencias todavía</p>
-                  <p className="text-xs" style={{ color: '#CBD5E1' }}>Genera un test, mapa mental o podcast para este tema</p>
+                  <p className="text-sm font-medium mb-1" style={{ color: '#6B7280' }}>Sin experiencias todavía</p>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>Genera un test, mapa mental o podcast para este tema</p>
                 </div>
               ) : (
                 <>
-                  <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#9CA3AF' }}>Experiencias generadas</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#6B7280' }}>Experiencias generadas</p>
                   <div className="space-y-2">
                     {enrichmentsGenerados.map((e, i) => {
                       const iconMap = { test: Flask, mapa: Brain, podcast: Microphone }
@@ -3578,7 +3595,7 @@ export default function PantallaCanvas({
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-xs font-semibold truncate" style={{ color: '#374151' }}>{e.titulo}</p>
-                            <p className="text-xs" style={{ color: '#9CA3AF' }}>Borrador · sin publicar</p>
+                            <p className="text-xs" style={{ color: '#6B7280' }}>Borrador · sin publicar</p>
                           </div>
                           <button
                             className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg font-medium transition-all"

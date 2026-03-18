@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { CheckCircle, ArrowCounterClockwise } from '@phosphor-icons/react'
 import GravedadTag from './GravedadTag'
+import { gravedadConfig } from '../mockData'
 
 export default function ComentarioHilo({ comentario, onMarcarResuelto, onResponder, compact = false }) {
   const [respuesta, setRespuesta] = useState('')
@@ -17,8 +18,8 @@ export default function ComentarioHilo({ comentario, onMarcarResuelto, onRespond
     <div
       className={`rounded-xl p-4 transition-all ${comentario.resuelto ? 'opacity-60' : ''}`}
       style={{
-        background: comentario.resuelto ? '#F8FAFC' : '#FFFFFF',
-        border: `1px solid ${comentario.resuelto ? '#E2E8F0' : '#FEE2E2'}`,
+        background: comentario.resuelto ? '#F8FAFC' : (gravedadConfig[comentario.gravedad]?.bg ?? '#FFFFFF'),
+        border: `1px solid ${comentario.resuelto ? '#E2E8F0' : (gravedadConfig[comentario.gravedad]?.border ?? '#E2E8F0')}`,
       }}
     >
       {/* Header */}
@@ -32,7 +33,7 @@ export default function ComentarioHilo({ comentario, onMarcarResuelto, onRespond
           </div>
           <div>
             <p className="text-sm font-medium text-slate-700">{comentario.autor}</p>
-            <p className="text-xs text-slate-400">{comentario.rol} · {comentario.timestamp}</p>
+            <p className="text-xs text-slate-500">{comentario.rol} · {comentario.timestamp}</p>
           </div>
         </div>
         <GravedadTag gravedad={comentario.gravedad} size="sm" />
@@ -66,7 +67,7 @@ export default function ComentarioHilo({ comentario, onMarcarResuelto, onRespond
           </button>
           <button
             onClick={() => setMostrarRespuesta(!mostrarRespuesta)}
-            className="text-xs text-slate-400 hover:text-slate-600 px-2 py-1.5 rounded-lg hover:bg-slate-50 transition-colors"
+            className="text-xs text-slate-600 hover:text-slate-800 px-2 py-1.5 rounded-lg hover:bg-slate-50 transition-colors"
           >
             Responder
           </button>
@@ -111,7 +112,7 @@ export default function ComentarioHilo({ comentario, onMarcarResuelto, onRespond
             </button>
             <button
               onClick={() => setMostrarRespuesta(false)}
-              className="text-xs text-slate-400 hover:text-slate-600 px-2 py-1.5 rounded-lg"
+              className="text-xs text-slate-600 hover:text-slate-800 px-2 py-1.5 rounded-lg"
             >
               Cancelar
             </button>

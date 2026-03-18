@@ -4,8 +4,7 @@
 export const onboardingSlides = [
   {
     id: 1,
-    title: 'Conoce el Asistente de contenidos',
-    subtitle: 'El nuevo Asistente de Contenidos',
+    title: 'Conoce el nuevo Asistente de contenidos',
     body: 'Tu criterio profesional en el centro.',
     titleFirst: true,
     bullets: [],
@@ -60,7 +59,7 @@ export const onboardingSlides = [
     subtitle: null,
     body: null,
     bullets: [],
-    cta: 'Abrir asistente',
+    cta: 'Comenzar',
     visualType: 'final-state',
   },
 ]

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { PaperPlaneTilt, CaretRight, Sparkle, X, NotePencil, ClockCounterClockwise, MagnifyingGlass, Chat, Plus } from '@phosphor-icons/react'
+import { PaperPlaneTilt, CaretRight, X, NotePencil, ClockCounterClockwise, MagnifyingGlass, Chat, Plus } from '@phosphor-icons/react'
 import { respuestasIA, respuestasCalidadIA } from '../mockData'
 import Tooltip from './Tooltip'
 
@@ -235,7 +235,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
               onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <NotePencil size={14} style={{ color: '#9CA3AF' }} />
+              <NotePencil size={14} style={{ color: '#6B7280' }} />
             </button>
           </Tooltip>
 
@@ -248,7 +248,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
               onMouseEnter={e => e.currentTarget.style.background = '#F3F4F6'}
               onMouseLeave={e => e.currentTarget.style.background = vistaHistorial ? '#F3F4F6' : 'transparent'}
             >
-              <ClockCounterClockwise size={14} style={{ color: vistaHistorial ? '#374151' : '#9CA3AF' }} />
+              <ClockCounterClockwise size={14} style={{ color: vistaHistorial ? '#374151' : '#6B7280' }} />
             </button>
           </Tooltip>
 
@@ -260,7 +260,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
               onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <CaretRight size={16} style={{ color: '#9CA3AF' }} />
+              <CaretRight size={16} style={{ color: '#6B7280' }} />
             </button>
           </Tooltip>
         </div>
@@ -276,7 +276,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
               className="flex items-center gap-2 px-3 py-2 rounded-lg"
               style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
             >
-              <MagnifyingGlass size={13} style={{ color: '#9CA3AF', flexShrink: 0 }} />
+              <MagnifyingGlass size={13} style={{ color: '#6B7280', flexShrink: 0 }} />
               <input
                 value={busqueda}
                 onChange={e => { setBusqueda(e.target.value); setMostrarTodo(false) }}
@@ -286,7 +286,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
               />
               {busqueda && (
                 <button onClick={() => setBusqueda('')}>
-                  <X size={12} style={{ color: '#9CA3AF' }} />
+                  <X size={12} style={{ color: '#6B7280' }} />
                 </button>
               )}
             </div>
@@ -318,12 +318,12 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                   {visibles.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-10 gap-2">
                       <MagnifyingGlass size={20} style={{ color: '#D1D5DB' }} />
-                      <p className="text-xs" style={{ color: '#9CA3AF' }}>Sin resultados</p>
+                      <p className="text-xs" style={{ color: '#6B7280' }}>Sin resultados</p>
                     </div>
                   ) : (
                     grupos.map(grupo => (
                       <div key={grupo} className="mb-1">
-                        <p className="text-xs font-medium px-2 py-1.5 sticky top-0" style={{ color: '#9CA3AF', background: '#FAFAFA', letterSpacing: '0.03em' }}>
+                        <p className="text-xs font-medium px-2 py-1.5 sticky top-0" style={{ color: '#6B7280', background: '#FAFAFA', letterSpacing: '0.03em' }}>
                           {grupo}
                         </p>
                         {visibles.filter(c => c.grupo === grupo).map(conv => (
@@ -349,9 +349,9 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                     <button
                       onClick={() => setMostrarTodo(true)}
                       className="w-full mt-1 py-2 rounded-lg text-xs font-medium transition-colors"
-                      style={{ color: '#9CA3AF' }}
+                      style={{ color: '#6B7280' }}
                       onMouseEnter={e => { e.currentTarget.style.background = '#F3F4F6'; e.currentTarget.style.color = '#6B7280' }}
-                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9CA3AF' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#6B7280' }}
                     >
                       Ver todo el historial ({historialConversaciones.length})
                     </button>
@@ -375,8 +375,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                     className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mr-2 mt-0.5"
                     style={{ background: '#E7EFFE' }}
                   >
-                    <Sparkle size={11} style={{ color: '#367CFF' }} />
-                  </div>
+                                      </div>
                 )}
                 <div
                   className="max-w-[85%] rounded-xl px-3 py-2.5 text-sm leading-relaxed"
@@ -397,8 +396,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
             {esperando && (
               <div className="flex items-center gap-2 animate-fade-in">
                 <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E7EFFE' }}>
-                  <Sparkle size={11} style={{ color: '#367CFF' }} />
-                </div>
+                                  </div>
                 <div className="px-3 py-2.5 rounded-xl flex items-center gap-1" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
                   {[0, 1, 2].map(i => (
                     <span
@@ -433,8 +431,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 }}
               >
                 <div className="flex items-center gap-1.5 px-3 py-2 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-                  <Sparkle size={11} style={{ color: '#9CA3AF', flexShrink: 0 }} />
-                  {chips.map(({ text }, i) => (
+                                    {chips.map(({ text }, i) => (
                     <button
                       key={i}
                       onClick={() => { setInput(text); inputRef.current?.focus() }}
@@ -477,7 +474,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                   onMouseEnter={e => e.currentTarget.style.background = '#E0F2FE'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                 >
-                  <X size={12} style={{ color: '#94A3B8' }} />
+                  <X size={12} style={{ color: '#6B7280' }} />
                 </button>
               </div>
             )}
@@ -521,9 +518,9 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 <button
                   onClick={() => setConectoresAbierto(v => !v)}
                   className="p-1.5 rounded-lg transition-all"
-                  style={{ color: conectoresAbierto ? '#367CFF' : '#9CA3AF', background: conectoresAbierto ? '#E7EFFE' : 'transparent' }}
+                  style={{ color: conectoresAbierto ? '#367CFF' : '#6B7280', background: conectoresAbierto ? '#E7EFFE' : 'transparent' }}
                   onMouseEnter={e => { if (!conectoresAbierto) { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#374151' } }}
-                  onMouseLeave={e => { if (!conectoresAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9CA3AF' } }}
+                  onMouseLeave={e => { if (!conectoresAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#6B7280' } }}
                 >
                   <Plus size={15} />
                 </button>
@@ -535,7 +532,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                   >
                     {/* Header */}
                     <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
-                      <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#9CA3AF' }}>Conectores</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>Conectores</p>
                     </div>
 
                     {/* Section: Company Knowledge */}
@@ -545,13 +542,13 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                         <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: '#0078D4', fontSize: '7px' }}>CK</div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-medium" style={{ color: '#111827' }}>Company Knowledge</p>
-                          <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>Fuentes institucionales de tu organización</p>
+                          <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>Fuentes institucionales de tu organización</p>
                         </div>
                         <button
                           onClick={e => { e.stopPropagation(); toggleCompanyKnowledge() }}
-                          style={{ width: 28, height: 16, borderRadius: 8, background: companyKnowledgeOn ? '#367CFF' : '#D1D5DB', position: 'relative', flexShrink: 0, border: 'none', cursor: 'pointer' }}
+                          style={{ width: 40, height: 24, borderRadius: 30, background: companyKnowledgeOn ? '#0A5CF5' : '#DCDFEB', position: 'relative', flexShrink: 0, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: companyKnowledgeOn ? 'flex-end' : 'flex-start', padding: companyKnowledgeOn ? '0 4px 0 0' : '0 0 0 4px' }}
                         >
-                          <span style={{ position: 'absolute', top: 2, left: companyKnowledgeOn ? 14 : 2, width: 12, height: 12, borderRadius: '50%', background: '#FFF', transition: 'left 0.15s' }} />
+                          <span style={{ width: 16, height: 16, borderRadius: 8, background: '#FFF', display: 'block', flexShrink: 0 }} />
                         </button>
                       </div>
 
@@ -576,7 +573,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                               <div className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '6px' }}>{c.letter}</div>
                               <div className="flex-1 min-w-0">
                                 <p className="text-xs font-medium" style={{ color: active ? c.color : '#374151' }}>{c.label}</p>
-                                <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>{c.desc}</p>
+                                <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>{c.desc}</p>
                               </div>
                               {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
                             </button>
@@ -585,7 +582,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                       </div>
 
                       {!companyKnowledgeOn && (
-                        <p className="pb-1 pl-3" style={{ fontSize: '10px', color: '#9CA3AF', fontStyle: 'italic' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
+                        <p className="pb-1 pl-3" style={{ fontSize: '10px', color: '#6B7280', fontStyle: 'italic' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
                       )}
                     </div>
 
@@ -608,7 +605,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                             <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '7px' }}>{c.letter}</div>
                             <div className="flex-1 min-w-0">
                               <p className="text-xs font-medium" style={{ color: active ? c.color : '#111827' }}>{c.label}</p>
-                              <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>{c.desc}</p>
+                              <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>{c.desc}</p>
                             </div>
                             {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
                           </button>
@@ -634,13 +631,13 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 className="p-1.5 rounded-lg transition-all flex-shrink-0"
                 style={{
                   background: (input.trim() || quote) && !esperando ? '#367CFF' : '#E5E7EB',
-                  color: (input.trim() || quote) && !esperando ? '#FFFFFF' : '#9CA3AF',
+                  color: (input.trim() || quote) && !esperando ? '#FFFFFF' : '#6B7280',
                 }}
               >
                 <PaperPlaneTilt size={14} />
               </button>
             </div>
-            <p className="text-xs mt-1.5 text-center" style={{ color: '#CBD5E1' }}>Enter para enviar · Shift+Enter para nueva línea</p>
+            <p className="text-xs mt-1.5 text-center" style={{ color: '#6B7280' }}>Enter para enviar · Shift+Enter para nueva línea</p>
           </div>
           </div>
         </>

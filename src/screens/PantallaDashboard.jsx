@@ -30,42 +30,43 @@ function SidebarTitulaciones({ titulaciones, seleccionada, onSelect }) {
       style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', width: '232px', flexShrink: 0 }}
     >
       <div className="px-4 py-3" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold" style={{ color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <p className="text-xs font-semibold" style={{ color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           Titulaciones
         </p>
       </div>
-      <div className="flex-1 overflow-y-auto py-1.5">
+      <div className="flex-1 overflow-y-auto py-1.5 px-2">
         {titulaciones.map(t => {
           const selected = seleccionada === t.id
           return (
             <button
               key={t.id}
               onClick={() => t.navegable && onSelect(t.id)}
-              className="w-full text-left px-4 py-2.5 transition-all flex items-start gap-2.5"
+              className="w-full text-left px-3 py-2.5 transition-all flex items-start gap-3"
               style={{
                 cursor: t.navegable ? 'pointer' : 'default',
-                background: selected ? '#E7EFFE' : 'transparent',
-                borderLeft: selected ? '2.5px solid #367CFF' : '2.5px solid transparent',
-                opacity: t.navegable ? 1 : 0.4,
+                background: selected ? '#F4F6FD' : 'transparent',
+                borderRadius: 12,
               }}
+              onMouseEnter={e => { if (!selected && t.navegable) e.currentTarget.style.background = '#F4F6FD' }}
+              onMouseLeave={e => { if (!selected) e.currentTarget.style.background = 'transparent' }}
             >
               <div
                 className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
-                style={{ background: selected ? '#E7EFFE' : '#F8F9FA' }}
+                style={{ background: selected ? '#E7EFFE' : t.navegable ? '#F8F9FA' : '#F1F5F9' }}
               >
                 {t.navegable
-                  ? <BookOpen size={11} style={{ color: selected ? '#367CFF' : '#94A3B8' }} />
-                  : <Lock size={10} style={{ color: '#CBD5E1' }} />
+                  ? <BookOpen size={11} style={{ color: selected ? '#367CFF' : '#64748B' }} />
+                  : <Lock size={10} style={{ color: '#64748B' }} />
                 }
               </div>
               <div className="flex-1 min-w-0">
                 <p
                   className="text-xs font-medium leading-snug"
-                  style={{ color: selected ? '#367CFF' : t.navegable ? '#374151' : '#94A3B8' }}
+                  style={{ color: selected ? '#367CFF' : t.navegable ? '#272A3F' : '#6B7280' }}
                 >
                   {t.nombre}
                 </p>
-                <p className="text-xs mt-0.5" style={{ color: '#CBD5E1', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
+                <p className="text-xs mt-0.5" style={{ color: t.navegable ? '#6B7280' : '#9CA3AF', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
                   {t.codigo} · {t.asignaturas_count} asig.
                 </p>
               </div>
@@ -98,10 +99,10 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#F1F5F9' }}>
-          <Lock size={20} style={{ color: '#CBD5E1' }} />
+          <Lock size={20} style={{ color: '#9CA3AF' }} />
         </div>
-        <p className="text-sm font-medium" style={{ color: '#9CA3AF' }}>Titulación no disponible en el prototipo</p>
-        <p className="text-xs mt-1" style={{ color: '#CBD5E1' }}>Selecciona el Máster en IA para navegar</p>
+        <p className="text-sm font-medium" style={{ color: '#4B5563' }}>Titulación no disponible en el prototipo</p>
+        <p className="text-xs mt-1" style={{ color: '#6B7280' }}>Selecciona el Máster en IA para navegar</p>
       </div>
     )
   }
@@ -111,7 +112,7 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
       <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #F1F5F9', background: '#F8F9FA' }}>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{titulacion?.nombre}</p>
-          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
             {asignaturas.length} de {titulacion?.asignaturas_count} asignaturas
           </p>
         </div>
@@ -123,13 +124,13 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
       {/* Column headers — author: 5 cols */}
       <div className="grid px-5 py-2.5" style={{ gridTemplateColumns: '2fr 1.2fr 0.9fr 0.9fr 1fr', borderBottom: '1px solid #E5E7EB', gap: '12px' }}>
         {['Asignatura', 'Estado', 'Etapa', 'Pendiente de', 'Última actividad'].map(col => (
-          <span key={col} className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>{col}</span>
+          <span key={col} className="text-xs font-semibold" style={{ color: '#6B7280' }}>{col}</span>
         ))}
       </div>
 
       {asignaturas.length === 0 ? (
         <div className="px-5 py-10 text-center">
-          <p className="text-sm" style={{ color: '#9CA3AF' }}>No hay asignaturas con este filtro</p>
+          <p className="text-sm" style={{ color: '#4B5563' }}>No hay asignaturas con este filtro</p>
         </div>
       ) : (
         asignaturas.map((asig, i) => {
@@ -163,11 +164,11 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
                 {clickable && asig.crearAsignatura && (
                   <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#367CFF' }} />
                 )}
-                <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#94A3B8' }}>
+                <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#64748B' }}>
                   {asig.nombre}
                 </span>
                 {clickable && (
-                  <ArrowRight size={12} style={{ color: '#CBD5E1', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowRight size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                 )}
               </div>
 
@@ -175,17 +176,17 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
                 <StatusIndicator status={toStatusKey(asig.estado)} variant="badge" />
               </div>
 
-              <span className="text-sm flex items-center truncate" style={{ color: clickable ? '#6B7280' : '#CBD5E1' }}>
+              <span className="text-sm flex items-center truncate" style={{ color: clickable ? '#4B5563' : '#6B7280' }}>
                 {asig.etapaActual}
               </span>
 
               <div className="flex items-center">
-                <span className="text-sm" style={{ color: esPropio ? '#367CFF' : '#9CA3AF', fontWeight: esPropio ? '500' : '400' }}>
+                <span className="text-sm" style={{ color: esPropio ? '#367CFF' : '#6B7280', fontWeight: esPropio ? '500' : '400' }}>
                   {pendienteDisplay}
                 </span>
               </div>
 
-              <span className="text-sm flex items-center" style={{ color: '#9CA3AF' }}>{asig.ultimaActividad}</span>
+              <span className="text-sm flex items-center" style={{ color: '#6B7280' }}>{asig.ultimaActividad}</span>
             </div>
           )
         })
@@ -221,10 +222,10 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#F1F5F9' }}>
-          <Lock size={20} style={{ color: '#CBD5E1' }} />
+          <Lock size={20} style={{ color: '#9CA3AF' }} />
         </div>
-        <p className="text-sm font-medium" style={{ color: '#9CA3AF' }}>Titulación no disponible en el prototipo</p>
-        <p className="text-xs mt-1" style={{ color: '#CBD5E1' }}>Selecciona el Máster en IA para navegar</p>
+        <p className="text-sm font-medium" style={{ color: '#4B5563' }}>Titulación no disponible en el prototipo</p>
+        <p className="text-xs mt-1" style={{ color: '#6B7280' }}>Selecciona el Máster en IA para navegar</p>
       </div>
     )
   }
@@ -235,14 +236,14 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
       <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #F1F5F9', background: '#F8F9FA' }}>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{titulacion?.nombre}</p>
-          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
             {asignaturas.length} de {titulacion?.asignaturas_count} asignaturas
           </p>
         </div>
         <div className="flex items-center gap-2">
           {/* Filial filter */}
           <div className="flex items-center gap-1.5">
-            <Globe size={12} style={{ color: '#9CA3AF' }} />
+            <Globe size={12} style={{ color: '#6B7280' }} />
             <select
               className="text-xs outline-none rounded-md px-2 py-1"
               style={{ border: '1px solid #E5E7EB', background: '#FFFFFF', color: '#6B7280' }}
@@ -262,13 +263,13 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
       {/* Column headers — coordinator: 7 cols */}
       <div className="grid px-5 py-2.5" style={{ gridTemplateColumns: '1.8fr 0.8fr 0.9fr 0.7fr 0.8fr 0.9fr 0.8fr', borderBottom: '1px solid #E5E7EB', gap: '10px' }}>
         {['Asignatura', 'Estado', 'Responsable', 'Filial', 'Obsolescencia', 'Última actividad', 'Fecha objetivo'].map(col => (
-          <span key={col} className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>{col}</span>
+          <span key={col} className="text-xs font-semibold" style={{ color: '#6B7280' }}>{col}</span>
         ))}
       </div>
 
       {asignaturas.length === 0 ? (
         <div className="px-5 py-10 text-center">
-          <p className="text-sm" style={{ color: '#9CA3AF' }}>No hay asignaturas con este filtro</p>
+          <p className="text-sm" style={{ color: '#4B5563' }}>No hay asignaturas con este filtro</p>
         </div>
       ) : (
         asignaturas.map((asig, i) => {
@@ -301,13 +302,13 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
                   <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#367CFF' }} />
                 )}
                 {clickable && asig.crearAsignatura && (
-                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#9CA3AF' }} />
+                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#6B7280' }} />
                 )}
-                <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#94A3B8' }}>
+                <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#64748B' }}>
                   {asig.nombre}
                 </span>
                 {clickable && (
-                  <ArrowRight size={12} style={{ color: '#CBD5E1', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowRight size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                 )}
               </div>
 
@@ -316,12 +317,12 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
               </div>
 
               <div className="flex items-center">
-                <span className="text-xs" style={{ color: esPropio ? '#367CFF' : '#9CA3AF', fontWeight: esPropio ? '500' : '400' }}>
+                <span className="text-xs" style={{ color: esPropio ? '#367CFF' : '#6B7280', fontWeight: esPropio ? '500' : '400' }}>
                   {pendienteDisplay}
                 </span>
               </div>
 
-              <span className="text-xs flex items-center" style={{ color: '#6B7280' }}>
+              <span className="text-xs flex items-center" style={{ color: '#4B5563' }}>
                 {asig.filial || '—'}
               </span>
 
@@ -333,11 +334,11 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
                   >
                     {obs.label}
                   </span>
-                ) : <span style={{ color: '#CBD5E1' }}>—</span>}
+                ) : <span style={{ color: '#9CA3AF' }}>—</span>}
               </div>
 
-              <span className="text-xs flex items-center" style={{ color: '#9CA3AF' }}>{asig.ultimaActividad}</span>
-              <span className="text-xs flex items-center" style={{ color: '#9CA3AF' }}>{asig.fechaObjetivo || '—'}</span>
+              <span className="text-xs flex items-center" style={{ color: '#6B7280' }}>{asig.ultimaActividad}</span>
+              <span className="text-xs flex items-center" style={{ color: '#6B7280' }}>{asig.fechaObjetivo || '—'}</span>
             </div>
           )
         })
@@ -358,11 +359,29 @@ function BarraAccionesDashboard({ rolActivo, filtroTag, onFiltroChange, onNuevaA
             <button
               key={tag.id}
               onClick={() => onFiltroChange(tag.id === 'todos' ? null : tag.id)}
-              className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+              className="transition-all"
               style={{
-                background: active ? '#367CFF' : '#FFFFFF',
-                color: active ? '#FFFFFF' : '#6B7280',
-                border: active ? '1px solid #367CFF' : '1px solid #E5E7EB',
+                padding: '8px 12px',
+                borderRadius: 10,
+                outline: `1px ${active ? '#0A5CF5' : '#E6E6E6'} solid`,
+                outlineOffset: '-1px',
+                background: active ? '#F1F5F9' : 'transparent',
+                color: active ? '#0A5CF5' : '#334155',
+                fontSize: 12,
+                fontFamily: "'Proeduca Sans', system-ui, sans-serif",
+                fontWeight: '500',
+                lineHeight: '20px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                cursor: 'pointer',
+              }}
+              onMouseEnter={e => {
+                if (!active) e.currentTarget.style.background = '#F1F5F9'
+              }}
+              onMouseLeave={e => {
+                if (!active) e.currentTarget.style.background = 'transparent'
               }}
             >
               {tag.label}
@@ -398,10 +417,10 @@ function TablaDisenador({ titulaciones, titulacionSeleccionada, onNavigate }) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#F1F5F9' }}>
-          <Lock size={20} style={{ color: '#CBD5E1' }} />
+          <Lock size={20} style={{ color: '#9CA3AF' }} />
         </div>
-        <p className="text-sm font-medium" style={{ color: '#9CA3AF' }}>Titulación no disponible en el prototipo</p>
-        <p className="text-xs mt-1" style={{ color: '#CBD5E1' }}>Selecciona el Máster en IA para navegar</p>
+        <p className="text-sm font-medium" style={{ color: '#4B5563' }}>Titulación no disponible en el prototipo</p>
+        <p className="text-xs mt-1" style={{ color: '#6B7280' }}>Selecciona el Máster en IA para navegar</p>
       </div>
     )
   }
@@ -409,7 +428,7 @@ function TablaDisenador({ titulaciones, titulacionSeleccionada, onNavigate }) {
   const estadoDisenadorConfig = {
     aprobado: { label: 'Disponible', bg: '#F0FDF4', color: '#10B981', border: '#A7F3D0' },
     disenado: { label: 'Diseñado', bg: '#F5F3FF', color: '#7C3AED', border: '#DDD6FE' },
-    porComenzar: { label: 'No disponible', bg: '#F8FAFC', color: '#94A3B8', border: '#E2E8F0' },
+    porComenzar: { label: 'No disponible', bg: '#F8FAFC', color: '#64748B', border: '#E2E8F0' },
   }
 
   return (
@@ -417,7 +436,7 @@ function TablaDisenador({ titulaciones, titulacionSeleccionada, onNavigate }) {
       <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #F1F5F9', background: '#F8F9FA' }}>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{titulacion?.nombre}</p>
-          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
             {asignaturas.filter(a => a.disenadorEstado === 'aprobado').length} disponibles para enriquecer · {asignaturas.filter(a => a.disenadorEstado === 'disenado').length} diseñadas
           </p>
         </div>
@@ -429,7 +448,7 @@ function TablaDisenador({ titulaciones, titulacionSeleccionada, onNavigate }) {
       {/* Column headers — 2 cols */}
       <div className="grid px-5 py-2.5" style={{ gridTemplateColumns: '3fr 1fr', borderBottom: '1px solid #E5E7EB', gap: '12px' }}>
         {['Asignatura', 'Estado'].map(col => (
-          <span key={col} className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>{col}</span>
+          <span key={col} className="text-xs font-semibold" style={{ color: '#6B7280' }}>{col}</span>
         ))}
       </div>
 
@@ -452,11 +471,11 @@ function TablaDisenador({ titulaciones, titulacionSeleccionada, onNavigate }) {
           >
             <div className="flex items-center gap-2 min-w-0">
               {clickable && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#7C3AED' }} />}
-              <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#94A3B8' }}>
+              <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#64748B' }}>
                 {asig.nombre}
               </span>
               {clickable && (
-                <ArrowRight size={12} style={{ color: '#CBD5E1', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ArrowRight size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
               )}
             </div>
             <div className="flex items-center">
@@ -573,7 +592,7 @@ function TrackingDashboard({ onNavigate }) {
                 </span>
               )}
             </span>
-            <span className="text-xs" style={{ color: '#9CA3AF' }}>{filtered.length} de {enriched.length}</span>
+            <span className="text-xs" style={{ color: '#6B7280' }}>{filtered.length} de {enriched.length}</span>
           </div>
 
           {/* Column headers */}
@@ -645,7 +664,7 @@ function TrackingDashboard({ onNavigate }) {
           })}
 
           {filtered.length === 0 && (
-            <div className="px-4 py-10 text-center text-sm" style={{ color: '#9CA3AF' }}>
+            <div className="px-4 py-10 text-center text-sm" style={{ color: '#4B5563' }}>
               No hay asignaturas con ese estado
             </div>
           )}
@@ -658,7 +677,7 @@ function TrackingDashboard({ onNavigate }) {
           {/* Header */}
           <div className="px-4 py-3 flex items-start justify-between gap-2" style={{ borderBottom: '1px solid #E5E7EB', background: '#F8F9FA' }}>
             <div className="min-w-0">
-              <div className="text-xs mb-1" style={{ color: '#9CA3AF' }}>{selected.titulacion}</div>
+              <div className="text-xs mb-1" style={{ color: '#6B7280' }}>{selected.titulacion}</div>
               <div className="text-sm font-semibold leading-tight" style={{ color: '#1A1A1A' }}>{selected.nombre}</div>
             </div>
             <button onClick={() => setSelectedId(null)} className="flex-shrink-0 p-0.5 rounded hover:bg-gray-200 transition-colors">
@@ -669,7 +688,7 @@ function TrackingDashboard({ onNavigate }) {
           <div className="p-4 space-y-4 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 260px)' }}>
             {/* Structural info */}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Información estructural</div>
+              <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Información estructural</div>
               <div className="space-y-1.5 text-xs">
                 {[
                   ['Última versión', formatDate(selected.lastVersionDate)],
@@ -688,7 +707,7 @@ function TrackingDashboard({ onNavigate }) {
 
             {/* Obsolescence status */}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Estado de obsolescencia</div>
+              <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Estado de obsolescencia</div>
               <div className="rounded-lg p-3 space-y-2" style={{ background: STATUS_CONFIG[selected.status].bg, border: `1px solid ${STATUS_CONFIG[selected.status].border}` }}>
                 <div className="flex items-center gap-2">
                   {(() => { const { Icon } = STATUS_CONFIG[selected.status]; return <Icon size={13} style={{ color: STATUS_CONFIG[selected.status].color }} /> })()}
@@ -706,7 +725,7 @@ function TrackingDashboard({ onNavigate }) {
 
             {/* Filial versions */}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Versiones por filial</div>
+              <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Versiones por filial</div>
               <div className="space-y-2">
                 {Object.entries(selected.filialVersions).map(([key, fv]) => (
                   <div key={key} className="rounded-lg px-3 py-2" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
@@ -714,7 +733,7 @@ function TrackingDashboard({ onNavigate }) {
                       <span className="text-xs font-medium" style={{ color: '#374151' }}>{FILIAL_LABELS[key] || key}</span>
                       <span className="text-xs font-mono" style={{ color: '#367CFF' }}>v{fv.version}</span>
                     </div>
-                    <div className="flex items-center justify-between text-xs" style={{ color: '#9CA3AF' }}>
+                    <div className="flex items-center justify-between text-xs" style={{ color: '#6B7280' }}>
                       <span>{formatDate(fv.date)}</span>
                       <span className="flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full" style={{ background: fv.status === 'published' ? '#16A34A' : '#D97706' }} />
@@ -729,7 +748,7 @@ function TrackingDashboard({ onNavigate }) {
             {/* Alarms */}
             {selected.alarms.length > 0 && (
               <div>
-                <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#9CA3AF' }}>Alarmas</div>
+                <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Alarmas</div>
                 <div className="space-y-1.5">
                   {selected.alarms.map(a => {
                     const ac = ALARM_CONFIG[a]

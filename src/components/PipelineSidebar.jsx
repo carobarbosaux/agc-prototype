@@ -33,11 +33,11 @@ function TemaResumenPopover({ tema, onClose, anchorRef }) {
         <span className="text-xs font-semibold leading-tight" style={{ color: '#1A1A1A' }}>
           T{tema.numero} — {tema.titulo}
         </span>
-        <button onClick={onClose} className="flex-shrink-0 mt-0.5" style={{ color: '#9CA3AF' }}>
+        <button onClick={onClose} className="flex-shrink-0 mt-0.5" style={{ color: '#6B7280' }}>
           <X size={12} />
         </button>
       </div>
-      <p className="text-xs leading-relaxed" style={{ color: '#6B7280' }}>
+      <p className="text-xs leading-relaxed" style={{ color: '#4B5563' }}>
         {tema.descripcion}
       </p>
     </div>
@@ -83,9 +83,9 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
           <button
             onClick={() => setCollapsed(false)}
             className="w-full flex items-center justify-center py-3 transition-colors"
-            style={{ color: '#9CA3AF' }}
+            style={{ color: '#6B7280' }}
             onMouseEnter={e => { e.currentTarget.style.color = '#374151'; e.currentTarget.style.background = '#F8F9FA' }}
-            onMouseLeave={e => { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' }}
+            onMouseLeave={e => { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = 'transparent' }}
           >
             <SidebarSimple size={15} />
           </button>
@@ -94,7 +94,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
           className="flex-1 flex items-center justify-center"
           style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
         >
-          <span className="text-xs font-semibold uppercase tracking-wider select-none" style={{ color: '#CBD5E1', letterSpacing: '0.08em' }}>
+          <span className="text-xs font-semibold uppercase tracking-wider select-none" style={{ color: '#9CA3AF', letterSpacing: '0.08em' }}>
             Flujo de contenido
           </span>
         </div>
@@ -117,7 +117,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
         <div className="flex items-center justify-between mb-3">
           <p
             className="text-xs font-semibold uppercase tracking-wider"
-            style={{ color: '#9CA3AF', fontFamily: "'Proeduca Sans', system-ui, sans-serif", letterSpacing: '0.08em' }}
+            style={{ color: '#6B7280', fontFamily: "'Proeduca Sans', system-ui, sans-serif", letterSpacing: '0.08em' }}
           >
             Flujo de contenido
           </p>
@@ -125,9 +125,9 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
             <button
               onClick={() => setCollapsed(true)}
               className="p-1 rounded transition-colors"
-              style={{ color: '#CBD5E1' }}
-              onMouseEnter={e => { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = '#F3F4F6' }}
-              onMouseLeave={e => { e.currentTarget.style.color = '#CBD5E1'; e.currentTarget.style.background = 'transparent' }}
+              style={{ color: '#9CA3AF' }}
+              onMouseEnter={e => { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = '#F3F4F6' }}
+              onMouseLeave={e => { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' }}
             >
               <SidebarSimple size={14} />
             </button>
@@ -160,7 +160,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                       className="text-sm"
                       style={{
                         fontWeight: activo ? '600' : '500',
-                        color: activo ? '#367CFF' : clickable ? '#374151' : '#94A3B8',
+                        color: activo ? '#367CFF' : clickable ? '#374151' : '#64748B',
                       }}
                     >
                       {etapa.label}
@@ -204,7 +204,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                         <p className="text-sm font-medium leading-tight" style={{ color: '#374151' }}>
                           {etapa.label}
                         </p>
-                        <p className="text-xs leading-tight truncate" style={{ color: '#9CA3AF', maxWidth: '140px' }}>
+                        <p className="text-xs leading-tight truncate" style={{ color: '#6B7280', maxWidth: '140px' }}>
                           {etapa.labelCorto}
                         </p>
                       </div>
@@ -216,18 +216,18 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                           onClick={e => { e.stopPropagation(); setPopoverAbierto(prev => prev === etapa.id ? null : etapa.id) }}
                           className="flex items-center justify-center w-5 h-5 rounded-md transition-colors"
                           style={{
-                            color: popoverAbierto === etapa.id ? '#367CFF' : '#9CA3AF',
+                            color: popoverAbierto === etapa.id ? '#367CFF' : '#6B7280',
                             background: popoverAbierto === etapa.id ? '#E7EFFE' : 'transparent',
                           }}
                           onMouseEnter={e => { e.stopPropagation(); e.currentTarget.style.color = '#367CFF'; e.currentTarget.style.background = '#E7EFFE' }}
-                          onMouseLeave={e => { e.stopPropagation(); if (popoverAbierto !== etapa.id) { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' } }}
+                          onMouseLeave={e => { e.stopPropagation(); if (popoverAbierto !== etapa.id) { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = 'transparent' } }}
                         >
                           <Info size={12} />
                         </span>
                       )}
                       {expandido
-                        ? <CaretDown size={13} style={{ color: '#9CA3AF' }} />
-                        : <CaretRight size={13} style={{ color: '#9CA3AF' }} />
+                        ? <CaretDown size={13} style={{ color: '#6B7280' }} />
+                        : <CaretRight size={13} style={{ color: '#6B7280' }} />
                       }
                     </div>
                   </button>
@@ -266,7 +266,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                               className="text-xs"
                               style={{
                                 fontWeight: activo ? '600' : '400',
-                                color: activo ? '#367CFF' : clickable ? '#4B5563' : '#CBD5E1',
+                                color: activo ? '#367CFF' : clickable ? '#4B5563' : '#64748B',
                               }}
                             >
                               {sec.label}
@@ -288,13 +288,13 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
       {/* Progress indicator */}
       <div className="px-4 py-4 flex-shrink-0" style={{ borderTop: '1px solid #F1F5F9' }}>
         <div className="flex items-center justify-between mb-2">
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Progreso</p>
+          <p className="text-xs" style={{ color: '#6B7280' }}>Progreso</p>
           <p className="text-xs font-semibold" style={{ color: '#374151' }}>{pct}%</p>
         </div>
         <div className="w-full h-1.5 rounded-full" style={{ background: '#E5E7EB' }}>
           <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#367CFF' }} />
         </div>
-        <p className="text-xs mt-1.5" style={{ color: '#9CA3AF' }}>{aprobadas} de {total} secciones aprobadas</p>
+        <p className="text-xs mt-1.5" style={{ color: '#6B7280' }}>{aprobadas} de {total} secciones aprobadas</p>
       </div>
     </aside>
   )

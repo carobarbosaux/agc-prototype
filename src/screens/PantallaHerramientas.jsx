@@ -94,7 +94,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
                 <div className="absolute right-0 top-full mt-1 w-52 rounded-xl shadow-xl py-1 z-50 animate-fade-in"
                   style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
                   <div className="px-3 py-2 mb-1" style={{ borderBottom: '1px solid #F1F5F9' }}>
-                    <p className="text-xs font-medium" style={{ color: '#6B7280' }}>Vista de demo — cambiar rol</p>
+                    <p className="text-xs font-medium" style={{ color: '#4B5563' }}>Vista de demo — cambiar rol</p>
                   </div>
                   {roles.map(rol => (
                     <button key={rol.id} onClick={() => { onRolChange(rol.id); setRolMenuAbierto(false) }}
@@ -104,7 +104,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
                     >
                       <div>
                         <p className="text-sm font-medium" style={{ color: '#1A1A1A' }}>{rol.label}</p>
-                        <p className="text-xs" style={{ color: '#6B7280' }}>{rol.description}</p>
+                        <p className="text-xs" style={{ color: '#4B5563' }}>{rol.description}</p>
                       </div>
                       {rolActivo === rol.id && <div className="w-1.5 h-1.5 rounded-full" style={{ background: rc.text }} />}
                     </button>
@@ -117,7 +117,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
             onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
-            <Bell size={18} style={{ color: '#6B7280' }} />
+            <Bell size={18} style={{ color: '#4B5563' }} />
             {notifCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-white"
                 style={{ background: '#F97316', fontSize: '10px', fontWeight: '600' }}>
@@ -136,7 +136,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
       <div className="pt-14 px-8 pb-8 max-w-5xl mx-auto">
         <div className="pt-10 pb-6">
           <h1 className="text-2xl font-semibold mb-1" style={{ color: '#1A1A1A' }}>Herramientas</h1>
-          <p className="text-sm mb-6" style={{ color: '#6B7280' }}>Selecciona una herramienta o usa el Asistente IA de Contenidos para empezar</p>
+          <p className="text-sm mb-6" style={{ color: '#4B5563' }}>Selecciona una herramienta o usa el Asistente IA de Contenidos para empezar</p>
           <Chatbar
             onNavigate={onNavigate}
             placeholder="Pregunta qué necesitas o usa @ para conectores…"
@@ -156,23 +156,25 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
                 onClick={() => h.clickable && onNavigate('dashboard')}
                 className="relative rounded-2xl p-6 transition-all"
                 style={{
-                  background: '#FFFFFF',
-                  border: h.activa ? '1.5px solid #BAD2FF' : '1px solid #E5E7EB',
+                  background: h.clickable ? '#FBFCFF' : '#F4F6FD',
+                  border: h.activa ? '1.5px solid #DCDFEB' : 'none',
                   boxShadow: h.activa ? '0 4px 16px rgba(0, 152, 205, 0.10)' : 'none',
-                  opacity: h.clickable ? 1 : 0.5,
                   cursor: h.clickable ? 'pointer' : 'default',
-                  transform: 'translateY(0)',
-                  transition: 'transform 250ms ease, box-shadow 250ms ease',
+                  transition: 'background 150ms ease, outline 150ms ease',
                 }}
                 onMouseEnter={e => {
                   if (h.clickable) {
-                    e.currentTarget.style.transform = 'translateY(-3px)'
-                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 152, 205, 0.16)'
+                    e.currentTarget.style.background = '#F4F6FD'
+                    e.currentTarget.style.outline = '1px solid #0A5CF5'
+                    e.currentTarget.style.boxShadow = 'none'
                   }
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = h.activa ? '0 4px 16px rgba(0, 152, 205, 0.10)' : 'none'
+                  if (h.clickable) {
+                    e.currentTarget.style.background = '#FBFCFF'
+                    e.currentTarget.style.outline = 'none'
+                    e.currentTarget.style.boxShadow = h.activa ? '0 4px 16px rgba(0, 152, 205, 0.10)' : 'none'
+                  }
                 }}
               >
                 {/* Active badge */}
@@ -191,9 +193,9 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
 
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: h.activa ? '#E7EFFE' : '#F8F9FA' }}
+                  style={{ background: h.activa ? '#E7EFFE' : 'transparent' }}
                 >
-                  <Icon size={20} style={{ color: h.activa ? '#367CFF' : '#94A3B8' }} />
+                  <Icon size={20} style={{ color: h.activa ? '#367CFF' : '#868FA9' }} />
                 </div>
 
                 <h3
@@ -202,7 +204,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
                 >
                   {h.label}
                 </h3>
-                <p className="text-xs leading-relaxed" style={{ color: '#9CA3AF' }}>
+                <p className="text-xs leading-relaxed" style={{ color: h.activa ? '#6B7280' : '#4B5563' }}>
                   {h.descripcion}
                 </p>
 
@@ -229,11 +231,6 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
                   </div>
                 )}
 
-                {!h.clickable && (
-                  <div className="mt-4">
-                    <span className="text-xs" style={{ color: '#CBD5E1' }}>Próximamente</span>
-                  </div>
-                )}
               </div>
             )
           })}

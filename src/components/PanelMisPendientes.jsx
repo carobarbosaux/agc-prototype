@@ -21,7 +21,7 @@ export default function PanelMisPendientes({ rolActivo, onNavigate }) {
       <div className="px-4 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid #F1F5F9' }}>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Mis pendientes</p>
-          <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>
+          <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
             {items.filter(i => i.activo).length} activos
           </p>
         </div>
@@ -48,7 +48,7 @@ export default function PanelMisPendientes({ rolActivo, onNavigate }) {
               style={{
                 borderBottom: i < items.length - 1 ? '1px solid #F8F9FA' : 'none',
                 cursor: clickable ? 'pointer' : 'default',
-                opacity: item.activo ? 1 : 0.5,
+                background: item.activo ? 'transparent' : '#FAFAFA',
               }}
               onMouseEnter={e => { if (clickable) e.currentTarget.style.background = '#F8F9FA' }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
@@ -65,14 +65,14 @@ export default function PanelMisPendientes({ rolActivo, onNavigate }) {
               <div className="flex-1 min-w-0">
                 <p
                   className="text-sm font-medium leading-snug"
-                  style={{ color: clickable ? '#1A1A1A' : '#94A3B8' }}
+                  style={{ color: clickable ? '#1A1A1A' : '#64748B' }}
                 >
                   {item.titulo}
                 </p>
-                <p className="text-xs mt-0.5 truncate" style={{ color: '#9CA3AF' }}>
+                <p className="text-xs mt-0.5 truncate" style={{ color: '#6B7280' }}>
                   {item.asignatura}
                 </p>
-                <p className="text-xs truncate" style={{ color: '#CBD5E1' }}>
+                <p className="text-xs truncate" style={{ color: '#6B7280' }}>
                   {item.seccion}
                 </p>
                 <div className="flex items-center gap-2 mt-1.5">
@@ -86,8 +86,8 @@ export default function PanelMisPendientes({ rolActivo, onNavigate }) {
                   >
                     {cfg.label}
                   </span>
-                  <span className="text-xs" style={{ color: '#CBD5E1' }}>·</span>
-                  <span className="text-xs" style={{ color: '#CBD5E1' }}>{item.tiempo}</span>
+                  <span className="text-xs" style={{ color: '#6B7280' }}>·</span>
+                  <span className="text-xs" style={{ color: '#6B7280' }}>{item.tiempo}</span>
                 </div>
               </div>
 
@@ -96,7 +96,7 @@ export default function PanelMisPendientes({ rolActivo, onNavigate }) {
                 <ArrowRight
                   size={13}
                   className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity mt-1"
-                  style={{ color: '#CBD5E1' }}
+                  style={{ color: '#9CA3AF' }}
                 />
               )}
             </div>

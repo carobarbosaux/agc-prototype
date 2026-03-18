@@ -1059,22 +1059,22 @@ export const respuestasCalidadIA = [
 ]
 
 export const estadoConfig = {
-  porComenzar: { bg: '#F8FAFC', text: '#94A3B8', border: '#E2E8F0', label: 'Por comenzar', dot: '#CBD5E1' },
-  bloqueado: { bg: '#F1F5F9', text: '#94A3B8', border: '#CBD5E1', label: 'Bloqueado', dot: '#CBD5E1' },
-  borrador: { bg: '#EFF6FF', text: '#3B82F6', border: '#BFDBFE', label: 'En borrador', dot: '#3B82F6' },
-  revision: { bg: '#FFFBEB', text: '#F59E0B', border: '#FDE68A', label: 'En revisión', dot: '#F59E0B' },
-  comentarios: { bg: '#FFF7ED', text: '#F97316', border: '#FED7AA', label: 'Con comentarios', dot: '#F97316' },
-  aprobado: { bg: '#F0FDF4', text: '#10B981', border: '#A7F3D0', label: 'Aprobado', dot: '#10B981' },
-  publicado: { bg: '#ECFDF5', text: '#059669', border: '#6EE7B7', label: 'Publicado', dot: '#059669' },
-  disenado: { bg: '#F5F3FF', text: '#7C3AED', border: '#DDD6FE', label: 'Diseñado', dot: '#7C3AED' },
+  porComenzar: { bg: '#F8FAFC', text: '#64748B', border: '#E2E8F0', label: 'Por comenzar', dot: '#94A3B8' },
+  bloqueado: { bg: '#F1F5F9', text: '#64748B', border: '#CBD5E1', label: 'Bloqueado', dot: '#94A3B8' },
+  borrador: { bg: '#EFF6FF', text: '#1D4ED8', border: '#BFDBFE', label: 'En borrador', dot: '#3B82F6' },
+  revision: { bg: '#FFFBEB', text: '#B45309', border: '#FDE68A', label: 'En revisión', dot: '#F59E0B' },
+  comentarios: { bg: '#FFF7ED', text: '#C2410C', border: '#FED7AA', label: 'Con comentarios', dot: '#F97316' },
+  aprobado: { bg: '#F0FDF4', text: '#047857', border: '#A7F3D0', label: 'Aprobado', dot: '#10B981' },
+  publicado: { bg: '#ECFDF5', text: '#065F46', border: '#6EE7B7', label: 'Publicado', dot: '#059669' },
+  disenado: { bg: '#F5F3FF', text: '#5B21B6', border: '#DDD6FE', label: 'Diseñado', dot: '#7C3AED' },
 }
 
 export const gravedadConfig = {
-  critico: { color: '#EF4444', bg: '#FEF2F2', border: '#FECACA', label: '🔴 Crítico', emoji: '🔴' },
-  importante: { color: '#F97316', bg: '#FFF7ED', border: '#FED7AA', label: '🟠 Importante', emoji: '🟠' },
-  sugerencia: { color: '#EAB308', bg: '#FEFCE8', border: '#FEF08A', label: '🟡 Sugerencia', emoji: '🟡' },
-  nota: { color: '#3B82F6', bg: '#EFF6FF', border: '#BFDBFE', label: '🔵 Nota', emoji: '🔵' },
-  alertaNormativa: { color: '#7C3AED', bg: '#F5F3FF', border: '#DDD6FE', label: '🔺 Alerta normativa', emoji: '🔺' },
+  critico: { color: '#B91C1C', bg: '#FEF2F2', border: '#FECACA', label: '🔴 Crítico', emoji: '🔴' },
+  importante: { color: '#C2410C', bg: '#FFF7ED', border: '#FED7AA', label: '🟠 Importante', emoji: '🟠' },
+  sugerencia: { color: '#92400E', bg: '#FEFCE8', border: '#FEF08A', label: '🟡 Sugerencia', emoji: '🟡' },
+  nota: { color: '#475569', bg: '#F8FAFC', border: '#CBD5E1', label: '📝 Nota', emoji: '📝' },
+  alertaNormativa: { color: '#5B21B6', bg: '#F5F3FF', border: '#DDD6FE', label: '🔺 Alerta normativa', emoji: '🔺' },
 }
 
 export const roles = [

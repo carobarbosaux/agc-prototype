@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { PaperPlaneTilt, Sparkle, BookOpen, PencilSimple, ClipboardText, Flask, CheckSquare, Chat, X, Plus, ChartBar, ShieldWarning } from '@phosphor-icons/react'
+import { PaperPlaneTilt, BookOpen, PencilSimple, ClipboardText, Flask, CheckSquare, Chat, X, Plus, ChartBar, ShieldWarning } from '@phosphor-icons/react'
 import { shortcutsComandos, respuestasIAChatbar } from '../mockData'
 import Tooltip from './Tooltip'
 
@@ -169,8 +169,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
         >
           <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: '1px solid #F1F5F9' }}>
             <div className="flex items-center gap-2">
-              <Sparkle size={13} style={{ color: '#367CFF' }} />
-              <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Asistente AGC</span>
+                            <span className="text-xs font-semibold" style={{ color: '#367CFF' }}>Asistente AGC</span>
             </div>
             <button
               onClick={() => setHistorialVisible(false)}
@@ -178,7 +177,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
               onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <X size={12} style={{ color: '#9CA3AF' }} />
+              <X size={12} style={{ color: '#6B7280' }} />
             </button>
           </div>
           <div className="px-4 py-3 flex flex-col gap-3">
@@ -187,8 +186,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                 {msg.rol === 'ia' && (
                   <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mr-2 mt-0.5"
                     style={{ background: '#E7EFFE' }}>
-                    <Sparkle size={10} style={{ color: '#367CFF' }} />
-                  </div>
+                                      </div>
                 )}
                 <div
                   className="max-w-xs rounded-xl px-3 py-2 text-xs leading-relaxed"
@@ -219,7 +217,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
           }}
         >
           <div className="px-3 py-2" style={{ borderBottom: '1px solid #F1F5F9' }}>
-            <span className="text-xs font-semibold" style={{ color: '#9CA3AF' }}>Comandos disponibles</span>
+            <span className="text-xs font-semibold" style={{ color: '#6B7280' }}>Comandos disponibles</span>
           </div>
           {dropdownFiltrado.map(s => {
             const Icon = iconMap[s.icon] || BookOpen
@@ -233,13 +231,13 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
               >
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
                   style={{ background: s.accion === 'crearAsignatura' ? '#E7EFFE' : '#F8F9FA' }}>
-                  <Icon size={14} style={{ color: s.accion === 'crearAsignatura' ? '#367CFF' : '#94A3B8' }} />
+                  <Icon size={14} style={{ color: s.accion === 'crearAsignatura' ? '#367CFF' : '#6B7280' }} />
                 </div>
                 <div>
                   <span className="text-sm font-medium" style={{ color: '#1A1A1A', fontFamily: "'JetBrains Mono', monospace" }}>
                     {s.comando}
                   </span>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>{s.descripcion}</p>
+                  <p className="text-xs" style={{ color: '#6B7280' }}>{s.descripcion}</p>
                 </div>
               </button>
             )
@@ -308,7 +306,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                 >
                   {/* Header */}
                   <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
-                    <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#9CA3AF' }}>Conectores</p>
+                    <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>Conectores</p>
                   </div>
 
                   {/* Section: Company Knowledge */}
@@ -318,13 +316,13 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                       <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: '#0078D4', fontSize: '7px' }}>CK</div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-medium" style={{ color: '#111827' }}>Company Knowledge</p>
-                        <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>Fuentes institucionales de tu organización</p>
+                        <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>Fuentes institucionales de tu organización</p>
                       </div>
                       <button
                         onClick={e => { e.stopPropagation(); toggleCompanyKnowledge() }}
-                        style={{ width: 28, height: 16, borderRadius: 8, background: companyKnowledgeOn ? '#367CFF' : '#D1D5DB', position: 'relative', flexShrink: 0, border: 'none', cursor: 'pointer' }}
+                        style={{ width: 40, height: 24, borderRadius: 30, background: companyKnowledgeOn ? '#0A5CF5' : '#DCDFEB', position: 'relative', flexShrink: 0, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: companyKnowledgeOn ? 'flex-end' : 'flex-start', padding: companyKnowledgeOn ? '0 4px 0 0' : '0 0 0 4px' }}
                       >
-                        <span style={{ position: 'absolute', top: 2, left: companyKnowledgeOn ? 14 : 2, width: 12, height: 12, borderRadius: '50%', background: '#FFF', transition: 'left 0.15s' }} />
+                        <span style={{ width: 16, height: 16, borderRadius: 8, background: '#FFF', display: 'block', flexShrink: 0 }} />
                       </button>
                     </div>
 
@@ -349,7 +347,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                             <div className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '6px' }}>{c.letter}</div>
                             <div className="flex-1 min-w-0">
                               <p className="text-xs font-medium" style={{ color: active ? c.color : '#374151' }}>{c.label}</p>
-                              <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>{c.desc}</p>
+                              <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>{c.desc}</p>
                             </div>
                             {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
                           </button>
@@ -358,7 +356,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                     </div>
 
                     {!companyKnowledgeOn && (
-                      <p className="pb-1 pl-3" style={{ fontSize: '10px', color: '#9CA3AF', fontStyle: 'italic' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
+                      <p className="pb-1 pl-3" style={{ fontSize: '10px', color: '#6B7280', fontStyle: 'italic' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
                     )}
                   </div>
 
@@ -381,7 +379,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                           <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '7px' }}>{c.letter}</div>
                           <div className="flex-1 min-w-0">
                             <p className="text-xs font-medium" style={{ color: active ? c.color : '#111827' }}>{c.label}</p>
-                            <p style={{ fontSize: '10px', color: '#9CA3AF', marginTop: 1 }}>{c.desc}</p>
+                            <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>{c.desc}</p>
                           </div>
                           {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
                         </button>
@@ -447,7 +445,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
             onMouseEnter={e => { if (canSend) e.currentTarget.style.background = '#0039A3' }}
             onMouseLeave={e => { if (canSend) e.currentTarget.style.background = '#0A5CF5' }}
           >
-            <PaperPlaneTilt size={16} style={{ color: canSend ? '#FFFFFF' : '#9CA3AF' }} />
+            <PaperPlaneTilt size={16} style={{ color: canSend ? '#FFFFFF' : '#6B7280' }} />
           </button>
         </div>
       </div>
@@ -467,8 +465,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
             }}
           >
             <div className="flex items-center gap-1.5 px-4 py-2.5 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-              <Sparkle size={11} style={{ color: '#BAD2FF', flexShrink: 0 }} />
-              {suggestedChips.map(({ text }, i) => (
+                            {suggestedChips.map(({ text }, i) => (
                 <button
                   key={i}
                   onClick={() => { setValor(text); setSugerenciasOcultas(true); inputRef.current?.focus() }}

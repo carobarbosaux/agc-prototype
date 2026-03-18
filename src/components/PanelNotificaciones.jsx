@@ -60,7 +60,7 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
         >
           <div>
             <h2 className="text-base font-semibold" style={{ color: '#1A1A1A' }}>Notificaciones</h2>
-            <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
+            <p className="text-xs mt-0.5" style={{ color: '#4B5563' }}>
               {notificaciones.filter(n => n.accionRequerida).length} requieren tu atención
             </p>
           </div>
@@ -70,7 +70,7 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
             onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
-            <X size={18} style={{ color: '#9CA3AF' }} />
+            <X size={18} style={{ color: '#6B7280' }} />
           </button>
         </div>
 
@@ -83,7 +83,7 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
               className="text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
               style={{
                 background: filtro === f.id ? '#E7EFFE' : 'transparent',
-                color: filtro === f.id ? '#367CFF' : '#6B7280',
+                color: filtro === f.id ? '#367CFF' : '#4B5563',
                 border: filtro === f.id ? '1px solid #BAD2FF' : '1px solid transparent',
               }}
             >
@@ -98,7 +98,7 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
             <div key={asignatura}>
               <p
                 className="text-xs font-semibold uppercase tracking-wider mb-2"
-                style={{ color: '#9CA3AF', fontFamily: "'Proeduca Sans', system-ui, sans-serif", letterSpacing: '0.06em' }}
+                style={{ color: '#6B7280', fontFamily: "'Proeduca Sans', system-ui, sans-serif", letterSpacing: '0.06em' }}
               >
                 {asignatura}
               </p>
@@ -128,9 +128,9 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium mb-0.5" style={{ color: '#1A1A1A' }}>{notif.seccion}</p>
-                          <p className="text-sm leading-snug" style={{ color: '#6B7280' }}>{notif.mensaje}</p>
+                          <p className="text-sm leading-snug" style={{ color: '#4B5563' }}>{notif.mensaje}</p>
                           <div className="flex items-center gap-2 mt-2">
-                            <p className="text-xs" style={{ color: '#9CA3AF' }}>{notif.tiempo}</p>
+                            <p className="text-xs" style={{ color: '#6B7280' }}>{notif.tiempo}</p>
                             {notif.accionRequerida && (
                               <span
                                 className="text-xs font-medium px-2 py-0.5 rounded"
@@ -141,7 +141,7 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
                             )}
                           </div>
                         </div>
-                        <CaretRight size={14} style={{ color: '#CBD5E1' }} className="flex-shrink-0 mt-2 group-hover:text-slate-400 transition-colors" />
+                        <CaretRight size={14} style={{ color: '#9CA3AF' }} className="flex-shrink-0 mt-2 group-hover:text-slate-500 transition-colors" />
                       </div>
                     </button>
                   )
@@ -153,10 +153,10 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
           {filtradas.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-3" style={{ background: '#F1F5F9' }}>
-                <CheckCircle size={22} className="text-slate-300" />
+                <CheckCircle size={22} className="text-slate-400" />
               </div>
-              <p className="text-sm font-medium" style={{ color: '#9CA3AF' }}>Sin notificaciones</p>
-              <p className="text-xs mt-1" style={{ color: '#CBD5E1' }}>Todo al día</p>
+              <p className="text-sm font-medium" style={{ color: '#4B5563' }}>Sin notificaciones</p>
+              <p className="text-xs mt-1" style={{ color: '#6B7280' }}>Todo al día</p>
             </div>
           )}
         </div>
