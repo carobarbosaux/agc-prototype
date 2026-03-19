@@ -297,8 +297,8 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
         {index + 1}
       </div>
 
-      {/* ── Block format handle (author only, left gutter) ── */}
-      {editable && (
+      {/* ── Block format handle (author only, left gutter) — hidden when IA toolbar is open ── */}
+      {editable && !toolbarVisible && (
         <div
           ref={menuFormatoRef}
           style={{ position: 'absolute', left: '-76px', top: '0px', zIndex: 40 }}
@@ -321,7 +321,7 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
               onMouseEnter={e => { e.currentTarget.style.background = '#dbeafe' }}
               onMouseLeave={e => { e.currentTarget.style.background = menuFormato ? '#dbeafe' : '#F0F6FF' }}
             >
-              <TextAa size={14} weight="bold" />
+              <TextAa size={14} />
             </button>
           </Tooltip>
 
@@ -430,24 +430,25 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
       ) : onAccionIA ? (
         <button
           onClick={() => onAccionIA('', 'Añadir comentario', bloque)}
-          className="absolute flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute opacity-0 group-hover:opacity-100 transition-opacity"
           style={{
             right: '-44px',
-            top: '2px',
-            background: '#F3F4F6',
-            color: '#6B7280',
-            border: '1px solid #E5E7EB',
-            borderRadius: '6px',
-            padding: '2px 6px',
-            fontSize: '11px',
-            fontWeight: '500',
+            top: '0px',
+            height: '26px',
+            padding: '0 8px',
+            display: 'flex', alignItems: 'center', gap: '5px',
+            borderRadius: '7px',
+            border: '1px solid #0A5CF5',
+            background: '#F0F6FF',
+            color: '#0A5CF5',
             cursor: 'pointer',
+            fontSize: '11px', fontWeight: '600', whiteSpace: 'nowrap',
           }}
           title="Añadir comentario"
-          onMouseEnter={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.color = '#367CFF'; e.currentTarget.style.borderColor = '#BFDBFE' }}
-          onMouseLeave={e => { e.currentTarget.style.background = '#F3F4F6'; e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.borderColor = '#E5E7EB' }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#dbeafe' }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#F0F6FF' }}
         >
-          <Chat size={10} />
+          <Chat size={14} />
         </button>
       ) : null}
 

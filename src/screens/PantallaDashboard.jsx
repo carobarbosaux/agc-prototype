@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ArrowRight, Warning, Clock, Plus, BookOpen, Lock, Funnel, Globe, CheckCircle, XCircle, GitBranch, CaretRight, X, CaretRight as ChevronRight } from '@phosphor-icons/react'
+import { Warning, Clock, Plus, BookOpen, Lock, Funnel, Globe, CheckCircle, XCircle, GitBranch, CaretRight, X, CaretRight as ChevronRight } from '@phosphor-icons/react'
 import StatusIndicator, { toStatusKey } from '../components/StatusIndicator'
 import Chatbar from '../components/Chatbar'
 import CalidadContenidosCards from '../components/CalidadContenidosCards'
@@ -107,33 +107,33 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
     )
   }
 
+  const COLS_AUTOR = '2fr 1.1fr 0.9fr 1fr 1fr'
+  const HDR = { padding: '10px 16px', background: '#E6EFFF', borderBottom: '1px solid #DCDFEB', display: 'flex', alignItems: 'center' }
+  const hdrtxt = { color: '#3A455C', fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.04em' }
+  const CELL = { padding: '12px 16px', borderBottom: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', minWidth: 0 }
+  const txt = { color: '#334155', fontSize: 13, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }
+
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
-      <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #F1F5F9', background: '#F8F9FA' }}>
+      <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #DCDFEB', background: '#F8F9FA' }}>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{titulacion?.nombre}</p>
-          <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
-            {asignaturas.length} de {titulacion?.asignaturas_count} asignaturas
-          </p>
+          <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>{asignaturas.length} de {titulacion?.asignaturas_count} asignaturas</p>
         </div>
-        <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>
-          Activa
-        </span>
+        <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>Activa</span>
       </div>
 
-      {/* Column headers — author: 5 cols */}
-      <div className="grid px-5 py-2.5" style={{ gridTemplateColumns: '2fr 1.2fr 0.9fr 0.9fr 1fr', borderBottom: '1px solid #E5E7EB', gap: '12px' }}>
+      {/* Column headers */}
+      <div className="grid" style={{ gridTemplateColumns: COLS_AUTOR }}>
         {['Asignatura', 'Estado', 'Etapa', 'Pendiente de', 'Última actividad'].map(col => (
-          <span key={col} className="text-xs font-semibold" style={{ color: '#6B7280' }}>{col}</span>
+          <div key={col} style={HDR}><span style={hdrtxt}>{col}</span></div>
         ))}
       </div>
 
       {asignaturas.length === 0 ? (
-        <div className="px-5 py-10 text-center">
-          <p className="text-sm" style={{ color: '#4B5563' }}>No hay asignaturas con este filtro</p>
-        </div>
+        <div className="px-5 py-10 text-center"><p className="text-sm" style={{ color: '#4B5563' }}>No hay asignaturas con este filtro</p></div>
       ) : (
-        asignaturas.map((asig, i) => {
+        asignaturas.map((asig) => {
           const clickable = asig.activa
           const pendienteRaw = typeof asig.pendienteDe === 'object' ? asig.pendienteDe[rolActivo] || '—' : asig.pendienteDe
           const esPropio = pendienteRaw === 'tú'
@@ -147,46 +147,20 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
                 if (asig.crearAsignatura) onNavigate('crearAsignatura')
                 else onNavigate('canvas', { seccion: 't2', titulacionId: 'master-ia', asignaturaId: asig.id })
               }}
-              className="grid px-5 py-3.5 transition-all group"
-              style={{
-                gridTemplateColumns: '2fr 1.2fr 0.9fr 0.9fr 1fr',
-                borderBottom: i < asignaturas.length - 1 ? '1px solid #F8F9FA' : 'none',
-                cursor: clickable ? 'pointer' : 'default',
-                gap: '12px',
-              }}
-              onMouseEnter={e => { if (clickable) e.currentTarget.style.background = '#F8F9FA' }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+              className="grid transition-colors group"
+              style={{ gridTemplateColumns: COLS_AUTOR, cursor: clickable ? 'pointer' : 'default' }}
+              onMouseEnter={e => { if (clickable) e.currentTarget.style.background = '#F4F6FD' }}
+              onMouseLeave={e => { e.currentTarget.style.background = '' }}
             >
-              <div className="flex items-center gap-2 min-w-0">
-                {clickable && !asig.crearAsignatura && (
-                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#367CFF' }} />
-                )}
-                {clickable && asig.crearAsignatura && (
-                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#367CFF' }} />
-                )}
-                <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#64748B' }}>
-                  {asig.nombre}
-                </span>
-                {clickable && (
-                  <ArrowRight size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                )}
+              <div style={{ ...CELL, gap: 8 }}>
+                {clickable && <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${!asig.crearAsignatura ? 'animate-pulse' : ''}`} style={{ background: '#367CFF' }} />}
+                <span style={{ ...txt, color: clickable ? '#1A1A1A' : '#64748B', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{asig.nombre}</span>
+                {clickable && <CaretRight size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
               </div>
-
-              <div className="flex items-center">
-                <StatusIndicator status={toStatusKey(asig.estado)} variant="badge" />
-              </div>
-
-              <span className="text-sm flex items-center truncate" style={{ color: clickable ? '#4B5563' : '#6B7280' }}>
-                {asig.etapaActual}
-              </span>
-
-              <div className="flex items-center">
-                <span className="text-sm" style={{ color: esPropio ? '#367CFF' : '#6B7280', fontWeight: esPropio ? '500' : '400' }}>
-                  {pendienteDisplay}
-                </span>
-              </div>
-
-              <span className="text-sm flex items-center" style={{ color: '#6B7280' }}>{asig.ultimaActividad}</span>
+              <div style={CELL}><StatusIndicator status={toStatusKey(asig.estado)} variant="badge" /></div>
+              <div style={CELL}><span style={{ ...txt, color: '#6B7280' }}>{asig.etapaActual}</span></div>
+              <div style={CELL}><span style={{ ...txt, color: esPropio ? '#367CFF' : '#6B7280', fontWeight: esPropio ? '600' : '500' }}>{pendienteDisplay}</span></div>
+              <div style={CELL}><span style={{ ...txt, color: '#6B7280' }}>{asig.ultimaActividad}</span></div>
             </div>
           )
         })
@@ -230,18 +204,21 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
     )
   }
 
+  const COLS_COORD = '2fr 1fr 1fr 0.7fr 1fr 1fr 0.9fr'
+  const HDR = { padding: '10px 16px', background: '#E6EFFF', borderBottom: '1px solid #DCDFEB', display: 'flex', alignItems: 'center' }
+  const hdrtxt = { color: '#3A455C', fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.04em' }
+  const CELL = { padding: '12px 16px', borderBottom: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', minWidth: 0 }
+  const txt = { color: '#334155', fontSize: 13, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }
+
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
-      {/* Header with filial filter */}
-      <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #F1F5F9', background: '#F8F9FA' }}>
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #DCDFEB', background: '#F8F9FA' }}>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{titulacion?.nombre}</p>
-          <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
-            {asignaturas.length} de {titulacion?.asignaturas_count} asignaturas
-          </p>
+          <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>{asignaturas.length} de {titulacion?.asignaturas_count} asignaturas</p>
         </div>
         <div className="flex items-center gap-2">
-          {/* Filial filter */}
           <div className="flex items-center gap-1.5">
             <Globe size={12} style={{ color: '#6B7280' }} />
             <select
@@ -254,25 +231,21 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
               {filialesDisponibles.map(f => <option key={f} value={f}>{f}</option>)}
             </select>
           </div>
-          <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>
-            Activa
-          </span>
+          <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>Activa</span>
         </div>
       </div>
 
-      {/* Column headers — coordinator: 7 cols */}
-      <div className="grid px-5 py-2.5" style={{ gridTemplateColumns: '1.8fr 0.8fr 0.9fr 0.7fr 0.8fr 0.9fr 0.8fr', borderBottom: '1px solid #E5E7EB', gap: '10px' }}>
+      {/* Column headers */}
+      <div className="grid" style={{ gridTemplateColumns: COLS_COORD }}>
         {['Asignatura', 'Estado', 'Responsable', 'Filial', 'Obsolescencia', 'Última actividad', 'Fecha objetivo'].map(col => (
-          <span key={col} className="text-xs font-semibold" style={{ color: '#6B7280' }}>{col}</span>
+          <div key={col} style={HDR}><span style={hdrtxt}>{col}</span></div>
         ))}
       </div>
 
       {asignaturas.length === 0 ? (
-        <div className="px-5 py-10 text-center">
-          <p className="text-sm" style={{ color: '#4B5563' }}>No hay asignaturas con este filtro</p>
-        </div>
+        <div className="px-5 py-10 text-center"><p className="text-sm" style={{ color: '#4B5563' }}>No hay asignaturas con este filtro</p></div>
       ) : (
-        asignaturas.map((asig, i) => {
+        asignaturas.map((asig) => {
           const clickable = asig.activa
           const pendienteRaw = typeof asig.pendienteDe === 'object' ? asig.pendienteDe[rolActivo] || '—' : asig.pendienteDe
           const esPropio = pendienteRaw === 'tú'
@@ -287,58 +260,26 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
                 if (asig.crearAsignatura) onNavigate('crearAsignatura')
                 else onNavigate('canvas', { seccion: 't2', titulacionId: 'master-ia', asignaturaId: asig.id })
               }}
-              className="grid px-5 py-3 transition-all group"
-              style={{
-                gridTemplateColumns: '1.8fr 0.8fr 0.9fr 0.7fr 0.8fr 0.9fr 0.8fr',
-                borderBottom: i < asignaturas.length - 1 ? '1px solid #F8F9FA' : 'none',
-                cursor: clickable ? 'pointer' : 'default',
-                gap: '10px',
-              }}
-              onMouseEnter={e => { if (clickable) e.currentTarget.style.background = '#F8F9FA' }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+              className="grid transition-colors group"
+              style={{ gridTemplateColumns: COLS_COORD, cursor: clickable ? 'pointer' : 'default' }}
+              onMouseEnter={e => { if (clickable) e.currentTarget.style.background = '#F4F6FD' }}
+              onMouseLeave={e => { e.currentTarget.style.background = '' }}
             >
-              <div className="flex items-center gap-2 min-w-0">
-                {clickable && !asig.crearAsignatura && (
-                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#367CFF' }} />
-                )}
-                {clickable && asig.crearAsignatura && (
-                  <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#6B7280' }} />
-                )}
-                <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#64748B' }}>
-                  {asig.nombre}
-                </span>
-                {clickable && (
-                  <ArrowRight size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                )}
+              <div style={{ ...CELL, gap: 8 }}>
+                {clickable && <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${!asig.crearAsignatura ? 'animate-pulse' : ''}`} style={{ background: '#367CFF' }} />}
+                <span style={{ ...txt, color: clickable ? '#1A1A1A' : '#64748B', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{asig.nombre}</span>
+                {clickable && <CaretRight size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
               </div>
-
-              <div className="flex items-center">
-                <StatusIndicator status={toStatusKey(asig.estado)} variant="badge" />
+              <div style={CELL}><StatusIndicator status={toStatusKey(asig.estado)} variant="badge" /></div>
+              <div style={CELL}><span style={{ ...txt, color: esPropio ? '#367CFF' : '#6B7280', fontWeight: esPropio ? '600' : '500' }}>{pendienteDisplay}</span></div>
+              <div style={CELL}><span style={{ ...txt, color: '#6B7280' }}>{asig.filial || '—'}</span></div>
+              <div style={CELL}>
+                {asig.obsolescencia
+                  ? <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: obs.bg, color: obs.color, border: `1px solid ${obs.border}`, whiteSpace: 'nowrap' }}>{obs.label}</span>
+                  : <span style={{ ...txt, color: '#9CA3AF' }}>—</span>}
               </div>
-
-              <div className="flex items-center">
-                <span className="text-xs" style={{ color: esPropio ? '#367CFF' : '#6B7280', fontWeight: esPropio ? '500' : '400' }}>
-                  {pendienteDisplay}
-                </span>
-              </div>
-
-              <span className="text-xs flex items-center" style={{ color: '#4B5563' }}>
-                {asig.filial || '—'}
-              </span>
-
-              <div className="flex items-center">
-                {asig.obsolescencia ? (
-                  <span
-                    className="text-xs px-1.5 py-0.5 rounded-md font-medium"
-                    style={{ background: obs.bg, color: obs.color, border: `1px solid ${obs.border}`, whiteSpace: 'nowrap' }}
-                  >
-                    {obs.label}
-                  </span>
-                ) : <span style={{ color: '#9CA3AF' }}>—</span>}
-              </div>
-
-              <span className="text-xs flex items-center" style={{ color: '#6B7280' }}>{asig.ultimaActividad}</span>
-              <span className="text-xs flex items-center" style={{ color: '#6B7280' }}>{asig.fechaObjetivo || '—'}</span>
+              <div style={CELL}><span style={{ ...txt, color: '#6B7280' }}>{asig.ultimaActividad}</span></div>
+              <div style={CELL}><span style={{ ...txt, color: '#6B7280' }}>{asig.fechaObjetivo || '—'}</span></div>
             </div>
           )
         })
@@ -431,60 +372,50 @@ function TablaDisenador({ titulaciones, titulacionSeleccionada, onNavigate }) {
     porComenzar: { label: 'No disponible', bg: '#F8FAFC', color: '#64748B', border: '#E2E8F0' },
   }
 
+  const COLS_DIS = '3fr 140px'
+  const HDR = { padding: '10px 16px', background: '#E6EFFF', borderBottom: '1px solid #DCDFEB', display: 'flex', alignItems: 'center' }
+  const hdrtxt = { color: '#3A455C', fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.04em' }
+  const CELL = { padding: '12px 16px', borderBottom: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', minWidth: 0 }
+  const txt = { color: '#334155', fontSize: 13, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }
+
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
-      <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #F1F5F9', background: '#F8F9FA' }}>
+      <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #DCDFEB', background: '#F8F9FA' }}>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{titulacion?.nombre}</p>
           <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
-            {asignaturas.filter(a => a.disenadorEstado === 'aprobado').length} disponibles para enriquecer · {asignaturas.filter(a => a.disenadorEstado === 'disenado').length} diseñadas
+            {asignaturas.filter(a => a.disenadorEstado === 'aprobado').length} disponibles · {asignaturas.filter(a => a.disenadorEstado === 'disenado').length} diseñadas
           </p>
         </div>
-        <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#F5F3FF', color: '#7C3AED', border: '1px solid #DDD6FE' }}>
-          Diseñador instruccional
-        </span>
+        <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#F5F3FF', color: '#7C3AED', border: '1px solid #DDD6FE' }}>Diseñador instruccional</span>
       </div>
 
-      {/* Column headers — 2 cols */}
-      <div className="grid px-5 py-2.5" style={{ gridTemplateColumns: '3fr 1fr', borderBottom: '1px solid #E5E7EB', gap: '12px' }}>
+      {/* Column headers */}
+      <div className="grid" style={{ gridTemplateColumns: COLS_DIS }}>
         {['Asignatura', 'Estado'].map(col => (
-          <span key={col} className="text-xs font-semibold" style={{ color: '#6B7280' }}>{col}</span>
+          <div key={col} style={HDR}><span style={hdrtxt}>{col}</span></div>
         ))}
       </div>
 
-      {asignaturas.map((asig, i) => {
+      {asignaturas.map((asig) => {
         const est = estadoDisenadorConfig[asig.disenadorEstado] || estadoDisenadorConfig.porComenzar
         const clickable = asig.disenadorEstado === 'aprobado' && asig.activa
         return (
           <div
             key={asig.id}
             onClick={() => { if (clickable) onNavigate('canvas', { seccion: 't1', titulacionId: 'master-ia', asignaturaId: asig.id }) }}
-            className="grid px-5 py-3.5 transition-all group"
-            style={{
-              gridTemplateColumns: '3fr 1fr',
-              borderBottom: i < asignaturas.length - 1 ? '1px solid #F8F9FA' : 'none',
-              cursor: clickable ? 'pointer' : 'default',
-              gap: '12px',
-            }}
-            onMouseEnter={e => { if (clickable) e.currentTarget.style.background = '#F8F9FA' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+            className="grid transition-colors group"
+            style={{ gridTemplateColumns: COLS_DIS, cursor: clickable ? 'pointer' : 'default' }}
+            onMouseEnter={e => { if (clickable) e.currentTarget.style.background = '#F4F6FD' }}
+            onMouseLeave={e => { e.currentTarget.style.background = '' }}
           >
-            <div className="flex items-center gap-2 min-w-0">
+            <div style={{ ...CELL, gap: 8 }}>
               {clickable && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse" style={{ background: '#7C3AED' }} />}
-              <span className="text-sm font-medium truncate" style={{ color: clickable ? '#1A1A1A' : '#64748B' }}>
-                {asig.nombre}
-              </span>
-              {clickable && (
-                <ArrowRight size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-              )}
+              <span style={{ ...txt, color: clickable ? '#1A1A1A' : '#64748B', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{asig.nombre}</span>
+              {clickable && <CaretRight size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
             </div>
-            <div className="flex items-center">
-              <span
-                className="text-xs px-2 py-0.5 rounded-md font-medium"
-                style={{ background: est.bg, color: est.color, border: `1px solid ${est.border}` }}
-              >
-                {est.label}
-              </span>
+            <div style={CELL}>
+              <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: est.bg, color: est.color, border: `1px solid ${est.border}` }}>{est.label}</span>
             </div>
           </div>
         )
@@ -596,15 +527,12 @@ function TrackingDashboard({ onNavigate }) {
           </div>
 
           {/* Column headers */}
-          <div className="grid text-xs font-medium px-4 py-2" style={{ color: '#6B7280', borderBottom: '1px solid #F3F4F6', gridTemplateColumns: '1.8fr 1.2fr 80px 90px 80px 120px 1fr 110px' }}>
-            <span>Asignatura</span>
-            <span>Últ. actualización</span>
-            <span>Días</span>
-            <span>Tipo</span>
-            <span>Ciclo</span>
-            <span>Obsolescencia</span>
-            <span>Filiales</span>
-            <span>Estado</span>
+          <div className="grid" style={{ gridTemplateColumns: '2fr 1.2fr 70px 90px 70px 130px 1fr 110px' }}>
+            {['Asignatura', 'Últ. actualización', 'Días', 'Tipo', 'Ciclo', 'Obsolescencia', 'Filiales', 'Estado'].map(col => (
+              <div key={col} style={{ padding: '10px 16px', background: '#E6EFFF', borderBottom: '1px solid #DCDFEB', display: 'flex', alignItems: 'center' }}>
+                <span style={{ color: '#3A455C', fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{col}</span>
+              </div>
+            ))}
           </div>
 
           {/* Rows */}
@@ -616,38 +544,41 @@ function TrackingDashboard({ onNavigate }) {
             return (
               <div
                 key={s.id}
-                className="grid items-center px-4 py-3 cursor-pointer transition-colors"
+                className="grid items-center cursor-pointer transition-colors"
                 style={{
-                  gridTemplateColumns: '1.8fr 1.2fr 80px 90px 80px 120px 1fr 110px',
-                  borderBottom: '1px solid #F3F4F6',
-                  background: isSelected ? '#F0F9FF' : undefined,
+                  gridTemplateColumns: '2fr 1.2fr 70px 90px 70px 130px 1fr 110px',
+                  borderBottom: '1px solid #F1F5F9',
+                  background: isSelected ? '#EEF4FF' : undefined,
+                  padding: '0',
                 }}
                 onClick={() => setSelectedId(isSelected ? null : s.id)}
+                onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = '#F4F6FD' }}
+                onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = '' }}
               >
                 {/* Asignatura */}
-                <div className="flex items-center gap-2 min-w-0">
+                <div className="flex items-center gap-2 min-w-0" style={{ padding: '12px 16px' }}>
                   {s.alarms.length > 0 && (
                     <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: ALARM_CONFIG[s.alarms[0]]?.color || '#D97706' }} />
                   )}
                   <span className="text-sm font-medium truncate" style={{ color: '#1A1A1A' }}>{s.nombre}</span>
                 </div>
                 {/* Última actualización */}
-                <span className="text-xs" style={{ color: '#6B7280' }}>{formatDate(s.lastVersionDate)}</span>
+                <div style={{ padding: '12px 16px' }}><span className="text-xs" style={{ color: '#6B7280' }}>{formatDate(s.lastVersionDate)}</span></div>
                 {/* Días */}
-                <span className="text-xs font-mono" style={{ color: s.daysOld > 365 ? '#DC2626' : '#374151' }}>{s.daysOld}</span>
+                <div style={{ padding: '12px 16px' }}><span className="text-xs font-mono" style={{ color: s.daysOld > 365 ? '#DC2626' : '#374151' }}>{s.daysOld}</span></div>
                 {/* Tipo */}
-                <span className="text-xs px-2 py-0.5 rounded-full w-fit" style={{ background: '#F3F4F6', color: '#374151' }}>{s.subjectType}</span>
+                <div style={{ padding: '12px 16px' }}><span className="text-xs px-2 py-0.5 rounded-full" style={{ background: '#F3F4F6', color: '#374151' }}>{s.subjectType}</span></div>
                 {/* Ciclo */}
-                <span className="text-xs" style={{ color: '#6B7280' }}>{s.obsolescenceCycleYears} años</span>
+                <div style={{ padding: '12px 16px' }}><span className="text-xs" style={{ color: '#6B7280' }}>{s.obsolescenceCycleYears}a</span></div>
                 {/* Obsolescencia % — progress bar + number */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" style={{ padding: '12px 16px' }}>
                   <div className="rounded-full overflow-hidden" style={{ width: 48, height: 5, background: '#F3F4F6', flexShrink: 0 }}>
                     <div style={{ width: `${barWidth}%`, height: '100%', background: barColor, borderRadius: '9999px' }} />
                   </div>
                   <span className="text-xs font-medium" style={{ color: barColor }}>{s.pct}%</span>
                 </div>
                 {/* Filiales */}
-                <div className="flex items-center gap-1 flex-wrap">
+                <div className="flex items-center gap-1 flex-wrap" style={{ padding: '12px 16px' }}>
                   {Object.entries(s.filialVersions).map(([key, fv]) => (
                     <span key={key} className="flex items-center gap-1 text-xs px-1.5 py-0.5 rounded" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB', color: '#374151' }}>
                       <span className="w-1.5 h-1.5 rounded-full" style={{ background: fv.status === 'published' ? '#16A34A' : '#D97706' }} />
@@ -656,9 +587,11 @@ function TrackingDashboard({ onNavigate }) {
                   ))}
                 </div>
                 {/* Estado */}
-                <span className="text-xs px-2 py-1 rounded-full font-medium" style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}>
-                  {cfg.label}
-                </span>
+                <div style={{ padding: '12px 16px' }}>
+                  <span className="text-xs px-2 py-1 rounded-full font-medium" style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}>
+                    {cfg.label}
+                  </span>
+                </div>
               </div>
             )
           })}

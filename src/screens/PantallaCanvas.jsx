@@ -2032,6 +2032,7 @@ export default function PantallaCanvas({
     return result
   })
   const [panelContextoTemaAbierto, setPanelContextoTemaAbierto] = useState(false)
+  const [hoveredSidebarBtn, setHoveredSidebarBtn] = useState(null)
   const [comentarioActivoBloque, setComentarioActivoBloque] = useState(null)
   const [nuevoComentarioTexto, setNuevoComentarioTexto] = useState('')
   const [nuevoComentarioAnchor, setNuevoComentarioAnchor] = useState(null)
@@ -2308,6 +2309,8 @@ export default function PantallaCanvas({
     setSelectionAnchor(null)
     setNuevaNotaAbierta(false)
     setPanelNotasAbierto(true)
+    setPanelContextoTemaAbierto(false)
+    setEnrichmentPanelAbierto(false)
   }
 
   const handleDeleteNota = (id) => setNotasState(prev => prev.filter(n => n.id !== id))
@@ -2353,6 +2356,8 @@ export default function PantallaCanvas({
       setNuevoComentarioTexto('')
       setPanelIAabierto(false)
       setPanelNotasAbierto(false)
+      setPanelContextoTemaAbierto(false)
+      setEnrichmentPanelAbierto(false)
       return
     }
     if (accion === 'Llevar al chat') {
@@ -2360,6 +2365,8 @@ export default function PantallaCanvas({
       setPanelIAabierto(true)
       setComentarioActivoBloque(null)
       setPanelNotasAbierto(false)
+      setPanelContextoTemaAbierto(false)
+      setEnrichmentPanelAbierto(false)
       return
     }
     if (accion === 'Añadir nota') {
@@ -2369,6 +2376,8 @@ export default function PantallaCanvas({
       setPanelNotasAbierto(true)
       setPanelIAabierto(false)
       setComentarioActivoBloque(null)
+      setPanelContextoTemaAbierto(false)
+      setEnrichmentPanelAbierto(false)
       return
     }
     if (ACCIONES_INLINE.includes(accion) && bloque) {
@@ -2714,7 +2723,7 @@ export default function PantallaCanvas({
         return (
           <>
             <button
-              onClick={() => { setEnrichmentPanelAbierto(true); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false) }}
+              onClick={() => { setEnrichmentPanelAbierto(true); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false); setPanelContextoTemaAbierto(false) }}
               className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all"
               style={{ background: '#7C3AED' }}
               onMouseEnter={e => e.currentTarget.style.background = '#6D28D9'}
@@ -3138,19 +3147,24 @@ export default function PantallaCanvas({
 
         {/* Utilities strip — always visible */}
         <div
-          className="flex-shrink-0 flex flex-col items-center pt-3 pb-4 gap-1"
-          style={{ width: '60px', background: '#F8F9FA', borderLeft: '1px solid #E5E7EB' }}
+          className="flex-shrink-0 flex flex-col items-center"
+          style={{ width: '72px', background: '#F8F9FA', borderLeft: '1px solid #E5E7EB', padding: '4px', gap: 2 }}
         >
           {/* IA */}
           <button
-            onClick={() => { setPanelIAabierto(true); setComentarioActivoBloque(null); setPanelNotasAbierto(false) }}
-            className="flex flex-col items-center gap-1 w-full py-2.5 rounded-lg transition-colors"
-            style={{ color: panelIAabierto ? '#367CFF' : '#4B5563', background: panelIAabierto ? '#E7EFFE' : 'transparent' }}
-            onMouseEnter={e => { if (!panelIAabierto) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
-            onMouseLeave={e => { if (!panelIAabierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#4B5563' } }}
+            onClick={() => { setPanelIAabierto(true); setComentarioActivoBloque(null); setPanelNotasAbierto(false); setPanelContextoTemaAbierto(false); setEnrichmentPanelAbierto(false) }}
+            onMouseEnter={() => setHoveredSidebarBtn('ia')}
+            onMouseLeave={() => setHoveredSidebarBtn(null)}
+            style={{
+              width: 64, height: 52, borderRadius: 8, flexShrink: 0, gap: 3,
+              display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+              background: panelIAabierto ? '#E7EFFE' : hoveredSidebarBtn === 'ia' ? '#EAECF0' : 'transparent',
+              color: panelIAabierto ? '#367CFF' : '#0F172A',
+              border: 'none', cursor: 'pointer',
+            }}
           >
             <ProdiMark size={18} />
-            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelIAabierto ? '700' : '500' }}>Asistente</span>
+            <span style={{ fontSize: 10, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: panelIAabierto ? '600' : '500', lineHeight: 1, color: 'inherit' }}>Asistente</span>
           </button>
 
           {/* Comments */}
@@ -3158,61 +3172,70 @@ export default function PantallaCanvas({
             onClick={() => {
               if (comentarioActivoBloque) { setComentarioActivoBloque(null); return }
               const target = bloques.find(b => b.comentarios?.some(c => !c.resuelto)) || bloques[0]
-              if (target) { setComentarioActivoBloque(target); setPanelIAabierto(false); setPanelNotasAbierto(false) }
+              if (target) { setComentarioActivoBloque(target); setPanelIAabierto(false); setPanelNotasAbierto(false); setPanelContextoTemaAbierto(false); setEnrichmentPanelAbierto(false) }
             }}
-            className="relative flex flex-col items-center gap-1 w-full py-2.5 rounded-lg transition-colors"
-            style={{ color: comentarioActivoBloque ? '#367CFF' : '#4B5563', background: comentarioActivoBloque ? '#E7EFFE' : 'transparent', cursor: 'pointer' }}
-            onMouseEnter={e => { if (!comentarioActivoBloque) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
-            onMouseLeave={e => { if (!comentarioActivoBloque) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#4B5563' } }}
+            onMouseEnter={() => setHoveredSidebarBtn('comentarios')}
+            onMouseLeave={() => setHoveredSidebarBtn(null)}
+            style={{
+              width: 64, height: 52, borderRadius: 8, flexShrink: 0, gap: 3, position: 'relative',
+              display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+              background: comentarioActivoBloque ? '#E7EFFE' : hoveredSidebarBtn === 'comentarios' ? '#EAECF0' : 'transparent',
+              color: comentarioActivoBloque ? '#367CFF' : '#0F172A',
+              border: 'none', cursor: 'pointer',
+            }}
           >
-            <div className="relative">
-              <Chat size={16} />
+            <div style={{ position: 'relative', display: 'flex' }}>
+              <Chat size={18} weight={comentarioActivoBloque || hoveredSidebarBtn === 'comentarios' ? 'fill' : 'regular'} />
               {totalComentariosCriticos > 0 && (
-                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#EF4444', fontSize: '8px' }}>
-                  {totalComentariosCriticos}
-                </span>
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full" style={{ background: '#EF4444' }} />
               )}
             </div>
-            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: comentarioActivoBloque ? '600' : '500' }}>Comentarios</span>
+            <span style={{ fontSize: 10, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: comentarioActivoBloque ? '600' : '500', lineHeight: 1, color: 'inherit' }}>Comentarios</span>
           </button>
 
           {/* Notas */}
           <button
-            onClick={() => { setPanelNotasAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false) }}
-            className="relative flex flex-col items-center gap-1 w-full py-2.5 rounded-lg transition-colors"
-            style={{ color: panelNotasAbierto ? '#D97706' : '#4B5563', background: panelNotasAbierto ? '#FEF3C7' : 'transparent' }}
-            onMouseEnter={e => { if (!panelNotasAbierto) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
-            onMouseLeave={e => { if (!panelNotasAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#4B5563' } }}
+            onClick={() => { setPanelNotasAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelContextoTemaAbierto(false); setEnrichmentPanelAbierto(false) }}
+            onMouseEnter={() => setHoveredSidebarBtn('notas')}
+            onMouseLeave={() => setHoveredSidebarBtn(null)}
+            style={{
+              width: 64, height: 52, borderRadius: 8, flexShrink: 0, gap: 3, position: 'relative',
+              display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+              background: panelNotasAbierto ? '#FEF3C7' : hoveredSidebarBtn === 'notas' ? '#EAECF0' : 'transparent',
+              color: panelNotasAbierto ? '#D97706' : '#0F172A',
+              border: 'none', cursor: 'pointer',
+            }}
           >
-            <div className="relative">
-              <Note size={16} />
+            <div style={{ position: 'relative', display: 'flex' }}>
+              <Note size={18} weight={panelNotasAbierto || hoveredSidebarBtn === 'notas' ? 'fill' : 'regular'} />
               {notasState.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#D97706', fontSize: '8px' }}>
-                  {notasState.length}
-                </span>
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full" style={{ background: '#D97706' }} />
               )}
             </div>
-            <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelNotasAbierto ? '700' : '500' }}>Notas</span>
+            <span style={{ fontSize: 10, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: panelNotasAbierto ? '600' : '500', lineHeight: 1, color: 'inherit' }}>Notas</span>
           </button>
 
           {/* Experiencias (disenador only) */}
           {rolActivo === 'disenador' && (
             <button
               onClick={() => { setEnrichmentPanelAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false); setPanelContextoTemaAbierto(false) }}
-              className="flex flex-col items-center gap-1 w-full py-2 rounded-lg transition-colors"
-              style={{ color: enrichmentPanelAbierto ? '#7C3AED' : '#6B7280' }}
-              onMouseEnter={e => { if (!enrichmentPanelAbierto) e.currentTarget.style.background = '#F1F5F9' }}
-              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+              onMouseEnter={() => setHoveredSidebarBtn('experiencias')}
+              onMouseLeave={() => setHoveredSidebarBtn(null)}
+              style={{
+                width: 64, height: 52, borderRadius: 8, flexShrink: 0, gap: 3, position: 'relative',
+                display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+                background: enrichmentPanelAbierto ? '#EDE9FE' : hoveredSidebarBtn === 'experiencias' ? '#EAECF0' : 'transparent',
+                color: enrichmentPanelAbierto ? '#7C3AED' : '#0F172A',
+                border: 'none', cursor: 'pointer',
+              }}
             >
-              <div className="relative">
-                <StackSimple size={15} />
+              <div style={{ position: 'relative', display: 'flex' }}>
+                <StackSimple size={18} weight={enrichmentPanelAbierto || hoveredSidebarBtn === 'experiencias' ? 'fill' : 'regular'} />
                 {enrichmentsGenerados.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#7C3AED', fontSize: '8px' }}>
-                    {enrichmentsGenerados.length}
-                  </span>
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full" style={{ background: '#7C3AED' }} />
                 )}
               </div>
-              <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: enrichmentPanelAbierto ? '600' : '500' }}>Experiencias</span>
+              <span style={{ fontSize: 10, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: enrichmentPanelAbierto ? '600' : '500', lineHeight: 1, color: 'inherit' }}>Experiencias</span>
             </button>
           )}
 
@@ -3220,13 +3243,18 @@ export default function PantallaCanvas({
           {(seccionActiva.startsWith('instrucciones-') || /^t\d+$/.test(seccionActiva)) && (
             <button
               onClick={() => { setPanelContextoTemaAbierto(v => !v); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false); setEnrichmentPanelAbierto(false) }}
-              className="flex flex-col items-center gap-1 w-full py-2.5 rounded-lg transition-colors"
-              style={{ color: panelContextoTemaAbierto ? '#367CFF' : '#4B5563', background: panelContextoTemaAbierto ? '#E7EFFE' : 'transparent' }}
-              onMouseEnter={e => { if (!panelContextoTemaAbierto) { e.currentTarget.style.background = '#EAECF0'; e.currentTarget.style.color = '#111827' } }}
-              onMouseLeave={e => { if (!panelContextoTemaAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#4B5563' } }}
+              onMouseEnter={() => setHoveredSidebarBtn('contexto')}
+              onMouseLeave={() => setHoveredSidebarBtn(null)}
+              style={{
+                width: 64, height: 52, borderRadius: 8, flexShrink: 0, gap: 3,
+                display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+                background: panelContextoTemaAbierto ? '#E7EFFE' : hoveredSidebarBtn === 'contexto' ? '#EAECF0' : 'transparent',
+                color: panelContextoTemaAbierto ? '#367CFF' : '#0F172A',
+                border: 'none', cursor: 'pointer',
+              }}
             >
-              <Brain size={16} />
-              <span className="text-center leading-tight" style={{ fontSize: '9px', fontWeight: panelContextoTemaAbierto ? '700' : '500' }}>Contexto</span>
+              <Brain size={18} weight={panelContextoTemaAbierto || hoveredSidebarBtn === 'contexto' ? 'fill' : 'regular'} />
+              <span style={{ fontSize: 10, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: panelContextoTemaAbierto ? '600' : '500', lineHeight: 1, color: 'inherit' }}>Contexto</span>
             </button>
           )}
         </div>
