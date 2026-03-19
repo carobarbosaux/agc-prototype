@@ -120,7 +120,9 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{titulacion?.nombre}</p>
           <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>{asignaturas.length} de {titulacion?.asignaturas_count} asignaturas</p>
         </div>
-        <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>Activa</span>
+        <div style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: 'var(--primary-primary-100, #E7EFFE)', borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+          <div style={{ color: 'var(--primary-primary-600, #0A5CF5)', fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>Activa</div>
+        </div>
       </div>
 
       {/* Column headers */}
@@ -231,7 +233,9 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
               {filialesDisponibles.map(f => <option key={f} value={f}>{f}</option>)}
             </select>
           </div>
-          <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>Activa</span>
+          <div style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: 'var(--primary-primary-100, #E7EFFE)', borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <div style={{ color: 'var(--primary-primary-600, #0A5CF5)', fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>Activa</div>
+          </div>
         </div>
       </div>
 
@@ -275,7 +279,7 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
               <div style={CELL}><span style={{ ...txt, color: '#6B7280' }}>{asig.filial || '—'}</span></div>
               <div style={CELL}>
                 {asig.obsolescencia
-                  ? <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: obs.bg, color: obs.color, border: `1px solid ${obs.border}`, whiteSpace: 'nowrap' }}>{obs.label}</span>
+                  ? <div style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: obs.bg, borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap' }}><div style={{ color: obs.color, fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>{obs.label}</div></div>
                   : <span style={{ ...txt, color: '#9CA3AF' }}>—</span>}
               </div>
               <div style={CELL}><span style={{ ...txt, color: '#6B7280' }}>{asig.ultimaActividad}</span></div>
@@ -387,7 +391,9 @@ function TablaDisenador({ titulaciones, titulacionSeleccionada, onNavigate }) {
             {asignaturas.filter(a => a.disenadorEstado === 'aprobado').length} disponibles · {asignaturas.filter(a => a.disenadorEstado === 'disenado').length} diseñadas
           </p>
         </div>
-        <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{ background: '#F5F3FF', color: '#7C3AED', border: '1px solid #DDD6FE' }}>Diseñador instruccional</span>
+        <div style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: 'rgba(2, 6, 23, 0.10)', borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+          <div style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>Diseñador instruccional</div>
+        </div>
       </div>
 
       {/* Column headers */}
@@ -415,7 +421,7 @@ function TablaDisenador({ titulaciones, titulacionSeleccionada, onNavigate }) {
               {clickable && <CaretRight size={12} style={{ color: '#9CA3AF', flexShrink: 0 }} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
             </div>
             <div style={CELL}>
-              <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: est.bg, color: est.color, border: `1px solid ${est.border}` }}>{est.label}</span>
+              <div style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: est.bg, borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}><div style={{ color: est.color, fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>{est.label}</div></div>
             </div>
           </div>
         )
@@ -517,9 +523,9 @@ function TrackingDashboard({ onNavigate }) {
             <span className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>
               Seguimiento de contenidos
               {statusFilter && (
-                <span className="ml-2 text-xs font-normal px-2 py-0.5 rounded-full" style={{ background: STATUS_CONFIG[statusFilter].bg, color: STATUS_CONFIG[statusFilter].color }}>
-                  {STATUS_CONFIG[statusFilter].label}
-                  <button className="ml-1 opacity-60 hover:opacity-100" onClick={() => setStatusFilter(null)}>×</button>
+                <span className="ml-2 inline-flex items-center gap-1" style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: STATUS_CONFIG[statusFilter].bg, borderRadius: 6 }}>
+                  <span style={{ color: STATUS_CONFIG[statusFilter].color, fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>{STATUS_CONFIG[statusFilter].label}</span>
+                  <button className="opacity-60 hover:opacity-100" style={{ color: STATUS_CONFIG[statusFilter].color }} onClick={() => setStatusFilter(null)}>×</button>
                 </span>
               )}
             </span>
@@ -588,9 +594,9 @@ function TrackingDashboard({ onNavigate }) {
                 </div>
                 {/* Estado */}
                 <div style={{ padding: '12px 16px' }}>
-                  <span className="text-xs px-2 py-1 rounded-full font-medium" style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}>
-                    {cfg.label}
-                  </span>
+                  <div style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: cfg.bg, borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                    <div style={{ color: cfg.color, fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>{cfg.label}</div>
+                  </div>
                 </div>
               </div>
             )

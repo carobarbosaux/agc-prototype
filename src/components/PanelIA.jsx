@@ -100,6 +100,8 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
   const [conectoresAbierto, setConectoresAbierto] = useState(false)
   const [companyKnowledgeOn, setCompanyKnowledgeOn] = useState(false)
   const [selectedConectores, setSelectedConectores] = useState(new Set())
+  const [inputExpanded, setInputExpanded] = useState(false)
+  const [inputHeight, setInputHeight] = useState(21)
   const conectoresRef = useRef(null)
 
   const CK_CHILDREN_IDS = ['teams', 'sharepoint', 'outlook', 'onedrive']
@@ -168,6 +170,8 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
     setInput('')
     setQuote(null)
     setEsperando(true)
+    setInputHeight(21)
+    setInputExpanded(false)
 
     setTimeout(() => {
       const iaMsg = {
@@ -370,13 +374,6 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 key={msg.id}
                 className={`flex ${msg.rol === 'usuario' ? 'justify-end' : 'justify-start'} animate-fade-in`}
               >
-                {msg.rol === 'ia' && (
-                  <div
-                    className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mr-2 mt-0.5"
-                    style={{ background: '#E7EFFE' }}
-                  >
-                                      </div>
-                )}
                 <div
                   className="max-w-[85%] rounded-xl px-3 py-2.5 text-sm leading-relaxed"
                   style={{
@@ -395,8 +392,6 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
             {/* Typing indicator */}
             {esperando && (
               <div className="flex items-center gap-2 animate-fade-in">
-                <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#E7EFFE' }}>
-                                  </div>
                 <div className="px-3 py-2.5 rounded-xl flex items-center gap-1" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
                   {[0, 1, 2].map(i => (
                     <span
@@ -478,101 +473,97 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 </button>
               </div>
             )}
-            {/* Connector tags */}
-            {selectedConectores.size > 0 && (
-              <div className="flex flex-wrap gap-1.5 mb-2">
-                {[...selectedConectores].map(id => {
-                  const all = [
-                    { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams' },
-                    { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint' },
-                    { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook' },
-                    { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive' },
-                    { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva' },
-                    { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially' },
-                  ]
-                  const c = all.find(x => x.id === id)
-                  if (!c) return null
-                  return (
+
+            {/* Pill-shaped input — mirrors Chatbar design */}
+            {(() => {
+              const canSend = (!!input.trim() || !!quote) && !esperando
+
+              const plusBtn = (
+                <div className="relative flex-shrink-0" ref={conectoresRef}>
+                  <Tooltip text="Conectores" side="top">
                     <button
-                      key={id}
-                      onClick={() => setSelectedConectores(prev => { const n = new Set(prev); n.delete(id); return n })}
-                      className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
-                      style={{ background: c.color + '18', color: c.color, border: `1px solid ${c.color}40` }}
+                      className="flex items-center justify-center transition-colors"
+                      style={{
+                        width: 28, height: 28, borderRadius: 80,
+                        border: `1px solid ${conectoresAbierto ? '#BAD2FF' : 'transparent'}`,
+                        background: conectoresAbierto ? '#E7EFFE' : 'transparent',
+                        color: conectoresAbierto ? '#367CFF' : '#0A5CF5',
+                        flexShrink: 0,
+                      }}
+                      onMouseEnter={e => { if (!conectoresAbierto) { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.borderColor = '#E2E8F0' } }}
+                      onMouseLeave={e => { if (!conectoresAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent' } }}
+                      onClick={e => { e.stopPropagation(); setConectoresAbierto(v => !v) }}
                     >
-                      <span style={{ fontSize: '9px', fontWeight: 700 }}>{c.letter}</span>
-                      {c.label}
-                      <X size={10} />
+                      <Plus size={14} />
                     </button>
-                  )
-                })}
-              </div>
-            )}
-
-            <div
-              className="flex items-end gap-2 rounded-xl px-3 py-2"
-              style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}
-            >
-              {/* Connectors (+) button */}
-              <div className="relative flex-shrink-0" ref={conectoresRef}>
-                <Tooltip text="Conectores" side="top">
-                <button
-                  onClick={() => setConectoresAbierto(v => !v)}
-                  className="p-1.5 rounded-lg transition-all"
-                  style={{ color: conectoresAbierto ? '#367CFF' : '#6B7280', background: conectoresAbierto ? '#E7EFFE' : 'transparent' }}
-                  onMouseEnter={e => { if (!conectoresAbierto) { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.color = '#374151' } }}
-                  onMouseLeave={e => { if (!conectoresAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#6B7280' } }}
-                >
-                  <Plus size={15} />
-                </button>
-                </Tooltip>
-                {conectoresAbierto && (
-                  <div
-                    className="absolute top-full left-0 mt-2 rounded-xl overflow-hidden"
-                    style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', minWidth: '280px', zIndex: 50 }}
-                  >
-                    {/* Header */}
-                    <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
-                      <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>Conectores</p>
-                    </div>
-
-                    {/* Section: Company Knowledge */}
-                    <div className="px-3 pt-1.5 pb-1" style={{ borderBottom: '1px solid #F3F4F6' }}>
-                      {/* Parent row — toggle only */}
-                      <div className="flex items-center gap-2.5 py-1">
-                        <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: '#0078D4', fontSize: '7px' }}>CK</div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-medium" style={{ color: '#111827' }}>Company Knowledge</p>
-                          <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>Fuentes institucionales de tu organización</p>
-                        </div>
-                        <button
-                          onClick={e => { e.stopPropagation(); toggleCompanyKnowledge() }}
-                          style={{ width: 40, height: 24, borderRadius: 30, background: companyKnowledgeOn ? '#0A5CF5' : '#DCDFEB', position: 'relative', flexShrink: 0, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: companyKnowledgeOn ? 'flex-end' : 'flex-start', padding: companyKnowledgeOn ? '0 4px 0 0' : '0 0 0 4px' }}
-                        >
-                          <span style={{ width: 16, height: 16, borderRadius: 8, background: '#FFF', display: 'block', flexShrink: 0 }} />
-                        </button>
+                  </Tooltip>
+                  {conectoresAbierto && (
+                    <div
+                      className="absolute bottom-full mb-2 left-0 rounded-xl overflow-hidden"
+                      style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 -8px 24px rgba(0,0,0,0.12)', minWidth: '280px', zIndex: 50 }}
+                    >
+                      <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
+                        <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>Conectores</p>
                       </div>
-
-                      {/* Child connectors — clickable selectors */}
-                      <div style={{ opacity: companyKnowledgeOn ? 1 : 0.35, pointerEvents: companyKnowledgeOn ? 'auto' : 'none', transition: 'opacity 0.15s' }}>
+                      <div className="px-3 pt-1.5 pb-1" style={{ borderBottom: '1px solid #F3F4F6' }}>
+                        <div className="flex items-center gap-2.5 py-1">
+                          <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: '#0078D4', fontSize: '7px' }}>CK</div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-medium" style={{ color: '#111827' }}>Company Knowledge</p>
+                            <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>Fuentes institucionales de tu organización</p>
+                          </div>
+                          <button
+                            onClick={e => { e.stopPropagation(); toggleCompanyKnowledge() }}
+                            style={{ width: 40, height: 24, borderRadius: 30, background: companyKnowledgeOn ? '#0A5CF5' : '#DCDFEB', flexShrink: 0, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: companyKnowledgeOn ? 'flex-end' : 'flex-start', padding: companyKnowledgeOn ? '0 4px 0 0' : '0 0 0 4px' }}
+                          >
+                            <span style={{ width: 16, height: 16, borderRadius: 8, background: '#FFF', display: 'block', flexShrink: 0 }} />
+                          </button>
+                        </div>
+                        <div style={{ opacity: companyKnowledgeOn ? 1 : 0.35, pointerEvents: companyKnowledgeOn ? 'auto' : 'none', transition: 'opacity 0.15s' }}>
+                          {[
+                            { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams', desc: 'Conversaciones y archivos' },
+                            { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint', desc: 'Documentos institucionales' },
+                            { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook', desc: 'Correos y adjuntos' },
+                            { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive', desc: 'Archivos personales' },
+                          ].map(c => {
+                            const active = selectedConectores.has(c.id)
+                            return (
+                              <button key={c.id} onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
+                                className="w-full flex items-center gap-2.5 py-1 pl-3 rounded-lg text-left"
+                                style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
+                                onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F1F5F9' }}
+                                onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
+                              >
+                                <div className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '6px' }}>{c.letter}</div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-xs font-medium" style={{ color: active ? c.color : '#374151' }}>{c.label}</p>
+                                  <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>{c.desc}</p>
+                                </div>
+                                {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
+                              </button>
+                            )
+                          })}
+                        </div>
+                        {!companyKnowledgeOn && (
+                          <p className="pb-1 pl-3" style={{ fontSize: '10px', color: '#6B7280', fontStyle: 'italic' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
+                        )}
+                      </div>
+                      <div className="px-3 pt-1.5 pb-2">
                         {[
-                          { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams', desc: 'Conversaciones y archivos' },
-                          { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint', desc: 'Documentos institucionales' },
-                          { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook', desc: 'Correos y adjuntos' },
-                          { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive', desc: 'Archivos personales' },
+                          { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva', desc: 'Diseños y recursos visuales' },
+                          { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially', desc: 'Contenidos interactivos' },
                         ].map(c => {
                           const active = selectedConectores.has(c.id)
                           return (
-                            <button
-                              key={c.id}
-                              onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
-                              className="w-full flex items-center gap-2.5 py-1 pl-3 rounded-lg text-left"
+                            <button key={c.id} onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
+                              className="w-full flex items-center gap-2.5 py-1 rounded-lg text-left"
                               style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
                               onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F1F5F9' }}
                               onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
                             >
-                              <div className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '6px' }}>{c.letter}</div>
+                              <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '7px' }}>{c.letter}</div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-xs font-medium" style={{ color: active ? c.color : '#374151' }}>{c.label}</p>
+                                <p className="text-xs font-medium" style={{ color: active ? c.color : '#111827' }}>{c.label}</p>
                                 <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>{c.desc}</p>
                               </div>
                               {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
@@ -580,64 +571,124 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                           )
                         })}
                       </div>
-
-                      {!companyKnowledgeOn && (
-                        <p className="pb-1 pl-3" style={{ fontSize: '10px', color: '#6B7280', fontStyle: 'italic' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
-                      )}
                     </div>
+                  )}
+                </div>
+              )
 
-                    {/* Section: Otros conectores — clickable selectors */}
-                    <div className="px-3 pt-1.5 pb-2">
-                      {[
-                        { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva', desc: 'Diseños y recursos visuales' },
-                        { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially', desc: 'Contenidos interactivos' },
-                      ].map(c => {
-                        const active = selectedConectores.has(c.id)
-                        return (
-                          <button
-                            key={c.id}
-                            onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
-                            className="w-full flex items-center gap-2.5 py-1 rounded-lg text-left"
-                            style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
-                            onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F1F5F9' }}
-                            onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
-                          >
-                            <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '7px' }}>{c.letter}</div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-medium" style={{ color: active ? c.color : '#111827' }}>{c.label}</p>
-                              <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>{c.desc}</p>
-                            </div>
-                            {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
-                          </button>
-                        )
-                      })}
+              const sendBtn = (
+                <button
+                  onClick={enviarMensaje}
+                  disabled={!canSend}
+                  className="flex items-center justify-center transition-all flex-shrink-0"
+                  style={{
+                    width: 28, height: 28, borderRadius: 80,
+                    background: canSend ? '#0A5CF5' : '#E6E6E6',
+                    border: 'none',
+                    cursor: canSend ? 'pointer' : 'default',
+                  }}
+                  onMouseEnter={e => { if (canSend) e.currentTarget.style.background = '#0039A3' }}
+                  onMouseLeave={e => { e.currentTarget.style.background = canSend ? '#0A5CF5' : '#E6E6E6' }}
+                >
+                  <PaperPlaneTilt size={14} style={{ color: canSend ? '#FFFFFF' : '#666666' }} />
+                </button>
+              )
+
+              const connectorTags = selectedConectores.size > 0 && (
+                <div className="flex items-center gap-1 flex-wrap">
+                  {[...selectedConectores].map(id => {
+                    const all = [
+                      { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams' },
+                      { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint' },
+                      { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook' },
+                      { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive' },
+                      { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva' },
+                      { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially' },
+                    ]
+                    const c = all.find(x => x.id === id)
+                    if (!c) return null
+                    return (
+                      <button key={id}
+                        onClick={e => { e.stopPropagation(); setSelectedConectores(prev => { const n = new Set(prev); n.delete(id); return n }) }}
+                        className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                        style={{ background: c.color + '18', color: c.color, border: `1px solid ${c.color}40` }}
+                      >
+                        <span style={{ fontSize: '9px', fontWeight: 700 }}>{c.letter}</span>
+                        {c.label}
+                        <X size={10} />
+                      </button>
+                    )
+                  })}
+                </div>
+              )
+
+              const textareaEl = (
+                <textarea
+                  ref={inputRef}
+                  value={input}
+                  onChange={e => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder={quote ? 'Añade más contexto (opcional)...' : 'Escribe o pregunta algo...'}
+                  rows={1}
+                  className="w-full bg-transparent outline-none resize-none"
+                  style={{
+                    color: '#272A3F',
+                    caretColor: '#0A5CF5',
+                    height: inputHeight,
+                    maxHeight: '63px',
+                    overflowY: inputHeight >= 63 ? 'auto' : 'hidden',
+                    fontFamily: "'Proeduca Sans', system-ui, sans-serif",
+                    fontSize: '0.875rem',
+                    fontWeight: 400,
+                    lineHeight: '21px',
+                  }}
+                  onInput={e => {
+                    e.target.style.height = '21px'
+                    const h = Math.min(e.target.scrollHeight, 63)
+                    setInputHeight(h)
+                    setInputExpanded(h > 21)
+                  }}
+                />
+              )
+
+              return (
+                <div
+                  className="w-full flex flex-col py-2 px-3"
+                  style={{
+                    background: '#FFFFFF',
+                    boxShadow: '0px 9px 20px -2px rgba(0, 0, 0, 0.10)',
+                    borderRadius: inputExpanded ? 28 : 40,
+                    outline: '1px solid #DCDFEB',
+                    outlineOffset: '-1px',
+                    transition: 'outline-color 150ms ease',
+                    gap: 0,
+                  }}
+                  onClick={() => inputRef.current?.focus()}
+                >
+                  {inputExpanded ? (
+                    <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-1 px-1">
+                        {connectorTags}
+                        {textareaEl}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        {plusBtn}
+                        {sendBtn}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-              <textarea
-                ref={inputRef}
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={quote ? 'Añade más contexto (opcional)...' : 'Escribe o pregunta algo...'}
-                className="flex-1 text-sm outline-none resize-none bg-transparent"
-                style={{ color: '#374151', minHeight: '20px', maxHeight: '80px', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
-                rows={1}
-              />
-              <button
-                onClick={enviarMensaje}
-                disabled={(!input.trim() && !quote) || esperando}
-                className="p-1.5 rounded-lg transition-all flex-shrink-0"
-                style={{
-                  background: (input.trim() || quote) && !esperando ? '#367CFF' : '#E5E7EB',
-                  color: (input.trim() || quote) && !esperando ? '#FFFFFF' : '#6B7280',
-                }}
-              >
-                <PaperPlaneTilt size={14} />
-              </button>
-            </div>
-            <p className="text-xs mt-1.5 text-center" style={{ color: '#6B7280' }}>Enter para enviar · Shift+Enter para nueva línea</p>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      {plusBtn}
+                      <div className="flex-1 flex flex-col gap-1" style={{ paddingLeft: 4 }}>
+                        {connectorTags}
+                        {textareaEl}
+                      </div>
+                      {sendBtn}
+                    </div>
+                  )}
+                </div>
+              )
+            })()}
           </div>
           </div>
         </>

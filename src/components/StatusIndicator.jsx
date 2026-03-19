@@ -1,5 +1,4 @@
-import { Clock, Pencil, Eye, CheckCircle, Lock } from '@phosphor-icons/react'
-import { useState } from 'react'
+import { Clock, Pencil, Eye, CheckCircle, Lock, BookmarkSimple } from '@phosphor-icons/react'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -34,41 +33,12 @@ const STATUS_CONFIG = {
     bg: '#F3F4F6',
     color: '#4B5563',
   },
-}
-
-// ─── Tooltip ──────────────────────────────────────────────────────────────────
-
-function Tooltip({ label, visible }) {
-  if (!visible) return null
-  return (
-    <div
-      className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 pointer-events-none"
-      style={{ zIndex: 100 }}
-    >
-      <div
-        className="px-2 py-1 rounded-md text-xs font-medium whitespace-nowrap"
-        style={{
-          background: '#1E293B',
-          color: '#FFFFFF',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
-          letterSpacing: '0.01em',
-        }}
-      >
-        {label}
-      </div>
-      {/* Arrow */}
-      <div
-        className="absolute top-full left-1/2 -translate-x-1/2"
-        style={{
-          width: 0,
-          height: 0,
-          borderLeft: '4px solid transparent',
-          borderRight: '4px solid transparent',
-          borderTop: '4px solid #1E293B',
-        }}
-      />
-    </div>
-  )
+  en_borrador: {
+    label: 'En borrador',
+    icon: BookmarkSimple,
+    bg: '#FFF7ED',
+    color: '#C2500A',
+  },
 }
 
 // ─── StatusIndicator ──────────────────────────────────────────────────────────
@@ -76,11 +46,9 @@ function Tooltip({ label, visible }) {
 export default function StatusIndicator({
   status,
   variant = 'badge',
-  showTooltip = true,
   size = 'md',
   className = '',
 }) {
-  const [tooltipVisible, setTooltipVisible] = useState(false)
   const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.sin_comenzar
   const Icon = cfg.icon
 
@@ -90,28 +58,12 @@ export default function StatusIndicator({
     const iconSize = size === 'sm' ? 10 : 13
     return (
       <div
-        className={`relative inline-flex ${className}`}
-        onMouseEnter={() => setTooltipVisible(true)}
-        onMouseLeave={() => setTooltipVisible(false)}
-        onFocus={() => setTooltipVisible(true)}
-        onBlur={() => setTooltipVisible(false)}
+        role="img"
+        aria-label={cfg.label}
+        className={`inline-flex items-center justify-center rounded-full ${className}`}
+        style={{ width: dim, height: dim, background: cfg.bg, color: cfg.color }}
       >
-        <div
-          role="img"
-          aria-label={cfg.label}
-          tabIndex={0}
-          className="flex items-center justify-center rounded-full outline-none focus-visible:ring-2"
-          style={{
-            width: dim,
-            height: dim,
-            background: cfg.bg,
-            color: cfg.color,
-            '--tw-ring-color': cfg.color + '44',
-          }}
-        >
-          <Icon size={iconSize} strokeWidth={2} aria-hidden="true" />
-        </div>
-        {showTooltip && <Tooltip label={cfg.label} visible={tooltipVisible} />}
+        <Icon size={iconSize} strokeWidth={2} aria-hidden="true" />
       </div>
     )
   }
@@ -119,33 +71,35 @@ export default function StatusIndicator({
   // ── Variant: badge ─────────────────────────────────────────────────────────
   return (
     <div
-      className={`relative inline-flex ${className}`}
-      onMouseEnter={() => setTooltipVisible(true)}
-      onMouseLeave={() => setTooltipVisible(false)}
-      onFocus={() => setTooltipVisible(true)}
-      onBlur={() => setTooltipVisible(false)}
+      data-darkmode="Off"
+      data-rounded="No"
+      data-severity={status}
+      role="status"
+      aria-label={cfg.label}
+      className={`inline-flex items-center ${className}`}
+      style={{
+        paddingLeft: 7,
+        paddingRight: 7,
+        paddingTop: 3.5,
+        paddingBottom: 3.5,
+        background: cfg.bg,
+        borderRadius: 6,
+        gap: 4,
+      }}
     >
-      <span
-        role="status"
-        aria-label={cfg.label}
-        tabIndex={0}
-        className="inline-flex items-center gap-1.5 rounded-md font-medium outline-none focus-visible:ring-2"
+      <Icon size={11} strokeWidth={2.2} aria-hidden="true" style={{ color: cfg.color, flexShrink: 0 }} />
+      <div
         style={{
-          paddingInline: '8px',
-          paddingBlock: '4px',
-          fontSize: '12px',
-          lineHeight: '16px',
-          letterSpacing: '0.01em',
-          background: cfg.bg,
           color: cfg.color,
-          fontFamily: "'Proeduca Sans', system-ui, sans-serif",
-          '--tw-ring-color': cfg.color + '44',
+          fontSize: 12,
+          fontFamily: 'Proeduca Sans',
+          fontWeight: '500',
+          lineHeight: '15.84px',
+          wordWrap: 'break-word',
         }}
       >
-        <Icon size={11} strokeWidth={2.2} aria-hidden="true" style={{ flexShrink: 0 }} />
         {cfg.label}
-      </span>
-      {showTooltip && <Tooltip label={cfg.label} visible={tooltipVisible} />}
+      </div>
     </div>
   )
 }
@@ -165,6 +119,7 @@ export function toStatusKey(legacy) {
     aprobado:     'aprobado',
     publicado:    'aprobado',
     disenado:     'aprobado',
+    enBorrador:   'en_borrador',
   }
   return map[legacy] || 'sin_comenzar'
 }

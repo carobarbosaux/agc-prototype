@@ -589,9 +589,9 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, showEdit, onDelete,
           </p>
           <p className="text-sm leading-relaxed mb-2" style={{ color: '#374151' }}>{draft.description}</p>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: rel.bg, color: rel.color, border: `1px solid ${rel.border}` }}>
-              {rel.label}
-            </span>
+            <div style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: rel.bg, borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <div style={{ color: rel.color, fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>{rel.label}</div>
+            </div>
             <a href={draft.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs hover:underline" style={{ color: '#6B7280' }}>
               <Link size={10} />
               {draft.url.length > 50 ? draft.url.slice(0, 50) + '…' : draft.url}
@@ -1128,9 +1128,10 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
         <div>
           <div className="flex items-center gap-2 mb-1">
             <h3 className="text-base font-semibold" style={{ color: '#1A1A1A' }}>{dlResumenTema1.titulo}</h3>
-            <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>
-              <ProdiMark size={10} /> Generado por IA
-            </span>
+            <div style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: 'var(--primary-primary-100, #E7EFFE)', borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <ProdiMark size={10} />
+              <div style={{ color: 'var(--primary-primary-600, #0A5CF5)', fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>Generado por IA</div>
+            </div>
           </div>
           <p className="text-xs" style={{ color: '#6B7280' }}>Revisa la estructura antes de generar el contenido completo</p>
         </div>
@@ -1174,7 +1175,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
                 <p className="text-xs font-medium mb-1.5" style={{ color: '#6B7280' }}>Ideas didácticas</p>
                 <div className="flex flex-wrap gap-1.5">
                   {ep.ideasDidacticas.map((idea, k) => (
-                    <span key={k} className="text-xs px-2 py-1 rounded-lg" style={{ background: '#F0FDF4', color: '#16A34A', border: '1px solid #BBF7D0' }}>{idea}</span>
+                    <div key={k} style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: 'var(--tag-success-background, #DCFCE7)', borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}><div style={{ color: '#15803D', fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>{idea}</div></div>
                   ))}
                 </div>
               </div>
@@ -1554,7 +1555,7 @@ function EpigrafeConBibliografia({ ep, index }) {
           <p className="text-xs font-medium mb-1.5" style={{ color: '#6B7280' }}>Ideas didácticas</p>
           <div className="flex flex-wrap gap-1.5">
             {ep.ideasDidacticas.map((idea, k) => (
-              <span key={k} className="text-xs px-2 py-1 rounded-lg" style={{ background: '#F0FDF4', color: '#16A34A', border: '1px solid #BBF7D0' }}>{idea}</span>
+              <div key={k} style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: 'var(--tag-success-background, #DCFCE7)', borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}><div style={{ color: '#15803D', fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>{idea}</div></div>
             ))}
           </div>
         </div>
@@ -2066,6 +2067,8 @@ export default function PantallaCanvas({
   )
   const [savedToast, setSavedToast] = useState(false)
   const [sentToast, setSentToast] = useState(false)
+  const [correctionToast, setCorrectionToast] = useState(false)
+  const [approvedToast, setApprovedToast] = useState(false)
   const [revisandoCalidad, setRevisandoCalidad] = useState(false)
   // Autosave
   const [autosaveOn, setAutosaveOn] = useState(true)
@@ -2262,6 +2265,16 @@ export default function PantallaCanvas({
   const showSavedToast = () => {
     setSavedToast(true)
     setTimeout(() => setSavedToast(false), 2000)
+  }
+
+  const showCorrectionToast = () => {
+    setCorrectionToast(true)
+    setTimeout(() => setCorrectionToast(false), 2500)
+  }
+
+  const showApprovedToast = () => {
+    setApprovedToast(true)
+    setTimeout(() => setApprovedToast(false), 2500)
   }
 
   const showSentToast = () => {
@@ -2639,7 +2652,7 @@ export default function PantallaCanvas({
         return (
           <>
             <button
-              onClick={showSavedToast}
+              onClick={showCorrectionToast}
               className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{ background: '#FFF7ED', color: '#F97316', border: '1px solid #FED7AA' }}
               onMouseEnter={e => e.currentTarget.style.background = '#FFEDD5'}
@@ -2649,11 +2662,11 @@ export default function PantallaCanvas({
               Enviar correcciones
             </button>
             <button
-              onClick={showSentToast}
+              onClick={showApprovedToast}
               className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all"
-              style={{ background: '#10B981' }}
-              onMouseEnter={e => e.currentTarget.style.background = '#059669'}
-              onMouseLeave={e => e.currentTarget.style.background = '#10B981'}
+              style={{ background: '#008660' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#005E43'}
+              onMouseLeave={e => e.currentTarget.style.background = '#008660'}
             >
               <CaretRight size={14} />
               Aprobar contenido
@@ -2686,7 +2699,7 @@ export default function PantallaCanvas({
       if (estado === 'revision') {
         return (
           <button
-            onClick={showSavedToast}
+            onClick={showCorrectionToast}
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
             style={{ background: '#FFF7ED', color: '#F97316', border: '1px solid #FED7AA' }}
             onMouseEnter={e => e.currentTarget.style.background = '#FFEDD5'}
@@ -3159,7 +3172,7 @@ export default function PantallaCanvas({
               width: 64, height: 52, borderRadius: 8, flexShrink: 0, gap: 3,
               display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
               background: panelIAabierto ? '#E7EFFE' : hoveredSidebarBtn === 'ia' ? '#EAECF0' : 'transparent',
-              color: panelIAabierto ? '#367CFF' : '#0F172A',
+              color: panelIAabierto ? '#367CFF' : '#334155',
               border: 'none', cursor: 'pointer',
             }}
           >
@@ -3180,7 +3193,7 @@ export default function PantallaCanvas({
               width: 64, height: 52, borderRadius: 8, flexShrink: 0, gap: 3, position: 'relative',
               display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
               background: comentarioActivoBloque ? '#E7EFFE' : hoveredSidebarBtn === 'comentarios' ? '#EAECF0' : 'transparent',
-              color: comentarioActivoBloque ? '#367CFF' : '#0F172A',
+              color: comentarioActivoBloque ? '#367CFF' : '#334155',
               border: 'none', cursor: 'pointer',
             }}
           >
@@ -3202,7 +3215,7 @@ export default function PantallaCanvas({
               width: 64, height: 52, borderRadius: 8, flexShrink: 0, gap: 3, position: 'relative',
               display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
               background: panelNotasAbierto ? '#FEF3C7' : hoveredSidebarBtn === 'notas' ? '#EAECF0' : 'transparent',
-              color: panelNotasAbierto ? '#D97706' : '#0F172A',
+              color: panelNotasAbierto ? '#D97706' : '#334155',
               border: 'none', cursor: 'pointer',
             }}
           >
@@ -3225,7 +3238,7 @@ export default function PantallaCanvas({
                 width: 64, height: 52, borderRadius: 8, flexShrink: 0, gap: 3, position: 'relative',
                 display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
                 background: enrichmentPanelAbierto ? '#EDE9FE' : hoveredSidebarBtn === 'experiencias' ? '#EAECF0' : 'transparent',
-                color: enrichmentPanelAbierto ? '#7C3AED' : '#0F172A',
+                color: enrichmentPanelAbierto ? '#7C3AED' : '#334155',
                 border: 'none', cursor: 'pointer',
               }}
             >
@@ -3249,7 +3262,7 @@ export default function PantallaCanvas({
                 width: 64, height: 52, borderRadius: 8, flexShrink: 0, gap: 3,
                 display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
                 background: panelContextoTemaAbierto ? '#E7EFFE' : hoveredSidebarBtn === 'contexto' ? '#EAECF0' : 'transparent',
-                color: panelContextoTemaAbierto ? '#367CFF' : '#0F172A',
+                color: panelContextoTemaAbierto ? '#367CFF' : '#334155',
                 border: 'none', cursor: 'pointer',
               }}
             >
@@ -3682,15 +3695,49 @@ export default function PantallaCanvas({
       )}
 
       {savedToast && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white shadow-xl animate-fade-in"
-          style={{ background: '#10B981', zIndex: 100 }}>
-          ✓ Borrador guardado
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 animate-fade-in" style={{ zIndex: 100, minWidth: 320 }}>
+          <div style={{ padding: 16, background: 'var(--success-success-10, #F2FDF6)', borderRadius: 8, outline: '1px var(--success-success-900, #12542D) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+              <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--success-success-950, #092A16)" strokeWidth="1"/>
+              <path d="M5.25 8L7 9.75L10.75 6" stroke="var(--success-success-950, #092A16)" strokeWidth="1" fill="none"/>
+            </svg>
+            <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Borrador guardado</span>
+          </div>
         </div>
       )}
       {sentToast && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white shadow-xl animate-fade-in"
-          style={{ background: '#367CFF', zIndex: 100 }}>
-          ✓ Tema 2 enviado a revisión
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 animate-fade-in" style={{ zIndex: 100, minWidth: 320 }}>
+          <div style={{ padding: 16, background: 'var(--info-info-100, #E8F7FC)', borderRadius: 8, outline: '1px var(--info-info-700, #1592BC) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+              <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--info-info-700, #1592BC)" strokeWidth="1"/>
+              <line x1="8" y1="7.5" x2="8" y2="11" stroke="var(--info-info-700, #1592BC)" strokeWidth="1"/>
+              <circle cx="8" cy="5.25" r="0.75" fill="var(--info-info-700, #1592BC)"/>
+            </svg>
+            <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Tema 2 enviado a revisión</span>
+          </div>
+        </div>
+      )}
+      {correctionToast && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 animate-fade-in" style={{ zIndex: 100, minWidth: 320 }}>
+          <div style={{ padding: 16, background: 'var(--warning-warning-100, #FEF7E1)', borderRadius: 8, outline: '1px var(--warning-warning-800, #A47B04) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+              <path d="M1.5 13.5L8 2L14.5 13.5H1.5Z" stroke="var(--warning-warning-950, #735603)" strokeWidth="1" fill="none"/>
+              <circle cx="8" cy="11.5" r="0.75" fill="var(--warning-warning-950, #735603)"/>
+              <line x1="8" y1="6" x2="8" y2="10" stroke="var(--warning-warning-950, #735603)" strokeWidth="1"/>
+            </svg>
+            <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Correcciones enviadas al autor</span>
+          </div>
+        </div>
+      )}
+      {approvedToast && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 animate-fade-in" style={{ zIndex: 100, minWidth: 320 }}>
+          <div style={{ padding: 16, background: 'var(--success-success-10, #F2FDF6)', borderRadius: 8, outline: '1px var(--success-success-900, #12542D) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+              <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--success-success-950, #092A16)" strokeWidth="1"/>
+              <path d="M5.25 8L7 9.75L10.75 6" stroke="var(--success-success-950, #092A16)" strokeWidth="1" fill="none"/>
+            </svg>
+            <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Contenido aprobado</span>
+          </div>
         </div>
       )}
 

@@ -28,11 +28,12 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
   const [dropdownAbierto, setDropdownAbierto] = useState(false)
   const [dropdownFiltrado, setDropdownFiltrado] = useState(shortcutList)
   const [historialVisible, setHistorialVisible] = useState(false)
-  const [focused, setFocused] = useState(false)
+
   const [conectoresAbierto, setConectoresAbierto] = useState(false)
   const [companyKnowledgeOn, setCompanyKnowledgeOn] = useState(false)
   const [selectedConectores, setSelectedConectores] = useState(new Set())
   const [sugerenciasOcultas, setSugerenciasOcultas] = useState(false)
+  const [expanded, setExpanded] = useState(false)
   const inputRef = useRef(null)
   const dropdownRef = useRef(null)
   const containerRef = useRef(null)
@@ -116,6 +117,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
 
     setChatHistorial(prev => [...prev, msg, resp])
     setValor('')
+    setExpanded(false)
     setHistorialVisible(true)
   }
 
@@ -154,7 +156,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
   const hasChips = suggestedChips.length > 0 && !sugerenciasOcultas
 
   return (
-    <div className="w-full relative" style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif", zIndex: 40 }}>
+    <div className="w-full relative mx-auto" style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif", zIndex: 40, maxWidth: 960 }}>
       {/* Chat history bubble */}
       {historialVisible && chatHistorial.length > 0 && (
         <div
@@ -245,58 +247,43 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
         </div>
       )}
 
-      {/* Chatbar container — Figma spec: white bg, #CBD5E1 border, 24px radius, 16px padding */}
+      {/* Chatbar container — pill shape per Figma spec */}
       <div
         ref={containerRef}
-        className="w-full flex flex-col gap-4 p-4"
+        className="w-full flex flex-col py-2 px-3"
         style={{
           background: '#FFFFFF',
-          borderStyle: 'solid',
-          borderWidth: '1px',
-          borderColor: focused ? '#0A5CF5' : '#CBD5E1',
-          borderBottomColor: hasChips ? 'transparent' : (focused ? '#0A5CF5' : '#CBD5E1'),
-          borderRadius: hasChips ? '24px 24px 0 0' : '24px',
-          transition: 'border-color 150ms ease, border-radius 150ms ease',
+          boxShadow: '0px 9px 20px -2px rgba(0, 0, 0, 0.10)',
+          borderRadius: expanded ? 28 : 40,
+          outline: '1px solid #DCDFEB',
+          outlineOffset: '-1px',
+          borderBottomLeftRadius: hasChips ? 0 : (expanded ? 28 : 40),
+          borderBottomRightRadius: hasChips ? 0 : (expanded ? 28 : 40),
+          transition: 'outline-color 150ms ease, border-radius 150ms ease',
+          transition: 'outline-color 150ms ease',
+          gap: 0,
         }}
         onClick={() => inputRef.current?.focus()}
       >
-        {/* Text area */}
-        <input
-          ref={inputRef}
-          type="text"
-          value={valor}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          placeholder={placeholder}
-          className="w-full bg-transparent outline-none text-base leading-6"
-          style={{
-            color: '#1E293B',
-            caretColor: '#0A5CF5',
-          }}
-        />
-
-        {/* Bottom row: + button (left) + [history badge] + send button (right) */}
-        <div className="flex items-center justify-between">
-          {/* Left: + / connectors button */}
-          <div className="flex items-center gap-2">
-            <div className="relative" ref={conectoresRef}>
+        {/* Shared: connectors dropdown trigger + dropdown panel */}
+        {(() => {
+          const plusBtn = (
+            <div className="relative flex-shrink-0" ref={conectoresRef}>
               <Tooltip text="Conectores" side="top">
                 <button
-                  className="flex items-center justify-center rounded-[10px] transition-colors"
+                  className="flex items-center justify-center transition-colors"
                   style={{
-                    width: 36,
-                    height: 36,
+                    width: 30, height: 30, borderRadius: 80,
                     border: `1px solid ${conectoresAbierto ? '#BAD2FF' : 'transparent'}`,
                     background: conectoresAbierto ? '#E7EFFE' : 'transparent',
-                    color: conectoresAbierto ? '#367CFF' : '#64748B',
+                    color: conectoresAbierto ? '#367CFF' : '#0A5CF5',
+                    flexShrink: 0,
                   }}
                   onMouseEnter={e => { if (!conectoresAbierto) { e.currentTarget.style.background = '#F1F5F9'; e.currentTarget.style.borderColor = '#E2E8F0' } }}
                   onMouseLeave={e => { if (!conectoresAbierto) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent' } }}
                   onClick={e => { e.stopPropagation(); setConectoresAbierto(v => !v) }}
                 >
-                  <Plus size={20} />
+                  <Plus size={16} />
                 </button>
               </Tooltip>
               {conectoresAbierto && (
@@ -304,14 +291,10 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                   className={`absolute ${conectoresHaciaArriba ? 'bottom-full mb-2' : 'top-full mt-2'} left-0 rounded-xl overflow-hidden`}
                   style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: conectoresHaciaArriba ? '0 -8px 24px rgba(0,0,0,0.12)' : '0 8px 24px rgba(0,0,0,0.12)', minWidth: '280px', zIndex: 50 }}
                 >
-                  {/* Header */}
                   <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
                     <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>Conectores</p>
                   </div>
-
-                  {/* Section: Company Knowledge */}
                   <div className="px-3 pt-1.5 pb-1" style={{ borderBottom: '1px solid #F3F4F6' }}>
-                    {/* Parent row — toggle only */}
                     <div className="flex items-center gap-2.5 py-1">
                       <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: '#0078D4', fontSize: '7px' }}>CK</div>
                       <div className="flex-1 min-w-0">
@@ -320,13 +303,11 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                       </div>
                       <button
                         onClick={e => { e.stopPropagation(); toggleCompanyKnowledge() }}
-                        style={{ width: 40, height: 24, borderRadius: 30, background: companyKnowledgeOn ? '#0A5CF5' : '#DCDFEB', position: 'relative', flexShrink: 0, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: companyKnowledgeOn ? 'flex-end' : 'flex-start', padding: companyKnowledgeOn ? '0 4px 0 0' : '0 0 0 4px' }}
+                        style={{ width: 40, height: 24, borderRadius: 30, background: companyKnowledgeOn ? '#0A5CF5' : '#DCDFEB', flexShrink: 0, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: companyKnowledgeOn ? 'flex-end' : 'flex-start', padding: companyKnowledgeOn ? '0 4px 0 0' : '0 0 0 4px' }}
                       >
                         <span style={{ width: 16, height: 16, borderRadius: 8, background: '#FFF', display: 'block', flexShrink: 0 }} />
                       </button>
                     </div>
-
-                    {/* Child connectors — clickable selectors */}
                     <div style={{ opacity: companyKnowledgeOn ? 1 : 0.35, pointerEvents: companyKnowledgeOn ? 'auto' : 'none', transition: 'opacity 0.15s' }}>
                       {[
                         { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams', desc: 'Conversaciones y archivos' },
@@ -336,9 +317,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                       ].map(c => {
                         const active = selectedConectores.has(c.id)
                         return (
-                          <button
-                            key={c.id}
-                            onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
+                          <button key={c.id} onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
                             className="w-full flex items-center gap-2.5 py-1 pl-3 rounded-lg text-left"
                             style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
                             onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F8F9FA' }}
@@ -354,13 +333,10 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                         )
                       })}
                     </div>
-
                     {!companyKnowledgeOn && (
                       <p className="pb-1 pl-3" style={{ fontSize: '10px', color: '#6B7280', fontStyle: 'italic' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
                     )}
                   </div>
-
-                  {/* Section: Otros conectores — clickable selectors */}
                   <div className="px-3 pt-1.5 pb-2">
                     {[
                       { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva', desc: 'Diseños y recursos visuales' },
@@ -368,9 +344,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                     ].map(c => {
                       const active = selectedConectores.has(c.id)
                       return (
-                        <button
-                          key={c.id}
-                          onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
+                        <button key={c.id} onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
                           className="w-full flex items-center gap-2.5 py-1 rounded-lg text-left"
                           style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
                           onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F8F9FA' }}
@@ -389,65 +363,124 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                 </div>
               )}
             </div>
+          )
 
-            {/* Connector tags — inline, right of + button */}
-            {[...selectedConectores].map(id => {
-              const all = [
-                { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams' },
-                { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint' },
-                { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook' },
-                { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive' },
-                { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva' },
-                { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially' },
-              ]
-              const c = all.find(x => x.id === id)
-              if (!c) return null
-              return (
+          const sendBtn = (
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {chatHistorial.length > 0 && !historialVisible && (
                 <button
-                  key={id}
-                  onClick={e => { e.stopPropagation(); setSelectedConectores(prev => { const n = new Set(prev); n.delete(id); return n }) }}
-                  className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
-                  style={{ background: c.color + '18', color: c.color, border: `1px solid ${c.color}40` }}
+                  onClick={(e) => { e.stopPropagation(); setHistorialVisible(true) }}
+                  className="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs transition-colors"
+                  style={{ color: '#6B7280', background: '#F8F9FA' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
                 >
-                  <span style={{ fontSize: '9px', fontWeight: 700 }}>{c.letter}</span>
-                  {c.label}
-                  <X size={10} />
+                  <Chat size={11} />
+                  {chatHistorial.length}
                 </button>
-              )
-            })}
-
-            {chatHistorial.length > 0 && !historialVisible && (
+              )}
               <button
-                onClick={(e) => { e.stopPropagation(); setHistorialVisible(true) }}
-                className="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs transition-colors"
-                style={{ color: '#6B7280', background: '#F8F9FA' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
-                onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
+                onClick={(e) => { e.stopPropagation(); handleSend() }}
+                disabled={!canSend}
+                className="flex items-center justify-center transition-all"
+                style={{
+                  width: 30, height: 30, borderRadius: 80,
+                  background: canSend ? '#0A5CF5' : '#E6E6E6',
+                  border: 'none',
+                  cursor: canSend ? 'pointer' : 'default',
+                  flexShrink: 0,
+                }}
+                onMouseEnter={e => { if (canSend) e.currentTarget.style.background = '#0039A3' }}
+                onMouseLeave={e => { e.currentTarget.style.background = canSend ? '#0A5CF5' : '#E6E6E6' }}
               >
-                <Chat size={11} />
-                {chatHistorial.length}
+                <PaperPlaneTilt size={16} style={{ color: canSend ? '#FFFFFF' : '#666666' }} />
               </button>
-            )}
-          </div>
+            </div>
+          )
 
-          {/* Right: send button */}
-          <button
-            onClick={(e) => { e.stopPropagation(); handleSend() }}
-            disabled={!canSend}
-            className="flex items-center justify-center rounded-[10px] transition-all"
-            style={{
-              width: 36,
-              height: 36,
-              background: canSend ? '#0A5CF5' : '#E6E6E6',
-              border: `1px solid ${canSend ? '#0A5CF5' : '#E6E6E6'}`,
-              cursor: canSend ? 'pointer' : 'default',
-            }}
-            onMouseEnter={e => { if (canSend) e.currentTarget.style.background = '#0039A3' }}
-            onMouseLeave={e => { if (canSend) e.currentTarget.style.background = '#0A5CF5' }}
-          >
-            <PaperPlaneTilt size={16} style={{ color: canSend ? '#FFFFFF' : '#6B7280' }} />
-          </button>
-        </div>
+          const connectorTags = selectedConectores.size > 0 && (
+            <div className="flex items-center gap-1 flex-wrap">
+              {[...selectedConectores].map(id => {
+                const all = [
+                  { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams' },
+                  { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint' },
+                  { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook' },
+                  { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive' },
+                  { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva' },
+                  { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially' },
+                ]
+                const c = all.find(x => x.id === id)
+                if (!c) return null
+                return (
+                  <button key={id}
+                    onClick={e => { e.stopPropagation(); setSelectedConectores(prev => { const n = new Set(prev); n.delete(id); return n }) }}
+                    className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                    style={{ background: c.color + '18', color: c.color, border: `1px solid ${c.color}40` }}
+                  >
+                    <span style={{ fontSize: '9px', fontWeight: 700 }}>{c.letter}</span>
+                    {c.label}
+                    <X size={10} />
+                  </button>
+                )
+              })}
+            </div>
+          )
+
+          const textarea = (
+            <textarea
+              ref={inputRef}
+              value={valor}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              placeholder={placeholder}
+              rows={1}
+              className="w-full bg-transparent outline-none resize-none overflow-y-auto"
+              style={{
+                color: '#272A3F',
+                caretColor: '#0A5CF5',
+                maxHeight: '144px',
+                fontFamily: "'Proeduca Sans', system-ui, sans-serif",
+                fontSize: '0.875rem',
+                fontWeight: 400,
+                lineHeight: 1.5,
+              }}
+              onInput={e => {
+                e.target.style.height = 'auto'
+                const h = Math.min(e.target.scrollHeight, 144)
+                e.target.style.height = h + 'px'
+                setExpanded(e.target.scrollHeight > 44)
+              }}
+            />
+          )
+
+          if (expanded) {
+            // Expanded: textarea on top (full width), buttons row below
+            return (
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1 px-1">
+                  {connectorTags}
+                  {textarea}
+                </div>
+                <div className="flex items-center justify-between">
+                  {plusBtn}
+                  {sendBtn}
+                </div>
+              </div>
+            )
+          }
+
+          // Compact: single row + | [tags] textarea | send
+          return (
+            <div className="flex items-center gap-2">
+              {plusBtn}
+              <div className="flex-1 flex flex-col gap-1" style={{ paddingLeft: 4 }}>
+                {connectorTags}
+                {textarea}
+              </div>
+              {sendBtn}
+            </div>
+          )
+        })()}
       </div>
 
       {/* Suggested prompts — attached below chatbar, floats over content */}
@@ -457,7 +490,7 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
             style={{
               top: '100%',
               background: '#FFFFFF',
-              border: `1px solid ${focused ? '#0A5CF5' : '#CBD5E1'}`,
+              border: '1px solid #DCDFEB',
               borderTop: '1px solid #F1F5F9',
               borderRadius: '0 0 24px 24px',
               boxShadow: '0 8px 20px rgba(0,0,0,0.07)',

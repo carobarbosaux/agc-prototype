@@ -18,6 +18,7 @@ export default function App() {
   const [asignaturaActiva, setAsignaturaActiva] = useState({ titulacionId: 'master-ia', asignaturaId: 'fund-ml' })
   const [chatHistorial, setChatHistorial] = useState([])
   const [creacionData, setCreacionData] = useState(null)
+  const [draftCreacion, setDraftCreacion] = useState(null)
 
   const navigate = (destino, params = {}) => {
     if (destino === 'canvas') {
@@ -52,6 +53,21 @@ export default function App() {
     setPantalla('canvas')
   }
 
+  const handleSaveDraft = (draft) => {
+    setDraftCreacion(draft)
+    // Mark the deep-learning asignatura as enBorrador so it shows in dashboard
+    setTitulaciones(prev => prev.map(t => {
+      if (t.id !== 'master-ia') return t
+      return {
+        ...t,
+        asignaturas: t.asignaturas.map(a =>
+          a.id === 'deep-learning' ? { ...a, estado: 'enBorrador', crearAsignatura: true, activa: true, etapaActual: `Paso ${draft.paso} de 3`, ultimaActividad: 'Ahora mismo' } : a
+        ),
+      }
+    }))
+    setPantalla('dashboard')
+  }
+
   const getBreadcrumb = () => {
     if (pantalla === 'herramientas') return []
     if (pantalla === 'dashboard') return [
@@ -67,8 +83,13 @@ export default function App() {
     return (
       <PantallaCrearAsignatura
         titulaciones={titulaciones}
-        onCrearAsignatura={handleCrearAsignatura}
+        onCrearAsignatura={(titulacionId, nuevaAsig, generados) => {
+          setDraftCreacion(null)
+          handleCrearAsignatura(titulacionId, nuevaAsig, generados)
+        }}
         onCancel={() => setPantalla('dashboard')}
+        onSaveDraft={handleSaveDraft}
+        draftData={draftCreacion}
         rolActivo={rolActivo}
       />
     )

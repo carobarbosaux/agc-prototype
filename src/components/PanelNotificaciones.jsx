@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Warning, CheckCircle, Info, CaretRight } from '@phosphor-icons/react'
+import { X, CaretRight } from '@phosphor-icons/react'
 import { notificaciones } from '../mockData'
 
 const FILTROS = [
@@ -8,10 +8,46 @@ const FILTROS = [
   { id: 'info', label: 'Informativas' },
 ]
 
-const tipoIconos = {
-  comentarios: { Icon: Warning, color: '#F97316', bg: '#FFF7ED' },
-  aprobado: { Icon: CheckCircle, color: '#10B981', bg: '#F0FDF4' },
-  info: { Icon: Info, color: '#367CFF', bg: '#E7EFFE' },
+// Design system toast styles per notification type
+const tipoEstilos = {
+  comentarios: {
+    bg: 'var(--warning-warning-100, #FEF7E1)',
+    border: 'var(--warning-warning-800, #A47B04)',
+    iconColor: 'var(--warning-warning-950, #735603)',
+    // Warning triangle icon
+    Icon: () => (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M1.5 13.5L8 2L14.5 13.5H1.5Z" stroke="var(--warning-warning-950, #735603)" strokeWidth="1" fill="none"/>
+        <circle cx="8" cy="11.5" r="0.75" fill="var(--warning-warning-950, #735603)"/>
+        <line x1="8" y1="6" x2="8" y2="10" stroke="var(--warning-warning-950, #735603)" strokeWidth="1"/>
+      </svg>
+    ),
+  },
+  aprobado: {
+    bg: 'var(--success-success-10, #F2FDF6)',
+    border: 'var(--success-success-900, #12542D)',
+    iconColor: 'var(--success-success-950, #092A16)',
+    // Checkmark circle icon
+    Icon: () => (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--success-success-950, #092A16)" strokeWidth="1"/>
+        <path d="M5.25 8L7 9.75L10.75 6" stroke="var(--success-success-950, #092A16)" strokeWidth="1" fill="none"/>
+      </svg>
+    ),
+  },
+  info: {
+    bg: 'var(--info-info-100, #E8F7FC)',
+    border: 'var(--info-info-700, #1592BC)',
+    iconColor: 'var(--info-info-700, #1592BC)',
+    // Info circle icon
+    Icon: () => (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--info-info-700, #1592BC)" strokeWidth="1"/>
+        <line x1="8" y1="7.5" x2="8" y2="11" stroke="var(--info-info-700, #1592BC)" strokeWidth="1"/>
+        <circle cx="8" cy="5.25" r="0.75" fill="var(--info-info-700, #1592BC)"/>
+      </svg>
+    ),
+  },
 }
 
 function agrupar(notifs) {
@@ -104,45 +140,43 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
               </p>
               <div className="space-y-2">
                 {notifs.map(notif => {
-                  const { Icon, color, bg } = tipoIconos[notif.tipo] || tipoIconos.info
+                  const estilo = tipoEstilos[notif.tipo] || tipoEstilos.info
+                  const { Icon } = estilo
 
                   return (
                     <button
                       key={notif.id}
                       onClick={() => onNavigate(notif.link)}
-                      className="w-full text-left rounded-xl p-4 transition-all group"
+                      className="w-full text-left transition-all group"
                       style={{
-                        background: notif.accionRequerida ? '#FFFDF9' : '#F8F9FA',
-                        border: notif.accionRequerida ? '1px solid #FED7AA' : '1px solid #E5E7EB',
-                        borderLeft: `3px solid ${color}`,
+                        padding: 16,
+                        background: estilo.bg,
+                        borderRadius: 8,
+                        outline: `1px ${estilo.border} solid`,
+                        outlineOffset: '-1px',
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: 8,
                       }}
-                      onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.01)'}
-                      onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                      onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+                      onMouseLeave={e => e.currentTarget.style.opacity = '1'}
                     >
-                      <div className="flex items-start gap-3">
-                        <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                          style={{ background: bg }}
-                        >
-                          <Icon size={15} style={{ color }} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium mb-0.5" style={{ color: '#1A1A1A' }}>{notif.seccion}</p>
-                          <p className="text-sm leading-snug" style={{ color: '#4B5563' }}>{notif.mensaje}</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <p className="text-xs" style={{ color: '#6B7280' }}>{notif.tiempo}</p>
-                            {notif.accionRequerida && (
-                              <span
-                                className="text-xs font-medium px-2 py-0.5 rounded"
-                                style={{ background: '#FFF7ED', color: '#F97316', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
-                              >
-                                Acción requerida
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <CaretRight size={14} style={{ color: '#9CA3AF' }} className="flex-shrink-0 mt-2 group-hover:text-slate-500 transition-colors" />
+                      <div style={{ flexShrink: 0, paddingTop: 2 }}>
+                        <Icon />
                       </div>
+                      <div style={{ flex: '1 1 0', minWidth: 0 }}>
+                        <p style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 500, lineHeight: '20px', marginBottom: 2 }}>{notif.seccion}</p>
+                        <p style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>{notif.mensaje}</p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <span style={{ fontSize: 12, color: '#6B7280', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>{notif.tiempo}</span>
+                          {notif.accionRequerida && (
+                            <span style={{ fontSize: 12, fontWeight: 500, padding: '2px 8px', borderRadius: 4, background: 'var(--warning-warning-100, #FEF7E1)', color: 'var(--warning-warning-800, #A47B04)', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
+                              Acción requerida
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <CaretRight size={14} style={{ color: '#9CA3AF', flexShrink: 0, marginTop: 4 }} />
                     </button>
                   )
                 })}
