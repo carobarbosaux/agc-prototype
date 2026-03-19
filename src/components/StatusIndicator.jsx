@@ -47,6 +47,7 @@ export default function StatusIndicator({
   status,
   variant = 'badge',
   size = 'md',
+  noBg = false,
   className = '',
 }) {
   const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.sin_comenzar
@@ -56,6 +57,17 @@ export default function StatusIndicator({
   if (variant === 'icon') {
     const dim = size === 'sm' ? 20 : 28
     const iconSize = size === 'sm' ? 10 : 13
+    if (noBg) {
+      return (
+        <Icon
+          size={iconSize}
+          strokeWidth={2}
+          aria-hidden="true"
+          className={className}
+          style={{ color: cfg.color, flexShrink: 0 }}
+        />
+      )
+    }
     return (
       <div
         role="img"

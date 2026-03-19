@@ -2830,17 +2830,20 @@ export default function PantallaCanvas({
       </div>
 
       {/* Main layout */}
-      <div className="flex flex-1 overflow-hidden">
-        <PipelineSidebar
-          seccionActiva={seccionActiva}
-          onSeccionChange={(id) => {
-            setSeccionActiva(id)
-            setComentarioActivoBloque(null)
-          }}
-          creacionData={creacionData}
-          esAsignaturaNueva={esAsignaturaNueva}
-          estadosSeccion={estadosSeccion}
-        />
+      <div className="flex flex-1 overflow-hidden" style={{ background: '#F8F9FA' }}>
+        {/* Sidebar wrapper — card floats with padding */}
+        <div className="flex-shrink-0" style={{ padding: '16px 12px 16px 16px', alignSelf: 'flex-start', maxHeight: '100%', overflowY: 'auto' }}>
+          <PipelineSidebar
+            seccionActiva={seccionActiva}
+            onSeccionChange={(id) => {
+              setSeccionActiva(id)
+              setComentarioActivoBloque(null)
+            }}
+            creacionData={creacionData}
+            esAsignaturaNueva={esAsignaturaNueva}
+            estadosSeccion={estadosSeccion}
+          />
+        </div>
 
         {/* Content area */}
         <main className="flex-1 overflow-y-auto" style={{ background: '#FFFFFF' }} onMouseUp={handleTextSelection} onKeyUp={handleTextSelection}>

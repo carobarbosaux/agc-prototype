@@ -76,16 +76,16 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
   if (collapsed) {
     return (
       <aside
-        className="flex flex-col items-center h-full flex-shrink-0"
-        style={{ width: '40px', minWidth: '40px', background: '#FFFFFF', borderRight: '1px solid #E5E7EB' }}
+        className="flex flex-col items-center flex-shrink-0 rounded-2xl overflow-hidden"
+        style={{ width: '40px', minWidth: '40px', background: '#FFFFFF', border: '1px solid #E5E7EB' }}
       >
         <Tooltip text="Expandir flujo de contenido">
           <button
             onClick={() => setCollapsed(false)}
             className="w-full flex items-center justify-center py-3 transition-colors"
-            style={{ color: '#6B7280' }}
+            style={{ color: '#9CA3AF' }}
             onMouseEnter={e => { e.currentTarget.style.color = '#374151'; e.currentTarget.style.background = '#F8F9FA' }}
-            onMouseLeave={e => { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = 'transparent' }}
+            onMouseLeave={e => { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' }}
           >
             <SidebarSimple size={15} />
           </button>
@@ -104,36 +104,35 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
 
   return (
     <aside
-      className="flex flex-col h-full overflow-y-auto"
+      className="flex flex-col rounded-2xl overflow-hidden flex-shrink-0"
       style={{
-        width: '240px',
-        minWidth: '240px',
+        width: '232px',
+        minWidth: '232px',
         background: '#FFFFFF',
-        borderRight: '1px solid #E5E7EB',
+        border: '1px solid #E5E7EB',
         fontFamily: "'Proeduca Sans', system-ui, sans-serif",
       }}
     >
-      <div className="px-4 pt-5 pb-3 flex-1">
-        <div className="flex items-center justify-between mb-3">
-          <p
-            className="text-xs font-semibold uppercase tracking-wider"
-            style={{ color: '#6B7280', fontFamily: "'Proeduca Sans', system-ui, sans-serif", letterSpacing: '0.08em' }}
+      {/* Header — matches SidebarTitulaciones */}
+      <div className="px-4 py-3 flex items-center justify-between flex-shrink-0" style={{ borderBottom: '1px solid #F1F5F9' }}>
+        <p className="text-xs font-semibold uppercase" style={{ color: '#6B7280', letterSpacing: '0.05em' }}>
+          Flujo de contenido
+        </p>
+        <Tooltip text="Colapsar" side="bottom">
+          <button
+            onClick={() => setCollapsed(true)}
+            className="p-1 rounded-md transition-colors"
+            style={{ color: '#9CA3AF' }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = '#F3F4F6' }}
+            onMouseLeave={e => { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' }}
           >
-            Flujo de contenido
-          </p>
-          <Tooltip text="Colapsar" side="bottom">
-            <button
-              onClick={() => setCollapsed(true)}
-              className="p-1 rounded transition-colors"
-              style={{ color: '#9CA3AF' }}
-              onMouseEnter={e => { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = '#F3F4F6' }}
-              onMouseLeave={e => { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' }}
-            >
-              <SidebarSimple size={14} />
-            </button>
-          </Tooltip>
-        </div>
+            <SidebarSimple size={14} />
+          </button>
+        </Tooltip>
+      </div>
 
+      {/* Nav */}
+      <div className="flex-1 overflow-y-auto py-1.5 px-2">
         <nav className="space-y-0.5">
           {pipeline.map((etapa) => {
             // ─ Flat sections (Resumen, Índice) ─
@@ -145,27 +144,25 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                 <div
                   key={etapa.id}
                   onClick={() => handleClick(etapa.id, estado)}
-                  className="flex items-center justify-between px-2 py-2 rounded-lg transition-all"
+                  className="flex items-center gap-2.5 px-3 py-2.5 transition-all"
                   style={{
                     cursor: clickable ? 'pointer' : 'default',
-                    background: activo ? '#E7EFFE' : 'transparent',
-                    borderLeft: activo ? '2px solid #367CFF' : '2px solid transparent',
+                    background: activo ? '#F4F6FD' : 'transparent',
+                    borderRadius: 12,
                   }}
-                  onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F8F9FA' }}
+                  onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F4F6FD' }}
                   onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
                 >
-                  <div className="flex items-center gap-2">
-                    <StatusIndicator status={toStatusKey(estado)} variant="icon" size="sm" showTooltip={true} />
-                    <span
-                      className="text-sm"
-                      style={{
-                        fontWeight: activo ? '600' : '500',
-                        color: activo ? '#367CFF' : clickable ? '#374151' : '#64748B',
-                      }}
-                    >
-                      {etapa.label}
-                    </span>
-                  </div>
+                  <StatusIndicator status={toStatusKey(estado)} variant="icon" size="sm" noBg={true} />
+                  <span
+                    className="text-xs font-medium leading-snug"
+                    style={{ color: activo ? '#272A3F' : clickable ? '#272A3F' : '#9CA3AF' }}
+                  >
+                    {etapa.label}
+                  </span>
+                  {activo && (
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#367CFF' }} />
+                  )}
                 </div>
               )
             }
@@ -182,32 +179,31 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                 : secEstados.every(e => e === 'sin_comenzar') ? 'sin_comenzar'
                 : 'bloqueado'
 
-              // Extract tema number from id (e.g. 'tema-1' → 1)
               const temaNum = parseInt(etapa.id.split('-')[1], 10)
               const temaDesc = temaDescMap?.[temaNum] ?? null
+              const bloqueado = estadoTema === 'bloqueado' || estadoTema === 'sin_comenzar'
 
               return (
                 <div key={etapa.id} className="relative">
                   {/* Tema header */}
                   <button
                     onClick={() => toggleTema(etapa.id)}
-                    className="w-full flex items-center justify-between px-2 py-2 rounded-lg transition-colors"
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 transition-colors"
                     style={{
-                      background: tieneActivo && !expandido ? '#F0F9FF' : 'transparent',
+                      borderRadius: 12,
+                      background: tieneActivo && !expandido ? '#F4F6FD' : 'transparent',
                     }}
-                    onMouseEnter={e => e.currentTarget.style.background = '#F8F9FA'}
-                    onMouseLeave={e => e.currentTarget.style.background = tieneActivo && !expandido ? '#F0F9FF' : 'transparent'}
+                    onMouseEnter={e => e.currentTarget.style.background = '#F4F6FD'}
+                    onMouseLeave={e => e.currentTarget.style.background = tieneActivo && !expandido ? '#F4F6FD' : 'transparent'}
                   >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <StatusIndicator status={toStatusKey(estadoTema)} variant="icon" size="sm" showTooltip={true} />
-                      <div className="min-w-0 text-left">
-                        <p className="text-sm font-medium leading-tight" style={{ color: '#374151' }}>
-                          {etapa.label}
-                        </p>
-                        <p className="text-xs leading-tight truncate" style={{ color: '#6B7280', maxWidth: '140px' }}>
-                          {etapa.labelCorto}
-                        </p>
-                      </div>
+                    <StatusIndicator status={toStatusKey(estadoTema)} variant="icon" size="sm" noBg={true} />
+                    <div className="min-w-0 text-left flex-1">
+                      <p className="text-xs font-medium leading-snug" style={{ color: bloqueado ? '#9CA3AF' : '#272A3F' }}>
+                        {etapa.label}
+                      </p>
+                      <p className="text-xs leading-tight truncate" style={{ color: '#9CA3AF' }}>
+                        {etapa.labelCorto}
+                      </p>
                     </div>
                     <div className="flex items-center gap-1 flex-shrink-0">
                       {temaDesc && (
@@ -216,21 +212,22 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                           onClick={e => { e.stopPropagation(); setPopoverAbierto(prev => prev === etapa.id ? null : etapa.id) }}
                           className="flex items-center justify-center w-5 h-5 rounded-md transition-colors"
                           style={{
-                            color: popoverAbierto === etapa.id ? '#367CFF' : '#6B7280',
+                            color: popoverAbierto === etapa.id ? '#367CFF' : '#9CA3AF',
                             background: popoverAbierto === etapa.id ? '#E7EFFE' : 'transparent',
                           }}
                           onMouseEnter={e => { e.stopPropagation(); e.currentTarget.style.color = '#367CFF'; e.currentTarget.style.background = '#E7EFFE' }}
-                          onMouseLeave={e => { e.stopPropagation(); if (popoverAbierto !== etapa.id) { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = 'transparent' } }}
+                          onMouseLeave={e => { e.stopPropagation(); if (popoverAbierto !== etapa.id) { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' } }}
                         >
                           <Info size={12} />
                         </span>
                       )}
                       {expandido
-                        ? <CaretDown size={13} style={{ color: '#6B7280' }} />
-                        : <CaretRight size={13} style={{ color: '#6B7280' }} />
+                        ? <CaretDown size={12} style={{ color: '#9CA3AF' }} />
+                        : <CaretRight size={12} style={{ color: '#9CA3AF' }} />
                       }
                     </div>
                   </button>
+
                   {popoverAbierto === etapa.id && temaDesc && (
                     <TemaResumenPopover
                       tema={temaDesc}
@@ -241,7 +238,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
 
                   {/* Subsections */}
                   {expandido && (
-                    <div className="mt-0.5 mb-1 ml-4 space-y-0.5 pl-2.5" style={{ borderLeft: '1.5px solid #E5E7EB' }}>
+                    <div className="mt-0.5 mb-1 ml-4 space-y-0.5 pl-2" style={{ borderLeft: '1.5px solid #E5E7EB' }}>
                       {etapa.secciones.map(sec => {
                         const secEstado = getEstado(sec.id, sec.estado)
                         const clickable = ESTADO_CLICKABLE.includes(secEstado)
@@ -250,27 +247,29 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                           <div
                             key={sec.id}
                             onClick={() => handleClick(sec.id, secEstado)}
-                            className="flex items-center gap-2 px-2 py-1.5 rounded-md transition-all"
+                            className="flex items-center gap-2 px-2.5 py-2 transition-all"
                             style={{
                               cursor: clickable ? 'pointer' : 'default',
-                              background: activo ? '#E7EFFE' : 'transparent',
-                              borderLeft: activo ? '2px solid #367CFF' : '2px solid transparent',
-                              marginLeft: '-2px',
+                              background: activo ? '#F4F6FD' : 'transparent',
+                              borderRadius: 10,
                             }}
                             title={!clickable ? 'Bloqueado hasta aprobar la etapa anterior' : undefined}
-                            onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F8F9FA' }}
+                            onMouseEnter={e => { if (!activo && clickable) e.currentTarget.style.background = '#F4F6FD' }}
                             onMouseLeave={e => { if (!activo) e.currentTarget.style.background = 'transparent' }}
                           >
-                            <StatusIndicator status={toStatusKey(secEstado)} variant="icon" size="sm" showTooltip={true} />
+                            <StatusIndicator status={toStatusKey(secEstado)} variant="icon" size="sm" noBg={true} />
                             <span
-                              className="text-xs"
+                              className="text-xs flex-1"
                               style={{
                                 fontWeight: activo ? '600' : '400',
-                                color: activo ? '#367CFF' : clickable ? '#4B5563' : '#64748B',
+                                color: activo ? '#272A3F' : clickable ? '#4B5563' : '#9CA3AF',
                               }}
                             >
                               {sec.label}
                             </span>
+                            {activo && (
+                              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#367CFF' }} />
+                            )}
                           </div>
                         )
                       })}
@@ -286,15 +285,15 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
       </div>
 
       {/* Progress indicator */}
-      <div className="px-4 py-4 flex-shrink-0" style={{ borderTop: '1px solid #F1F5F9' }}>
-        <div className="flex items-center justify-between mb-2">
-          <p className="text-xs" style={{ color: '#6B7280' }}>Progreso</p>
+      <div className="px-4 py-3 flex-shrink-0" style={{ borderTop: '1px solid #F1F5F9' }}>
+        <div className="flex items-center justify-between mb-1.5">
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>Progreso</p>
           <p className="text-xs font-semibold" style={{ color: '#374151' }}>{pct}%</p>
         </div>
-        <div className="w-full h-1.5 rounded-full" style={{ background: '#E5E7EB' }}>
+        <div className="w-full h-1 rounded-full" style={{ background: '#E5E7EB' }}>
           <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#367CFF' }} />
         </div>
-        <p className="text-xs mt-1.5" style={{ color: '#6B7280' }}>{aprobadas} de {total} secciones aprobadas</p>
+        <p className="text-xs mt-1.5" style={{ color: '#9CA3AF' }}>{aprobadas} de {total} secciones aprobadas</p>
       </div>
     </aside>
   )

@@ -254,11 +254,12 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
         style={{
           background: '#FFFFFF',
           boxShadow: '0px 9px 20px -2px rgba(0, 0, 0, 0.10)',
-          borderRadius: expanded ? 28 : 40,
+          borderTopLeftRadius: selectedConectores.size > 0 ? 18 : (expanded ? 28 : 40),
+          borderTopRightRadius: selectedConectores.size > 0 ? 18 : (expanded ? 28 : 40),
+          borderBottomLeftRadius: hasChips ? 0 : (selectedConectores.size > 0 ? 18 : (expanded ? 28 : 40)),
+          borderBottomRightRadius: hasChips ? 0 : (selectedConectores.size > 0 ? 18 : (expanded ? 28 : 40)),
           outline: '1px solid #DCDFEB',
           outlineOffset: '-1px',
-          borderBottomLeftRadius: hasChips ? 0 : (expanded ? 28 : 40),
-          borderBottomRightRadius: hasChips ? 0 : (expanded ? 28 : 40),
           transition: 'outline-color 150ms ease, border-radius 150ms ease',
           transition: 'outline-color 150ms ease',
           gap: 0,
@@ -288,27 +289,56 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
               </Tooltip>
               {conectoresAbierto && (
                 <div
-                  className={`absolute ${conectoresHaciaArriba ? 'bottom-full mb-2' : 'top-full mt-2'} left-0 rounded-xl overflow-hidden`}
-                  style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: conectoresHaciaArriba ? '0 -8px 24px rgba(0,0,0,0.12)' : '0 8px 24px rgba(0,0,0,0.12)', minWidth: '280px', zIndex: 50 }}
+                  className={`absolute ${conectoresHaciaArriba ? 'bottom-full mb-2' : 'top-full mt-2'} left-0`}
+                  style={{
+                    width: 260,
+                    paddingTop: 10,
+                    paddingBottom: 4,
+                    paddingLeft: 8,
+                    paddingRight: 8,
+                    background: 'white',
+                    borderRadius: 10,
+                    outline: '1px #DCDFEB solid',
+                    outlineOffset: '-1px',
+                    boxShadow: conectoresHaciaArriba ? '0 -8px 24px rgba(0,0,0,0.10)' : '0 8px 24px rgba(0,0,0,0.10)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 6,
+                    zIndex: 50,
+                  }}
                 >
-                  <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
-                    <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>Conectores</p>
+                  {/* Header label */}
+                  <div style={{ paddingLeft: 8, paddingRight: 8, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '16px', color: '#566077' }}>Conectores</span>
                   </div>
-                  <div className="px-3 pt-1.5 pb-1" style={{ borderBottom: '1px solid #F3F4F6' }}>
-                    <div className="flex items-center gap-2.5 py-1">
-                      <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: '#0078D4', fontSize: '7px' }}>CK</div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium" style={{ color: '#111827' }}>Company Knowledge</p>
-                        <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>Fuentes institucionales de tu organización</p>
+
+                  {/* Company Knowledge section */}
+                  <div style={{ display: 'flex', flexDirection: 'column', paddingBottom: 4, borderBottom: '1px solid #F3F4F6' }}>
+                    {/* CK toggle row */}
+                    <div
+                      style={{
+                        paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6,
+                        borderRadius: 6,
+                        display: 'flex', alignItems: 'center', gap: 8,
+                      }}
+                    >
+                      <div style={{ width: 20, height: 20, borderRadius: 4, background: '#0078D4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <span style={{ color: '#FFF', fontSize: '7px', fontWeight: 700 }}>CK</span>
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px', color: '#566077', margin: 0 }}>Company Knowledge</p>
+                        <p style={{ fontSize: 11, color: '#9CA3AF', margin: 0, lineHeight: '14px' }}>Fuentes institucionales</p>
                       </div>
                       <button
                         onClick={e => { e.stopPropagation(); toggleCompanyKnowledge() }}
-                        style={{ width: 40, height: 24, borderRadius: 30, background: companyKnowledgeOn ? '#0A5CF5' : '#DCDFEB', flexShrink: 0, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: companyKnowledgeOn ? 'flex-end' : 'flex-start', padding: companyKnowledgeOn ? '0 4px 0 0' : '0 0 0 4px' }}
+                        style={{ width: 36, height: 20, borderRadius: 30, background: companyKnowledgeOn ? '#0A5CF5' : '#DCDFEB', flexShrink: 0, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: companyKnowledgeOn ? 'flex-end' : 'flex-start', padding: companyKnowledgeOn ? '0 3px 0 0' : '0 0 0 3px' }}
                       >
-                        <span style={{ width: 16, height: 16, borderRadius: 8, background: '#FFF', display: 'block', flexShrink: 0 }} />
+                        <span style={{ width: 14, height: 14, borderRadius: 7, background: '#FFF', display: 'block', flexShrink: 0 }} />
                       </button>
                     </div>
-                    <div style={{ opacity: companyKnowledgeOn ? 1 : 0.35, pointerEvents: companyKnowledgeOn ? 'auto' : 'none', transition: 'opacity 0.15s' }}>
+
+                    {/* CK children */}
+                    <div style={{ opacity: companyKnowledgeOn ? 1 : 0.35, pointerEvents: companyKnowledgeOn ? 'auto' : 'none', transition: 'opacity 0.15s', display: 'flex', flexDirection: 'column' }}>
                       {[
                         { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams', desc: 'Conversaciones y archivos' },
                         { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint', desc: 'Documentos institucionales' },
@@ -318,26 +348,35 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                         const active = selectedConectores.has(c.id)
                         return (
                           <button key={c.id} onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
-                            className="w-full flex items-center gap-2.5 py-1 pl-3 rounded-lg text-left"
-                            style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
-                            onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F8F9FA' }}
+                            style={{
+                              paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5,
+                              borderRadius: 6,
+                              border: 'none',
+                              background: active ? c.color + '12' : 'transparent',
+                              display: 'flex', alignItems: 'center', gap: 8,
+                              cursor: 'pointer',
+                              width: '100%',
+                              textAlign: 'left',
+                            }}
+                            onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F3F4F6' }}
                             onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
                           >
-                            <div className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '6px' }}>{c.letter}</div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-medium" style={{ color: active ? c.color : '#374151' }}>{c.label}</p>
-                              <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>{c.desc}</p>
+                            <div style={{ width: 16, height: 16, borderRadius: 3, background: c.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                              <span style={{ color: '#FFF', fontSize: '6px', fontWeight: 700 }}>{c.letter}</span>
                             </div>
-                            {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
+                            <span style={{ fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px', color: active ? c.color : '#566077', flex: 1 }}>{c.label}</span>
+                            {active && <div style={{ width: 6, height: 6, borderRadius: 3, background: c.color, flexShrink: 0 }} />}
                           </button>
                         )
                       })}
                     </div>
                     {!companyKnowledgeOn && (
-                      <p className="pb-1 pl-3" style={{ fontSize: '10px', color: '#6B7280', fontStyle: 'italic' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
+                      <p style={{ fontSize: '10px', color: '#9CA3AF', fontStyle: 'italic', margin: '2px 10px 4px', lineHeight: '14px' }}>Activa para acceder a Teams, SharePoint, Outlook y OneDrive.</p>
                     )}
                   </div>
-                  <div className="px-3 pt-1.5 pb-2">
+
+                  {/* Other connectors */}
+                  <div style={{ display: 'flex', flexDirection: 'column', paddingBottom: 4 }}>
                     {[
                       { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva', desc: 'Diseños y recursos visuales' },
                       { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially', desc: 'Contenidos interactivos' },
@@ -345,17 +384,24 @@ export default function Chatbar({ onNavigate, placeholder = 'Mensaje', chatHisto
                       const active = selectedConectores.has(c.id)
                       return (
                         <button key={c.id} onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
-                          className="w-full flex items-center gap-2.5 py-1 rounded-lg text-left"
-                          style={{ background: active ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer' }}
-                          onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F8F9FA' }}
+                          style={{
+                            paddingLeft: 10, paddingRight: 10, paddingTop: 6, paddingBottom: 6,
+                            borderRadius: 6,
+                            border: 'none',
+                            background: active ? c.color + '12' : 'transparent',
+                            display: 'flex', alignItems: 'center', gap: 8,
+                            cursor: 'pointer',
+                            width: '100%',
+                            textAlign: 'left',
+                          }}
+                          onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#F3F4F6' }}
                           onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
                         >
-                          <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: c.color, fontSize: '7px' }}>{c.letter}</div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium" style={{ color: active ? c.color : '#111827' }}>{c.label}</p>
-                            <p style={{ fontSize: '10px', color: '#6B7280', marginTop: 1 }}>{c.desc}</p>
+                          <div style={{ width: 20, height: 20, borderRadius: 4, background: c.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <span style={{ color: '#FFF', fontSize: '7px', fontWeight: 700 }}>{c.letter}</span>
                           </div>
-                          {active && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />}
+                          <span style={{ fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px', color: active ? c.color : '#566077', flex: 1 }}>{c.label}</span>
+                          {active && <div style={{ width: 6, height: 6, borderRadius: 3, background: c.color, flexShrink: 0 }} />}
                         </button>
                       )
                     })}
