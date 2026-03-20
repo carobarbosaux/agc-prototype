@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { CaretRight, CaretDown, Plus, Chat, Eye, X, Lock, MagicWand, ShieldCheck, BookBookmark, Check, ToggleLeft, ToggleRight, Note, Pencil, Trash, ArrowsClockwise, ArrowUpRight, Flask, Brain, Microphone, FloppyDisk, StackSimple, BookOpen, Link, PaperPlaneTilt, ArrowSquareOut, Warning } from '@phosphor-icons/react'
+import { CaretRight, CaretDown, CaretUp, Plus, Chat, Eye, X, Lock, MagicWand, ShieldCheck, BookBookmark, Check, ToggleLeft, ToggleRight, Note, Pencil, Trash, ArrowsClockwise, ArrowUpRight, Flask, Brain, Microphone, FloppyDisk, StackSimple, BookOpen, Link, PaperPlaneTilt, ArrowSquareOut, Warning, Paperclip } from '@phosphor-icons/react'
 import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
@@ -261,7 +261,8 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
           className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse"
           style={{ background: '#E7EFFE' }}
         >
-                  </div>
+          <ProdiMark size={28} />
+        </div>
         <div className="text-center">
           <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando índice de temas…</p>
           <p className="text-xs" style={{ color: '#6B7280' }}>La IA está creando la estructura del curso…</p>
@@ -286,7 +287,8 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
           className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse"
           style={{ background: '#E7EFFE' }}
         >
-                  </div>
+          <ProdiMark size={28} />
+        </div>
         <div className="text-center">
           <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>Generando resumen preliminar…</p>
           <p className="text-xs" style={{ color: '#6B7280' }}>La IA está procesando tu solicitud…</p>
@@ -359,9 +361,9 @@ function SeccionIndice({ bloques, creacionData, onCreacionDataConsumed, onGenera
       <button
         onClick={handleGenerarResumen}
         className="w-full flex items-center justify-center gap-2 py-3 rounded-[10px] text-sm font-semibold transition-all"
-        style={{ background: '#367CFF', color: '#FFFFFF' }}
-        onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-        onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+        style={{ background: '#0A5CF5', color: '#FFFFFF' }}
+        onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
+        onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
       >
                 Generar resumen de la asignatura
         <CaretRight size={14} />
@@ -403,7 +405,8 @@ function RecursosLoadingScreen({ onCancel }) {
     <div className="rounded-xl p-8" style={{ border: '1px solid #E5E7EB', background: '#FAFAFA' }}>
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
-                  </div>
+          <ProdiMark size={20} />
+        </div>
         <div>
           <p className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>Generando referencias académicas…</p>
           <p className="text-xs" style={{ color: '#6B7280' }}>Paso {current.step} de {current.total}</p>
@@ -509,9 +512,9 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, showEdit, onDelete,
               <button
                 onClick={handleSave}
                 className="text-xs px-3 py-1.5 rounded-lg font-medium transition-all text-white"
-                style={{ background: '#367CFF' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-                onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+                style={{ background: '#0A5CF5' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
+                onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
               >Guardar</button>
             </div>
           </div>
@@ -673,9 +676,9 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
           <button
             onClick={() => setScreen('loading')}
             className="flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-sm font-semibold text-white transition-all"
-            style={{ background: '#367CFF' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+            style={{ background: '#0A5CF5' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
+            onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
           >
             Generar referencias con IA
           </button>
@@ -862,32 +865,52 @@ function SeccionIndiceFija({ bloques, resumenData }) {
                     {tema.descripcion}
                   </p>
                 ) : null}
+                {/* Expand toggle + dropdown panel — below content */}
+                {resumenTema?.descripcion && (
+                  <div className="mt-3">
+                    <button
+                      onClick={() => toggleExpand(tema.id)}
+                      className="flex items-center justify-between w-full gap-2"
+                      style={{
+                        paddingLeft: 12, paddingRight: 12, paddingTop: 6, paddingBottom: 6,
+                        borderRadius: 8,
+                        border: `1px solid ${isExpanded ? '#367CFF' : '#94A3B8'}`,
+                        background: isExpanded ? '#EEF4FF' : '#FFFFFF',
+                        color: isExpanded ? '#367CFF' : '#334155',
+                        fontSize: 13,
+                        fontFamily: "'Proeduca Sans', system-ui, sans-serif",
+                        fontWeight: 500,
+                        lineHeight: '18px',
+                      }}
+                      onMouseEnter={e => { if (!isExpanded) { e.currentTarget.style.borderColor = '#367CFF'; e.currentTarget.style.color = '#367CFF' } }}
+                      onMouseLeave={e => { if (!isExpanded) { e.currentTarget.style.borderColor = '#94A3B8'; e.currentTarget.style.color = '#334155' } }}
+                    >
+                      <span>Resumen</span>
+                      {isExpanded ? <CaretUp size={14} /> : <CaretDown size={14} />}
+                    </button>
+                    {isExpanded && (
+                      <div
+                        className="mt-2"
+                        style={{
+                          background: '#F8FAFC',
+                          borderRadius: 8,
+                          border: '1px solid #DCDFEB',
+                          padding: 4,
+                        }}
+                      >
+                        <div style={{
+                          paddingLeft: 16, paddingRight: 16, paddingTop: 10, paddingBottom: 10,
+                          background: '#FFFFFF',
+                          borderRadius: 6,
+                        }}>
+                          <p className="text-xs leading-relaxed" style={{ color: '#3A455C', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>{resumenTema.descripcion}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
-              {/* Expand toggle */}
-              {resumenTema?.descripcion && (
-                <button
-                  onClick={() => toggleExpand(tema.id)}
-                  className="flex items-center gap-1 flex-shrink-0 mt-0.5 text-xs font-medium rounded-md px-2 py-1 transition-colors"
-                  style={{ color: isExpanded ? '#367CFF' : '#6B7280', background: isExpanded ? '#E7EFFE' : 'transparent' }}
-                  onMouseEnter={e => { if (!isExpanded) { e.currentTarget.style.color = '#367CFF'; e.currentTarget.style.background = '#F5F8FF' } }}
-                  onMouseLeave={e => { if (!isExpanded) { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = 'transparent' } }}
-                  title={isExpanded ? 'Ocultar resumen' : 'Ver resumen del tema'}
-                >
-                  {isExpanded ? <CaretDown size={14} /> : <CaretRight size={14} />}
-                  <span>Resumen</span>
-                </button>
-              )}
             </div>
-            {/* Collapsible resumen */}
-            {isExpanded && resumenTema?.descripcion && (
-              <div
-                className="px-5 pb-4"
-                style={{ borderTop: '1px solid #F3F4F6', paddingTop: '12px', marginLeft: '48px' }}
-              >
-                <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280', letterSpacing: '0.06em' }}>Resumen del tema</p>
-                <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>{resumenTema.descripcion}</p>
-              </div>
-            )}
           </div>
         )
       })}
@@ -957,10 +980,10 @@ function SeccionResumen({ nombreAsignatura, creacionData }) {
 
       {/* Header */}
       <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
-        <p className="text-xs font-medium mb-2" style={{ color: '#6B7280', letterSpacing: '0.05em' }}>
+        <p className="mb-2" style={{ fontSize: '12px', fontWeight: 400, color: '#9CA3AF', letterSpacing: '0.03em', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
           {nombreAsignatura ?? nombre}
         </p>
-        <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>Resumen general</h1>
+        <h1 style={{ fontSize: '26px', fontWeight: 600, lineHeight: 1.25, color: '#111827', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>Resumen general</h1>
       </div>
 
       {/* Descripción */}
@@ -1107,9 +1130,9 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
           <button
             onClick={onGenerarResumen}
             className="flex items-center gap-2 px-5 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-            style={{ background: '#367CFF' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+            style={{ background: '#0A5CF5' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
+            onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
           >
             <ProdiMark size={14} />
             Generar resumen del tema
@@ -1199,9 +1222,9 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
         <button
           onClick={onGenerarContenido}
           className="flex items-center gap-2 px-5 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-          style={{ background: '#367CFF' }}
-          onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-          onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+          style={{ background: '#0A5CF5' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
+          onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
         >
           <ProdiMark size={14} />
           Generar contenido del tema
@@ -1225,7 +1248,8 @@ const TEMA_KEYWORDS = {
 
 function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, temaLabel, resumenData, readOnly }) {
   const [archivosSimulados, setArchivosSimulados] = useState(datos.archivos || [])
-  const [urls, setUrls] = useState(datos.urls || [''])
+  const [urls, setUrls] = useState(datos.urls || [])
+  const [urlInput, setUrlInput] = useState('')
   const [expandidosMindMap, setExpandidosMindMap] = useState(false)
 
   const handleSimularSubida = () => {
@@ -1241,19 +1265,16 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
   }
 
   const handleAddUrl = () => {
-    const next = [...urls, '']
+    if (!urlInput.trim()) return
+    const next = [...urls, urlInput.trim()]
     setUrls(next)
     onChange('urls', next)
-  }
-  const handleUrlChange = (i, val) => {
-    const next = urls.map((u, idx) => idx === i ? val : u)
-    setUrls(next)
-    onChange('urls', next)
+    setUrlInput('')
   }
   const handleRemoveUrl = (i) => {
     const next = urls.filter((_, idx) => idx !== i)
-    setUrls(next.length ? next : [''])
-    onChange('urls', next.length ? next : [''])
+    setUrls(next)
+    onChange('urls', next)
   }
 
   if (datos.generando) {
@@ -1429,75 +1450,95 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
       <div>
         <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Fuentes y bibliografía</label>
         <p className="text-xs mb-2" style={{ color: '#6B7280' }}>Sube documentos o añade enlaces que la IA tendrá en cuenta para generar el contenido.</p>
-        {/* Upload area */}
-        <div
-          onClick={readOnly ? undefined : handleSimularSubida}
-          className="flex flex-col items-center justify-center gap-2 rounded-xl transition-colors px-4 py-5 mb-3"
-          style={{ border: '1.5px dashed #CBD5E1', background: '#FAFBFC', cursor: readOnly ? 'default' : 'pointer' }}
-          onMouseEnter={readOnly ? undefined : e => { e.currentTarget.style.borderColor = '#367CFF'; e.currentTarget.style.background = '#F5F8FF' }}
-          onMouseLeave={readOnly ? undefined : e => { e.currentTarget.style.borderColor = '#CBD5E1'; e.currentTarget.style.background = '#FAFBFC' }}
-        >
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#E7EFFE' }}>
-            <BookOpen size={15} style={{ color: '#367CFF' }} />
+        <div className="flex flex-col gap-3">
+          {/* Drop zone */}
+          <div
+            className="w-full flex flex-col items-center justify-center gap-3 rounded-[10px]"
+            style={{ padding: '20px 40px', background: '#F8FAFC', outline: '1px solid #EAEDF8', outlineOffset: '-1px' }}
+          >
+            {!readOnly && (
+              <button
+                onClick={handleSimularSubida}
+                className="flex items-center justify-center gap-2 rounded-[10px]"
+                style={{ padding: '6px 12px', background: '#F9FCFF', outline: '1px solid #0A5CF5', outlineOffset: '-1px' }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#E6EFFF' }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#F9FCFF' }}
+              >
+                <span style={{ color: '#0A5CF5', fontSize: 13, fontWeight: '500', lineHeight: '20px' }}>Adjuntar documento</span>
+              </button>
+            )}
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-xs font-medium text-center" style={{ color: '#566077' }}>Archivos soportados: PDF, Word, Excel</span>
+              <span className="text-xs font-medium text-center" style={{ color: '#566077' }}>Límite de peso máximo: 25MB</span>
+            </div>
           </div>
-          <p className="text-xs font-medium text-center" style={{ color: '#374151' }}>
-            Arrastra archivos aquí o <span style={{ color: '#367CFF' }}>haz clic para subir</span>
-          </p>
-          <p className="text-xs" style={{ color: '#6B7280' }}>PDF, Docs, URL — máx. 25 MB</p>
-        </div>
-        {/* Uploaded files */}
-        {archivosSimulados.length > 0 && (
-          <div className="space-y-1.5 mb-3">
-            {archivosSimulados.map((f, i) => (
-              <div key={i} className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
-                <BookOpen size={12} style={{ color: '#367CFF' }} />
-                <span className="text-xs flex-1 truncate" style={{ color: '#374151' }}>{f}</span>
-                {!readOnly && (
-                  <button onClick={() => setArchivosSimulados(prev => prev.filter((_, j) => j !== i))} style={{ color: '#6B7280' }}>
-                    <X size={12} />
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-        {/* URL inputs */}
-        <div className="space-y-2">
-          {urls.map((url, i) => (
-            <div key={i} className="flex items-center gap-2">
+
+          {/* URL input */}
+          {!readOnly && (
+            <div className="flex items-center gap-2">
               <div className="flex items-center flex-1 gap-2 px-3 py-2 rounded-[10px]" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF' }}>
                 <Link size={12} style={{ color: '#6B7280', flexShrink: 0 }} />
                 <input
                   type="url"
-                  value={url}
-                  onChange={readOnly ? undefined : e => handleUrlChange(i, e.target.value)}
-                  readOnly={readOnly}
-                  placeholder="https://…"
+                  value={urlInput}
+                  onChange={e => setUrlInput(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') handleAddUrl() }}
+                  placeholder="Añadir enlace…"
                   className="flex-1 text-xs outline-none bg-transparent"
-                  style={{ color: '#374151', cursor: readOnly ? 'default' : undefined }}
-                  onFocus={readOnly ? undefined : e => e.currentTarget.parentElement.style.borderColor = '#367CFF'}
-                  onBlur={readOnly ? undefined : e => e.currentTarget.parentElement.style.borderColor = '#CBD5E1'}
+                  style={{ color: '#374151' }}
+                  onFocus={e => e.currentTarget.parentElement.style.borderColor = '#0A5CF5'}
+                  onBlur={e => e.currentTarget.parentElement.style.borderColor = '#CBD5E1'}
                 />
               </div>
-              {!readOnly && urls.length > 1 && (
-                <button onClick={() => handleRemoveUrl(i)} className="flex-shrink-0" style={{ color: '#6B7280' }}
-                  onMouseEnter={e => e.currentTarget.style.color = '#EF4444'}
-                  onMouseLeave={e => e.currentTarget.style.color = '#6B7280'}>
-                  <X size={14} />
-                </button>
-              )}
+              <button
+                onClick={handleAddUrl}
+                className="flex items-center justify-center rounded-[10px] text-xs font-medium"
+                style={{ padding: '7px 12px', background: '#F9FCFF', outline: '1px solid #0A5CF5', outlineOffset: '-1px', color: '#0A5CF5', whiteSpace: 'nowrap' }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#E6EFFF' }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#F9FCFF' }}
+              >
+                Añadir
+              </button>
             </div>
-          ))}
-          {!readOnly && (
-            <button
-              onClick={handleAddUrl}
-              className="flex items-center gap-1.5 text-xs font-medium mt-1"
-              style={{ color: '#367CFF' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#2563EB'}
-              onMouseLeave={e => e.currentTarget.style.color = '#367CFF'}
-            >
-              <Plus size={13} /> Añadir enlace
-            </button>
+          )}
+
+          {/* Attached files and URLs */}
+          {(archivosSimulados.length > 0 || urls.length > 0) && (
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-medium" style={{ color: '#0F172A' }}>Fuentes adjuntas</p>
+              <div className="flex flex-wrap gap-2">
+                {archivosSimulados.map((f, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-1.5"
+                    style={{ padding: '6px 10px', background: '#F8FAFC', borderRadius: 8, outline: '1px solid #EAEDF8', outlineOffset: '-1px', maxWidth: 220 }}
+                  >
+                    <Paperclip size={12} style={{ color: '#0A5CF5', flexShrink: 0 }} />
+                    <span className="text-xs font-medium truncate" style={{ color: '#0A5CF5' }}>{f}</span>
+                    {!readOnly && (
+                      <button onClick={() => setArchivosSimulados(prev => prev.filter((_, j) => j !== i))}>
+                        <X size={11} style={{ color: '#94A3B8' }} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {urls.map((url, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-1.5"
+                    style={{ padding: '6px 10px', background: '#F8FAFC', borderRadius: 8, outline: '1px solid #EAEDF8', outlineOffset: '-1px', maxWidth: 220 }}
+                  >
+                    <Link size={12} style={{ color: '#0A5CF5', flexShrink: 0 }} />
+                    <span className="text-xs font-medium truncate" style={{ color: '#0A5CF5' }}>{url}</span>
+                    {!readOnly && (
+                      <button onClick={() => handleRemoveUrl(i)}>
+                        <X size={11} style={{ color: '#94A3B8' }} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -1567,9 +1608,9 @@ function EpigrafeConBibliografia({ ep, index }) {
           <button
             onClick={() => setMostrarAddRef(p => !p)}
             className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-lg transition-all"
-            style={{ color: '#367CFF', background: mostrarAddRef ? '#E7EFFE' : 'transparent', border: '1px solid transparent' }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.borderColor = '#BAD2FF' }}
-            onMouseLeave={e => { if (!mostrarAddRef) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent' } }}
+            style={{ color: mostrarAddRef ? '#FFFFFF' : '#0A5CF5', background: mostrarAddRef ? '#0A5CF5' : '#F9FCFF', outline: '1px #0A5CF5 solid', outlineOffset: '-1px', border: 'none' }}
+            onMouseEnter={e => { if (!mostrarAddRef) { e.currentTarget.style.background = '#E6EFFF' } }}
+            onMouseLeave={e => { if (!mostrarAddRef) { e.currentTarget.style.background = '#F9FCFF' } }}
           >
             <Plus size={11} /> Añadir referencia
           </button>
@@ -1607,9 +1648,9 @@ function EpigrafeConBibliografia({ ep, index }) {
               </button>
               <button onClick={() => { setMostrarAddRef(false); setRefUrl(''); setRefDoi(''); setRefUso('') }}
                 className="px-3 py-1.5 rounded-[10px] text-xs font-semibold text-white transition-all"
-                style={{ background: '#367CFF' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-                onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}>
+                style={{ background: '#0A5CF5' }}
+                onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
+                onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}>
                 Guardar referencia
               </button>
             </div>
@@ -1787,9 +1828,9 @@ function SeccionReferencias({ temaNum, referencias = [], onNavigateToContent }) 
           <button
             onClick={() => { setBuscando(true); setTimeout(() => setBuscando(false), 2400) }}
             className="flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold text-white transition-all"
-            style={{ background: '#367CFF' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-            onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+            style={{ background: '#0A5CF5' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
+            onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
           >
                         Buscar referencias con IA
           </button>
@@ -2438,12 +2479,12 @@ export default function PantallaCanvas({
                   setInstruccionesData(prev => ({ ...prev, [seccionActiva]: { ...prev[seccionActiva], resumenGenerado: false } }))
                 }
               }}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
               style={{ background: '#F1F5F9', color: '#374151', border: '1px solid #E5E7EB' }}
               onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
               onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
             >
-              <CaretRight size={14} style={{ transform: 'rotate(180deg)' }} />
+              <CaretRight size={13} style={{ transform: 'rotate(180deg)' }} />
               Volver
             </button>
             <button
@@ -2463,13 +2504,13 @@ export default function PantallaCanvas({
                   setSeccionActiva(`t${tNum}`)
                 }
               }}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-              style={{ background: '#367CFF' }}
-              onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-              onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+              style={{ background: '#0A5CF5' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
+              onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
             >
                             Generar contenido del tema
-              <CaretRight size={14} />
+              <CaretRight size={13} />
             </button>
           </>
         )
@@ -2483,10 +2524,10 @@ export default function PantallaCanvas({
               setInstruccionesData(prev => ({ ...prev, [seccionActiva]: { ...prev[seccionActiva], generando: false, resumenGenerado: true } }))
             }, 1500)
           }}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-          style={{ background: '#367CFF' }}
-          onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-          onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+          style={{ background: '#0A5CF5' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
+          onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
         >
                     Generar resumen del tema
         </button>
@@ -2503,7 +2544,7 @@ export default function PantallaCanvas({
             <div className="relative" ref={herramientasMenuRef}>
               <button
                 onClick={() => setHerramientasMenuAbierto(v => !v)}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
                 style={{
                   background: herramientasMenuAbierto ? '#E7EFFE' : '#F8F9FA',
                   color: herramientasMenuAbierto ? '#367CFF' : '#6B7280',
@@ -2602,13 +2643,13 @@ export default function PantallaCanvas({
 
             <button
               onClick={showSentToast}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-              style={{ background: '#367CFF' }}
-              onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
-              onMouseLeave={e => e.currentTarget.style.background = '#367CFF'}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+              style={{ background: '#0A5CF5' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
+              onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
             >
               Enviar a revisión
-              <CaretRight size={14} />
+              <CaretRight size={13} />
             </button>
           </>
         )
@@ -2617,12 +2658,12 @@ export default function PantallaCanvas({
       if (estado === 'revision') {
         return (
           <button
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
             style={{ background: '#FFFBEB', color: '#F59E0B', border: '1px solid #FDE68A' }}
             onMouseEnter={e => e.currentTarget.style.background = '#FEF3C7'}
             onMouseLeave={e => e.currentTarget.style.background = '#FFFBEB'}
           >
-            <Eye size={14} />
+            <Eye size={13} />
             Solicitar permiso de edición
           </button>
         )
@@ -2631,12 +2672,12 @@ export default function PantallaCanvas({
       if (estado === 'aprobado') {
         return (
           <button
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
             style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
             onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
             onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
           >
-            <Eye size={14} />
+            <Eye size={13} />
             Solicitar permiso de edición
           </button>
         )
@@ -2653,22 +2694,22 @@ export default function PantallaCanvas({
           <>
             <button
               onClick={showCorrectionToast}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
               style={{ background: '#FFF7ED', color: '#F97316', border: '1px solid #FED7AA' }}
               onMouseEnter={e => e.currentTarget.style.background = '#FFEDD5'}
               onMouseLeave={e => e.currentTarget.style.background = '#FFF7ED'}
             >
-              <Chat size={14} />
+              <Chat size={13} />
               Enviar correcciones
             </button>
             <button
               onClick={showApprovedToast}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
               style={{ background: '#008660' }}
               onMouseEnter={e => e.currentTarget.style.background = '#005E43'}
               onMouseLeave={e => e.currentTarget.style.background = '#008660'}
             >
-              <CaretRight size={14} />
+              <CaretRight size={13} />
               Aprobar contenido
             </button>
           </>
@@ -2679,12 +2720,12 @@ export default function PantallaCanvas({
         return (
           <button
             onClick={showSavedToast}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
             style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
             onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
             onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
           >
-            <Eye size={14} />
+            <Eye size={13} />
             Comprobar actualizaciones
           </button>
         )
@@ -2700,12 +2741,12 @@ export default function PantallaCanvas({
         return (
           <button
             onClick={showCorrectionToast}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
             style={{ background: '#FFF7ED', color: '#F97316', border: '1px solid #FED7AA' }}
             onMouseEnter={e => e.currentTarget.style.background = '#FFEDD5'}
             onMouseLeave={e => e.currentTarget.style.background = '#FFF7ED'}
           >
-            <Chat size={14} />
+            <Chat size={13} />
             Enviar correcciones
           </button>
         )
@@ -2715,12 +2756,12 @@ export default function PantallaCanvas({
         return (
           <button
             onClick={showSavedToast}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
             style={{ background: '#F8F9FA', color: '#6B7280', border: '1px solid #E5E7EB' }}
             onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
             onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
           >
-            <Eye size={14} />
+            <Eye size={13} />
             Comprobar actualizaciones
           </button>
         )
@@ -2737,12 +2778,12 @@ export default function PantallaCanvas({
           <>
             <button
               onClick={() => { setEnrichmentPanelAbierto(true); setComentarioActivoBloque(null); setPanelIAabierto(false); setPanelNotasAbierto(false); setPanelContextoTemaAbierto(false) }}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
               style={{ background: '#7C3AED' }}
               onMouseEnter={e => e.currentTarget.style.background = '#6D28D9'}
               onMouseLeave={e => e.currentTarget.style.background = '#7C3AED'}
             >
-              <StackSimple size={14} />
+              <StackSimple size={13} />
               Crear experiencia didáctica
             </button>
           </>
@@ -2763,7 +2804,7 @@ export default function PantallaCanvas({
 
         <div className="flex items-center gap-2 py-2.5 min-w-0" style={{ paddingLeft: '20px', paddingRight: '68px' }}>
           {/* Breadcrumb text — truncates with ellipsis */}
-          <span className="text-xs font-medium truncate min-w-0 flex-shrink" style={{ color: '#6B7280' }}>
+          <span className="truncate min-w-0 flex-shrink" style={{ fontSize: '13px', fontWeight: 500, color: '#6B7280', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
             {[asignaturaData?.nombre, isResumen ? 'Resumen general' : seccion.label].filter(Boolean).join(' · ')}
           </span>
           <StatusIndicator status={toStatusKey(estadoMostrado)} variant="badge" className="flex-shrink-0" />
@@ -2807,7 +2848,7 @@ export default function PantallaCanvas({
                 flexShrink: 0,
               }} />
             </span>
-            <span className="text-xs font-medium" style={{ color: autosaveOn ? '#374151' : '#6B7280' }}>
+            <span style={{ fontSize: '12px', fontWeight: 500, color: autosaveOn ? '#374151' : '#6B7280', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
               {autosaveStatus === 'saving' ? 'Guardando…' : autosaveOn ? 'Autoguardado' : 'Sin guardar'}
             </span>
           </button>
@@ -2815,12 +2856,12 @@ export default function PantallaCanvas({
             {isResumen && editable ? (
               <button
                 onClick={() => setEditarResumenWarning(true)}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-sm font-medium transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
                 style={{ background: 'transparent', color: '#6B7280', border: '1px solid #E5E7EB' }}
                 onMouseEnter={e => { e.currentTarget.style.background = '#F3F4F6'; e.currentTarget.style.borderColor = '#D1D5DB' }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#E5E7EB' }}
               >
-                <Pencil size={14} />
+                <Pencil size={13} />
                 Editar resumen
               </button>
             ) : !isResumen ? getActionBar() : null}
@@ -2831,8 +2872,8 @@ export default function PantallaCanvas({
 
       {/* Main layout */}
       <div className="flex flex-1 overflow-hidden" style={{ background: '#F8F9FA' }}>
-        {/* Sidebar wrapper — card floats with padding */}
-        <div className="flex-shrink-0" style={{ padding: '16px 12px 16px 16px', alignSelf: 'flex-start', maxHeight: '100%', overflowY: 'auto' }}>
+        {/* Sidebar wrapper — flush, full height */}
+        <div className="flex-shrink-0 flex flex-col self-stretch">
           <PipelineSidebar
             seccionActiva={seccionActiva}
             onSeccionChange={(id) => {
@@ -2853,14 +2894,14 @@ export default function PantallaCanvas({
               creacionData={creacionData}
             />
           ) : (
-            <div className="max-w-2xl mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '64px' }}>
+            <div className="max-w-2xl mx-auto py-12 pl-24 pr-12" style={{ paddingBottom: '64px' }}>
 
               {/* Document header */}
               <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
-                <p className="text-xs font-medium mb-2" style={{ color: '#6B7280', letterSpacing: '0.05em' }}>
+                <p className="mb-2" style={{ fontSize: '12px', fontWeight: 400, color: '#9CA3AF', letterSpacing: '0.03em', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
                   {asignaturaData?.nombre ?? 'Deep Learning y Redes Neuronales'} · Máster en IA
                 </p>
-                <h1 className="text-2xl font-semibold leading-snug" style={{ color: '#111827' }}>
+                <h1 style={{ fontSize: '26px', fontWeight: 600, lineHeight: 1.25, color: '#111827', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
                   {seccion.label}
                 </h1>
                 {/* Tags — temario only */}
@@ -3129,7 +3170,7 @@ export default function PantallaCanvas({
                                     }}
                                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
                                     style={{ background: '#3B82F6', color: '#FFFFFF' }}
-                                    onMouseEnter={e => e.currentTarget.style.background = '#2563EB'}
+                                    onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
                                     onMouseLeave={e => e.currentTarget.style.background = '#3B82F6'}
                                   >
                                     <Check size={12} />
@@ -3156,6 +3197,50 @@ export default function PantallaCanvas({
                     </button>
                   )}
                 </>
+              )}
+            </div>
+          )}
+
+          {/* Toasts — sticky to bottom of content column, never under sidebars */}
+          {(savedToast || sentToast || correctionToast || approvedToast) && (
+            <div className="sticky bottom-5 flex justify-center pointer-events-none animate-fade-in" style={{ zIndex: 50 }}>
+              {savedToast && (
+                <div style={{ pointerEvents: 'auto', padding: 16, background: 'var(--success-success-10, #F2FDF6)', borderRadius: 8, outline: '1px var(--success-success-900, #12542D) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)', minWidth: 320 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+                    <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--success-success-950, #092A16)" strokeWidth="1"/>
+                    <path d="M5.25 8L7 9.75L10.75 6" stroke="var(--success-success-950, #092A16)" strokeWidth="1" fill="none"/>
+                  </svg>
+                  <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Borrador guardado</span>
+                </div>
+              )}
+              {sentToast && (
+                <div style={{ pointerEvents: 'auto', padding: 16, background: 'var(--info-info-100, #E8F7FC)', borderRadius: 8, outline: '1px var(--info-info-700, #1592BC) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)', minWidth: 320 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+                    <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--info-info-700, #1592BC)" strokeWidth="1"/>
+                    <line x1="8" y1="7.5" x2="8" y2="11" stroke="var(--info-info-700, #1592BC)" strokeWidth="1"/>
+                    <circle cx="8" cy="5.25" r="0.75" fill="var(--info-info-700, #1592BC)"/>
+                  </svg>
+                  <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Tema 2 enviado a revisión</span>
+                </div>
+              )}
+              {correctionToast && (
+                <div style={{ pointerEvents: 'auto', padding: 16, background: 'var(--warning-warning-100, #FEF7E1)', borderRadius: 8, outline: '1px var(--warning-warning-800, #A47B04) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)', minWidth: 320 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+                    <path d="M1.5 13.5L8 2L14.5 13.5H1.5Z" stroke="var(--warning-warning-950, #735603)" strokeWidth="1" fill="none"/>
+                    <circle cx="8" cy="11.5" r="0.75" fill="var(--warning-warning-950, #735603)"/>
+                    <line x1="8" y1="6" x2="8" y2="10" stroke="var(--warning-warning-950, #735603)" strokeWidth="1"/>
+                  </svg>
+                  <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Correcciones enviadas al autor</span>
+                </div>
+              )}
+              {approvedToast && (
+                <div style={{ pointerEvents: 'auto', padding: 16, background: 'var(--success-success-10, #F2FDF6)', borderRadius: 8, outline: '1px var(--success-success-900, #12542D) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)', minWidth: 320 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+                    <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--success-success-950, #092A16)" strokeWidth="1"/>
+                    <path d="M5.25 8L7 9.75L10.75 6" stroke="var(--success-success-950, #092A16)" strokeWidth="1" fill="none"/>
+                  </svg>
+                  <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Contenido aprobado</span>
+                </div>
               )}
             </div>
           )}
@@ -3695,53 +3780,6 @@ export default function PantallaCanvas({
             setSeccionActiva(`referencias-t${citaPopover.temaNum}`)
           }}
         />
-      )}
-
-      {savedToast && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 animate-fade-in" style={{ zIndex: 100, minWidth: 320 }}>
-          <div style={{ padding: 16, background: 'var(--success-success-10, #F2FDF6)', borderRadius: 8, outline: '1px var(--success-success-900, #12542D) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
-              <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--success-success-950, #092A16)" strokeWidth="1"/>
-              <path d="M5.25 8L7 9.75L10.75 6" stroke="var(--success-success-950, #092A16)" strokeWidth="1" fill="none"/>
-            </svg>
-            <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Borrador guardado</span>
-          </div>
-        </div>
-      )}
-      {sentToast && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 animate-fade-in" style={{ zIndex: 100, minWidth: 320 }}>
-          <div style={{ padding: 16, background: 'var(--info-info-100, #E8F7FC)', borderRadius: 8, outline: '1px var(--info-info-700, #1592BC) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
-              <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--info-info-700, #1592BC)" strokeWidth="1"/>
-              <line x1="8" y1="7.5" x2="8" y2="11" stroke="var(--info-info-700, #1592BC)" strokeWidth="1"/>
-              <circle cx="8" cy="5.25" r="0.75" fill="var(--info-info-700, #1592BC)"/>
-            </svg>
-            <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Tema 2 enviado a revisión</span>
-          </div>
-        </div>
-      )}
-      {correctionToast && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 animate-fade-in" style={{ zIndex: 100, minWidth: 320 }}>
-          <div style={{ padding: 16, background: 'var(--warning-warning-100, #FEF7E1)', borderRadius: 8, outline: '1px var(--warning-warning-800, #A47B04) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
-              <path d="M1.5 13.5L8 2L14.5 13.5H1.5Z" stroke="var(--warning-warning-950, #735603)" strokeWidth="1" fill="none"/>
-              <circle cx="8" cy="11.5" r="0.75" fill="var(--warning-warning-950, #735603)"/>
-              <line x1="8" y1="6" x2="8" y2="10" stroke="var(--warning-warning-950, #735603)" strokeWidth="1"/>
-            </svg>
-            <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Correcciones enviadas al autor</span>
-          </div>
-        </div>
-      )}
-      {approvedToast && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 animate-fade-in" style={{ zIndex: 100, minWidth: 320 }}>
-          <div style={{ padding: 16, background: 'var(--success-success-10, #F2FDF6)', borderRadius: 8, outline: '1px var(--success-success-900, #12542D) solid', outlineOffset: '-1px', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
-              <rect x="2" y="2" width="12" height="12" rx="6" stroke="var(--success-success-950, #092A16)" strokeWidth="1"/>
-              <path d="M5.25 8L7 9.75L10.75 6" stroke="var(--success-success-950, #092A16)" strokeWidth="1" fill="none"/>
-            </svg>
-            <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Contenido aprobado</span>
-          </div>
-        </div>
       )}
 
       {/* Editar resumen — warning modal */}

@@ -76,15 +76,15 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
   if (collapsed) {
     return (
       <aside
-        className="flex flex-col items-center flex-shrink-0 rounded-2xl overflow-hidden"
-        style={{ width: '40px', minWidth: '40px', background: '#FFFFFF', border: '1px solid #E5E7EB' }}
+        className="flex flex-col items-center flex-shrink-0"
+        style={{ width: '40px', minWidth: '40px', background: '#F8FAFC', borderRight: '1px solid #E5E7EB' }}
       >
-        <Tooltip text="Expandir flujo de contenido">
+        <Tooltip text="Expandir flujo de contenido" side="right">
           <button
             onClick={() => setCollapsed(false)}
             className="w-full flex items-center justify-center py-3 transition-colors"
             style={{ color: '#9CA3AF' }}
-            onMouseEnter={e => { e.currentTarget.style.color = '#374151'; e.currentTarget.style.background = '#F8F9FA' }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#374151'; e.currentTarget.style.background = '#EEF2F7' }}
             onMouseLeave={e => { e.currentTarget.style.color = '#9CA3AF'; e.currentTarget.style.background = 'transparent' }}
           >
             <SidebarSimple size={15} />
@@ -94,7 +94,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
           className="flex-1 flex items-center justify-center"
           style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
         >
-          <span className="text-xs font-semibold uppercase tracking-wider select-none" style={{ color: '#9CA3AF', letterSpacing: '0.08em' }}>
+          <span className="select-none whitespace-nowrap" style={{ fontSize: '10px', fontWeight: 600, color: '#9CA3AF', letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
             Flujo de contenido
           </span>
         </div>
@@ -104,18 +104,18 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
 
   return (
     <aside
-      className="flex flex-col rounded-2xl overflow-hidden flex-shrink-0"
+      className="flex flex-col overflow-hidden flex-shrink-0 h-full"
       style={{
-        width: '232px',
-        minWidth: '232px',
-        background: '#FFFFFF',
-        border: '1px solid #E5E7EB',
+        width: '208px',
+        minWidth: '208px',
+        background: '#F8FAFC',
+        borderRight: '1px solid #E5E7EB',
         fontFamily: "'Proeduca Sans', system-ui, sans-serif",
       }}
     >
-      {/* Header — matches SidebarTitulaciones */}
-      <div className="px-4 py-3 flex items-center justify-between flex-shrink-0" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold uppercase" style={{ color: '#6B7280', letterSpacing: '0.05em' }}>
+      {/* Header */}
+      <div className="px-3.5 py-3 flex items-center justify-between flex-shrink-0" style={{ borderBottom: '1px solid #E5E7EB' }}>
+        <p style={{ fontSize: '10px', fontWeight: 600, color: '#9CA3AF', letterSpacing: '0.06em', textTransform: 'uppercase', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
           Flujo de contenido
         </p>
         <Tooltip text="Colapsar" side="bottom">
@@ -132,7 +132,7 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
       </div>
 
       {/* Nav */}
-      <div className="flex-1 overflow-y-auto py-1.5 px-2">
+      <div className="flex-1 overflow-y-auto py-1.5 px-1.5">
         <nav className="space-y-0.5">
           {pipeline.map((etapa) => {
             // ─ Flat sections (Resumen, Índice) ─
@@ -155,8 +155,8 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                 >
                   <StatusIndicator status={toStatusKey(estado)} variant="icon" size="sm" noBg={true} />
                   <span
-                    className="text-xs font-medium leading-snug"
-                    style={{ color: activo ? '#272A3F' : clickable ? '#272A3F' : '#9CA3AF' }}
+                    className="leading-snug"
+                    style={{ fontSize: '13px', fontWeight: activo ? 600 : 500, color: activo ? '#272A3F' : clickable ? '#374151' : '#9CA3AF', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                   >
                     {etapa.label}
                   </span>
@@ -198,10 +198,10 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                   >
                     <StatusIndicator status={toStatusKey(estadoTema)} variant="icon" size="sm" noBg={true} />
                     <div className="min-w-0 text-left flex-1">
-                      <p className="text-xs font-medium leading-snug" style={{ color: bloqueado ? '#9CA3AF' : '#272A3F' }}>
+                      <p className="leading-snug" style={{ fontSize: '13px', fontWeight: 600, color: bloqueado ? '#9CA3AF' : '#272A3F', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
                         {etapa.label}
                       </p>
-                      <p className="text-xs leading-tight truncate" style={{ color: '#9CA3AF' }}>
+                      <p className="leading-tight truncate" style={{ fontSize: '11px', fontWeight: 400, color: '#9CA3AF', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
                         {etapa.labelCorto}
                       </p>
                     </div>
@@ -259,10 +259,12 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
                           >
                             <StatusIndicator status={toStatusKey(secEstado)} variant="icon" size="sm" noBg={true} />
                             <span
-                              className="text-xs flex-1"
+                              className="flex-1"
                               style={{
-                                fontWeight: activo ? '600' : '400',
+                                fontSize: '12px',
+                                fontWeight: activo ? 600 : 400,
                                 color: activo ? '#272A3F' : clickable ? '#4B5563' : '#9CA3AF',
+                                fontFamily: "'Proeduca Sans', system-ui, sans-serif",
                               }}
                             >
                               {sec.label}
@@ -285,15 +287,15 @@ export default function PipelineSidebar({ seccionActiva, onSeccionChange, creaci
       </div>
 
       {/* Progress indicator */}
-      <div className="px-4 py-3 flex-shrink-0" style={{ borderTop: '1px solid #F1F5F9' }}>
+      <div className="px-3.5 py-3 flex-shrink-0" style={{ borderTop: '1px solid #E5E7EB', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
         <div className="flex items-center justify-between mb-1.5">
-          <p className="text-xs" style={{ color: '#9CA3AF' }}>Progreso</p>
-          <p className="text-xs font-semibold" style={{ color: '#374151' }}>{pct}%</p>
+          <p style={{ fontSize: '10px', fontWeight: 400, color: '#9CA3AF' }}>Progreso</p>
+          <p style={{ fontSize: '10px', fontWeight: 600, color: '#374151' }}>{pct}%</p>
         </div>
         <div className="w-full h-1 rounded-full" style={{ background: '#E5E7EB' }}>
           <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#367CFF' }} />
         </div>
-        <p className="text-xs mt-1.5" style={{ color: '#9CA3AF' }}>{aprobadas} de {total} secciones aprobadas</p>
+        <p style={{ fontSize: '10px', fontWeight: 400, color: '#9CA3AF', marginTop: '6px' }}>{aprobadas} de {total} secciones aprobadas</p>
       </div>
     </aside>
   )

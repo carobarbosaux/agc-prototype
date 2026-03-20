@@ -106,7 +106,7 @@ export default function ComentarioHilo({ comentario, onMarcarResuelto, onRespond
             <button
               onClick={handleResponder}
               className="text-xs font-medium px-3 py-1.5 rounded-lg text-white transition-all"
-              style={{ background: '#367CFF' }}
+              style={{ background: '#0A5CF5' }}
             >
               Enviar
             </button>

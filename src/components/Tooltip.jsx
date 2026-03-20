@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 /**
  * Tooltip — dark navy tooltip with a clean CSS arrow.
+ * Renders via portal to body so it's never clipped by overflow:hidden ancestors.
  *
  * Props:
  *   text   {string}  — tooltip label
@@ -9,19 +11,41 @@ import { useState } from 'react'
  */
 export default function Tooltip({ text, side = 'right', children }) {
   const [visible, setVisible] = useState(false)
+  const [coords, setCoords] = useState({ top: 0, left: 0 })
+  const triggerRef = useRef(null)
 
   const BG = '#001D52'
-  const ARROW = 6  // px, half-base of the triangle
+  const ARROW = 6
+  const GAP = 8
 
-  // Position of the tooltip box relative to the trigger
-  const boxPos = {
-    right:  { left: 'calc(100% + 8px)', top: '50%', transform: 'translateY(-50%)' },
-    left:   { right: 'calc(100% + 8px)', top: '50%', transform: 'translateY(-50%)' },
-    top:    { bottom: 'calc(100% + 8px)', left: '50%', transform: 'translateX(-50%)' },
-    bottom: { top: 'calc(100% + 8px)', left: '50%', transform: 'translateX(-50%)' },
+  useEffect(() => {
+    if (!visible || !triggerRef.current) return
+    const rect = triggerRef.current.getBoundingClientRect()
+
+    let top, left
+    if (side === 'top') {
+      top = rect.top + window.scrollY - GAP
+      left = rect.left + window.scrollX + rect.width / 2
+    } else if (side === 'bottom') {
+      top = rect.bottom + window.scrollY + GAP
+      left = rect.left + window.scrollX + rect.width / 2
+    } else if (side === 'right') {
+      top = rect.top + window.scrollY + rect.height / 2
+      left = rect.right + window.scrollX + GAP
+    } else { // left
+      top = rect.top + window.scrollY + rect.height / 2
+      left = rect.left + window.scrollX - GAP
+    }
+    setCoords({ top, left })
+  }, [visible, side])
+
+  const transformMap = {
+    top:    'translateX(-50%) translateY(-100%)',
+    bottom: 'translateX(-50%)',
+    right:  'translateY(-50%)',
+    left:   'translateX(-100%) translateY(-50%)',
   }
 
-  // CSS-triangle arrow positioned on the edge of the bubble facing the trigger
   const arrowStyle = {
     right: {
       position: 'absolute', top: '50%', left: -ARROW,
@@ -57,46 +81,46 @@ export default function Tooltip({ text, side = 'right', children }) {
     },
   }
 
-  const pos = boxPos[side] ?? boxPos.right
-  const arrow = arrowStyle[side] ?? arrowStyle.right
+  const tooltip = visible ? createPortal(
+    <div
+      style={{
+        position: 'absolute',
+        top: coords.top,
+        left: coords.left,
+        transform: transformMap[side] ?? transformMap.right,
+        zIndex: 99999,
+        pointerEvents: 'none',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      <div style={arrowStyle[side] ?? arrowStyle.right} />
+      <div
+        style={{
+          background: BG,
+          borderRadius: 8,
+          padding: '6px 10px',
+          color: '#FFFFFF',
+          fontSize: 12,
+          fontFamily: "'Proeduca Sans', system-ui, sans-serif",
+          fontWeight: 400,
+          lineHeight: 1.4,
+        }}
+      >
+        {text}
+      </div>
+    </div>,
+    document.body
+  ) : null
 
   return (
     <div
+      ref={triggerRef}
       style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
     >
       {children}
-
-      {visible && (
-        <div
-          style={{
-            position: 'absolute',
-            ...pos,
-            zIndex: 9999,
-            pointerEvents: 'none',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {/* Arrow */}
-          <div style={arrow} />
-          {/* Bubble */}
-          <div
-            style={{
-              background: BG,
-              borderRadius: 8,
-              padding: '6px 10px',
-              color: '#FFFFFF',
-              fontSize: 12,
-              fontFamily: "'Proeduca Sans', system-ui, sans-serif",
-              fontWeight: 400,
-              lineHeight: 1.4,
-            }}
-          >
-            {text}
-          </div>
-        </div>
-      )}
+      {tooltip}
     </div>
   )
 }

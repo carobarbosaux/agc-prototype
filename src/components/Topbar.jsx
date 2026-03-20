@@ -8,10 +8,10 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
   const rolActualLabel = roles.find(r => r.id === rolActivo)?.label || 'Autor'
 
   const rolColors = {
-    autor: { bg: '#E7EFFE', text: '#367CFF', border: '#BAD2FF' },
-    coordinador: { bg: '#F0FDF4', text: '#10B981', border: '#A7F3D0' },
-    editor: { bg: '#FFFBEB', text: '#F59E0B', border: '#FDE68A' },
-    disenador: { bg: '#E7EFFE', text: '#073676', border: '#BAD2FF' },
+    autor: { bg: '#F9FCFF', text: '#0A5CF5', border: '#0A5CF5', hoverBg: '#E6EFFF' },
+    coordinador: { bg: '#F0FDF4', text: '#10B981', border: '#A7F3D0', hoverBg: '#DCFCE7' },
+    editor: { bg: '#FFFBEB', text: '#F59E0B', border: '#FDE68A', hoverBg: '#FEF3C7' },
+    disenador: { bg: '#E7EFFE', text: '#073676', border: '#BAD2FF', hoverBg: '#D1E3FF' },
   }
   const rc = rolColors[rolActivo] || rolColors.autor
 
@@ -72,9 +72,13 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
             style={{
               background: rc.bg,
               color: rc.text,
-              border: `1px solid ${rc.border}`,
+              outline: `1px solid ${rc.border}`,
+              outlineOffset: '-1px',
+              border: 'none',
               fontFamily: "'Proeduca Sans', system-ui, sans-serif",
             }}
+            onMouseEnter={e => { e.currentTarget.style.background = rc.hoverBg }}
+            onMouseLeave={e => { e.currentTarget.style.background = rc.bg }}
           >
             <span>{rolActualLabel}</span>
             <CaretDown size={12} />

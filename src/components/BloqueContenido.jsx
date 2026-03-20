@@ -313,13 +313,15 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
                 padding: '0 8px',
                 display: 'flex', alignItems: 'center', gap: '5px',
                 borderRadius: '7px',
-                border: '1px solid #0A5CF5',
-                background: menuFormato ? '#dbeafe' : '#F0F6FF',
-                color: '#0A5CF5', cursor: 'pointer',
+                outline: '1px #0A5CF5 solid',
+                outlineOffset: '-1px',
+                border: 'none',
+                background: menuFormato ? '#0A5CF5' : '#F9FCFF',
+                color: menuFormato ? '#FFFFFF' : '#0A5CF5', cursor: 'pointer',
                 fontSize: '11px', fontWeight: '600', whiteSpace: 'nowrap',
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#dbeafe' }}
-              onMouseLeave={e => { e.currentTarget.style.background = menuFormato ? '#dbeafe' : '#F0F6FF' }}
+              onMouseEnter={e => { if (!menuFormato) { e.currentTarget.style.background = '#E6EFFF' } }}
+              onMouseLeave={e => { if (!menuFormato) { e.currentTarget.style.background = '#F9FCFF' } }}
             >
               <TextAa size={14} />
             </button>
@@ -329,7 +331,7 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
             <div
               className="animate-fade-in"
               style={{
-                position: 'absolute', top: '0', left: '60px', zIndex: 50,
+                position: 'absolute', top: '0', left: '80px', zIndex: 50,
                 background: '#FFFFFF', border: '1px solid #E5E7EB',
                 borderRadius: '8px', boxShadow: '0 8px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)',
                 padding: '5px', width: '170px',
@@ -438,15 +440,17 @@ style={{ fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
             padding: '0 8px',
             display: 'flex', alignItems: 'center', gap: '5px',
             borderRadius: '7px',
-            border: '1px solid #0A5CF5',
-            background: '#F0F6FF',
+            outline: '1px #0A5CF5 solid',
+            outlineOffset: '-1px',
+            border: 'none',
+            background: '#F9FCFF',
             color: '#0A5CF5',
             cursor: 'pointer',
             fontSize: '11px', fontWeight: '600', whiteSpace: 'nowrap',
           }}
           title="Añadir comentario"
-          onMouseEnter={e => { e.currentTarget.style.background = '#dbeafe' }}
-          onMouseLeave={e => { e.currentTarget.style.background = '#F0F6FF' }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#E6EFFF' }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#F9FCFF' }}
         >
           <Chat size={14} />
         </button>

@@ -1783,7 +1783,37 @@ export const citacionesPorTemaDL = {
       epigrafe: 'Epígrafe 2.1 · Evolución histórica del deep learning (p. 86)',
     },
   ],
-  2: [], 3: [], 4: [], 5: [], 6: [],
+  2: [
+    {
+      num: 1,
+      apaFormatted: 'Goodfellow, I., Bengio, Y. y Courville, A. (2016). Deep Learning. MIT Press.',
+      url: null,
+      extracto: '"El aprendizaje profundo es una forma de aprendizaje automático que permite a los ordenadores aprender de la experiencia y entender el mundo en términos de una jerarquía de conceptos."',
+      epigrafe: 'Epígrafe 1.1 · Introducción al aprendizaje profundo (p. 1)',
+    },
+    {
+      num: 2,
+      apaFormatted: 'Chollet, F. (2021). Deep Learning with Python (2.ª ed.). Manning Publications.',
+      url: null,
+      extracto: '"Las redes neuronales profundas son capaces de aprender representaciones jerárquicas de los datos, lo que les permite resolver problemas que antes se consideraban intratables."',
+      epigrafe: 'Epígrafe 1.3 · Redes neuronales y representaciones (p. 18)',
+    },
+    {
+      num: 3,
+      apaFormatted: 'Mitchell, T. M. (1997). Machine Learning. McGraw-Hill.',
+      url: null,
+      extracto: null,
+      epigrafe: null,
+    },
+    {
+      num: 4,
+      apaFormatted: 'Schmidhuber, J. (2015). Deep learning in neural networks: An overview. Neural Networks, 61, 85–117.',
+      url: null,
+      extracto: '"Los avances recientes en el aprendizaje profundo han transformado campos como la visión artificial y el procesamiento del lenguaje natural."',
+      epigrafe: 'Epígrafe 2.1 · Evolución histórica del deep learning (p. 86)',
+    },
+  ],
+  3: [], 4: [], 5: [], 6: [],
 }
 
 export const citacionesPorTema = {

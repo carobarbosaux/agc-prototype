@@ -1106,6 +1106,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
   const [modalVolver, setModalVolver] = useState(null) // null | 'volver' | 'cancelar'
   // Panel IA for step 2: null = panel not shown, string = panel open with that context
   const [panelContexto, setPanelContexto] = useState(null)
+  const [panelIAResumen, setPanelIAResumen] = useState(true)
 
   const updateDatos = (key, val) => setDatos(prev => ({ ...prev, [key]: val }))
 
@@ -1273,6 +1274,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
         {(generando || generandoResumen) ? (
           <div className="flex-1 flex flex-col items-center justify-center py-16 gap-4">
             <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
+              <ProdiMark size={28} />
             </div>
             <div className="text-center">
               <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
@@ -1311,13 +1313,15 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
                 </div>
               </div>
             </div>
-            <PanelIA
-              historialInicial={[{ id: 1, rol: 'ia', mensaje: 'He generado el resumen de Deep Learning y Redes Neuronales a partir de la información que proporcionaste. Puedes pedirme ajustes en la descripción, los objetivos, el enfoque o cualquier otro aspecto antes de generar el índice.' }]}
-              temaLabel="Resumen de la asignatura"
-              onCerrar={null}
-              quotePendiente={null}
-              onQuoteConsumed={null}
-            />
+            {panelIAResumen && (
+              <PanelIA
+                historialInicial={[{ id: 1, rol: 'ia', mensaje: 'He generado el resumen de Deep Learning y Redes Neuronales a partir de la información que proporcionaste. Puedes pedirme ajustes en la descripción, los objetivos, el enfoque o cualquier otro aspecto antes de generar el índice.' }]}
+                temaLabel="Resumen de la asignatura"
+                onCerrar={() => setPanelIAResumen(false)}
+                quotePendiente={null}
+                onQuoteConsumed={null}
+              />
+            )}
           </>
         ) : (
           <div className="flex-1 overflow-y-auto" style={{ background: '#FFFFFF' }}>
@@ -1492,6 +1496,7 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
         {(generando || generandoPreview) ? (
           <div className="flex-1 flex flex-col items-center justify-center py-16 gap-4">
             <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
+              <ProdiMark size={28} />
             </div>
             <div className="text-center">
               <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
