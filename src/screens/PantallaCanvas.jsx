@@ -464,33 +464,49 @@ function RefCard({ data: r, idx, showDelete, showRegenerate, showEdit, onDelete,
           </div>
           <div className="flex-1 min-w-0 space-y-2">
             <input
-              className="w-full text-sm font-semibold rounded-lg px-2.5 py-1.5 outline-none"
-              style={{ border: '1px solid #E5E7EB', color: '#1A1A1A', caretColor: '#367CFF' }}
+              className="w-full outline-none"
+              style={{ borderRadius: 12, padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', outline: '1px #CBD5E1 solid', outlineOffset: '-1px', color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', fontWeight: '600', lineHeight: '20px' }}
               value={draft.title}
               onChange={e => setDraft(d => ({ ...d, title: e.target.value }))}
               placeholder="Título"
+              onFocus={e => { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' }}
+              onBlur={e => { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' }}
+              onMouseEnter={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' } }}
+              onMouseLeave={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' } }}
             />
             <input
-              className="w-full text-xs rounded-lg px-2.5 py-1.5 outline-none"
-              style={{ border: '1px solid #E5E7EB', color: '#6B7280', caretColor: '#367CFF' }}
+              className="w-full outline-none"
+              style={{ borderRadius: 12, padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', outline: '1px #CBD5E1 solid', outlineOffset: '-1px', color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', lineHeight: '20px' }}
               value={draft.authors.join(', ')}
               onChange={e => setDraft(d => ({ ...d, authors: e.target.value.split(',').map(a => a.trim()) }))}
               placeholder="Autores (separados por coma)"
+              onFocus={e => { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' }}
+              onBlur={e => { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' }}
+              onMouseEnter={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' } }}
+              onMouseLeave={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' } }}
             />
             <div className="flex gap-2">
               <input
-                className="w-20 text-xs rounded-lg px-2.5 py-1.5 outline-none"
-                style={{ border: '1px solid #E5E7EB', color: '#6B7280', caretColor: '#367CFF' }}
+                className="w-20 outline-none"
+                style={{ borderRadius: 12, padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', outline: '1px #CBD5E1 solid', outlineOffset: '-1px', color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', lineHeight: '20px' }}
                 value={draft.year}
                 onChange={e => setDraft(d => ({ ...d, year: e.target.value }))}
                 placeholder="Año"
+                onFocus={e => { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' }}
+                onBlur={e => { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' }}
+                onMouseEnter={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' } }}
+                onMouseLeave={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' } }}
               />
               <input
-                className="flex-1 text-xs rounded-lg px-2.5 py-1.5 outline-none"
-                style={{ border: '1px solid #E5E7EB', color: '#6B7280', caretColor: '#367CFF' }}
+                className="flex-1 outline-none"
+                style={{ borderRadius: 12, padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', outline: '1px #CBD5E1 solid', outlineOffset: '-1px', color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', lineHeight: '20px' }}
                 value={draft.url}
                 onChange={e => setDraft(d => ({ ...d, url: e.target.value }))}
                 placeholder="URL"
+                onFocus={e => { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' }}
+                onBlur={e => { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' }}
+                onMouseEnter={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' } }}
+                onMouseLeave={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' } }}
               />
             </div>
             <textarea
@@ -1227,7 +1243,7 @@ function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGe
           onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
         >
           <ProdiMark size={14} />
-          Generar contenido del tema
+          Generar temario
           <CaretRight size={14} />
         </button>
       </div>
@@ -1306,9 +1322,6 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
           <div>
             <div className="flex items-center gap-2 mb-1">
               <h3 className="text-base font-semibold" style={{ color: '#1A1A1A' }}>{temaLabel ?? `Tema ${temaNum}`}</h3>
-              <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full" style={{ background: '#E7EFFE', color: '#367CFF', border: '1px solid #BAD2FF' }}>
-                <ProdiMark size={10} /> Generado por IA
-              </span>
             </div>
             <p className="text-xs" style={{ color: '#6B7280' }}>Revisa la estructura antes de generar el contenido completo</p>
           </div>
@@ -1316,9 +1329,9 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
             <button
               onClick={() => onChange('_editarInstrucciones', true)}
               className="text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
-              style={{ background: '#F1F5F9', color: '#6B7280' }}
-              onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
-              onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
+              style={{ background: '#FFFFFF', color: '#0A5CF5', border: '1px solid #0A5CF5' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#E7EFFE'}
+              onMouseLeave={e => e.currentTarget.style.background = '#FFFFFF'}
             >
               Editar instrucciones
             </button>
@@ -1476,18 +1489,20 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
           {/* URL input */}
           {!readOnly && (
             <div className="flex items-center gap-2">
-              <div className="flex items-center flex-1 gap-2 px-3 py-2 rounded-[10px]" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF' }}>
-                <Link size={12} style={{ color: '#6B7280', flexShrink: 0 }} />
+              <div className="flex items-center flex-1 gap-2" style={{ padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', borderRadius: 12, outline: '1px #CBD5E1 solid', outlineOffset: '-1px' }}>
+                <Link size={16} style={{ color: '#0A5CF5', flexShrink: 0 }} />
                 <input
                   type="url"
                   value={urlInput}
                   onChange={e => setUrlInput(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') handleAddUrl() }}
                   placeholder="Añadir enlace…"
-                  className="flex-1 text-xs outline-none bg-transparent"
-                  style={{ color: '#374151' }}
-                  onFocus={e => e.currentTarget.parentElement.style.borderColor = '#0A5CF5'}
-                  onBlur={e => e.currentTarget.parentElement.style.borderColor = '#CBD5E1'}
+                  className="flex-1 outline-none bg-transparent"
+                  style={{ color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', lineHeight: '20px' }}
+                  onFocus={e => { const p = e.currentTarget.parentElement; p.style.outline = '1px #0A5CF5 solid'; p.style.background = '#F1F5F9' }}
+                  onBlur={e => { const p = e.currentTarget.parentElement; p.style.outline = '1px #CBD5E1 solid'; p.style.background = '#FFFFFF' }}
+                  onMouseEnter={e => { if (document.activeElement !== e.currentTarget) { const p = e.currentTarget.parentElement; p.style.outline = '1px #0A5CF5 solid'; p.style.background = '#F1F5F9' } }}
+                  onMouseLeave={e => { if (document.activeElement !== e.currentTarget) { const p = e.currentTarget.parentElement; p.style.outline = '1px #CBD5E1 solid'; p.style.background = '#FFFFFF' } }}
                 />
               </div>
               <button
@@ -1622,21 +1637,39 @@ function EpigrafeConBibliografia({ ep, index }) {
           <div className="mt-3 space-y-2 p-3 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
             <div>
               <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>URL</label>
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF' }}>
-                <Link size={11} style={{ color: '#6B7280' }} />
+              <div className="flex items-center gap-2" style={{ padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', borderRadius: 12, outline: '1px #CBD5E1 solid', outlineOffset: '-1px' }}>
+                <Link size={16} style={{ color: '#0A5CF5' }} />
                 <input type="url" value={refUrl} onChange={e => setRefUrl(e.target.value)} placeholder="https://…"
-                  className="flex-1 text-xs outline-none bg-transparent" style={{ color: '#374151' }} />
+                  className="flex-1 outline-none bg-transparent"
+                  style={{ color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', lineHeight: '20px' }}
+                  onFocus={e => { const p = e.currentTarget.parentElement; p.style.outline = '1px #0A5CF5 solid'; p.style.background = '#F1F5F9' }}
+                  onBlur={e => { const p = e.currentTarget.parentElement; p.style.outline = '1px #CBD5E1 solid'; p.style.background = '#FFFFFF' }}
+                  onMouseEnter={e => { if (document.activeElement !== e.currentTarget) { const p = e.currentTarget.parentElement; p.style.outline = '1px #0A5CF5 solid'; p.style.background = '#F1F5F9' } }}
+                  onMouseLeave={e => { if (document.activeElement !== e.currentTarget) { const p = e.currentTarget.parentElement; p.style.outline = '1px #CBD5E1 solid'; p.style.background = '#FFFFFF' } }}
+                />
               </div>
             </div>
             <div>
               <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>DOI</label>
               <input type="text" value={refDoi} onChange={e => setRefDoi(e.target.value)} placeholder="10.xxxx/…"
-                className="w-full px-3 py-2 rounded-lg text-xs outline-none" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#374151' }} />
+                className="w-full outline-none"
+                style={{ borderRadius: 12, padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', outline: '1px #CBD5E1 solid', outlineOffset: '-1px', color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', lineHeight: '20px' }}
+                onFocus={e => { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' }}
+                onBlur={e => { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' }}
+                onMouseEnter={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' } }}
+                onMouseLeave={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' } }}
+              />
             </div>
             <div>
               <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>¿Para qué se usa esta fuente?</label>
               <input type="text" value={refUso} onChange={e => setRefUso(e.target.value)} placeholder="Ej. Marco teórico del epígrafe…"
-                className="w-full px-3 py-2 rounded-lg text-xs outline-none" style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#374151' }} />
+                className="w-full outline-none"
+                style={{ borderRadius: 12, padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', outline: '1px #CBD5E1 solid', outlineOffset: '-1px', color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', lineHeight: '20px' }}
+                onFocus={e => { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' }}
+                onBlur={e => { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' }}
+                onMouseEnter={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #0A5CF5 solid'; e.target.style.background = '#F1F5F9' } }}
+                onMouseLeave={e => { if (document.activeElement !== e.target) { e.target.style.outline = '1px #CBD5E1 solid'; e.target.style.background = '#FFFFFF' } }}
+              />
             </div>
             <div className="flex justify-end gap-2 pt-1">
               <button onClick={() => setMostrarAddRef(false)}
@@ -1715,8 +1748,8 @@ function RefBibCard({ ref: r, temaNum, onNavigateToContent }) {
       {/* Extracto blockquote */}
       {r.extracto && (
         <div
-          className="rounded-xl px-4 py-3 mb-3"
-          style={{ background: '#F0F6FF', borderLeft: '3px solid #93C5FD' }}
+          className="px-4 py-3 mb-3"
+          style={{ background: '#F8F9FA', borderLeft: '4px solid #CBD5E1' }}
         >
           <p className="text-sm italic leading-relaxed" style={{ color: '#374151' }}>
             {r.extracto}
@@ -2509,7 +2542,7 @@ export default function PantallaCanvas({
               onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
               onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
             >
-                            Generar contenido del tema
+                            Generar temario
               <CaretRight size={13} />
             </button>
           </>

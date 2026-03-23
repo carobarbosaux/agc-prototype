@@ -90,13 +90,14 @@ const historialConversaciones = [
 
 const RECENT_LIMIT = 5
 
-export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePendiente, onQuoteConsumed }) {
+export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePendiente, onQuoteConsumed, contextoSugerencias }) {
   const [mensajes, setMensajes] = useState(historialInicial || [])
   const [input, setInput] = useState('')
   const [quote, setQuote] = useState(null)
   const [esperando, setEsperando] = useState(false)
   const [respIdx, setRespIdx] = useState(0)
   const [vistaHistorial, setVistaHistorial] = useState(false)
+  const [sugerenciasContexto, setSugerenciasContexto] = useState(contextoSugerencias || null)
   const [conectoresAbierto, setConectoresAbierto] = useState(false)
   const [companyKnowledgeOn, setCompanyKnowledgeOn] = useState(false)
   const [selectedConectores, setSelectedConectores] = useState(new Set())
@@ -147,6 +148,16 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
           setMensajes(prev => [...prev, iaMsg])
           setEsperando(false)
         }, 1400)
+      } else if (quotePendiente.accion === 'iaContexto') {
+        // Contextual button (e.g. "Sugerir nivel"): inject IA opening message + show suggestion chips
+        setSugerenciasContexto({ sugerencias: quotePendiente.sugerencias, respuestas: quotePendiente.respuestas })
+        setEsperando(true)
+        setTimeout(() => {
+          const iaMsg = { id: Date.now() + 1, rol: 'ia', mensaje: quotePendiente.texto }
+          setMensajes(prev => [...prev, iaMsg])
+          setEsperando(false)
+          setTimeout(() => inputRef.current?.focus(), 50)
+        }, 800)
       } else {
         setQuote(quotePendiente)
         setTimeout(() => inputRef.current?.focus(), 50)
@@ -160,11 +171,11 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
     }
   }, [mensajes, esperando])
 
-  const enviarMensaje = () => {
-    if ((!input.trim() && !quote) || esperando) return
-    const texto = quote
+  const enviarMensaje = (textoDirecto) => {
+    const texto = textoDirecto || (quote
       ? `[${quote.accion}] "${quote.texto}"${input.trim() ? `\n\n${input.trim()}` : ''}`
-      : input.trim()
+      : input.trim())
+    if (!texto || esperando) return
     const userMsg = { id: Date.now(), rol: 'usuario', mensaje: texto }
     setMensajes(prev => [...prev, userMsg])
     setInput('')
@@ -174,13 +185,14 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
     setInputExpanded(false)
 
     setTimeout(() => {
+      const respuestaContextual = sugerenciasContexto?.respuestas?.[texto]
       const iaMsg = {
         id: Date.now() + 1,
         rol: 'ia',
-        mensaje: respuestasIA[respIdx % respuestasIA.length],
+        mensaje: respuestaContextual || respuestasIA[respIdx % respuestasIA.length],
       }
       setMensajes(prev => [...prev, iaMsg])
-      setRespIdx(prev => prev + 1)
+      if (!respuestaContextual) setRespIdx(prev => prev + 1)
       setEsperando(false)
     }, 1200)
   }
@@ -196,6 +208,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
     setMensajes(historialInicial || [])
     setInput('')
     setQuote(null)
+    setSugerenciasContexto(null)
     setVistaHistorial(false)
   }
 
@@ -277,16 +290,20 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
           {/* Search */}
           <div className="px-3 pt-3 pb-2 flex-shrink-0">
             <div
-              className="flex items-center gap-2 px-3 py-2 rounded-lg"
-              style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}
+              className="flex items-center gap-2"
+              style={{ padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', borderRadius: 12, outline: '1px #CBD5E1 solid', outlineOffset: '-1px' }}
             >
-              <MagnifyingGlass size={13} style={{ color: '#6B7280', flexShrink: 0 }} />
+              <MagnifyingGlass size={16} style={{ color: '#0A5CF5', flexShrink: 0 }} />
               <input
                 value={busqueda}
                 onChange={e => { setBusqueda(e.target.value); setMostrarTodo(false) }}
                 placeholder="Buscar conversaciones..."
-                className="flex-1 text-xs bg-transparent outline-none"
-                style={{ color: '#374151', caretColor: '#367CFF' }}
+                className="flex-1 bg-transparent outline-none"
+                style={{ color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', lineHeight: '20px' }}
+                onFocus={e => { const p = e.currentTarget.parentElement; p.style.outline = '1px #0A5CF5 solid'; p.style.background = '#F1F5F9' }}
+                onBlur={e => { const p = e.currentTarget.parentElement; p.style.outline = '1px #CBD5E1 solid'; p.style.background = '#FFFFFF' }}
+                onMouseEnter={e => { if (document.activeElement !== e.currentTarget) { const p = e.currentTarget.parentElement; p.style.outline = '1px #0A5CF5 solid'; p.style.background = '#F1F5F9' } }}
+                onMouseLeave={e => { if (document.activeElement !== e.currentTarget) { const p = e.currentTarget.parentElement; p.style.outline = '1px #CBD5E1 solid'; p.style.background = '#FFFFFF' } }}
               />
               {busqueda && (
                 <button onClick={() => setBusqueda('')}>
@@ -408,8 +425,10 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
           {/* ── Input ─────────────────────────────────────────────────────── */}
           <div className="relative flex-shrink-0">
           {/* Suggested prompts — floats above input, does not push content */}
-          {selectedConectores.size > 0 && (() => {
-            const chips = [...selectedConectores].flatMap(id => (SUGERENCIAS[id] || []).map(text => ({ text, id })))
+          {(selectedConectores.size > 0 || sugerenciasContexto?.sugerencias?.length > 0) && (() => {
+            const connectorChips = [...selectedConectores].flatMap(id => (SUGERENCIAS[id] || []).map(text => ({ text, autoSend: false })))
+            const contextChips = (sugerenciasContexto?.sugerencias || []).map(text => ({ text, autoSend: true }))
+            const chips = [...contextChips, ...connectorChips]
             if (!chips.length) return null
             return (
               <div
@@ -426,10 +445,10 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                 }}
               >
                 <div className="flex items-center gap-1.5 px-3 py-2 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-                                    {chips.map(({ text }, i) => (
+                  {chips.map(({ text, autoSend }, i) => (
                     <button
                       key={i}
-                      onClick={() => { setInput(text); inputRef.current?.focus() }}
+                      onClick={() => { if (autoSend) { enviarMensaje(text) } else { setInput(text); inputRef.current?.focus() } }}
                       className="flex-shrink-0 px-2 py-0.5 rounded-full whitespace-nowrap transition-colors"
                       style={{ fontSize: '10px', background: '#F1F5F9', color: '#374151', border: '1px solid #E2E8F0' }}
                       onMouseEnter={e => { e.currentTarget.style.background = '#E7EFFE'; e.currentTarget.style.borderColor = '#BAD2FF'; e.currentTarget.style.color = '#367CFF' }}
