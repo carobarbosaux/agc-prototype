@@ -90,6 +90,17 @@ const historialConversaciones = [
 
 const RECENT_LIMIT = 5
 
+const CONECTORES = [
+  { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams', desc: 'Conversaciones y archivos' },
+  { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint', desc: 'Documentos institucionales' },
+  { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook', desc: 'Correos y adjuntos' },
+  { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive', desc: 'Archivos personales' },
+  { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva', desc: 'Diseños y recursos visuales' },
+  { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially', desc: 'Contenidos interactivos' },
+]
+const MICROSOFT_CONECTORES = CONECTORES.slice(0, 4)
+const EXTERNAL_CONECTORES = CONECTORES.slice(4)
+
 export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePendiente, onQuoteConsumed, contextoSugerencias }) {
   const [mensajes, setMensajes] = useState(historialInicial || [])
   const [input, setInput] = useState('')
@@ -163,7 +174,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
         setTimeout(() => inputRef.current?.focus(), 50)
       }
     }
-  }, [quotePendiente])
+  }, [quotePendiente, onQuoteConsumed])
 
   useEffect(() => {
     if (chatRef.current) {
@@ -522,7 +533,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                       style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 -8px 24px rgba(0,0,0,0.12)', minWidth: '280px', zIndex: 50 }}
                     >
                       <div className="px-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
-                        <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>Conectores</p>
+                        <p className="text-xs font-semibold tracking-wide" style={{ color: '#6B7280' }}>Conectores</p>
                       </div>
                       <div className="px-3 pt-1.5 pb-1" style={{ borderBottom: '1px solid #F3F4F6' }}>
                         <div className="flex items-center gap-2.5 py-1">
@@ -539,12 +550,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                           </button>
                         </div>
                         <div style={{ opacity: companyKnowledgeOn ? 1 : 0.35, pointerEvents: companyKnowledgeOn ? 'auto' : 'none', transition: 'opacity 0.15s' }}>
-                          {[
-                            { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams', desc: 'Conversaciones y archivos' },
-                            { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint', desc: 'Documentos institucionales' },
-                            { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook', desc: 'Correos y adjuntos' },
-                            { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive', desc: 'Archivos personales' },
-                          ].map(c => {
+                          {MICROSOFT_CONECTORES.map(c => {
                             const active = selectedConectores.has(c.id)
                             return (
                               <button key={c.id} onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
@@ -568,10 +574,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
                         )}
                       </div>
                       <div className="px-3 pt-1.5 pb-2">
-                        {[
-                          { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva', desc: 'Diseños y recursos visuales' },
-                          { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially', desc: 'Contenidos interactivos' },
-                        ].map(c => {
+                        {EXTERNAL_CONECTORES.map(c => {
                           const active = selectedConectores.has(c.id)
                           return (
                             <button key={c.id} onClick={e => { e.stopPropagation(); toggleConector(c.id) }}
@@ -616,15 +619,7 @@ export default function PanelIA({ historialInicial, onCerrar, temaLabel, quotePe
               const connectorTags = selectedConectores.size > 0 && (
                 <div className="flex items-center gap-1 flex-wrap">
                   {[...selectedConectores].map(id => {
-                    const all = [
-                      { id: 'teams', letter: 'T', color: '#6264A7', label: 'Teams' },
-                      { id: 'sharepoint', letter: 'SP', color: '#0078D4', label: 'SharePoint' },
-                      { id: 'outlook', letter: 'OL', color: '#0078D4', label: 'Outlook' },
-                      { id: 'onedrive', letter: 'OD', color: '#0078D4', label: 'OneDrive' },
-                      { id: 'canva', letter: 'CA', color: '#7C3AED', label: 'Canva' },
-                      { id: 'genially', letter: 'GE', color: '#F97316', label: 'Genially' },
-                    ]
-                    const c = all.find(x => x.id === id)
+                    const c = CONECTORES.find(x => x.id === id)
                     if (!c) return null
                     return (
                       <button key={id}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './index.css'
 import PantallaHerramientas from './screens/PantallaHerramientas'
 import PantallaDashboard from './screens/PantallaDashboard'
@@ -8,9 +8,44 @@ import PantallaCrearAsignatura from './screens/PantallaCrearAsignatura'
 import Topbar from './components/Topbar'
 import { titulaciones as titulacionesIniciales } from './mockData'
 
+const HASH_TO_PANTALLA = {
+  '/herramientas': 'herramientas',
+  '/dashboard': 'dashboard',
+  '/canvas': 'canvas',
+  '/crear-asignatura': 'crearAsignatura',
+}
+
+const PANTALLA_TO_HASH = {
+  herramientas: '/herramientas',
+  dashboard: '/dashboard',
+  canvas: '/canvas',
+  crearAsignatura: '/crear-asignatura',
+}
+
+function getInitialPantalla() {
+  const hash = window.location.hash.replace('#', '')
+  return HASH_TO_PANTALLA[hash] || 'herramientas'
+}
+
 export default function App() {
-  const [pantalla, setPantalla] = useState('herramientas')
+  const [pantalla, setPantalla] = useState(getInitialPantalla)
   const [rolActivo, setRolActivo] = useState('autor')
+
+  // Sync hash → URL
+  useEffect(() => {
+    window.location.hash = PANTALLA_TO_HASH[pantalla] || '/herramientas'
+  }, [pantalla])
+
+  // Handle browser back/forward
+  useEffect(() => {
+    const onPopState = () => {
+      const hash = window.location.hash.replace('#', '')
+      const dest = HASH_TO_PANTALLA[hash]
+      if (dest) setPantalla(dest)
+    }
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
   const [seccionActiva, setSeccionActiva] = useState('t2')
   const [panelIAabierto, setPanelIAabierto] = useState(true)
   const [notifAbiertas, setNotifAbiertas] = useState(false)
@@ -24,12 +59,6 @@ export default function App() {
     if (destino === 'canvas') {
       if (params.seccion) setSeccionActiva(params.seccion)
       if (params.titulacionId) setAsignaturaActiva({ titulacionId: params.titulacionId, asignaturaId: params.asignaturaId })
-      setPantalla('canvas')
-    } else if (destino === 'canvas-t1') {
-      setSeccionActiva('t1')
-      setPantalla('canvas')
-    } else if (destino === 'canvas-t2') {
-      setSeccionActiva('t2')
       setPantalla('canvas')
     } else if (destino === 'dashboard') {
       setPantalla('dashboard')
@@ -74,7 +103,6 @@ export default function App() {
       { label: 'Generación de Asignaturas', onClick: () => setPantalla('herramientas') },
       { label: 'Dashboard', onClick: null },
     ]
-    if (pantalla === 'canvas') return []
     return []
   }
 
@@ -104,7 +132,6 @@ export default function App() {
           onRolChange={setRolActivo}
           onNotifClick={() => setNotifAbiertas(true)}
           notifCount={1}
-          pantalla={pantalla}
           onLogoClick={() => navigate('dashboard')}
         />
       )}

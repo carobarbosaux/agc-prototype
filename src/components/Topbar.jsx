@@ -136,8 +136,8 @@ export default function Topbar({ breadcrumb, rolActivo, onRolChange, onNotifClic
 
         {/* Avatar */}
         <div
-          className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white"
-          style={{ background: '#073676' }}
+          className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-black"
+          style={{ background: 'var(--color-primary-200)' }}
           title="Ana Lucía Martínez"
         >
           AL

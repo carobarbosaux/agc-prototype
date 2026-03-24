@@ -127,15 +127,15 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
               </span>
             )}
           </button>
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white"
-            style={{ background: '#073676' }}>
+          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold"
+            style={{ background: '#E7EFFE' }}>
             AL
           </div>
         </div>
       </header>
 
       {/* Page content */}
-      <div className="pt-14 px-8 pb-8 max-w-5xl mx-auto">
+      <div className="pt-14 px-4 sm:px-8 pb-8 max-w-[960px] mx-auto">
         <div className="pt-10 pb-6">
           <h1 className="text-2xl font-semibold mb-1" style={{ color: '#1A1A1A' }}>Herramientas</h1>
           <p className="text-sm mb-6" style={{ color: '#4B5563' }}>Selecciona una herramienta o usa el Asistente IA de Contenidos para empezar</p>
@@ -148,7 +148,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
         </div>
 
         {/* Tools grid */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
           {herramientas.map((h) => {
             const Icon = h.icon
 
@@ -156,7 +156,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
               <div
                 key={h.id}
                 onClick={() => h.clickable && onNavigate('dashboard')}
-                className="relative rounded-2xl p-6 transition-all"
+                className="relative rounded-2xl p-6 transition-all flex flex-col"
                 style={{
                   background: h.clickable ? '#FBFCFF' : '#F4F6FD',
                   border: h.activa ? '1.5px solid #DCDFEB' : 'none',
@@ -211,7 +211,7 @@ export default function PantallaHerramientas({ onNavigate, rolActivo, onRolChang
                 </p>
 
                 {h.activa && (
-                  <div className="mt-5">
+                  <div className="mt-auto pt-5">
                     <span
                       className="inline-flex items-center gap-2 transition-all"
                       style={{

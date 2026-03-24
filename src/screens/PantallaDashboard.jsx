@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Warning, Clock, Plus, BookOpen, Lock, Funnel, Globe, CheckCircle, XCircle, GitBranch, CaretRight, X, CaretRight as ChevronRight } from '@phosphor-icons/react'
+import { Warning, Clock, Plus, BookOpen, Lock, Globe, CheckCircle, XCircle, CaretRight, X, CaretRight as ChevronRight } from '@phosphor-icons/react'
 import StatusIndicator, { toStatusKey } from '../components/StatusIndicator'
 import Chatbar from '../components/Chatbar'
 import CalidadContenidosCards from '../components/CalidadContenidosCards'
@@ -12,6 +12,24 @@ const rolLabel = {
   coordinador: 'Coordinador',
   editor: 'Editor',
   disenador: 'Diseñador',
+}
+
+// Shared table style constants
+const HDR = { padding: '10px 16px', background: '#E6EFFF', borderBottom: '1px solid #DCDFEB', display: 'flex', alignItems: 'center' }
+const hdrtxt = { color: '#3A455C', fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.04em' }
+const CELL = { padding: '12px 16px', borderBottom: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', minWidth: 0 }
+const txt = { color: '#334155', fontSize: 13, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }
+
+function LockedTitulacion() {
+  return (
+    <div className="flex flex-col items-center justify-center py-20 text-center">
+      <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#F1F5F9' }}>
+        <Lock size={20} style={{ color: '#9CA3AF' }} />
+      </div>
+      <p className="text-sm font-medium" style={{ color: '#4B5563' }}>Titulación no disponible en el prototipo</p>
+      <p className="text-xs mt-1" style={{ color: '#6B7280' }}>Selecciona el Máster en IA para navegar</p>
+    </div>
+  )
 }
 
 const obsolescenciaConfig = {
@@ -95,23 +113,9 @@ function TablaAutor({ titulaciones, titulacionSeleccionada, filtroTag, rolActivo
     }
   }
 
-  if (!titulacion?.navegable) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#F1F5F9' }}>
-          <Lock size={20} style={{ color: '#9CA3AF' }} />
-        </div>
-        <p className="text-sm font-medium" style={{ color: '#4B5563' }}>Titulación no disponible en el prototipo</p>
-        <p className="text-xs mt-1" style={{ color: '#6B7280' }}>Selecciona el Máster en IA para navegar</p>
-      </div>
-    )
-  }
+  if (!titulacion?.navegable) return <LockedTitulacion />
 
   const COLS_AUTOR = '2fr 1.1fr 0.9fr 1fr 1fr'
-  const HDR = { padding: '10px 16px', background: '#E6EFFF', borderBottom: '1px solid #DCDFEB', display: 'flex', alignItems: 'center' }
-  const hdrtxt = { color: '#3A455C', fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.04em' }
-  const CELL = { padding: '12px 16px', borderBottom: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', minWidth: 0 }
-  const txt = { color: '#334155', fontSize: 13, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }
 
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
@@ -194,23 +198,9 @@ function TablaCoordinador({ titulaciones, titulacionSeleccionada, filtroTag, fil
 
   const filialesDisponibles = [...new Set((titulacion?.asignaturas || []).map(a => a.filial).filter(Boolean))]
 
-  if (!titulacion?.navegable) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#F1F5F9' }}>
-          <Lock size={20} style={{ color: '#9CA3AF' }} />
-        </div>
-        <p className="text-sm font-medium" style={{ color: '#4B5563' }}>Titulación no disponible en el prototipo</p>
-        <p className="text-xs mt-1" style={{ color: '#6B7280' }}>Selecciona el Máster en IA para navegar</p>
-      </div>
-    )
-  }
+  if (!titulacion?.navegable) return <LockedTitulacion />
 
   const COLS_COORD = '2fr 1fr 1fr 0.7fr 1fr 1fr 0.9fr'
-  const HDR = { padding: '10px 16px', background: '#E6EFFF', borderBottom: '1px solid #DCDFEB', display: 'flex', alignItems: 'center' }
-  const hdrtxt = { color: '#3A455C', fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.04em' }
-  const CELL = { padding: '12px 16px', borderBottom: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', minWidth: 0 }
-  const txt = { color: '#334155', fontSize: 13, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }
 
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
@@ -358,17 +348,7 @@ function TablaDisenador({ titulaciones, titulacionSeleccionada, onNavigate }) {
   const titulacion = titulaciones.find(t => t.id === titulacionSeleccionada)
   const asignaturas = (titulacion?.asignaturas || []).filter(a => a.disenadorEstado)
 
-  if (!titulacion?.navegable) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#F1F5F9' }}>
-          <Lock size={20} style={{ color: '#9CA3AF' }} />
-        </div>
-        <p className="text-sm font-medium" style={{ color: '#4B5563' }}>Titulación no disponible en el prototipo</p>
-        <p className="text-xs mt-1" style={{ color: '#6B7280' }}>Selecciona el Máster en IA para navegar</p>
-      </div>
-    )
-  }
+  if (!titulacion?.navegable) return <LockedTitulacion />
 
   const estadoDisenadorConfig = {
     aprobado: { label: 'Disponible', bg: '#F0FDF4', color: '#10B981', border: '#A7F3D0' },
@@ -377,10 +357,6 @@ function TablaDisenador({ titulaciones, titulacionSeleccionada, onNavigate }) {
   }
 
   const COLS_DIS = '3fr 140px'
-  const HDR = { padding: '10px 16px', background: '#E6EFFF', borderBottom: '1px solid #DCDFEB', display: 'flex', alignItems: 'center' }
-  const hdrtxt = { color: '#3A455C', fontSize: 12, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.04em' }
-  const CELL = { padding: '12px 16px', borderBottom: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', minWidth: 0 }
-  const txt = { color: '#334155', fontSize: 13, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: '500', lineHeight: '20px' }
 
   return (
     <div className="rounded-2xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
@@ -619,7 +595,9 @@ function TrackingDashboard({ onNavigate }) {
               <div className="text-xs mb-1" style={{ color: '#6B7280' }}>{selected.titulacion}</div>
               <div className="text-sm font-semibold leading-tight" style={{ color: '#1A1A1A' }}>{selected.nombre}</div>
             </div>
-            <button onClick={() => setSelectedId(null)} className="flex-shrink-0 p-0.5 rounded hover:bg-gray-200 transition-colors">
+            <button onClick={() => setSelectedId(null)} className="flex-shrink-0 p-0.5 rounded"
+              onMouseEnter={e => { e.currentTarget.style.background = '#E5E7EB' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}>
               <X size={14} style={{ color: '#6B7280' }} />
             </button>
           </div>
@@ -627,7 +605,7 @@ function TrackingDashboard({ onNavigate }) {
           <div className="p-4 space-y-4 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 260px)' }}>
             {/* Structural info */}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Información estructural</div>
+              <div className="text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Información estructural</div>
               <div className="space-y-1.5 text-xs">
                 {[
                   ['Última versión', formatDate(selected.lastVersionDate)],
@@ -646,7 +624,7 @@ function TrackingDashboard({ onNavigate }) {
 
             {/* Obsolescence status */}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Estado de obsolescencia</div>
+              <div className="text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Estado de obsolescencia</div>
               <div className="rounded-lg p-3 space-y-2" style={{ background: STATUS_CONFIG[selected.status].bg, border: `1px solid ${STATUS_CONFIG[selected.status].border}` }}>
                 <div className="flex items-center gap-2">
                   {(() => { const { Icon } = STATUS_CONFIG[selected.status]; return <Icon size={13} style={{ color: STATUS_CONFIG[selected.status].color }} /> })()}
@@ -664,7 +642,7 @@ function TrackingDashboard({ onNavigate }) {
 
             {/* Filial versions */}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Versiones por filial</div>
+              <div className="text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Versiones por filial</div>
               <div className="space-y-2">
                 {Object.entries(selected.filialVersions).map(([key, fv]) => (
                   <div key={key} className="rounded-lg px-3 py-2" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
@@ -687,7 +665,7 @@ function TrackingDashboard({ onNavigate }) {
             {/* Alarms */}
             {selected.alarms.length > 0 && (
               <div>
-                <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Alarmas</div>
+                <div className="text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Alarmas</div>
                 <div className="space-y-1.5">
                   {selected.alarms.map(a => {
                     const ac = ALARM_CONFIG[a]
@@ -776,7 +754,7 @@ export default function PantallaDashboard({ rolActivo, onNavigate, titulaciones,
       {onboardingVisible && (
         <OnboardingProdi onClose={() => setOnboardingVisible(false)} />
       )}
-      <div className="max-w-screen-xl mx-auto px-6 py-6">
+      <div className="max-w-[960px] mx-auto px-6 py-6">
 
         {/* Page title */}
         <div className="mb-5">

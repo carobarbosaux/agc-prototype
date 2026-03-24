@@ -149,7 +149,7 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>
           Titulación
         </label>
         <div className="flex items-center gap-2 mb-3" style={{ padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', borderRadius: 12, outline: '1px #CBD5E1 solid', outlineOffset: '-1px' }}>
@@ -188,7 +188,7 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Nivel de estudio</label>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Nivel de estudio</label>
         <select value={datos.nivel || ''} onChange={e => onChange('nivel', e.target.value)}
           className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none"
           style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: datos.nivel ? '#334155' : '#6B7280' }}
@@ -203,7 +203,7 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Público objetivo</label>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Público objetivo</label>
         <textarea value={datos.publicoObjetivo || ''} onChange={e => onChange('publicoObjetivo', e.target.value)}
           placeholder="Ej. Profesionales de TI con 2+ años de experiencia que quieren especializarse en IA aplicada…"
           rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
@@ -217,7 +217,7 @@ function PasoContextoAcademico({ datos, onChange }) {
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Número de créditos (ECTS)</label>
+          <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Número de créditos (ECTS)</label>
           <input type="number" value={datos.creditos || ''} onChange={e => onChange('creditos', e.target.value)}
             min={1} max={30} placeholder="6" className="w-full outline-none"
             style={{ borderRadius: 12, padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', outline: '1px #CBD5E1 solid', outlineOffset: '-1px', color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', lineHeight: '20px' }}
@@ -228,7 +228,7 @@ function PasoContextoAcademico({ datos, onChange }) {
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Nombre provisional</label>
+          <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Nombre provisional</label>
           <input type="text" value={datos.nombre || ''} onChange={e => onChange('nombre', e.target.value)}
             placeholder="Ej. Fundamentos de ML" className="w-full outline-none"
             style={{ borderRadius: 12, padding: '12px 16px', background: '#FFFFFF', boxShadow: '0px 1px 2px rgba(18,18,23,0.05)', outline: '1px #CBD5E1 solid', outlineOffset: '-1px', color: '#1E293B', fontSize: 16, fontFamily: 'Proeduca Sans', lineHeight: '20px' }}
@@ -241,7 +241,7 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Temas o contenidos a tratar</label>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Temas o contenidos a tratar</label>
         <textarea value={datos.temasTratar || ''} onChange={e => onChange('temasTratar', e.target.value)}
           placeholder="Ej. Regresión lineal, clasificación, árboles de decisión, redes neuronales, evaluación de modelos…"
           rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
@@ -254,7 +254,7 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Descriptor</label>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Descriptor</label>
         <textarea value={datos.descriptor || ''} onChange={e => onChange('descriptor', e.target.value)}
           placeholder="Describe el propósito y alcance de la asignatura…"
           rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
@@ -267,7 +267,7 @@ function PasoContextoAcademico({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Resultados de aprendizaje</label>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Resultados de aprendizaje</label>
         <textarea value={datos.resultadosAprendizaje || ''} onChange={e => onChange('resultadosAprendizaje', e.target.value)}
           placeholder="Ej. Al finalizar, el estudiante será capaz de…"
           rows={3} className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
@@ -292,7 +292,7 @@ function PasoDefinicionTematica({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Área de conocimiento</label>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Área de conocimiento</label>
         <div className="grid grid-cols-2 gap-2">
           {areas.map(area => {
             const sel = datos.areaConocimiento === area
@@ -309,7 +309,7 @@ function PasoDefinicionTematica({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Tipo de asignatura</label>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Tipo de asignatura</label>
         <select value={datos.tipoAsignatura || ''} onChange={e => onChange('tipoAsignatura', e.target.value)}
           className="w-full px-3 py-2.5 rounded-lg text-sm outline-none"
           style={{ border: '1.5px solid #E5E7EB', background: '#FFFFFF', color: datos.tipoAsignatura ? '#1A1A1A' : '#6B7280' }}
@@ -322,7 +322,7 @@ function PasoDefinicionTematica({ datos, onChange }) {
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Enfoque principal</label>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Enfoque principal</label>
         <div className="grid grid-cols-3 gap-2">
           {['Teórico', 'Práctico', 'Mixto', 'Basado en casos', 'Por proyectos', 'Investigación'].map(enfoque => {
             const sel = datos.enfoque === enfoque
@@ -421,7 +421,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange, onQuote }) {
         <p className="text-xs" style={{ color: '#6B7280' }}>Generado por IA · Edita directamente o ajusta con el asistente</p>
       </div>
       <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: '#6B7280' }}>Asignatura</p>
+        <p className="text-xs font-semibold tracking-wide mb-1" style={{ color: '#6B7280' }}>Asignatura</p>
         <p
           contentEditable suppressContentEditableWarning
           className="text-base font-semibold outline-none rounded px-1 -mx-1"
@@ -431,7 +431,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange, onQuote }) {
         >{resumenPreview.nombre}</p>
       </div>
       <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Descripción</p>
+        <p className="text-xs font-semibold tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Descripción</p>
         <p
           contentEditable suppressContentEditableWarning
           className="text-sm leading-relaxed outline-none rounded px-1 -mx-1"
@@ -441,7 +441,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange, onQuote }) {
         >{resumenPreview.descripcion}</p>
       </div>
       <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Objetivos de aprendizaje</p>
+        <p className="text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Objetivos de aprendizaje</p>
         <div className="space-y-1.5">
           {resumenPreview.objetivos.map((obj, i) => (
             <div key={i} className="flex items-start gap-2">
@@ -462,7 +462,7 @@ function PasoPreviewResumen({ resumenPreview, onResumenChange, onQuote }) {
         </div>
       </div>
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Etiquetas sugeridas</p>
+        <p className="text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Etiquetas sugeridas</p>
         <div className="flex flex-wrap gap-1.5">
           {resumenPreview.tags.map(tag => (
             <span key={tag} className="inline-flex items-center rounded-full text-xs font-medium"
@@ -843,7 +843,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
       {/* Nivel de conocimiento previo */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label className="block text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>
+          <label className="block text-xs font-semibold tracking-wide" style={{ color: '#6B7280' }}>
             Nivel de conocimiento previo del estudiante
           </label>
           <CtaBtn ctxKey="nivel" label="Sugerir nivel" />
@@ -864,7 +864,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
 
       {/* Número de temas */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>
           Número de temas <span style={{ color: '#6B7280', fontWeight: '400' }}>(recomendado: 8)</span>
         </label>
         <div className="flex items-center gap-3">
@@ -888,7 +888,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
       {/* Enfoque de la asignatura */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label className="block text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>
+          <label className="block text-xs font-semibold tracking-wide" style={{ color: '#6B7280' }}>
             Enfoque de la asignatura
           </label>
           <CtaBtn ctxKey="enfoque" label="Sugerir enfoque" />
@@ -920,7 +920,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
       {/* Temas/conceptos obligatorios */}
       <div>
         <div className="flex items-center justify-between mb-1">
-          <label className="block text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>
+          <label className="block text-xs font-semibold tracking-wide" style={{ color: '#6B7280' }}>
             Temas o conceptos obligatorios
           </label>
           <CtaBtn ctxKey="conceptos" label="Sugerir conceptos" />
@@ -1036,7 +1036,7 @@ function AutorPaso2Descriptor({ datos, onChange, panelContexto, onPanelContexto 
 
       {/* Opciones de la comisión */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>
+        <label className="block text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>
           Opciones de la comisión
         </label>
         <div className="space-y-2">
@@ -1177,7 +1177,7 @@ function AutorPaso3Preview({ resumen, onResumenChange, onQuote }) {
 
       {/* Subject name */}
       <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: '#6B7280' }}>Asignatura</p>
+        <p className="text-xs font-semibold tracking-wide mb-1" style={{ color: '#6B7280' }}>Asignatura</p>
         <p
           contentEditable suppressContentEditableWarning
           className="text-base font-semibold outline-none rounded px-1 -mx-1"
@@ -1189,7 +1189,7 @@ function AutorPaso3Preview({ resumen, onResumenChange, onQuote }) {
 
       {/* Description */}
       <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Descripción</p>
+        <p className="text-xs font-semibold tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Descripción</p>
         <p
           contentEditable suppressContentEditableWarning
           className="text-sm leading-relaxed outline-none rounded px-1 -mx-1"
@@ -1201,7 +1201,7 @@ function AutorPaso3Preview({ resumen, onResumenChange, onQuote }) {
 
       {/* Topics preview */}
       <div className="pb-4" style={{ borderBottom: '1px solid #F1F5F9' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Estructura de temas propuesta</p>
+        <p className="text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Estructura de temas propuesta</p>
         <div className="space-y-2">
           {(resumen.temasConDescripcion || resumen.temas.map((t, i) => ({ numero: i + 1, titulo: t, descripcion: null }))).map((tema, idx) => (
             <div key={tema.numero} className="px-3 py-2.5 rounded-lg" style={{ background: '#F8F9FA', border: '1px solid #F1F5F9' }}>
@@ -1239,7 +1239,7 @@ function AutorPaso3Preview({ resumen, onResumenChange, onQuote }) {
 
       {/* Tags */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Etiquetas clave</p>
+        <p className="text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Etiquetas clave</p>
         <div className="flex flex-wrap gap-1.5">
           {resumen.tags.map(tag => (
             <span key={tag} className="inline-flex items-center rounded-full text-xs font-medium"
@@ -1495,7 +1495,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
         ) : paso === 2 ? (
           <>
             <div className="flex-1 overflow-y-auto" style={{ background: '#FFFFFF' }}>
-              <div className="px-10 py-8 max-w-[840px] mx-auto">
+              <div className="px-10 py-8 max-w-[960px] mx-auto">
                 <AutorPaso2Descriptor datos={datos} onChange={updateDatos} panelContexto={panelContexto} onPanelContexto={setPanelContexto} />
               </div>
             </div>
@@ -1514,7 +1514,7 @@ function PantallaCrearAsignaturaAutor({ onCrearAsignatura, onCancel }) {
         ) : paso === 3 && resumen ? (
           <>
             <div className="flex-1 overflow-y-auto" style={{ background: '#FFFFFF' }}>
-              <div className="px-10 py-8 max-w-[840px] mx-auto">
+              <div className="px-10 py-8 max-w-[960px] mx-auto">
                 <AutorPaso3Preview resumen={resumen} onResumenChange={setResumen} onQuote={setQuotePendienteResumen} />
               </div>
             </div>
@@ -1737,7 +1737,7 @@ function PantallaCrearAsignaturaCoordinador({ titulaciones, onCrearAsignatura, o
         ) : paso === 3 && resumenPreview ? (
           <>
             <div className="flex-1 overflow-y-auto" style={{ background: '#FFFFFF' }}>
-              <div className="px-10 py-8 max-w-[840px] mx-auto">
+              <div className="px-10 py-8 max-w-[960px] mx-auto">
                 <PasoPreviewResumen resumenPreview={resumenPreview} onResumenChange={setResumenPreview} onQuote={setQuotePendienteResumen} />
               </div>
             </div>

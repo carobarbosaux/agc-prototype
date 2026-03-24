@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, CaretRight } from '@phosphor-icons/react'
+import { X, CaretRight, CheckCircle } from '@phosphor-icons/react'
 import { notificaciones } from '../mockData'
 
 const FILTROS = [
@@ -133,7 +133,7 @@ export default function PanelNotificaciones({ onClose, onNavigate }) {
           {Object.entries(grupos).map(([asignatura, notifs]) => (
             <div key={asignatura}>
               <p
-                className="text-xs font-semibold uppercase tracking-wider mb-2"
+                className="text-xs font-semibold tracking-wider mb-2"
                 style={{ color: '#6B7280', fontFamily: "'Proeduca Sans', system-ui, sans-serif", letterSpacing: '0.06em' }}
               >
                 {asignatura}

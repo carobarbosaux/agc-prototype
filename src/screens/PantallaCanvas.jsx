@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { CaretRight, CaretDown, CaretUp, Plus, Chat, Eye, X, Lock, MagicWand, ShieldCheck, BookBookmark, Check, ToggleLeft, ToggleRight, Note, Pencil, Trash, ArrowsClockwise, ArrowUpRight, Flask, Brain, Microphone, FloppyDisk, StackSimple, BookOpen, Link, PaperPlaneTilt, ArrowSquareOut, Warning, Paperclip } from '@phosphor-icons/react'
+import { CaretRight, CaretDown, CaretUp, Plus, Chat, Eye, X, Lock, MagicWand, ShieldCheck, BookBookmark, Check, Note, Pencil, Trash, ArrowsClockwise, ArrowUpRight, Flask, Brain, Microphone, FloppyDisk, StackSimple, BookOpen, Link, PaperPlaneTilt, ArrowSquareOut, Warning, Paperclip } from '@phosphor-icons/react'
 import PipelineSidebar from '../components/PipelineSidebar'
 import BloqueContenido from '../components/BloqueContenido'
 import PanelIA from '../components/PanelIA'
@@ -26,7 +26,6 @@ import {
   recursosChainingThoughts,
   recursosReferencesPool,
   recursosRefinementSuggestions,
-  dlIndicacionesDidacticasT1,
   dlResumenTema1,
   dlBloquesTema1,
   citacionesPorTema,
@@ -836,8 +835,10 @@ function SeccionRecursosAFondo({ estado, initialScreen, editable }) {
 // ─── Índice fijo (sección aprobada, vista normal) ─────────────────────────────
 
 function SeccionIndiceFija({ bloques, resumenData }) {
-  const [expandidos, setExpandidos] = useState({})
   const temaDescripciones = resumenData?.temasConDescripcion ?? []
+  // First card with a description is expanded by default
+  const firstWithDesc = bloques.find(t => temaDescripciones.find(d => d.numero === t.numero)?.descripcion)
+  const [expandidos, setExpandidos] = useState(() => firstWithDesc ? { [firstWithDesc.id]: true } : {})
 
   const toggleExpand = (id) => setExpandidos(prev => ({ ...prev, [id]: !prev[id] }))
 
@@ -986,13 +987,13 @@ function SeccionResumen({ nombreAsignatura, creacionData }) {
 
   const Field = ({ label, children }) => (
     <div className="mb-8" style={{ borderBottom: '1px solid #F3F4F6', paddingBottom: '28px' }}>
-      <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#6B7280', letterSpacing: '0.07em' }}>{label}</p>
+      <p className="text-xs font-semibold tracking-wide mb-3" style={{ color: '#6B7280', letterSpacing: '0.07em' }}>{label}</p>
       {children}
     </div>
   )
 
   return (
-    <div className="max-w-2xl mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '80px' }}>
+    <div className="max-w-[960px] mx-auto py-12 pl-16 pr-12" style={{ paddingBottom: '80px' }}>
 
       {/* Header */}
       <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
@@ -1027,7 +1028,7 @@ function SeccionResumen({ nombreAsignatura, creacionData }) {
       {/* Etiquetas */}
       {tags.length > 0 && (
         <div className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#6B7280', letterSpacing: '0.07em' }}>Etiquetas clave</p>
+          <p className="text-xs font-semibold tracking-wide mb-3" style={{ color: '#6B7280', letterSpacing: '0.07em' }}>Etiquetas clave</p>
           <div className="flex flex-wrap gap-1.5">
             {tags.map(tag => (
               <span key={tag} className="inline-flex items-center rounded-full text-xs font-medium"
@@ -1039,214 +1040,6 @@ function SeccionResumen({ nombreAsignatura, creacionData }) {
         </div>
       )}
 
-    </div>
-  )
-}
-
-// ─── Deep Learning: Instrucciones Didácticas T1 (two-part flow) ──────────────
-
-function SeccionDLInstrucciones({ parte, datos, onChange, generandoResumen, onGenerarResumen, onGenerarContenido, dlGenerandoContenido, onVolverAInstrucciones }) {
-
-  if (generandoResumen || dlGenerandoContenido) {
-    return (
-      <div className="flex flex-col items-center justify-center py-24 gap-4">
-        <div className="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style={{ background: '#E7EFFE' }}>
-          <ProdiMark size={28} />
-        </div>
-        <div className="text-center">
-          <p className="text-sm font-semibold mb-1" style={{ color: '#1A1A1A' }}>
-            {dlGenerandoContenido ? 'Generando contenido del tema…' : 'Generando resumen del tema…'}
-          </p>
-          <p className="text-xs" style={{ color: '#6B7280' }}>La IA está procesando las instrucciones…</p>
-        </div>
-        <div className="flex gap-1.5 mt-2">
-          {[0, 1, 2].map(i => (
-            <div key={i} className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: '#367CFF', animationDelay: `${i * 0.15}s` }} />
-          ))}
-        </div>
-      </div>
-    )
-  }
-
-  if (parte === 1) {
-    return (
-      <div className="space-y-6 max-w-2xl">
-        {/* Header */}
-        <div>
-          <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Instrucciones para la IA</h3>
-          <p className="text-xs" style={{ color: '#6B7280' }}>Proporciona contexto al asistente para generar el resumen del tema</p>
-        </div>
-
-        {/* Enfoque para la IA */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Enfoque para la IA</label>
-          <textarea
-            value={datos.enfoqueIA}
-            onChange={e => onChange('enfoqueIA', e.target.value)}
-            rows={3}
-            className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
-            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
-            onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
-            onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
-            onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
-            onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
-          />
-        </div>
-
-        {/* Bibliografía */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Bibliografía del tema</label>
-          <textarea
-            value={datos.bibliografiaT1}
-            onChange={e => onChange('bibliografiaT1', e.target.value)}
-            rows={4}
-            className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
-            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}
-            onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
-            onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
-            onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
-            onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
-          />
-        </div>
-
-        {/* Notas pedagógicas */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Notas pedagógicas e instrucciones</label>
-          <textarea
-            value={datos.notasPedagogicas}
-            onChange={e => onChange('notasPedagogicas', e.target.value)}
-            rows={3}
-            className="w-full px-[13px] py-[9px] rounded-[10px] text-sm outline-none resize-none"
-            style={{ border: '1px solid #CBD5E1', background: '#FFFFFF', color: '#334155', lineHeight: '1.6' }}
-            onFocus={e => { e.target.style.borderColor = '#0A5CF5'; e.target.style.background = '#F8FAFC' }}
-            onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.background = '#FFFFFF' }}
-            onMouseEnter={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#0A5CF5' }}
-            onMouseLeave={e => { if (document.activeElement !== e.target) e.target.style.borderColor = '#CBD5E1' }}
-          />
-        </div>
-
-        {/* AI hint */}
-        <div className="flex items-start gap-2.5 px-3.5 py-3 rounded-xl" style={{ background: '#E7EFFE', border: '1px solid #BAD2FF' }}>
-          <ProdiMark size={14} className="flex-shrink-0 mt-0.5" />
-          <p className="text-xs leading-relaxed" style={{ color: '#0047CC' }}>
-            Al hacer clic en <strong>Generar resumen</strong>, el asistente analizará las instrucciones y creará un resumen estructurado del tema con objetivos, epígrafes e ideas didácticas.
-          </p>
-        </div>
-
-        {/* CTA */}
-        <div className="flex items-center justify-end gap-3 pt-2">
-          <button
-            className="px-4 py-2 rounded-lg text-xs font-medium transition-all"
-            style={{ background: '#F1F5F9', color: '#374151' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
-            onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
-          >
-            Guardar borrador
-          </button>
-          <button
-            onClick={onGenerarResumen}
-            className="flex items-center gap-2 px-5 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-            style={{ background: '#0A5CF5' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
-            onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
-          >
-            <ProdiMark size={14} />
-            Generar resumen del tema
-            <CaretRight size={14} />
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  // Part 2: Topic summary review
-  return (
-    <div className="space-y-6 max-w-2xl">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-base font-semibold" style={{ color: '#1A1A1A' }}>{dlResumenTema1.titulo}</h3>
-            <div style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: 'var(--primary-primary-100, #E7EFFE)', borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-              <ProdiMark size={10} />
-              <div style={{ color: 'var(--primary-primary-600, #0A5CF5)', fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>Generado por IA</div>
-            </div>
-          </div>
-          <p className="text-xs" style={{ color: '#6B7280' }}>Revisa la estructura antes de generar el contenido completo</p>
-        </div>
-      </div>
-
-      {/* Introducción y objetivos */}
-      <div className="rounded-xl p-4 space-y-2" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Introducción y objetivos</p>
-        {dlResumenTema1.introduccionYObjetivos.split('\n\n').map((par, i) => (
-          <p key={i} className="text-sm leading-relaxed" style={{ color: '#374151' }}>{par}</p>
-        ))}
-      </div>
-
-      {/* Objetivos list */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Objetivos de aprendizaje</p>
-        <div className="space-y-1.5">
-          {dlResumenTema1.objetivos.map((obj, i) => (
-            <div key={i} className="flex items-start gap-2.5">
-              <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-0.5" style={{ background: '#E7EFFE', color: '#367CFF' }}>{i + 1}</span>
-              <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>{obj}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Epígrafes */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#6B7280' }}>Estructura propuesta del tema</p>
-        <div className="space-y-3">
-          {dlResumenTema1.epigrafes.map((ep, i) => (
-            <div key={i} className="rounded-xl p-4" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-bold" style={{ color: '#367CFF' }}>Epígrafe {i + 1}</span>
-                <span className="text-sm font-semibold" style={{ color: '#1A1A1A' }}>{ep.titulo}</span>
-              </div>
-              {ep.descripcion.split('\n\n').map((par, j) => (
-                <p key={j} className="text-xs leading-relaxed mb-2" style={{ color: '#6B7280' }}>{par}</p>
-              ))}
-              <div className="mt-2 pt-2" style={{ borderTop: '1px solid #F1F5F9' }}>
-                <p className="text-xs font-medium mb-1.5" style={{ color: '#6B7280' }}>Ideas didácticas</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {ep.ideasDidacticas.map((idea, k) => (
-                    <div key={k} style={{ paddingLeft: 7, paddingRight: 7, paddingTop: 3.5, paddingBottom: 3.5, background: 'var(--tag-success-background, #DCFCE7)', borderRadius: 6, display: 'inline-flex', alignItems: 'center', gap: 4 }}><div style={{ color: '#15803D', fontSize: 12, fontFamily: 'Proeduca Sans', fontWeight: '500', lineHeight: '15.84px' }}>{idea}</div></div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Footer CTAs */}
-      <div className="flex items-center justify-between pt-2">
-        <button
-          onClick={onVolverAInstrucciones}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-all"
-          style={{ background: '#F1F5F9', color: '#374151' }}
-          onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
-          onMouseLeave={e => e.currentTarget.style.background = '#F1F5F9'}
-        >
-          <CaretRight size={12} style={{ transform: 'rotate(180deg)' }} />
-          Volver a instrucciones
-        </button>
-        <button
-          onClick={onGenerarContenido}
-          className="flex items-center gap-2 px-5 py-2 rounded-[10px] text-sm font-semibold text-white transition-all"
-          style={{ background: '#0A5CF5' }}
-          onMouseEnter={e => e.currentTarget.style.background = '#0047CC'}
-          onMouseLeave={e => e.currentTarget.style.background = '#0A5CF5'}
-        >
-          <ProdiMark size={14} />
-          Generar temario
-          <CaretRight size={14} />
-        </button>
-      </div>
     </div>
   )
 }
@@ -1316,7 +1109,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
   if (datos.resumenGenerado && resumenData) {
     const r = resumenData
     return (
-      <div className="space-y-6 max-w-2xl">
+      <div className="space-y-6 max-w-[960px]">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
@@ -1388,7 +1181,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         {/* Introducción */}
         {r.introduccionYObjetivos && (
           <div className="rounded-xl p-4 space-y-2" style={{ background: '#F8F9FA', border: '1px solid #E5E7EB' }}>
-            <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Introducción y objetivos</p>
+            <p className="text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Introducción y objetivos</p>
             {r.introduccionYObjetivos.split('\n\n').map((par, i) => (
               <p key={i} className="text-sm leading-relaxed" style={{ color: '#374151' }}>{par}</p>
             ))}
@@ -1398,7 +1191,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         {/* Objetivos */}
         {r.objetivos?.length > 0 && (
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#6B7280' }}>Objetivos de aprendizaje</p>
+            <p className="text-xs font-semibold tracking-wide mb-2" style={{ color: '#6B7280' }}>Objetivos de aprendizaje</p>
             <div className="space-y-1.5">
               {r.objetivos.map((obj, i) => (
                 <div key={i} className="flex items-start gap-2.5">
@@ -1413,7 +1206,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
         {/* Epígrafes con bibliografía */}
         {r.epigrafes?.length > 0 && (
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: '#6B7280' }}>Estructura propuesta del tema</p>
+            <p className="text-xs font-semibold tracking-wide mb-3" style={{ color: '#6B7280' }}>Estructura propuesta del tema</p>
             <div className="space-y-3">
               {r.epigrafes.map((ep, i) => (
                 <EpigrafeConBibliografia key={i} ep={ep} index={i} />
@@ -1428,7 +1221,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
 
   // Part 1: form
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6 max-w-[960px]">
       {/* Header */}
       <div>
         <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Instrucciones para la IA</h3>
@@ -1444,7 +1237,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
 
       {/* Indicaciones para la IA */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Indicaciones para la IA</label>
+        <label className="block text-xs font-semibold tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Indicaciones para la IA</label>
         <textarea
           value={datos.indicacionesIA}
           onChange={readOnly ? undefined : e => onChange('indicacionesIA', e.target.value)}
@@ -1461,7 +1254,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
 
       {/* Fuentes y bibliografía */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Fuentes y bibliografía</label>
+        <label className="block text-xs font-semibold tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Fuentes y bibliografía</label>
         <p className="text-xs mb-2" style={{ color: '#6B7280' }}>Sube documentos o añade enlaces que la IA tendrá en cuenta para generar el contenido.</p>
         <div className="flex flex-col gap-3">
           {/* Drop zone */}
@@ -1560,7 +1353,7 @@ function SeccionInstruccionesGeneral({ seccionId, datos, onChange, temaNum, tema
 
       {/* Notas pedagógicas */}
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Notas pedagógicas e instrucciones</label>
+        <label className="block text-xs font-semibold tracking-wide mb-1.5" style={{ color: '#6B7280' }}>Notas pedagógicas e instrucciones</label>
         <textarea
           value={datos.notasPedagogicas}
           onChange={readOnly ? undefined : e => onChange('notasPedagogicas', e.target.value)}
@@ -1619,7 +1412,7 @@ function EpigrafeConBibliografia({ ep, index }) {
       {/* Bibliography section */}
       <div className="mt-3 pt-3" style={{ borderTop: '1px solid #F1F5F9' }}>
         <div className="flex items-center justify-between mb-2">
-          <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280' }}>Bibliografía</p>
+          <p className="text-xs font-semibold tracking-wide" style={{ color: '#6B7280' }}>Bibliografía</p>
           <button
             onClick={() => setMostrarAddRef(p => !p)}
             className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-lg transition-all"
@@ -1823,7 +1616,7 @@ function SeccionReferencias({ temaNum, referencias = [], onNavigateToContent }) 
   const [buscando, setBuscando] = useState(false)
   const hasRefs = referencias.length > 0
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6 max-w-[960px]">
       <div>
         <h3 className="text-base font-semibold mb-0.5" style={{ color: '#1A1A1A' }}>Referencias bibliográficas</h3>
         <p className="text-xs" style={{ color: '#6B7280' }}>Fuentes académicas del Tema {temaNum}</p>
@@ -1951,7 +1744,7 @@ function PanelContextoTemas({ seccionActiva, bloquesState, SECCION_CFG, resumenD
             })()}
 
             {/* Per-topic breakdown */}
-            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#6B7280', letterSpacing: '0.06em' }}>Temas completados</p>
+            <p className="text-xs font-semibold tracking-wide" style={{ color: '#6B7280', letterSpacing: '0.06em' }}>Temas completados</p>
             {temasAprobados.map(tema => {
               const keywords = TEMA_KEYWORDS[tema.num] || []
               const desc = resumenData?.temasConDescripcion?.find(t => t.numero === tema.num)?.descripcion
@@ -2076,12 +1869,7 @@ export default function PantallaCanvas({
   creacionData,
   onCreacionDataConsumed,
 }) {
-  const [resumenPrefill, setResumenPrefill] = useState(null)
   const [esAsignaturaNueva] = useState(!!creacionData?.indice)
-  // DL-specific instrucciones-t1 two-part flow
-  const [dlInstruccionesParte, setDlInstruccionesParte] = useState(1) // 1=setup form | 2=summary review
-  const [dlInstruccionesData, setDlInstruccionesData] = useState({ ...dlIndicacionesDidacticasT1 })
-  const [dlGenerandoResumen, setDlGenerandoResumen] = useState(false)
   const [dlGenerandoContenido, setDlGenerandoContenido] = useState(false)
   // General instrucciones form state — keyed by section ID ('instrucciones-t2' etc.)
   const [instruccionesData, setInstruccionesData] = useState(() => {
@@ -2696,7 +2484,7 @@ export default function PantallaCanvas({
             onMouseEnter={e => e.currentTarget.style.background = '#FEF3C7'}
             onMouseLeave={e => e.currentTarget.style.background = '#FFFBEB'}
           >
-            <Eye size={13} />
+            <Pencil size={13} />
             Solicitar permiso de edición
           </button>
         )
@@ -2710,7 +2498,7 @@ export default function PantallaCanvas({
             onMouseEnter={e => e.currentTarget.style.background = '#F1F5F9'}
             onMouseLeave={e => e.currentTarget.style.background = '#F8F9FA'}
           >
-            <Eye size={13} />
+            <Pencil size={13} />
             Solicitar permiso de edición
           </button>
         )
@@ -2927,7 +2715,7 @@ export default function PantallaCanvas({
               creacionData={creacionData}
             />
           ) : (
-            <div className="max-w-2xl mx-auto py-12 pl-24 pr-12" style={{ paddingBottom: '64px' }}>
+            <div className="max-w-[960px] mx-auto py-12 pl-24 pr-12" style={{ paddingBottom: '64px' }}>
 
               {/* Document header */}
               <div className="mb-10" style={{ borderBottom: '1px solid #F1F5F9', paddingBottom: '24px' }}>
@@ -3040,7 +2828,6 @@ export default function PantallaCanvas({
                   creacionData={creacionData}
                   onCreacionDataConsumed={onCreacionDataConsumed}
                   onGenerarResumen={() => {
-                    setResumenPrefill(creacionData?.resumen || null)
                     setEstadosSeccion(prev => ({ ...prev, indice: 'aprobado', resumen: 'aprobado', 'instrucciones-t1': 'sin_comenzar' }))
                     setSeccionActiva('instrucciones-t1')
                   }}
@@ -3253,7 +3040,7 @@ export default function PantallaCanvas({
                     <line x1="8" y1="7.5" x2="8" y2="11" stroke="var(--info-info-700, #1592BC)" strokeWidth="1"/>
                     <circle cx="8" cy="5.25" r="0.75" fill="var(--info-info-700, #1592BC)"/>
                   </svg>
-                  <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>Tema 2 enviado a revisión</span>
+                  <span style={{ color: 'var(--neutrals-old-Black, #090B11)', fontSize: 14, fontFamily: "'Proeduca Sans', system-ui, sans-serif", fontWeight: 400, lineHeight: '20px' }}>{(SECCION_CONFIG[seccionActiva]?.labelCorto ?? seccionActiva) + ' enviado a revisión'}</span>
                 </div>
               )}
               {correctionToast && (
@@ -3425,7 +3212,7 @@ export default function PantallaCanvas({
               className="mx-3 mt-3 p-3 rounded-lg text-xs leading-relaxed"
               style={{ background: '#F8F9FA', border: '1px solid #E5E7EB', color: '#6B7280' }}
             >
-              <p className="font-medium uppercase tracking-wide mb-1"
+              <p className="font-medium tracking-wide mb-1"
                 style={{ fontSize: '10px', color: '#6B7280', fontFamily: "'Proeduca Sans', system-ui, sans-serif" }}>
                 Bloque referenciado
               </p>
@@ -3680,7 +3467,7 @@ export default function PantallaCanvas({
 
             {/* Generator buttons */}
             <div className="px-4 pt-4 pb-3 flex-shrink-0" style={{ borderBottom: '1px solid #F3F4F6' }}>
-              <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#6B7280' }}>Generar para este tema</p>
+              <p className="text-xs font-semibold tracking-wider mb-3" style={{ color: '#6B7280' }}>Generar para este tema</p>
               <div className="space-y-2">
                 {[
                   { tipo: 'test', icon: Flask, label: 'Test de autoevaluación', desc: 'Preguntas de opción múltiple', color: '#7C3AED', bg: '#F3E8FF' },
@@ -3739,7 +3526,7 @@ export default function PantallaCanvas({
                 </div>
               ) : (
                 <>
-                  <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: '#6B7280' }}>Experiencias generadas</p>
+                  <p className="text-xs font-semibold tracking-wider mb-3" style={{ color: '#6B7280' }}>Experiencias generadas</p>
                   <div className="space-y-2">
                     {enrichmentsGenerados.map((e, i) => {
                       const iconMap = { test: Flask, mapa: Brain, podcast: Microphone }
