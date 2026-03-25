@@ -1,0 +1,99 @@
+/* ── Design tokens ───────────────────────────────────────────────────────── */
+:root {
+  /* Primary */
+  --color-primary-50:     #F9FCFF;
+  --color-primary-100:    #E6EFFF;
+  --color-primary-200:    #BAD2FF;
+  --color-primary-300:    #8FB6FF;
+  --color-primary-400:    #6299FF;
+  --color-primary-500:    #367CFF;
+  --color-primary:        #0A5CF5;
+  --color-primary-hover:  #0039A3;
+  --color-primary-active: #0047CC;
+  --color-primary-700:    #0047CC;
+  --color-primary-800:    #0039A3;
+  --color-primary-900:    #002B7B;
+  --color-primary-950:    #001D52;
+
+  /* Surface */
+  --color-surface-0:      #FFFFFF;
+  --color-surface-50:     #F8FAFC;
+  --color-surface-100:    #F1F5F9;
+  --color-surface-200:    #E2E8F0;
+  --color-surface-300:    #CBD5E1;
+  --color-surface-400:    #94A3B8;
+  --color-surface-500:    #64748B;
+  --color-surface-600:    #475569;
+  --color-surface-700:    #334155;
+  --color-surface-800:    #1E293B;
+  --color-surface-900:    #0F172A;
+  --color-surface-950:    #020617;
+
+  /* Semantic */
+  --color-text:           #334155;
+  --color-text-hover:     #020617;
+  --color-text-muted:     #64748B;
+  --color-text-muted-hover: #475569;
+  --color-bg:             #F8FAFC;
+  --color-surface:        #FFFFFF;
+  --color-border:         #E2E8F0;
+
+  /* Grays */
+  --grays-gray-100: #F5F5F5;
+  --grays-gray-200: #E6E6E6;
+  --grays-gray-300: #D8D8D8;
+  --grays-gray-400: #C8C8C8;
+  --grays-gray-500: #B9B9B9;
+  --grays-gray-600: #8F8F8F;
+  --grays-gray-700: #7A7A7A;
+  --grays-gray-800: #666666;
+  --grays-gray-900: #525050;
+  --grays-gray-950: #3D3B3B;
+
+  /* Neutrals */
+  --neutrals-neutrals-50:  #F8FAFC;
+  --neutrals-neutrals-100: #F1F5F9;
+  --neutrals-neutrals-200: #E2E8F0;
+  --neutrals-neutrals-300: #CBD5E1;
+  --neutrals-neutrals-400: #94A3B8;
+  --neutrals-neutrals-500: #64748B;
+  --neutrals-neutrals-600: #475569;
+  --neutrals-neutrals-700: #334155;
+  --neutrals-neutrals-800: #1E293B;
+  --neutrals-neutrals-900: #0F172A;
+  --neutrals-neutrals-950: #020617;
+
+  /* Primary scale */
+  --primary-primary-100: #E7EFFE;
+  --primary-primary-200: #BAD2FF;
+  --primary-primary-300: #8EB6FF;
+  --primary-primary-400: #6299FF;
+  --primary-primary-500: #367CFF;
+  --primary-primary-600: #0A5CF5;
+  --primary-primary-700: #0047CC;
+  --primary-primary-800: #0039A3;
+  --primary-primary-900: #002B7B;
+  --primary-primary-950: #001D52;
+
+  /* Info */
+  --info-info-100: #E8F7FC;
+  --info-info-200: #D1F0FA;
+  --info-info-300: #ACE3F6;
+  --info-info-400: #87D7F2;
+  --info-info-500: #51C4EC;
+  --info-info-600: #1EB3E6;
+  --info-info-700: #1592BC;
+  --info-info-800: #107293;
+  --info-info-900: #0B4E65;
+
+  /* Font */
+  --font-ui: system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-ui);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
