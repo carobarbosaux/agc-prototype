@@ -1,0 +1,98 @@
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+const SEVERITY_CONFIG: Record<string, { background: string; color: string; iconBg: string }> = {
+  Primary: {
+    background: 'var(--primary-primary-100, #E7EFFE)',
+    color: 'var(--primary-primary-600, #0A5CF5)',
+    iconBg: 'var(--primary-primary-600, #0A5CF5)',
+  },
+  Secondary: {
+    background: 'var(--neutrals-old-white, white)',
+    color: 'var(--primary-primary-600, #0A5CF5)',
+    iconBg: 'var(--primary-primary-600, #0A5CF5)',
+  },
+  Success: {
+    background: 'var(--tag-success-background, #DCFCE7)',
+    color: '#15803D',
+    iconBg: '#343330',
+  },
+  Info: {
+    background: 'var(--tag-info-background, #E0F2FE)',
+    color: 'var(--tag-info-color, #0369A1)',
+    iconBg: '#343330',
+  },
+  Warning: {
+    background: 'var(--tag-warn-background, #FFEDD5)',
+    color: '#C2410C',
+    iconBg: '#343330',
+  },
+  Error: {
+    background: 'var(--tag-danger-background, #FEE2E2)',
+    color: 'var(--tag-danger-color, #B91C1C)',
+    iconBg: '#343330',
+  },
+  Contrast: {
+    background: 'rgba(2, 6, 23, 0.10)',
+    color: 'var(--neutrals-old-Black, #090B11)',
+    iconBg: '#343330',
+  },
+};
+
+@Component({
+  selector: 'app-etiqueta-bloque',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <div
+      [ngStyle]="{
+        paddingLeft: '7px',
+        paddingRight: '7px',
+        paddingTop: '3.5px',
+        paddingBottom: '3.5px',
+        background: cfg.background,
+        borderRadius: '6px',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: '4px',
+        display: 'inline-flex'
+      }"
+    >
+      @if (showIcon) {
+        <div [ngStyle]="{ width: '16px', height: '16px', position: 'relative' }">
+          <div
+            [ngStyle]="{
+              width: '11.75px',
+              height: '11.75px',
+              left: '2.13px',
+              top: '2.13px',
+              position: 'absolute',
+              background: cfg.iconBg
+            }"
+          ></div>
+        </div>
+      }
+      <div
+        [ngStyle]="{
+          color: cfg.color,
+          fontSize: '12px',
+          fontFamily: 'Proeduca Sans',
+          fontWeight: '500',
+          lineHeight: '15.84px',
+          wordWrap: 'break-word'
+        }"
+      >
+        {{ label }}
+      </div>
+    </div>
+  `,
+})
+export class EtiquetaBloqueComponent {
+  @Input() label: string = '';
+  @Input() severity: string = 'Primary';
+  @Input() showIcon: boolean = false;
+
+  get cfg(): { background: string; color: string; iconBg: string } {
+    return SEVERITY_CONFIG[this.severity] ?? SEVERITY_CONFIG['Primary'];
+  }
+}

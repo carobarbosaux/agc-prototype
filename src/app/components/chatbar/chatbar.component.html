@@ -1,0 +1,517 @@
+<div
+  class="w-full relative mx-auto"
+  style="font-family: 'Proeduca Sans', system-ui, sans-serif; z-index: 40; max-width: 960px;"
+>
+
+  <!-- ── Chat history bubble ─────────────────────────────────────────────── -->
+  @if (historialVisible() && chatHistorial.length > 0) {
+    <div
+      class="absolute top-full mt-2 left-0 right-0 rounded-2xl overflow-hidden"
+      style="
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        max-height: 240px;
+        overflow-y: auto;
+      "
+    >
+      <!-- Header -->
+      <div
+        class="flex items-center justify-between px-4 py-2.5"
+        style="border-bottom: 1px solid #F1F5F9;"
+      >
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-semibold" style="color: #367CFF;">Asistente AGC</span>
+        </div>
+        <button
+          class="p-1 rounded"
+          style="background: transparent;"
+          (click)="closeHistorial()"
+          (mouseenter)="onHistoryCloseBtnEnter($event.currentTarget)"
+          (mouseleave)="onHistoryCloseBtnLeave($event.currentTarget)"
+        >
+          <ph-icon name="X" [size]="12" style="color: #6B7280;" />
+        </button>
+      </div>
+
+      <!-- Messages -->
+      <div class="px-4 py-3 flex flex-col gap-3">
+        @for (msg of chatHistorial; track msg.id) {
+          <div class="flex" [class.justify-end]="msg.rol === 'usuario'" [class.justify-start]="msg.rol === 'ia'">
+            @if (msg.rol === 'ia') {
+              <div
+                class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mr-2 mt-0.5"
+                style="background: #E7EFFE;"
+              >
+                <prodi-mark [size]="12" />
+              </div>
+            }
+            <div
+              class="max-w-xs rounded-xl px-3 py-2 text-xs leading-relaxed"
+              [ngStyle]="{
+                background: msg.rol === 'usuario' ? '#0A5CF5' : '#F8F9FA',
+                color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151',
+                borderRadius: msg.rol === 'usuario' ? '12px 12px 4px 12px' : '12px 12px 12px 4px'
+              }"
+            >
+              {{ msg.mensaje }}
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ── Shortcuts dropdown ─────────────────────────────────────────────── -->
+  @if (dropdownAbierto() && dropdownFiltrado().length > 0) {
+    <div
+      #dropdownRef
+      class="absolute top-full mt-1 left-0 right-0 rounded-xl overflow-hidden"
+      style="
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+        z-index: 50;
+      "
+    >
+      <div class="px-3 py-2" style="border-bottom: 1px solid #F1F5F9;">
+        <span class="text-xs font-semibold" style="color: #6B7280;">Comandos disponibles</span>
+      </div>
+
+      @for (s of dropdownFiltrado(); track s.id) {
+        <button
+          class="w-full text-left flex items-center gap-3 px-3 py-2.5 transition-colors"
+          style="background: transparent;"
+          (click)="handleSelectShortcut(s)"
+          (mouseenter)="$event.currentTarget.style.background = '#F8F9FA'"
+          (mouseleave)="$event.currentTarget.style.background = 'transparent'"
+        >
+          <div
+            class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+            [ngStyle]="{ background: s.accion === 'crearAsignatura' ? '#E7EFFE' : '#F8F9FA' }"
+          >
+            <ph-icon
+              [name]="s.icon"
+              [size]="14"
+              [ngStyle]="{ color: s.accion === 'crearAsignatura' ? '#367CFF' : '#6B7280' }"
+            />
+          </div>
+          <div>
+            <span
+              class="text-sm font-medium"
+              style="color: #1A1A1A; font-family: 'JetBrains Mono', monospace;"
+            >{{ s.comando }}</span>
+            <p class="text-xs" style="color: #6B7280; margin: 0;">{{ s.descripcion }}</p>
+          </div>
+        </button>
+      }
+    </div>
+  }
+
+  <!-- ── Chatbar container ───────────────────────────────────────────────── -->
+  <div
+    class="w-full flex flex-col py-2 px-3"
+    style="
+      background: #FFFFFF;
+      box-shadow: 0px 9px 20px -2px rgba(0,0,0,0.10);
+      outline: 1px solid #DCDFEB;
+      outline-offset: -1px;
+      transition: outline-color 150ms ease, border-radius 150ms ease;
+    "
+    [ngStyle]="{ borderRadius: containerBorderRadius }"
+    (click)="focusInput()"
+  >
+
+    <!-- Expanded layout: textarea full-width on top, buttons row below -->
+    @if (expanded()) {
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-1 px-1">
+          <!-- Connector tags -->
+          @if (selectedConectores().size > 0) {
+            <div class="flex items-center gap-1 flex-wrap">
+              @for (id of selectedConectoresList; track id) {
+                @let c = getConectorById(id);
+                @if (c) {
+                  <button
+                    class="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                    [ngStyle]="{
+                      background: c.color + '18',
+                      color: c.color,
+                      border: '1px solid ' + c.color + '40'
+                    }"
+                    (click)="removeConector(id, $event)"
+                  >
+                    <span style="font-size: 9px; font-weight: 700;">{{ c.letter }}</span>
+                    {{ c.label }}
+                    <ph-icon name="X" [size]="10" />
+                  </button>
+                }
+              }
+            </div>
+          }
+
+          <!-- Textarea -->
+          <textarea
+            #inputRef
+            class="w-full bg-transparent outline-none resize-none overflow-y-auto"
+            style="
+              color: #272A3F;
+              caret-color: #0A5CF5;
+              max-height: 144px;
+              font-family: 'Proeduca Sans', system-ui, sans-serif;
+              font-size: 0.875rem;
+              font-weight: 400;
+              line-height: 1.5;
+            "
+            rows="1"
+            [placeholder]="placeholder"
+            [ngModel]="valor()"
+            (ngModelChange)="valor.set($event)"
+            (input)="handleChange($event); handleInput($event)"
+            (keydown)="handleKeyDown($event)"
+          ></textarea>
+        </div>
+
+        <!-- Buttons row -->
+        <div class="flex items-center justify-between">
+          <!-- Plus / connectors button -->
+          <ng-container *ngTemplateOutlet="plusBtnTpl"></ng-container>
+          <!-- Send button -->
+          <ng-container *ngTemplateOutlet="sendBtnTpl"></ng-container>
+        </div>
+      </div>
+
+    } @else {
+      <!-- Compact: single row -->
+      <div class="flex items-center gap-2">
+        <!-- Plus / connectors button -->
+        <ng-container *ngTemplateOutlet="plusBtnTpl"></ng-container>
+
+        <div class="flex-1 flex flex-col gap-1" style="padding-left: 4px;">
+          <!-- Connector tags -->
+          @if (selectedConectores().size > 0) {
+            <div class="flex items-center gap-1 flex-wrap">
+              @for (id of selectedConectoresList; track id) {
+                @let c = getConectorById(id);
+                @if (c) {
+                  <button
+                    class="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                    [ngStyle]="{
+                      background: c.color + '18',
+                      color: c.color,
+                      border: '1px solid ' + c.color + '40'
+                    }"
+                    (click)="removeConector(id, $event)"
+                  >
+                    <span style="font-size: 9px; font-weight: 700;">{{ c.letter }}</span>
+                    {{ c.label }}
+                    <ph-icon name="X" [size]="10" />
+                  </button>
+                }
+              }
+            </div>
+          }
+
+          <!-- Textarea -->
+          <textarea
+            #inputRef
+            class="w-full bg-transparent outline-none resize-none overflow-y-auto"
+            style="
+              color: #272A3F;
+              caret-color: #0A5CF5;
+              max-height: 144px;
+              font-family: 'Proeduca Sans', system-ui, sans-serif;
+              font-size: 0.875rem;
+              font-weight: 400;
+              line-height: 1.5;
+            "
+            rows="1"
+            [placeholder]="placeholder"
+            [ngModel]="valor()"
+            (ngModelChange)="valor.set($event)"
+            (input)="handleChange($event); handleInput($event)"
+            (keydown)="handleKeyDown($event)"
+          ></textarea>
+        </div>
+
+        <!-- Send button -->
+        <ng-container *ngTemplateOutlet="sendBtnTpl"></ng-container>
+      </div>
+    }
+  </div>
+
+  <!-- ── Suggested chips — attached below chatbar ────────────────────────── -->
+  @if (hasChips) {
+    <div
+      class="absolute left-0 right-0 overflow-hidden"
+      style="
+        top: 100%;
+        background: #FFFFFF;
+        border: 1px solid #DCDFEB;
+        border-top: 1px solid #F1F5F9;
+        border-radius: 0 0 24px 24px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+        z-index: 30;
+      "
+    >
+      <div class="flex items-center gap-1.5 px-4 py-2.5 overflow-x-auto" style="scrollbar-width: none;">
+        @for (chip of suggestedChips; track chip.text) {
+          <button
+            class="flex-shrink-0 px-2.5 py-1 rounded-full text-xs whitespace-nowrap"
+            style="background: #F1F5F9; color: #374151; border: 1px solid #E2E8F0;"
+            (click)="selectChip(chip.text)"
+            (mouseenter)="onChipEnter($event.currentTarget)"
+            (mouseleave)="onChipLeave($event.currentTarget)"
+          >
+            {{ chip.text }}
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────────────
+     Shared templates
+     ───────────────────────────────────────────────────────────────────────── -->
+
+<!-- Plus / Connectors dropdown button -->
+<ng-template #plusBtnTpl>
+  <div class="relative flex-shrink-0" #conectoresRef>
+    <app-tooltip text="Conectores" side="top">
+      <button
+        class="flex items-center justify-center transition-colors"
+        style="
+          width: 30px;
+          height: 30px;
+          border-radius: 80px;
+          border: 1px solid transparent;
+          background: transparent;
+          color: #0A5CF5;
+          flex-shrink: 0;
+          cursor: pointer;
+        "
+        [ngStyle]="{
+          border: conectoresAbierto() ? '1px solid #BAD2FF' : '1px solid transparent',
+          background: conectoresAbierto() ? '#E7EFFE' : 'transparent',
+          color: conectoresAbierto() ? '#367CFF' : '#0A5CF5'
+        }"
+        (click)="toggleConectoresDropdown($event)"
+        (mouseenter)="onPlusBtnEnter($event.currentTarget)"
+        (mouseleave)="onPlusBtnLeave($event.currentTarget)"
+      >
+        <ph-icon name="Plus" [size]="16" />
+      </button>
+    </app-tooltip>
+
+    <!-- Connectors dropdown panel -->
+    @if (conectoresAbierto()) {
+      <div
+        class="absolute left-0"
+        [class.bottom-full]="conectoresHaciaArriba"
+        [class.mb-2]="conectoresHaciaArriba"
+        [class.top-full]="!conectoresHaciaArriba"
+        [class.mt-2]="!conectoresHaciaArriba"
+        style="
+          width: 260px;
+          padding: 10px 8px 4px;
+          background: white;
+          border-radius: 10px;
+          outline: 1px solid #DCDFEB;
+          outline-offset: -1px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          z-index: 50;
+        "
+        [ngStyle]="{
+          'box-shadow': conectoresHaciaArriba
+            ? '0 -8px 24px rgba(0,0,0,0.10)'
+            : '0 8px 24px rgba(0,0,0,0.10)'
+        }"
+      >
+        <!-- Header label -->
+        <div style="padding: 0 8px; display: inline-flex; align-items: center; gap: 8px;">
+          <span style="font-size: 12px; font-family: 'Proeduca Sans', system-ui, sans-serif; font-weight: 500; line-height: 16px; color: #566077;">
+            Conectores
+          </span>
+        </div>
+
+        <!-- Company Knowledge section -->
+        <div style="display: flex; flex-direction: column; padding-bottom: 4px; border-bottom: 1px solid #F3F4F6;">
+
+          <!-- CK toggle row -->
+          <div style="padding: 6px 10px; border-radius: 6px; display: flex; align-items: center; gap: 8px;">
+            <div style="width: 20px; height: 20px; border-radius: 4px; background: #0078D4; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <span style="color: #FFF; font-size: 7px; font-weight: 700;">CK</span>
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <p style="font-size: 14px; font-family: 'Proeduca Sans', system-ui, sans-serif; font-weight: 500; line-height: 20px; color: #566077; margin: 0;">
+                Company Knowledge
+              </p>
+              <p style="font-size: 11px; color: #9CA3AF; margin: 0; line-height: 14px;">
+                Fuentes institucionales
+              </p>
+            </div>
+            <button
+              style="
+                width: 36px;
+                height: 20px;
+                border-radius: 30px;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                flex-shrink: 0;
+              "
+              [ngStyle]="{
+                background: companyKnowledgeOn() ? '#0A5CF5' : '#DCDFEB',
+                'justify-content': companyKnowledgeOn() ? 'flex-end' : 'flex-start',
+                padding: companyKnowledgeOn() ? '0 3px 0 0' : '0 0 0 3px'
+              }"
+              (click)="$event.stopPropagation(); toggleCompanyKnowledge()"
+            >
+              <span style="width: 14px; height: 14px; border-radius: 7px; background: #FFF; display: block; flex-shrink: 0;"></span>
+            </button>
+          </div>
+
+          <!-- CK children (Teams, SharePoint, Outlook, OneDrive) -->
+          <div
+            style="display: flex; flex-direction: column; transition: opacity 0.15s;"
+            [ngStyle]="{
+              opacity: companyKnowledgeOn() ? 1 : 0.35,
+              'pointer-events': companyKnowledgeOn() ? 'auto' : 'none'
+            }"
+          >
+            @for (c of ckConnectors; track c.id) {
+              @let active = isConectorSelected(c.id);
+              <button
+                style="
+                  padding: 5px 10px;
+                  border-radius: 6px;
+                  border: none;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  cursor: pointer;
+                  width: 100%;
+                  text-align: left;
+                "
+                [ngStyle]="{ background: active ? c.color + '12' : 'transparent' }"
+                (click)="$event.stopPropagation(); toggleConector(c.id)"
+                (mouseenter)="onConectorBtnEnter($event.currentTarget, active)"
+                (mouseleave)="onConectorBtnLeave($event.currentTarget, active, c.color)"
+              >
+                <div
+                  style="width: 16px; height: 16px; border-radius: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
+                  [ngStyle]="{ background: c.color }"
+                >
+                  <span style="color: #FFF; font-size: 6px; font-weight: 700;">{{ c.letter }}</span>
+                </div>
+                <span
+                  style="font-size: 14px; font-family: 'Proeduca Sans', system-ui, sans-serif; font-weight: 500; line-height: 20px; flex: 1;"
+                  [ngStyle]="{ color: active ? c.color : '#566077' }"
+                >{{ c.label }}</span>
+                @if (active) {
+                  <div
+                    style="width: 6px; height: 6px; border-radius: 3px; flex-shrink: 0;"
+                    [ngStyle]="{ background: c.color }"
+                  ></div>
+                }
+              </button>
+            }
+          </div>
+
+          @if (!companyKnowledgeOn()) {
+            <p style="font-size: 10px; color: #9CA3AF; font-style: italic; margin: 2px 10px 4px; line-height: 14px;">
+              Activa para acceder a Teams, SharePoint, Outlook y OneDrive.
+            </p>
+          }
+        </div>
+
+        <!-- Other connectors (Canva, Genially) -->
+        <div style="display: flex; flex-direction: column; padding-bottom: 4px;">
+          @for (c of otherConnectors; track c.id) {
+            @let active = isConectorSelected(c.id);
+            <button
+              style="
+                padding: 6px 10px;
+                border-radius: 6px;
+                border: none;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+                width: 100%;
+                text-align: left;
+              "
+              [ngStyle]="{ background: active ? c.color + '12' : 'transparent' }"
+              (click)="$event.stopPropagation(); toggleConector(c.id)"
+              (mouseenter)="onConectorBtnEnter($event.currentTarget, active)"
+              (mouseleave)="onConectorBtnLeave($event.currentTarget, active, c.color)"
+            >
+              <div
+                style="width: 20px; height: 20px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
+                [ngStyle]="{ background: c.color }"
+              >
+                <span style="color: #FFF; font-size: 7px; font-weight: 700;">{{ c.letter }}</span>
+              </div>
+              <span
+                style="font-size: 14px; font-family: 'Proeduca Sans', system-ui, sans-serif; font-weight: 500; line-height: 20px; flex: 1;"
+                [ngStyle]="{ color: active ? c.color : '#566077' }"
+              >{{ c.label }}</span>
+              @if (active) {
+                <div
+                  style="width: 6px; height: 6px; border-radius: 3px; flex-shrink: 0;"
+                  [ngStyle]="{ background: c.color }"
+                ></div>
+              }
+            </button>
+          }
+        </div>
+
+      </div>
+    }
+  </div>
+</ng-template>
+
+<!-- Send button (+ history counter) -->
+<ng-template #sendBtnTpl>
+  <div class="flex items-center gap-2 flex-shrink-0">
+
+    <!-- History count pill -->
+    @if (chatHistorial.length > 0 && !historialVisible()) {
+      <button
+        class="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs transition-colors"
+        style="color: #6B7280; background: #F8F9FA;"
+        (click)="showHistorial($event)"
+        (mouseenter)="onHistoryCountBtnEnter($event.currentTarget)"
+        (mouseleave)="onHistoryCountBtnLeave($event.currentTarget)"
+      >
+        <ph-icon name="Chat" [size]="11" />
+        {{ chatHistorial.length }}
+      </button>
+    }
+
+    <!-- Send -->
+    <button
+      class="flex items-center justify-center transition-all"
+      style="border: none; flex-shrink: 0;"
+      [ngStyle]="{
+        width: '30px',
+        height: '30px',
+        borderRadius: '80px',
+        background: canSend ? '#0A5CF5' : '#E6E6E6',
+        cursor: canSend ? 'pointer' : 'default'
+      }"
+      [disabled]="!canSend"
+      (click)="clickSend($event)"
+      (mouseenter)="onSendBtnEnter($event.currentTarget)"
+      (mouseleave)="onSendBtnLeave($event.currentTarget)"
+    >
+      <ph-icon name="PaperPlaneTilt" [size]="16" [ngStyle]="{ color: canSend ? '#FFFFFF' : '#666666' }" />
+    </button>
+
+  </div>
+</ng-template>

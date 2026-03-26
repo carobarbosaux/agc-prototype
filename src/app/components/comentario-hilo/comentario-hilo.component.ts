@@ -1,0 +1,165 @@
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PhIconComponent } from '../../icons/ph-icon.component';
+import { GravedadTagComponent } from '../gravedad-tag/gravedad-tag.component';
+import { gravedadConfig } from '../../mock-data';
+
+export interface ComentarioRespuesta {
+  autor: string;
+  texto: string;
+}
+
+export interface Comentario {
+  id: string;
+  avatar: string;
+  autor: string;
+  rol: string;
+  timestamp: string;
+  gravedad: string;
+  texto: string;
+  resuelto: boolean;
+  respuestas?: ComentarioRespuesta[];
+}
+
+@Component({
+  selector: 'app-comentario-hilo',
+  standalone: true,
+  imports: [CommonModule, FormsModule, PhIconComponent, GravedadTagComponent],
+  template: `
+    <div
+      class="rounded-xl p-4 transition-all"
+      [class.opacity-60]="comentario.resuelto"
+      [ngStyle]="{
+        background: comentario.resuelto ? '#F8FAFC' : (gravedadBg || '#FFFFFF'),
+        border: '1px solid ' + (comentario.resuelto ? '#E2E8F0' : (gravedadBorder || '#E2E8F0'))
+      }"
+    >
+      <!-- Header -->
+      <div class="flex items-start justify-between gap-2 mb-3">
+        <div class="flex items-center gap-2">
+          <div
+            class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+            [ngStyle]="{ background: '#64748B' }"
+          >
+            {{ comentario.avatar }}
+          </div>
+          <div>
+            <p class="text-sm font-medium text-slate-700">{{ comentario.autor }}</p>
+            <p class="text-xs text-slate-500">{{ comentario.rol }} · {{ comentario.timestamp }}</p>
+          </div>
+        </div>
+        <app-gravedad-tag [gravedad]="comentario.gravedad" size="sm" />
+      </div>
+
+      <!-- Body -->
+      <p class="text-sm text-slate-600 leading-relaxed mb-3">{{ comentario.texto }}</p>
+
+      <!-- Respuestas -->
+      @if (comentario.respuestas && comentario.respuestas.length > 0) {
+        <div class="mt-3 pl-3 space-y-2" [ngStyle]="{ borderLeft: '2px solid #E2E8F0' }">
+          @for (r of comentario.respuestas; track $index) {
+            <div class="text-sm text-slate-600">
+              <span class="font-medium text-slate-700 mr-1">{{ r.autor }}:</span>
+              {{ r.texto }}
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Actions (not resolved) -->
+      @if (!comentario.resuelto) {
+        <div class="flex items-center gap-2 mt-3 pt-3" [ngStyle]="{ borderTop: '1px solid #F1F5F9' }">
+          <button
+            (click)="onMarcarResuelto.emit(comentario.id)"
+            class="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
+            [ngStyle]="{ background: '#F0FDF4', color: '#10B981', border: '1px solid #A7F3D0' }"
+          >
+            <ph-icon name="CheckCircle" [size]="13" />
+            Marcar como resuelto
+          </button>
+          <button
+            (click)="toggleMostrarRespuesta()"
+            class="text-xs text-slate-600 px-2 py-1.5 rounded-lg transition-colors"
+            [ngStyle]="mostrarRespuesta ? { background: '#F8FAFC' } : {}"
+          >
+            Responder
+          </button>
+        </div>
+      }
+
+      <!-- Resolved indicator -->
+      @if (comentario.resuelto) {
+        <div class="flex items-center gap-1.5 mt-2 text-xs text-emerald-600">
+          <ph-icon name="CheckCircle" [size]="12" />
+          <span>Resuelto</span>
+        </div>
+      }
+
+      <!-- Reply box -->
+      @if (mostrarRespuesta && !comentario.resuelto) {
+        <div class="mt-3">
+          <textarea
+            [(ngModel)]="respuesta"
+            placeholder="Escribe tu respuesta..."
+            class="w-full text-sm px-[13px] py-[9px] rounded-[10px] resize-none outline-none"
+            [ngStyle]="{
+              background: '#FFFFFF',
+              border: '1px solid #CBD5E1',
+              color: '#334155',
+              minHeight: '72px',
+              fontFamily: '\\'Proeduca Sans\\', system-ui, sans-serif'
+            }"
+            rows="3"
+          ></textarea>
+          <div class="flex items-center gap-2 mt-2">
+            <button
+              (click)="handleResponder()"
+              class="text-xs font-medium px-3 py-1.5 rounded-lg text-white"
+              [ngStyle]="{ background: '#0A5CF5' }"
+            >
+              Enviar
+            </button>
+            <button
+              (click)="mostrarRespuesta = false"
+              class="text-xs text-slate-600 px-2 py-1.5 rounded-lg"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  `,
+})
+export class ComentarioHiloComponent {
+  @Input() comentario!: Comentario;
+  @Input() compact: boolean = false;
+
+  @Output() onMarcarResuelto = new EventEmitter<string>();
+  @Output() onResponder = new EventEmitter<{ id: string; respuesta: string }>();
+
+  respuesta: string = '';
+  mostrarRespuesta: boolean = false;
+
+  private readonly gc: Record<string, any> = gravedadConfig as any;
+
+  get gravedadBg(): string | null {
+    return this.gc[this.comentario?.gravedad]?.bg ?? null;
+  }
+
+  get gravedadBorder(): string | null {
+    return this.gc[this.comentario?.gravedad]?.border ?? null;
+  }
+
+  toggleMostrarRespuesta(): void {
+    this.mostrarRespuesta = !this.mostrarRespuesta;
+  }
+
+  handleResponder(): void {
+    if (!this.respuesta.trim()) return;
+    this.onResponder.emit({ id: this.comentario.id, respuesta: this.respuesta });
+    this.respuesta = '';
+    this.mostrarRespuesta = false;
+  }
+}

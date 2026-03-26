@@ -1,0 +1,409 @@
+<!-- HR block: rendered as a standalone rule -->
+@if (tipo === 'hr') {
+  <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 8px 0;" />
+} @else {
+
+<div
+  #contenedorRef
+  class="group relative"
+  (mouseup)="onMouseUp()"
+  style="font-family: 'Proeduca Sans', system-ui, sans-serif;"
+>
+
+  <!-- Left accent for critical comments -->
+  @if (tieneComentarioCritico) {
+    <div
+      class="absolute top-0 bottom-0 rounded-full"
+      style="width: 3px; background: #EF4444; left: -16px;"
+    ></div>
+  }
+
+  <!-- Block number in gutter -->
+  <div
+    class="absolute text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity select-none"
+    style="color: #D1D5DB; top: 2px; left: -32px; font-variant-numeric: tabular-nums;"
+  >
+    {{ index + 1 }}
+  </div>
+
+  <!-- Block format handle (author only, left gutter) — hidden when toolbar is open -->
+  @if (editable && !toolbarVisible()) {
+    <div
+      #menuFormatoRef
+      style="position: absolute; left: -76px; top: 0px; z-index: 40;"
+    >
+      <button
+        (mousedown)="$event.preventDefault()"
+        (click)="toggleMenuFormato()"
+        [class]="menuFormato() ? '' : 'opacity-0 group-hover:opacity-100 transition-opacity'"
+        [ngStyle]="{
+          height: '26px',
+          padding: '0 8px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '5px',
+          borderRadius: '7px',
+          outline: '1px #0A5CF5 solid',
+          outlineOffset: '-1px',
+          border: 'none',
+          background: menuFormato() ? '#0A5CF5' : '#F9FCFF',
+          color: menuFormato() ? '#FFFFFF' : '#0A5CF5',
+          cursor: 'pointer',
+          fontSize: '11px',
+          fontWeight: '600',
+          whiteSpace: 'nowrap'
+        }"
+        (mouseenter)="!menuFormato() && ($event.currentTarget['style'].background = '#E6EFFF')"
+        (mouseleave)="!menuFormato() && ($event.currentTarget['style'].background = '#F9FCFF')"
+      >
+        <!-- TextAa icon placeholder — replace with ph-icon or inline SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
+          <path d="M216,56H176V40a8,8,0,0,0-16,0V56H96V40a8,8,0,0,0-16,0V56H40A16,16,0,0,0,24,72V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V72A16,16,0,0,0,216,56ZM96,72h64v8a8,8,0,0,0,16,0V72h40V104H40V72ZM40,200V120H216V200Z"/>
+        </svg>
+      </button>
+
+      @if (menuFormato()) {
+        <div
+          class="animate-fade-in"
+          style="
+            position: absolute; top: 0; left: 80px; z-index: 50;
+            background: #FFFFFF; border: 1px solid #E5E7EB;
+            border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+            padding: 5px; width: 170px;
+          "
+        >
+          <p style="font-size: 10px; font-weight: 600; color: #6B7280; padding: 2px 6px 4px; text-transform: uppercase; letter-spacing: 0.05em;">
+            Tipo de bloque
+          </p>
+
+          @for (t of tipoOrder; track t) {
+            <button
+              [title]="tipoConfigMap[t].title"
+              (mousedown)="$event.preventDefault()"
+              (click)="handleTipoChange(t)"
+              [ngStyle]="{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                width: '100%',
+                padding: '5px 8px',
+                borderRadius: '5px',
+                fontSize: '12px',
+                background: tipo === t ? '#E7EFFE' : 'transparent',
+                color: tipo === t ? '#367CFF' : '#374151',
+                fontWeight: tipo === t ? '600' : '400',
+                textAlign: 'left',
+                cursor: 'pointer',
+                border: 'none'
+              }"
+              (mouseenter)="tipo !== t && ($event.currentTarget['style'].background = '#F3F4F6')"
+              (mouseleave)="tipo !== t && ($event.currentTarget['style'].background = 'transparent')"
+            >
+              <span [ngStyle]="{
+                minWidth: '22px',
+                height: '18px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '10px',
+                fontWeight: '700',
+                borderRadius: '3px',
+                background: tipo === t ? '#367CFF' : '#F3F4F6',
+                color: tipo === t ? '#FFFFFF' : '#6B7280',
+                flexShrink: 0
+              }">
+                @switch (t) {
+                  @case ('ul') {
+                    <!-- ListBullets icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 256 256" fill="currentColor">
+                      <path d="M80,64a8,8,0,0,1,8-8H216a8,8,0,0,1,0,16H88A8,8,0,0,1,80,64Zm136,56H88a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Zm0,64H88a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16ZM44,56A12,12,0,1,0,56,68,12,12,0,0,0,44,56Zm0,64a12,12,0,1,0,12,12A12,12,0,0,0,44,120Zm0,64a12,12,0,1,0,12,12A12,12,0,0,0,44,184Z"/>
+                    </svg>
+                  }
+                  @case ('ol') {
+                    <!-- ListNumbers icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 256 256" fill="currentColor">
+                      <path d="M224,128a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM96,72H216a8,8,0,0,0,0-16H96a8,8,0,0,0,0,16ZM216,184H96a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16ZM40,108h8v20H40a8,8,0,0,0,0,16H64a8,8,0,0,0,0-16H56V100a8,8,0,0,0-8-8H40a8,8,0,0,0,0,16Zm24,84H40a8,8,0,0,0,0,16H56v4H40a8,8,0,0,0,0,16H64a8,8,0,0,0,8-8V200A8,8,0,0,0,64,192ZM56,72H64a8,8,0,0,0,0-16H48a8,8,0,0,0-8,8V80a8,8,0,0,0,16,0Z"/>
+                    </svg>
+                  }
+                  @case ('quote') {
+                    <!-- Quotes icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 256 256" fill="currentColor">
+                      <path d="M116,72v88a48.05,48.05,0,0,1-48,48,8,8,0,0,1,0-16,32,32,0,0,0,32-32v-8H40a16,16,0,0,1-16-16V72A16,16,0,0,1,40,56h60A16,16,0,0,1,116,72Zm100-16H156a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h60v8a32,32,0,0,1-32,32,8,8,0,0,0,0,16,48.05,48.05,0,0,0,48-48V72A16,16,0,0,0,216,56Z"/>
+                    </svg>
+                  }
+                  @default {
+                    {{ tipoConfigMap[t].label }}
+                  }
+                }
+              </span>
+              {{ tipoConfigMap[t].title }}
+            </button>
+          }
+
+          <div style="height: 1px; background: #F3F4F6; margin: 4px 0;"></div>
+
+          <div style="display: flex; gap: 4px; padding: 2px 4px;">
+            <!-- Bold -->
+            <button
+              title="Negrita"
+              (mousedown)="$event.preventDefault(); applyMark('bold'); menuFormato.set(false)"
+              style="width: 28px; height: 28px; border-radius: 5px; background: #F3F4F6; color: #374151; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;"
+              (mouseenter)="$event.currentTarget['style'].background = '#E5E7EB'"
+              (mouseleave)="$event.currentTarget['style'].background = '#F3F4F6'"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 256 256" fill="currentColor">
+                <path d="M170.48,115.7A44,44,0,0,0,128,48H72a8,8,0,0,0-8,8V192a8,8,0,0,0,8,8h72a48,48,0,0,0,26.48-88.3ZM80,64h48a28,28,0,0,1,0,56H80Zm64,120H80V136h64a32,32,0,0,1,0,64Z"/>
+              </svg>
+            </button>
+            <!-- Italic -->
+            <button
+              title="Cursiva"
+              (mousedown)="$event.preventDefault(); applyMark('italic'); menuFormato.set(false)"
+              style="width: 28px; height: 28px; border-radius: 5px; background: #F3F4F6; color: #374151; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;"
+              (mouseenter)="$event.currentTarget['style'].background = '#E5E7EB'"
+              (mouseleave)="$event.currentTarget['style'].background = '#F3F4F6'"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 256 256" fill="currentColor">
+                <path d="M200,56a8,8,0,0,1-8,8H157l-38,128H136a8,8,0,0,1,0,16H64a8,8,0,0,1,0-16H99L137,64H120a8,8,0,0,1,0-16h72A8,8,0,0,1,200,56Z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Comment badge in right gutter -->
+  @if (comentariosActivos.length > 0) {
+    <button
+      (click)="onComentarioClick()"
+      class="absolute flex items-center gap-1 transition-all hover:scale-105"
+      [ngStyle]="{
+        right: '-44px',
+        top: '2px',
+        background: getGravedadConfig(comentariosActivos[0].gravedad).bg,
+        color: getGravedadConfig(comentariosActivos[0].gravedad).color,
+        border: '1px solid ' + getGravedadConfig(comentariosActivos[0].gravedad).border,
+        borderRadius: '6px',
+        padding: '2px 6px',
+        fontSize: '11px',
+        fontWeight: '500',
+        whiteSpace: 'nowrap'
+      }"
+      [title]="comentariosActivos.length + ' comentario' + (comentariosActivos.length > 1 ? 's' : '')"
+    >
+      <!-- Chat icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 256 256" fill="currentColor">
+        <path d="M216,48H40A16,16,0,0,0,24,64V224a15.85,15.85,0,0,0,9.24,14.5A16.13,16.13,0,0,0,40,240a15.89,15.89,0,0,0,10.25-3.78.69.69,0,0,0,.13-.11L82.5,208H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48Z"/>
+      </svg>
+      {{ comentariosActivos.length }}
+    </button>
+  } @else {
+    <button
+      (click)="onAddComentarioFromGutter()"
+      class="absolute opacity-0 group-hover:opacity-100 transition-opacity"
+      style="
+        right: -44px; top: 0px; height: 26px; padding: 0 8px;
+        display: flex; align-items: center; gap: 5px;
+        border-radius: 7px; outline: 1px #0A5CF5 solid; outline-offset: -1px;
+        border: none; background: #F9FCFF; color: #0A5CF5;
+        cursor: pointer; font-size: 11px; font-weight: 600; white-space: nowrap;
+      "
+      title="Añadir comentario"
+      (mouseenter)="$event.currentTarget['style'].background = '#E6EFFF'"
+      (mouseleave)="$event.currentTarget['style'].background = '#F9FCFF'"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
+        <path d="M216,48H40A16,16,0,0,0,24,64V224a15.85,15.85,0,0,0,9.24,14.5A16.13,16.13,0,0,0,40,240a15.89,15.89,0,0,0,10.25-3.78.69.69,0,0,0,.13-.11L82.5,208H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48Z"/>
+      </svg>
+    </button>
+  }
+
+  <!-- Content area -->
+  <div class="relative py-1">
+
+    <!-- List content (array) - static li items -->
+    @if ((tipo === 'ul' || tipo === 'ol') && isContenidoArray) {
+      @if (tipo === 'ul') {
+        <ul class="list-disc pl-5">
+          @for (item of contenidoArray; track $index) {
+            <li [class]="tipoConf.className" [ngStyle]="tipoConf.style">{{ item }}</li>
+          }
+        </ul>
+      } @else {
+        <ol class="list-decimal pl-5">
+          @for (item of contenidoArray; track $index) {
+            <li [class]="tipoConf.className" [ngStyle]="tipoConf.style">{{ item }}</li>
+          }
+        </ol>
+      }
+
+    <!-- Strikethrough replaced text (read-only) -->
+    } @else if (textoReemplazando && bloque?.contenido && bloque.contenido.includes(textoReemplazando)) {
+      @if (tipo === 'ul') {
+        <ul class="list-disc pl-5">
+          <p [class]="tipoConf.className" [ngStyle]="tipoConf.style">
+            {{ bloque.contenido.slice(0, bloque.contenido.indexOf(textoReemplazando)) }}<span style="color: #6B7280; text-decoration: line-through;">{{ textoReemplazando }}</span>{{ bloque.contenido.slice(bloque.contenido.indexOf(textoReemplazando) + textoReemplazando.length) }}
+          </p>
+        </ul>
+      } @else if (tipo === 'ol') {
+        <ol class="list-decimal pl-5">
+          <p [class]="tipoConf.className" [ngStyle]="tipoConf.style">
+            {{ bloque.contenido.slice(0, bloque.contenido.indexOf(textoReemplazando)) }}<span style="color: #6B7280; text-decoration: line-through;">{{ textoReemplazando }}</span>{{ bloque.contenido.slice(bloque.contenido.indexOf(textoReemplazando) + textoReemplazando.length) }}
+          </p>
+        </ol>
+      } @else {
+        <p [class]="tipoConf.className" [ngStyle]="tipoConf.style">
+          {{ bloque.contenido.slice(0, bloque.contenido.indexOf(textoReemplazando)) }}<span style="color: #6B7280; text-decoration: line-through;">{{ textoReemplazando }}</span>{{ bloque.contenido.slice(bloque.contenido.indexOf(textoReemplazando) + textoReemplazando.length) }}
+        </p>
+      }
+
+    <!-- contentEditable div -->
+    } @else {
+      @if (tipo === 'ul') {
+        <ul class="list-disc pl-5">
+          <div
+            #editableRef
+            contenteditable="true"
+            (input)="onEditableInput($event)"
+            (keydown)="onEditableKeyDown($event)"
+            (paste)="onEditablePaste($event)"
+            [class]="tipoConf.className"
+            [ngStyle]="{ ...tipoConf.style, caretColor: editable ? '#367CFF' : 'transparent', outline: 'none' }"
+          ></div>
+        </ul>
+      } @else if (tipo === 'ol') {
+        <ol class="list-decimal pl-5">
+          <div
+            #editableRef
+            contenteditable="true"
+            (input)="onEditableInput($event)"
+            (keydown)="onEditableKeyDown($event)"
+            (paste)="onEditablePaste($event)"
+            [class]="tipoConf.className"
+            [ngStyle]="{ ...tipoConf.style, caretColor: editable ? '#367CFF' : 'transparent', outline: 'none' }"
+          ></div>
+        </ol>
+      } @else {
+        <div
+          #editableRef
+          contenteditable="true"
+          (input)="onEditableInput($event)"
+          (keydown)="onEditableKeyDown($event)"
+          (paste)="onEditablePaste($event)"
+          [class]="tipoConf.className"
+          [ngStyle]="{ ...tipoConf.style, caretColor: editable ? '#367CFF' : 'transparent', outline: 'none' }"
+        ></div>
+      }
+    }
+
+    <!-- Inline comment badge (non-editable view) -->
+    @if (!editable && comentariosActivos.length > 0) {
+      <div class="flex flex-wrap gap-1.5 mt-2">
+        <span
+          class="text-xs px-2 py-0.5 rounded font-medium"
+          [ngStyle]="{
+            background: getGravedadConfig(comentariosActivos[0].gravedad).bg,
+            color: getGravedadConfig(comentariosActivos[0].gravedad).color,
+            border: '1px solid ' + getGravedadConfig(comentariosActivos[0].gravedad).border
+          }"
+        >
+          {{ getGravedadConfig(comentariosActivos[0].gravedad).emoji }}
+          {{ comentariosActivos.length }} comentario
+        </span>
+      </div>
+    }
+  </div>
+
+  <!-- Floating toolbar (appears above selection) -->
+  @if (toolbarVisible()) {
+    <div
+      #toolbarRef
+      class="absolute z-50 animate-fade-in"
+      [ngStyle]="{
+        top: toolbarPos().top + 'px',
+        left: [0, toolbarPos().left] | [0] | max + 'px',
+        transform: 'translateY(calc(-100% - 8px))',
+        width: '200px',
+        paddingTop: '10px',
+        paddingBottom: '4px',
+        paddingLeft: '8px',
+        paddingRight: '8px',
+        background: 'white',
+        borderRadius: '10px',
+        outline: '1px #DCDFEB solid',
+        outlineOffset: '-1px',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '6px'
+      }"
+    >
+
+      <!-- IA section -->
+      @if (toolbarActionsIA.length > 0) {
+        <div style="padding-left: 8px; padding-right: 8px; display: inline-flex; align-items: center; gap: 8px;">
+          <span style="
+            font-size: 12px;
+            font-family: 'Proeduca Sans', system-ui, sans-serif;
+            font-weight: 500;
+            line-height: 16px;
+            background: linear-gradient(90deg, #A956D5 0%, #066EE0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          ">Herramientas IA</span>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          @for (action of toolbarActionsIA; track action.label) {
+            <button
+              (mousedown)="$event.preventDefault()"
+              (click)="fireIaAction(action.label)"
+              style="
+                padding: 6px 10px; border-radius: 6px; border: none;
+                background: transparent; display: inline-flex; align-items: center; gap: 8px;
+                cursor: pointer; width: 100%; text-align: left;
+              "
+              (mouseenter)="$event.currentTarget['style'].background = '#F3F4F6'"
+              (mouseleave)="$event.currentTarget['style'].background = 'transparent'"
+            >
+              <span style="color: #566077; flex-shrink: 0; font-size: 14px;">●</span>
+              <span style="color: #566077; font-size: 14px; font-family: 'Proeduca Sans', system-ui, sans-serif; font-weight: 500; line-height: 20px;">
+                {{ action.label }}
+              </span>
+            </button>
+          }
+        </div>
+      }
+
+      <!-- Chat + annotations section -->
+      <div style="display: flex; flex-direction: column;">
+        @for (action of toolbarActionsChatAndAnotaciones; track action.label; let idx = $index) {
+          <button
+            (mousedown)="$event.preventDefault()"
+            (click)="fireChatAction(action.label)"
+            style="
+              padding: 6px 10px; border-radius: 6px; border: none;
+              background: transparent; display: inline-flex; align-items: center; gap: 8px;
+              cursor: pointer; width: 100%; text-align: left;
+            "
+            (mouseenter)="$event.currentTarget['style'].background = '#F3F4F6'"
+            (mouseleave)="$event.currentTarget['style'].background = 'transparent'"
+          >
+            <span style="color: #566077; flex-shrink: 0; font-size: 14px;">●</span>
+            <span style="color: #566077; font-size: 14px; font-family: 'Proeduca Sans', system-ui, sans-serif; font-weight: 500; line-height: 20px;">
+              {{ action.label }}
+            </span>
+          </button>
+          @if (action.isSeparatorAfter) {
+            <div style="height: 1px; background: #DCDFEB; margin: 2px 8px;"></div>
+          }
+        }
+      </div>
+
+    </div>
+  }
+
+</div>
+
+} <!-- end @if tipo !== 'hr' -->

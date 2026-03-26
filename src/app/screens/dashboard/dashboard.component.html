@@ -1,0 +1,485 @@
+<div class="min-h-screen" style="background:#F8F9FA;font-family:'Proeduca Sans',system-ui,sans-serif;">
+
+  <!-- Topbar -->
+  <app-topbar
+    [breadcrumb]="breadcrumb()"
+    [rolActivo]="state.rolActivo()"
+    [notifCount]="3"
+    (rolChange)="state.rolActivo.set($event)"
+    (logoClick)="state.navigate('herramientas')"
+  />
+
+  <!-- Main content -->
+  <div class="max-w-[960px] mx-auto px-6 py-6">
+
+    <!-- Page title -->
+    <div class="mb-5">
+      <h1 class="text-xl font-semibold mb-0.5" style="color:#1A1A1A;">Generación de Asignaturas</h1>
+      <p class="text-sm" style="color:#6B7280;">{{ subtitulo() }}</p>
+    </div>
+
+    <!-- Chatbar -->
+    <div class="mb-6">
+      <app-chatbar
+        [placeholder]="chatbarPlaceholder()"
+        [chatHistorial]="state.chatHistorial()"
+        [shortcuts]="dashShortcuts()"
+        [onShortcutAction]="onShortcutAction.bind(this)"
+        (chatHistorialChange)="onChatHistorialChange($event)"
+      />
+    </div>
+
+    <!-- Tab bar — coordinator only -->
+    @if (state.rolActivo() === 'coordinador') {
+      <div class="flex gap-0 mb-5" style="border-bottom:2px solid #E5E7EB;">
+        @for (tab of [{key:'mis-asignaturas',label:'Operativo'},{key:'seguimiento-calidad',label:'Seguimiento de contenidos'}]; track tab.key) {
+          <button
+            (click)="dashTab.set(tab.key)"
+            class="px-4 py-2 text-sm font-medium transition-colors"
+            [style.color]="dashTab() === tab.key ? '#367CFF' : '#6B7280'"
+            [style.border-bottom]="dashTab() === tab.key ? '2px solid #367CFF' : '2px solid transparent'"
+            style="margin-bottom:-2px;background:none;"
+          >{{ tab.label }}</button>
+        }
+      </div>
+    }
+
+    <!-- Seguimiento tab -->
+    @if (state.rolActivo() === 'coordinador' && dashTab() === 'seguimiento-calidad') {
+      <!-- Tracking dashboard -->
+      <div>
+        <!-- Status filter pills -->
+        <div class="flex items-center gap-2 mb-4">
+          @for (entry of trackingStatusEntries; track entry[0]) {
+            <button
+              (click)="toggleStatusFilter(entry[0])"
+              class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all"
+              [style.background]="statusFilter() === entry[0] ? entry[1].bg : '#F1F5F9'"
+              [style.color]="statusFilter() === entry[0] ? entry[1].color : '#64748B'"
+              [style.border]="statusFilter() === entry[0] ? '1px solid ' + entry[1].border : '1px solid #E2E8F0'"
+            >
+              <span class="w-1.5 h-1.5 rounded-full" [style.background]="entry[1].dot"></span>
+              {{ entry[1].label }}
+              <span>({{ getTrackingCountForKey(entry[0]) }})</span>
+            </button>
+          }
+          @if (statusFilter() !== 'todos') {
+            <button (click)="statusFilter.set('todos')" class="text-xs text-slate-500 ml-1 hover:text-slate-700">
+              <ph-icon name="X" [size]="12" />
+            </button>
+          }
+        </div>
+
+        <!-- Tracking table -->
+        <div class="rounded-2xl overflow-hidden" style="background:#FFFFFF;border:1px solid #E5E7EB;">
+          <!-- Header -->
+          <div class="grid" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px;">
+            @for (col of ['Asignatura','Estado','Último ciclo','Próximo ciclo','Filial','Acciones']; track col) {
+              <div [ngStyle]="HDR_STYLE"><span [ngStyle]="hdrtxt">{{ col }}</span></div>
+            }
+          </div>
+          @for (item of filteredTracking(); track item.id) {
+            <div
+              (click)="toggleTrackingSelected(item.id)"
+              class="grid cursor-pointer transition-colors"
+              style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 80px;"
+              [style.background]="selectedId() === item.id ? '#F4F6FD' : ''"
+              (mouseenter)="onTrackingRowHover($event.currentTarget, true, selectedId() === item.id)"
+              (mouseleave)="onTrackingRowHover($event.currentTarget, false, selectedId() === item.id)"
+            >
+              <div [ngStyle]="CELL_STYLE">
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium truncate" style="color:#1A1A1A;">{{ item.name }}</p>
+                  <p class="text-xs" style="color:#6B7280;">{{ item.subject }}</p>
+                </div>
+              </div>
+              <div [ngStyle]="CELL_STYLE">
+                <span class="text-xs px-2 py-1 rounded-md font-medium"
+                  [style.background]="getTrackingStatusCfg(item.status).bg"
+                  [style.color]="getTrackingStatusCfg(item.status).color"
+                  [style.border]="'1px solid ' + getTrackingStatusCfg(item.status).border">
+                  {{ getTrackingStatusCfg(item.status).label }}
+                </span>
+              </div>
+              <div [ngStyle]="CELL_STYLE">
+                <div>
+                  <p class="text-xs" style="color:#334155;">{{ formatDate(item.lastVersionDate) }}</p>
+                  <div class="flex items-center gap-1 mt-1" style="width:80px;">
+                    <div class="flex-1 rounded-full" style="height:3px;background:#E5E7EB;">
+                      <div class="rounded-full" [style.width]="barWidth(item.pct) + '%'" [style.background]="barColor(item.status)" style="height:3px;"></div>
+                    </div>
+                    <span class="text-xs" style="color:#6B7280;">{{ item.pct }}%</span>
+                  </div>
+                </div>
+              </div>
+              <div [ngStyle]="CELL_STYLE">
+                <span class="text-xs" style="color:#6B7280;">{{ daysRemaining(item) }} días</span>
+              </div>
+              <div [ngStyle]="CELL_STYLE">
+                <span class="text-xs" style="color:#64748B;">{{ getFilialLabel(item.filial || '') }}</span>
+              </div>
+              <div [ngStyle]="CELL_STYLE">
+                <ph-icon name="CaretRight" [size]="14" />
+              </div>
+            </div>
+            <!-- Expanded detail row -->
+            @if (selectedId() === item.id) {
+              <div class="px-5 py-4" style="background:#F8F9FA;border-top:1px solid #E5E7EB;">
+                <div class="flex gap-4">
+                  <div class="flex-1">
+                    <p class="text-xs font-semibold mb-2" style="color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;">Alarmas activas</p>
+                    @if (item.alarms && item.alarms.length) {
+                      @for (alarm of item.alarms; track alarm) {
+                        @if (getAlarmCfg(alarm)) {
+                          <span class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md mr-2 mb-2 font-medium"
+                            [style.color]="getAlarmCfg(alarm).color"
+                            style="background:#FFF;">
+                            {{ getAlarmCfg(alarm).label }}
+                          </span>
+                        }
+                      }
+                    } @else {
+                      <p class="text-xs" style="color:#9CA3AF;">Sin alarmas activas</p>
+                    }
+                  </div>
+                  <div class="flex flex-col gap-2" style="min-width:160px;">
+                    <button class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-white"
+                      style="background:#367CFF;"
+                      (mouseenter)="onDetailHover($event.currentTarget, true)"
+                      (mouseleave)="onDetailHover($event.currentTarget, false)">
+                      Programar revisión
+                    </button>
+                    <button class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium"
+                      style="background:#F3F4F6;color:#374151;border:1px solid #E5E7EB;"
+                      (mouseenter)="onBtnHover($event.currentTarget, true, '#E5E7EB', '#F3F4F6')"
+                      (mouseleave)="onBtnHover($event.currentTarget, false, '#E5E7EB', '#F3F4F6')">
+                      Ver historial de versiones
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+    } @else {
+      <!-- Main content (mis-asignaturas) -->
+
+      <!-- Calidad de Contenidos — hidden for disenador and autor -->
+      @if (!esDisenador() && state.rolActivo() !== 'autor') {
+        <div class="mb-6">
+          <app-calidad-contenidos-cards (onCardClick)="onCalidadCardClick($event)" />
+        </div>
+      }
+
+      <!-- Action bar + filters — hidden for disenador -->
+      @if (!esDisenador()) {
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2 flex-wrap">
+            @for (tag of tagsFiltrables; track tag.id) {
+              <button
+                (click)="filtroTag.set(filtroTag() === tag.id ? 'todos' : tag.id)"
+                class="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full transition-all"
+                [style.background]="filtroTag() === tag.id ? '#E7EFFE' : '#FFFFFF'"
+                [style.color]="filtroTag() === tag.id ? '#367CFF' : '#6B7280'"
+                [style.border]="filtroTag() === tag.id ? '1px solid #BAD2FF' : '1px solid #E5E7EB'"
+              >{{ tag.label }}</button>
+            }
+          </div>
+          @if (state.rolActivo() === 'coordinador') {
+            <button
+              (click)="state.navigate('crearAsignatura')"
+              class="flex items-center gap-2 text-xs font-medium px-4 py-2 rounded-xl text-white"
+              style="background:#367CFF;"
+            >
+              <ph-icon name="Plus" [size]="14" />
+              Nueva asignatura
+            </button>
+          }
+        </div>
+      }
+
+      <!-- 3-column layout -->
+      <div class="flex gap-4" style="align-items:flex-start;">
+
+        <!-- Left: Sidebar titulaciones -->
+        <div class="flex flex-col rounded-2xl overflow-hidden" style="background:#FFFFFF;border:1px solid #E5E7EB;width:232px;flex-shrink:0;">
+          <div class="px-4 py-3" style="border-bottom:1px solid #F1F5F9;">
+            <p class="text-xs font-semibold" style="color:#6B7280;text-transform:uppercase;letter-spacing:0.05em;">Titulaciones</p>
+          </div>
+          <div class="flex-1 overflow-y-auto py-1.5 px-2">
+            @for (t of state.titulaciones(); track t.id) {
+              <button
+                (click)="t.navegable && titulacionSeleccionada.set(t.id)"
+                class="w-full text-left px-3 py-2.5 transition-all flex items-start gap-3"
+                [style.cursor]="t.navegable ? 'pointer' : 'default'"
+                [style.background]="titulacionSeleccionada() === t.id ? '#F4F6FD' : 'transparent'"
+                [style.border-radius]="'12px'"
+                (mouseenter)="onSidebarHover($event.currentTarget, true, titulacionSeleccionada() === t.id, t.navegable)"
+                (mouseleave)="onSidebarHover($event.currentTarget, false, titulacionSeleccionada() === t.id, t.navegable)"
+              >
+                <div class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
+                  [style.background]="titulacionSeleccionada() === t.id ? '#E7EFFE' : t.navegable ? '#F8F9FA' : '#F1F5F9'">
+                  @if (t.navegable) {
+                    <ph-icon name="BookOpen" [size]="11" [style.color]="titulacionSeleccionada() === t.id ? '#367CFF' : '#64748B'" />
+                  } @else {
+                    <ph-icon name="Lock" [size]="10" style="color:#64748B;" />
+                  }
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-medium leading-snug"
+                    [style.color]="titulacionSeleccionada() === t.id ? '#367CFF' : t.navegable ? '#272A3F' : '#6B7280'">
+                    {{ t.nombre }}
+                  </p>
+                  <p class="text-xs mt-0.5" [style.color]="t.navegable ? '#6B7280' : '#9CA3AF'" style="font-family:'Proeduca Sans',system-ui,sans-serif;">
+                    {{ t.codigo }} · {{ t.asignaturas_count }} asig.
+                  </p>
+                </div>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Center: Table -->
+        <div class="flex-1 min-w-0">
+
+          <!-- Diseñador table -->
+          @if (esDisenador()) {
+            @if (!titulacionActual()?.navegable) {
+              <div class="flex flex-col items-center justify-center py-20 text-center">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:#F1F5F9;">
+                  <ph-icon name="Lock" [size]="20" style="color:#9CA3AF;" />
+                </div>
+                <p class="text-sm font-medium" style="color:#4B5563;">Titulación no disponible en el prototipo</p>
+                <p class="text-xs mt-1" style="color:#6B7280;">Selecciona el Máster en IA para navegar</p>
+              </div>
+            } @else {
+              <div class="rounded-2xl overflow-hidden" style="background:#FFFFFF;border:1px solid #E5E7EB;">
+                <div class="flex items-center justify-between px-5 py-3" style="border-bottom:1px solid #DCDFEB;background:#F8F9FA;">
+                  <div>
+                    <p class="text-sm font-semibold" style="color:#1A1A1A;">{{ titulacionActual()?.nombre }}</p>
+                    <p class="text-xs mt-0.5" style="color:#6B7280;">{{ asignaturasDisenador().length }} de {{ titulacionActual()?.asignaturas_count }} asignaturas</p>
+                  </div>
+                </div>
+                <!-- Headers -->
+                <div class="grid" style="grid-template-columns:2fr 1fr 1fr 1fr;">
+                  @for (col of ['Asignatura','Obsolescencia','Disponibilidad','Última actualización']; track col) {
+                    <div [ngStyle]="HDR_STYLE"><span [ngStyle]="hdrtxt">{{ col }}</span></div>
+                  }
+                </div>
+                @for (asig of asignaturasDisenador(); track asig.id) {
+                  <div (click)="navigateToCanvasDis(asig)"
+                    class="grid transition-colors"
+                    style="grid-template-columns:2fr 1fr 1fr 1fr;"
+                    [style.cursor]="asig.disenadorEstado === 'aprobado' && asig.activa ? 'pointer' : 'default'"
+                    (mouseenter)="onRowHover($event.currentTarget, true, asig.disenadorEstado === 'aprobado')"
+                    (mouseleave)="onRowHover($event.currentTarget, false, asig.disenadorEstado === 'aprobado')"
+                  >
+                    <div [ngStyle]="CELL_STYLE">
+                      <span [ngStyle]="txtstyle" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ asig.nombre }}</span>
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      @if (asig.obsolescencia) {
+                        <span class="text-xs px-2 py-1 rounded-md font-medium"
+                          [style.background]="getObsConfig(asig.obsolescencia).bg"
+                          [style.color]="getObsConfig(asig.obsolescencia).color"
+                          [style.border]="'1px solid ' + getObsConfig(asig.obsolescencia).border">
+                          {{ getObsConfig(asig.obsolescencia).label }}
+                        </span>
+                      }
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      @if (asig.disenadorEstado) {
+                        <span class="text-xs px-2 py-1 rounded-md font-medium"
+                          [style.background]="getDisenadorEstado(asig.disenadorEstado).bg"
+                          [style.color]="getDisenadorEstado(asig.disenadorEstado).color"
+                          [style.border]="'1px solid ' + getDisenadorEstado(asig.disenadorEstado).border">
+                          {{ getDisenadorEstado(asig.disenadorEstado).label }}
+                        </span>
+                      }
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      <span [ngStyle]="txtstyle" style="color:#6B7280;">{{ asig.ultimaActividad }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+
+          <!-- Coordinador/Editor table -->
+          } @else if (esCoordinador()) {
+            @if (!titulacionActual()?.navegable) {
+              <div class="flex flex-col items-center justify-center py-20 text-center">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:#F1F5F9;">
+                  <ph-icon name="Lock" [size]="20" style="color:#9CA3AF;" />
+                </div>
+                <p class="text-sm font-medium" style="color:#4B5563;">Titulación no disponible en el prototipo</p>
+                <p class="text-xs mt-1" style="color:#6B7280;">Selecciona el Máster en IA para navegar</p>
+              </div>
+            } @else {
+              <div class="rounded-2xl overflow-hidden" style="background:#FFFFFF;border:1px solid #E5E7EB;">
+                <!-- Table header -->
+                <div class="flex items-center justify-between px-5 py-3" style="border-bottom:1px solid #DCDFEB;background:#F8F9FA;">
+                  <div>
+                    <p class="text-sm font-semibold" style="color:#1A1A1A;">{{ titulacionActual()?.nombre }}</p>
+                    <p class="text-xs mt-0.5" style="color:#6B7280;">{{ asignaturasCoord().length }} de {{ titulacionActual()?.asignaturas_count }} asignaturas</p>
+                  </div>
+                  <!-- Filial filter -->
+                  <div class="flex items-center gap-1.5">
+                    <ph-icon name="Globe" [size]="12" style="color:#6B7280;" />
+                    <select class="text-xs outline-none rounded-md px-2 py-1"
+                      style="border:1px solid #E5E7EB;background:#FFFFFF;color:#6B7280;"
+                      [value]="filtroFilial()"
+                      (change)="filtroFilial.set($any($event.target).value)">
+                      <option value="">Todas las filiales</option>
+                      @for (f of filialesDisponibles(); track f) {
+                        <option [value]="f">{{ f }}</option>
+                      }
+                    </select>
+                  </div>
+                </div>
+                <!-- Columns headers -->
+                <div class="grid" style="grid-template-columns:2fr 1fr 1fr 0.7fr 1fr 1fr 0.9fr;">
+                  @for (col of ['Asignatura','Estado','Etapa','Filial','Calidad','Pendiente de','Última actividad']; track col) {
+                    <div [ngStyle]="HDR_STYLE"><span [ngStyle]="hdrtxt">{{ col }}</span></div>
+                  }
+                </div>
+                @if (asignaturasCoord().length === 0) {
+                  <div class="px-5 py-10 text-center"><p class="text-sm" style="color:#4B5563;">No hay asignaturas con este filtro</p></div>
+                }
+                @for (asig of asignaturasCoord(); track asig.id) {
+                  <div (click)="navigateToCanvas(asig)"
+                    class="grid transition-colors group"
+                    style="grid-template-columns:2fr 1fr 1fr 0.7fr 1fr 1fr 0.9fr;"
+                    [style.cursor]="asig.activa ? 'pointer' : 'default'"
+                    (mouseenter)="onRowHover($event.currentTarget, true, asig.activa)"
+                    (mouseleave)="onRowHover($event.currentTarget, false, asig.activa)"
+                  >
+                    <div [ngStyle]="CELL_STYLE" style="gap:8px;">
+                      @if (asig.activa) {
+                        <div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#367CFF;"></div>
+                      }
+                      <span [ngStyle]="txtstyle" [style.color]="asig.activa ? '#1A1A1A' : '#64748B'"
+                        style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">{{ asig.nombre }}</span>
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      <app-status-indicator [status]="toStatusKey(asig.estado)" variant="badge" />
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      <span [ngStyle]="txtstyle" style="color:#6B7280;">{{ asig.etapaActual }}</span>
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      <span [ngStyle]="txtstyle" style="color:#6B7280;">{{ getFilialLabel(asig.filial || '') }}</span>
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      @if (asig.obsolescencia) {
+                        <span class="text-xs px-1.5 py-0.5 rounded font-medium"
+                          [style.background]="getObsConfig(asig.obsolescencia).bg"
+                          [style.color]="getObsConfig(asig.obsolescencia).color">
+                          {{ getObsConfig(asig.obsolescencia).label }}
+                        </span>
+                      }
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      <span [ngStyle]="txtstyle"
+                        [style.color]="isPendientePropio(asig) ? '#367CFF' : '#6B7280'"
+                        [style.font-weight]="isPendientePropio(asig) ? '600' : '500'">
+                        {{ getPendienteDisplay(asig) }}
+                      </span>
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      <span [ngStyle]="txtstyle" style="color:#6B7280;">{{ asig.ultimaActividad }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+
+          <!-- Autor/Editor table -->
+          } @else {
+            @if (!titulacionActual()?.navegable) {
+              <div class="flex flex-col items-center justify-center py-20 text-center">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:#F1F5F9;">
+                  <ph-icon name="Lock" [size]="20" style="color:#9CA3AF;" />
+                </div>
+                <p class="text-sm font-medium" style="color:#4B5563;">Titulación no disponible en el prototipo</p>
+                <p class="text-xs mt-1" style="color:#6B7280;">Selecciona el Máster en IA para navegar</p>
+              </div>
+            } @else {
+              <div class="rounded-2xl overflow-hidden" style="background:#FFFFFF;border:1px solid #E5E7EB;">
+                <div class="flex items-center justify-between px-5 py-3" style="border-bottom:1px solid #DCDFEB;background:#F8F9FA;">
+                  <div>
+                    <p class="text-sm font-semibold" style="color:#1A1A1A;">{{ titulacionActual()?.nombre }}</p>
+                    <p class="text-xs mt-0.5" style="color:#6B7280;">{{ asignaturasAutor().length }} de {{ titulacionActual()?.asignaturas_count }} asignaturas</p>
+                  </div>
+                  <div style="padding:3.5px 7px;background:#E7EFFE;border-radius:6px;display:inline-flex;align-items:center;gap:4px;">
+                    <div style="color:#0A5CF5;font-size:12px;font-family:'Proeduca Sans';font-weight:500;line-height:15.84px;">Activa</div>
+                  </div>
+                </div>
+                <!-- Headers -->
+                <div class="grid" style="grid-template-columns:2fr 1.1fr 0.9fr 1fr 1fr;">
+                  @for (col of ['Asignatura','Estado','Etapa','Pendiente de','Última actividad']; track col) {
+                    <div [ngStyle]="HDR_STYLE"><span [ngStyle]="hdrtxt">{{ col }}</span></div>
+                  }
+                </div>
+                @if (asignaturasAutor().length === 0) {
+                  <div class="px-5 py-10 text-center"><p class="text-sm" style="color:#4B5563;">No hay asignaturas con este filtro</p></div>
+                }
+                @for (asig of asignaturasAutor(); track asig.id) {
+                  <div (click)="navigateToCanvas(asig)"
+                    class="grid transition-colors group"
+                    style="grid-template-columns:2fr 1.1fr 0.9fr 1fr 1fr;"
+                    [style.cursor]="asig.activa ? 'pointer' : 'default'"
+                    (mouseenter)="onRowHover($event.currentTarget, true, asig.activa)"
+                    (mouseleave)="onRowHover($event.currentTarget, false, asig.activa)"
+                  >
+                    <div [ngStyle]="CELL_STYLE" style="gap:8px;">
+                      @if (asig.activa) {
+                        <div class="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                          [class.animate-pulse]="!asig.crearAsignatura"
+                          style="background:#367CFF;"></div>
+                      }
+                      <span [ngStyle]="txtstyle" [style.color]="asig.activa ? '#1A1A1A' : '#64748B'"
+                        style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;">{{ asig.nombre }}</span>
+                      @if (asig.activa) {
+                        <ph-icon name="CaretRight" [size]="12" style="color:#9CA3AF;flex-shrink:0;" />
+                      }
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      <app-status-indicator [status]="toStatusKey(asig.estado)" variant="badge" />
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      <span [ngStyle]="txtstyle" style="color:#6B7280;">{{ asig.etapaActual }}</span>
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      <span [ngStyle]="txtstyle"
+                        [style.color]="isPendientePropio(asig) ? '#367CFF' : '#6B7280'"
+                        [style.font-weight]="isPendientePropio(asig) ? '600' : '500'">
+                        {{ getPendienteDisplay(asig) }}
+                      </span>
+                    </div>
+                    <div [ngStyle]="CELL_STYLE">
+                      <span [ngStyle]="txtstyle" style="color:#6B7280;">{{ asig.ultimaActividad }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
+
+        <!-- Right: Mis pendientes — only for coordinator/editor -->
+        @if (esCoordinador()) {
+          <div style="width:264px;flex-shrink:0;">
+            <app-panel-mis-pendientes
+              [rolActivo]="state.rolActivo()"
+              (onNavigate)="onPendientesNavigate($event)"
+            />
+          </div>
+        }
+
+      </div><!-- end 3-col layout -->
+    }
+  </div><!-- end max-w container -->
+</div>
