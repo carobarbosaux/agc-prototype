@@ -105,9 +105,9 @@
                 (click)="toggleTema(etapa.id)"
                 class="w-full flex items-center gap-2.5 px-3 py-2.5 transition-colors"
                 [style.border-radius.px]="12"
-                [style.background]="(seccionActiva && etapa.secciones && etapa.secciones.some($any($any(s) => s.id === seccionActiva))) && !temasExpandidos()[etapa.id] ? '#F4F6FD' : 'transparent'"
+                [style.background]="isTemaActive(etapa) && !temasExpandidos()[etapa.id] ? '#F4F6FD' : 'transparent'"
                 (mouseenter)="$event.currentTarget.style.background = '#F4F6FD'"
-                (mouseleave)="$event.currentTarget.style.background = (seccionActiva && etapa.secciones && etapa.secciones.some($any($any(s) => s.id === seccionActiva))) && !temasExpandidos()[etapa.id] ? '#F4F6FD' : 'transparent'"
+                (mouseleave)="$event.currentTarget.style.background = isTemaActive(etapa) && !temasExpandidos()[etapa.id] ? '#F4F6FD' : 'transparent'"
               >
                 <app-status-indicator
                   [status]="toStatusKey(getTemaEstado(etapa))"

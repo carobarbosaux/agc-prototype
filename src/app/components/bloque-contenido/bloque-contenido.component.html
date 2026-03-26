@@ -269,7 +269,7 @@
             (keydown)="onEditableKeyDown($event)"
             (paste)="onEditablePaste($event)"
             [class]="tipoConf.className"
-            [ngStyle]="{ ...tipoConf.style, caretColor: editable ? '#367CFF' : 'transparent', outline: 'none' }"
+            [ngStyle]="getEditableStyle()"
           ></div>
         </ul>
       } @else if (tipo === 'ol') {
@@ -281,7 +281,7 @@
             (keydown)="onEditableKeyDown($event)"
             (paste)="onEditablePaste($event)"
             [class]="tipoConf.className"
-            [ngStyle]="{ ...tipoConf.style, caretColor: editable ? '#367CFF' : 'transparent', outline: 'none' }"
+            [ngStyle]="getEditableStyle()"
           ></div>
         </ol>
       } @else {
@@ -292,7 +292,7 @@
           (keydown)="onEditableKeyDown($event)"
           (paste)="onEditablePaste($event)"
           [class]="tipoConf.className"
-          [ngStyle]="{ ...tipoConf.style, caretColor: editable ? '#367CFF' : 'transparent', outline: 'none' }"
+          [ngStyle]="getEditableStyle()"
         ></div>
       }
     }
@@ -322,7 +322,7 @@
       class="absolute z-50 animate-fade-in"
       [ngStyle]="{
         top: toolbarPos().top + 'px',
-        left: [0, toolbarPos().left] | [0] | max + 'px',
+        left: getToolbarLeft(),
         transform: 'translateY(calc(-100% - 8px))',
         width: '200px',
         paddingTop: '10px',

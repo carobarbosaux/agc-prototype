@@ -14,7 +14,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PhIconComponent } from '../../icons/ph-icon.component';
-import { ProdiMarkComponent, ProdiWordmarkComponent } from '../prodi-logo/prodi-logo.component';
+import { ProdiMarkComponent } from '../prodi-logo/prodi-logo.component';
 import { respuestasIA, respuestasCalidadIA } from '../../mock-data';
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -158,7 +158,7 @@ const CK_CHILDREN_IDS = ['teams', 'sharepoint', 'outlook', 'onedrive'];
 @Component({
   selector: 'app-panel-ia',
   standalone: true,
-  imports: [CommonModule, FormsModule, PhIconComponent, ProdiMarkComponent, ProdiWordmarkComponent],
+  imports: [CommonModule, FormsModule, PhIconComponent, ProdiMarkComponent],
   templateUrl: './panel-ia.component.html',
 })
 export class PanelIAComponent implements OnChanges, AfterViewChecked {
@@ -483,6 +483,17 @@ export class PanelIAComponent implements OnChanges, AfterViewChecked {
   // ── Mouse hover helpers ───────────────────────────────────────────────────
   hoverBg(e: Event, bg: string): void {
     (e.currentTarget as HTMLElement).style.background = bg;
+  }
+
+  hoverBgIf(condition: boolean, e: Event, bg: string): void {
+    if (condition) this.hoverBg(e, bg);
+  }
+
+  hoverConectorBtn(isActive: boolean, e: Event, bg: string, borderColor: string): void {
+    if (!isActive) {
+      (e.currentTarget as HTMLElement).style.background = bg;
+      (e.currentTarget as HTMLElement).style.borderColor = borderColor;
+    }
   }
 
   hoverColor(e: Event, color: string): void {

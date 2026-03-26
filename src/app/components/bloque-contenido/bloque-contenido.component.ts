@@ -107,6 +107,14 @@ export class BloqueContenidoComponent implements OnChanges, AfterViewInit, OnDes
     return TIPO_CONFIG;
   }
 
+  getEditableStyle(): Record<string, string> {
+    return { ...this.tipoConf.style, caretColor: this.editable ? '#367CFF' : 'transparent', outline: 'none' };
+  }
+
+  getToolbarLeft(): string {
+    return Math.max(0, this.toolbarPos().left) + 'px';
+  }
+
   getGravedadConfig(gravedad: string): any {
     const configs: Record<string, any> = {
       critico:         { bg: '#FEF2F2', color: '#DC2626', border: '#FECACA', emoji: '🔴' },

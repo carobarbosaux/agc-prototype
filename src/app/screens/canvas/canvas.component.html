@@ -1,0 +1,526 @@
+<div class="flex flex-col" style="height:100vh;font-family:'Proeduca Sans',system-ui,sans-serif;">
+
+  <!-- Topbar -->
+  <app-topbar
+    [breadcrumb]="breadcrumb()"
+    [rolActivo]="state.rolActivo()"
+    [notifCount]="totalComentariosCriticos()"
+    (rolChange)="state.rolActivo.set($event)"
+    (logoClick)="state.navigate('herramientas')"
+  />
+
+  <!-- Sub-header: section title + status + autosave + action bar -->
+  <div class="flex-shrink-0" style="background:#FFFFFF;border-bottom:1px solid #E5E7EB;">
+    <div class="flex items-center gap-2 py-2.5 min-w-0" style="padding-left:20px;padding-right:68px;">
+      <span class="truncate min-w-0 flex-shrink" style="font-size:13px;font-weight:500;color:#6B7280;">
+        {{ asignaturaData()?.nombre ?? 'Deep Learning y Redes Neuronales' }}
+        @if (!isResumen()) { · {{ seccion().label }} }
+        @else { · Resumen general }
+      </span>
+      <app-status-indicator [status]="toStatusKey(estadoMostrado())" variant="badge" class="flex-shrink-0" />
+      <!-- Autosave toggle -->
+      <button (click)="toggleAutosave()" class="flex items-center gap-1.5 flex-shrink-0 rounded" style="background:none;border:none;padding:2px 4px;cursor:pointer;">
+        <span style="display:inline-flex;align-items:center;width:40px;height:24px;border-radius:30px;flex-shrink:0;padding:0 4px 0 0;"
+          [style.background]="autosaveOn() ? '#0A5CF5' : '#DCDFEB'"
+          [style.justify-content]="autosaveOn() ? 'flex-end' : 'flex-start'">
+          <span style="width:16px;height:16px;border-radius:8px;background:#FFFFFF;display:block;flex-shrink:0;"></span>
+        </span>
+        <span style="font-size:12px;font-weight:500;font-family:'Proeduca Sans',system-ui,sans-serif;"
+          [style.color]="autosaveOn() ? '#374151' : '#6B7280'">
+          {{ autosaveStatus() === 'saving' ? 'Guardando…' : autosaveOn() ? 'Autoguardado' : 'Sin guardar' }}
+        </span>
+      </button>
+      <!-- Action bar (right side) -->
+      <div class="flex items-center gap-2 flex-shrink-0 ml-auto">
+
+        @if (isResumen() && editable()) {
+          <button (click)="editarResumenWarning.set(true)"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            style="background:transparent;color:#6B7280;border:1px solid #E5E7EB;"
+            (mouseenter)="$event.currentTarget.style.background='#F3F4F6'"
+            (mouseleave)="$event.currentTarget.style.background='transparent'">
+            <ph-icon name="Pencil" [size]="13" /> Editar resumen
+          </button>
+        }
+
+        @if (!isResumen()) {
+          <!-- Instrucciones action -->
+          @if (state.seccionActiva().startsWith('instrucciones-') && estadoMostrado() !== 'aprobado') {
+            @if (instrDataActual().generando) {
+              <!-- nothing -->
+            } @else if (instrDataActual().resumenGenerado) {
+              <button (click)="setInstrResumenGenerado(false)"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                style="background:#F1F5F9;color:#374151;border:1px solid #E5E7EB;"
+                (mouseenter)="$event.currentTarget.style.background='#E5E7EB'"
+                (mouseleave)="$event.currentTarget.style.background='#F1F5F9'">
+                Volver
+              </button>
+              <button (click)="generarContenidoTema()"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+                style="background:#0A5CF5;"
+                (mouseenter)="$event.currentTarget.style.background='#0047CC'"
+                (mouseleave)="$event.currentTarget.style.background='#0A5CF5'">
+                Generar temario <ph-icon name="CaretRight" [size]="13" />
+              </button>
+            } @else {
+              <button (click)="generarResumenInstrucciones()"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+                style="background:#0A5CF5;"
+                (mouseenter)="$event.currentTarget.style.background='#0047CC'"
+                (mouseleave)="$event.currentTarget.style.background='#0A5CF5'">
+                Generar resumen del tema
+              </button>
+            }
+          }
+
+          <!-- Autor actions -->
+          @if (state.rolActivo() === 'autor') {
+            @if (estadoMostrado() === 'borrador' || estadoMostrado() === 'comentarios') {
+              <!-- Herramientas IA dropdown -->
+              <div class="relative herramientas-menu">
+                <button (click)="herramientasMenuAbierto.set(!herramientasMenuAbierto())"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                  [style.background]="herramientasMenuAbierto() ? '#E7EFFE' : '#F8F9FA'"
+                  [style.color]="herramientasMenuAbierto() ? '#367CFF' : '#6B7280'"
+                  [style.border]="herramientasMenuAbierto() ? '1px solid #BAD2FF' : '1px solid #E5E7EB'">
+                  <span style="background:linear-gradient(90deg,#A956D5 0%,#066EE0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Herramientas IA</span>
+                  <ph-icon name="CaretDown" [size]="12" />
+                </button>
+                @if (herramientasMenuAbierto()) {
+                  <div class="absolute left-0 top-full mt-1" style="width:200px;padding:10px 8px 4px;background:#FFFFFF;border-radius:10px;outline:1px solid #DCDFEB;box-shadow:0 8px 24px rgba(0,0,0,0.10);z-index:50;">
+                    <div style="padding-left:8px;padding-right:8px;margin-bottom:6px;">
+                      <span style="font-size:12px;font-weight:500;background:linear-gradient(90deg,#A956D5 0%,#066EE0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Herramientas IA</span>
+                    </div>
+                    <button (click)="herramientasMenuAbierto.set(false); handleRevisarCalidad()"
+                      class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md text-sm transition-colors"
+                      style="background:transparent;border:none;color:#566077;cursor:pointer;"
+                      (mouseenter)="$event.currentTarget.style.background='#F3F4F6'"
+                      (mouseleave)="$event.currentTarget.style.background='transparent'">
+                      <ph-icon name="MagicWand" [size]="16" />
+                      {{ revisandoCalidad() ? 'Analizando…' : 'Revisar calidad' }}
+                    </button>
+                  </div>
+                }
+              </div>
+              <button (click)="showSentToast()"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+                style="background:#0A5CF5;"
+                (mouseenter)="$event.currentTarget.style.background='#0047CC'"
+                (mouseleave)="$event.currentTarget.style.background='#0A5CF5'">
+                Enviar a revisión <ph-icon name="CaretRight" [size]="13" />
+              </button>
+            }
+            @if (estadoMostrado() === 'revision') {
+              <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                style="background:#FFFBEB;color:#F59E0B;border:1px solid #FDE68A;"
+                (mouseenter)="$event.currentTarget.style.background='#FEF3C7'"
+                (mouseleave)="$event.currentTarget.style.background='#FFFBEB'">
+                <ph-icon name="Pencil" [size]="13" /> Solicitar permiso de edición
+              </button>
+            }
+            @if (estadoMostrado() === 'aprobado' && !state.seccionActiva().startsWith('instrucciones-')) {
+              <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                style="background:#F8F9FA;color:#6B7280;border:1px solid #E5E7EB;"
+                (mouseenter)="$event.currentTarget.style.background='#F1F5F9'"
+                (mouseleave)="$event.currentTarget.style.background='#F8F9FA'">
+                Solicitar permiso de edición
+              </button>
+            }
+          }
+
+          <!-- Coordinador actions -->
+          @if (state.rolActivo() === 'coordinador') {
+            @if (estadoMostrado() === 'revision') {
+              <button (click)="showCorrectionToast()"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                style="background:#FFFBEB;color:#D97706;border:1px solid #FDE68A;"
+                (mouseenter)="$event.currentTarget.style.background='#FEF3C7'"
+                (mouseleave)="$event.currentTarget.style.background='#FFFBEB'">
+                <ph-icon name="Chat" [size]="13" /> Enviar correcciones
+              </button>
+              <button (click)="showApprovedToast()"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+                style="background:#10B981;"
+                (mouseenter)="$event.currentTarget.style.background='#059669'"
+                (mouseleave)="$event.currentTarget.style.background='#10B981'">
+                <ph-icon name="Check" [size]="13" /> Aprobar
+              </button>
+            }
+            @if (estadoMostrado() === 'aprobado') {
+              <button (click)="showSavedToast()"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                style="background:#F8F9FA;color:#6B7280;border:1px solid #E5E7EB;"
+                (mouseenter)="$event.currentTarget.style.background='#F1F5F9'"
+                (mouseleave)="$event.currentTarget.style.background='#F8F9FA'">
+                <ph-icon name="Eye" [size]="13" /> Comprobar actualizaciones
+              </button>
+            }
+          }
+
+          <!-- Diseñador actions -->
+          @if (state.rolActivo() === 'disenador' && estadoMostrado() !== 'bloqueado') {
+            <button (click)="enrichmentPanelAbierto.set(true); comentarioActivoBloque.set(null); state.panelIAabierto.set(false);"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
+              style="background:#7C3AED;"
+              (mouseenter)="$event.currentTarget.style.background='#6D28D9'"
+              (mouseleave)="$event.currentTarget.style.background='#7C3AED'">
+              <ph-icon name="StackSimple" [size]="13" /> Crear experiencia didáctica
+            </button>
+          }
+        }
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Main layout: sidebar + content + panels + chatbar -->
+  <div class="flex flex-1 overflow-hidden" style="background:#F8F9FA;">
+
+    <!-- Pipeline sidebar -->
+    <div class="flex-shrink-0 flex flex-col self-stretch">
+      <app-pipeline-sidebar
+        [seccionActiva]="state.seccionActiva()"
+        [creacionData]="null"
+        [esAsignaturaNueva]="esAsignaturaNueva()"
+        [estadosSeccion]="estadosSeccion()"
+        (seccionChange)="onSeccionChange($event)"
+      />
+    </div>
+
+    <!-- Content area -->
+    <main class="flex-1 overflow-y-auto flex flex-col" style="background:#FFFFFF;" (mouseup)="onTextSelection()" (keyup)="onTextSelection()">
+
+      <!-- Resumen section -->
+      @if (isResumen()) {
+        <div class="max-w-[960px] mx-auto py-12 px-12 w-full">
+          <div class="mb-8" style="border-bottom:1px solid #F1F5F9;padding-bottom:24px;">
+            <p class="mb-2" style="font-size:12px;color:#9CA3AF;letter-spacing:0.03em;">{{ asignaturaData()?.nombre ?? 'Deep Learning y Redes Neuronales' }} · Máster en IA</p>
+            <h1 style="font-size:26px;font-weight:600;color:#111827;">Resumen general</h1>
+          </div>
+          <div class="rounded-xl p-6" style="background:#F8FAFC;border:1px solid #E5E7EB;">
+            <p class="text-sm leading-relaxed" style="color:#374151;">
+              Este es el resumen general de la asignatura. Aquí se presenta una visión global del contenido, los objetivos de aprendizaje y la estructura del curso.
+            </p>
+          </div>
+        </div>
+
+      } @else {
+        <!-- Regular section content -->
+        <div class="max-w-[960px] mx-auto py-12 w-full" style="padding-left:96px;padding-right:48px;padding-bottom:64px;">
+
+          <!-- Section header -->
+          <div class="mb-10" style="border-bottom:1px solid #F1F5F9;padding-bottom:24px;">
+            <p class="mb-2" style="font-size:12px;color:#9CA3AF;letter-spacing:0.03em;">
+              {{ asignaturaData()?.nombre ?? 'Deep Learning y Redes Neuronales' }} · Máster en IA
+            </p>
+            <h1 style="font-size:26px;font-weight:600;line-height:1.25;color:#111827;">{{ seccion().label }}</h1>
+            <!-- AI tags for revision temas (coordinador) -->
+            @if (isTemaSection() && seccion().estado === 'revision' && state.rolActivo() === 'coordinador') {
+              <div class="mt-4">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-xs font-medium" style="color:#367CFF;">Etiquetas sugeridas por IA</span>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  @for (tag of aiTags; track tag) {
+                    <button class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded transition-all"
+                      style="background:#E7EFFE;color:#367CFF;border:1px solid #BAD2FF;"
+                      (mouseenter)="$event.currentTarget.style.background='#BAD2FF'"
+                      (mouseleave)="$event.currentTarget.style.background='#E7EFFE'">
+                      + {{ tag }}
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Blocked state -->
+          @if (estadoMostrado() === 'bloqueado') {
+            <div class="flex flex-col items-center justify-center py-24 text-center">
+              <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:#F1F5F9;">
+                <ph-icon name="Lock" [size]="22" style="color:#6B7280;" />
+              </div>
+              <p class="text-base font-medium mb-1.5" style="color:#4B5563;">Sección bloqueada</p>
+              <p class="text-sm leading-relaxed max-w-xs" style="color:#6B7280;">
+                Esta sección se desbloqueará automáticamente cuando se aprueben las etapas previas del tema.
+              </p>
+            </div>
+
+          <!-- Instrucciones section -->
+          } @else if (state.seccionActiva().startsWith('instrucciones-')) {
+            @if (instrDataActual().generando) {
+              <!-- Loading -->
+              <div class="flex flex-col items-center justify-center py-24 gap-4">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style="background:#E7EFFE;">
+                  <prodi-mark [size]="28" />
+                </div>
+                <p class="text-sm font-semibold" style="color:#1A1A1A;">Generando resumen del tema…</p>
+                <div class="flex gap-1.5">
+                  @for (i of [0,1,2]; track i) {
+                    <div class="w-1.5 h-1.5 rounded-full animate-bounce" style="background:#367CFF;" [style.animation-delay]="i*0.15+'s'"></div>
+                  }
+                </div>
+              </div>
+            } @else if (instrDataActual().resumenGenerado) {
+              <!-- Resumen generado view -->
+              <div class="rounded-xl p-5 mb-6" style="background:#F8FAFC;border:1px solid #E5E7EB;">
+                <p class="text-xs font-semibold mb-3" style="color:#367CFF;">Resumen del tema generado por IA</p>
+                <p class="text-sm leading-relaxed" style="color:#374151;">
+                  Se ha generado un resumen de las instrucciones didácticas y notas pedagógicas. El sistema está listo para generar el temario completo del tema.
+                </p>
+              </div>
+            } @else {
+              <!-- Instrucciones form -->
+              <div class="space-y-6">
+                <div>
+                  <label class="block text-sm font-semibold mb-2" style="color:#374151;">Indicaciones para la IA</label>
+                  <textarea
+                    [value]="instrDataActual().indicacionesIA"
+                    (input)="setInstrIndicacionesIA($any($event.target).value)"
+                    class="w-full resize-none rounded-xl px-4 py-3 text-sm outline-none"
+                    style="border:1px solid #CBD5E1;background:#FFFFFF;min-height:120px;font-family:'Proeduca Sans',system-ui,sans-serif;"
+                    placeholder="Describe los objetivos didácticos, enfoque pedagógico..."
+                    rows="5"
+                    [disabled]="estadoMostrado() === 'aprobado'"
+                  ></textarea>
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold mb-2" style="color:#374151;">Notas pedagógicas</label>
+                  <textarea
+                    [value]="instrDataActual().notasPedagogicas"
+                    (input)="setInstrNotasPedagogicas($any($event.target).value)"
+                    class="w-full resize-none rounded-xl px-4 py-3 text-sm outline-none"
+                    style="border:1px solid #CBD5E1;background:#FFFFFF;min-height:100px;font-family:'Proeduca Sans',system-ui,sans-serif;"
+                    placeholder="Notas adicionales para el proceso de generación..."
+                    rows="4"
+                    [disabled]="estadoMostrado() === 'aprobado'"
+                  ></textarea>
+                </div>
+              </div>
+            }
+
+          <!-- Main content blocks -->
+          } @else {
+            @if (!editable()) {
+              <div class="flex items-center gap-2 mb-8 text-sm animate-fade-in"
+                [style.color]="state.rolActivo() === 'disenador' ? '#7C3AED' : '#6B7280'">
+                <ph-icon [name]="state.rolActivo() === 'disenador' ? 'StackSimple' : 'Eye'" [size]="13" />
+                <span>
+                  @if (state.rolActivo() === 'disenador') { Contenido aprobado · Solo lectura }
+                  @else { Solo lectura — el Autor puede editar este contenido }
+                </span>
+              </div>
+            }
+
+            @if (bloques().length === 0 && editable()) {
+              <div class="flex flex-col items-center justify-center py-20 text-center">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:#F1F5F9;">
+                  <ph-icon name="BookOpen" [size]="20" style="color:#6B7280;" />
+                </div>
+                <p class="text-sm font-medium mb-1" style="color:#6B7280;">Sección vacía</p>
+                <p class="text-xs leading-relaxed max-w-xs" style="color:#6B7280;">Empieza a escribir o usa el Asistente de contenidos para generar.</p>
+              </div>
+            }
+
+            <!-- Blocks -->
+            <div class="space-y-0">
+              @for (bloque of bloques(); track bloque.id; let i = $index) {
+                <div [style.padding-top]="i === 0 ? '0' : '20px'"
+                  [style.padding-bottom]="'20px'"
+                  [style.border-bottom]="i < bloques().length - 1 ? '1px solid #F3F4F6' : 'none'">
+                  <app-bloque-contenido
+                    [bloque]="bloque"
+                    [index]="i"
+                    [editable]="editable()"
+                    [citaciones]="citacionesActivas()"
+                    [textoReemplazando]="iaInline()?.bloqueId === bloque.id ? iaInline().textoOriginal : null"
+                    (onComentarioClick)="onComentarioClick(bloque)"
+                    (onAccionIA)="onAccionIA($event)"
+                    (onTipoChange)="onTipoChange(bloque.id, $event)"
+                    (onContenidoChange)="onContenidoChange($event.bloqueId, $event.contenido)"
+                  />
+
+                  <!-- Inline IA suggestion -->
+                  @if (iaInline()?.bloqueId === bloque.id) {
+                    <div class="mt-3 animate-fade-in">
+                      @if (iaInline().generando) {
+                        <div class="flex items-center gap-2.5 px-3 py-3 rounded-xl" style="background:#EFF6FF;border:1px solid #BFDBFE;">
+                          <div class="flex gap-1">
+                            @for (j of [0,1,2]; track j) {
+                              <div class="w-1.5 h-1.5 rounded-full animate-bounce" style="background:#3B82F6;" [style.animation-delay]="j*0.15+'s'"></div>
+                            }
+                          </div>
+                          <span class="text-xs" style="color:#3B82F6;">Generando versión {{ iaInline().accion.toLowerCase() }}…</span>
+                        </div>
+                      } @else {
+                        <div class="flex items-center gap-1.5 mb-2">
+                          <span class="text-xs font-semibold" style="color:#3B82F6;">Sugerencia IA · {{ iaInline().accion }}</span>
+                        </div>
+                        <div class="px-3 py-3 rounded-xl text-base leading-8" style="background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;">
+                          {{ iaInline().textoGenerado }}
+                        </div>
+                        <div class="flex items-center gap-2 mt-2.5">
+                          <button (click)="iaInline.set(null)" class="px-3 py-1.5 rounded-lg text-xs transition-colors" style="color:#6B7280;"
+                            (mouseenter)="$event.currentTarget.style.background='#F3F4F6'"
+                            (mouseleave)="$event.currentTarget.style.background='transparent'">Descartar</button>
+                          <button (click)="retryIaInline()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
+                            style="background:#EFF6FF;color:#3B82F6;border:1px solid #BFDBFE;"
+                            (mouseenter)="$event.currentTarget.style.background='#DBEAFE'"
+                            (mouseleave)="$event.currentTarget.style.background='#EFF6FF'">
+                            <ph-icon name="ArrowsClockwise" [size]="11" /> Reintentar
+                          </button>
+                          <button (click)="quotePendiente.set({texto:iaInline().textoOriginal,accion:iaInline().accion}); state.panelIAabierto.set(true); iaInline.set(null);"
+                            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
+                            style="color:#6B7280;border:1px solid #E5E7EB;"
+                            (mouseenter)="$event.currentTarget.style.background='#F3F4F6'"
+                            (mouseleave)="$event.currentTarget.style.background='transparent'">
+                            <ph-icon name="ArrowUpRight" [size]="11" /> Llevar al chat
+                          </button>
+                          <button (click)="acceptIaInline()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold"
+                            style="background:#3B82F6;color:#FFFFFF;"
+                            (mouseenter)="$event.currentTarget.style.background='#2563EB'"
+                            (mouseleave)="$event.currentTarget.style.background='#3B82F6'">
+                            <ph-icon name="Check" [size]="12" /> Aceptar cambios
+                          </button>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+        </div>
+      }
+
+      <!-- Spacer for chatbar -->
+      <div style="height:80px;flex-shrink:0;"></div>
+    </main>
+
+    <!-- Right panels: IA panel, Comments, Notes, Enrichment -->
+    @if (state.panelIAabierto()) {
+      <app-panel-ia
+        [seccionActiva]="state.seccionActiva()"
+        [rolActivo]="state.rolActivo()"
+        [chatHistorial]="state.chatHistorial()"
+        [quotePendiente]="quotePendiente()"
+        [revisandoCalidad]="revisandoCalidad()"
+        (onClose)="state.panelIAabierto.set(false)"
+        (chatHistorialChange)="onChatHistorialChange($event)"
+        (quotePendienteChange)="quotePendiente.set($event)"
+      />
+    }
+
+    @if (comentarioActivoBloque() && !state.panelIAabierto()) {
+      <div class="flex flex-col" style="width:320px;min-width:320px;background:#FAFAFA;border-left:1px solid #E5E7EB;">
+        <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid #E5E7EB;">
+          <p class="text-sm font-semibold" style="color:#1A1A1A;">Comentarios</p>
+          <button (click)="comentarioActivoBloque.set(null)" class="p-1.5 rounded-lg"
+            (mouseenter)="$event.currentTarget.style.background='#F1F5F9'"
+            (mouseleave)="$event.currentTarget.style.background='transparent'">
+            <ph-icon name="X" [size]="14" style="color:#6B7280;" />
+          </button>
+        </div>
+        <div class="flex-1 overflow-y-auto px-4 py-3 space-y-3">
+          @for (c of comentarioActivoBloque().comentarios; track c.id) {
+            <app-comentario-hilo
+              [comentario]="c"
+              (onMarcarResuelto)="onMarcarResuelto(comentarioActivoBloque().id, $event)"
+              (onResponder)="onResponder(comentarioActivoBloque().id, $event.comentarioId, $event.texto)"
+            />
+          }
+        </div>
+        <!-- Add comment -->
+        <div class="px-4 py-3" style="border-top:1px solid #E5E7EB;">
+          <textarea [(ngModel)]="nuevoComentarioTexto"
+            class="w-full text-sm px-3 py-2 rounded-xl resize-none outline-none mb-2"
+            style="background:#FFFFFF;border:1px solid #CBD5E1;min-height:72px;font-family:'Proeduca Sans',system-ui,sans-serif;"
+            placeholder="Añadir comentario…" rows="3"
+            (focus)="$event.target.style.borderColor='#0A5CF5'"
+            (blur)="$event.target.style.borderColor='#CBD5E1'"></textarea>
+          <button (click)="addComentario()"
+            class="px-3 py-1.5 rounded-lg text-xs font-medium text-white"
+            style="background:#0A5CF5;">Enviar</button>
+        </div>
+      </div>
+    }
+
+    @if (panelNotasAbierto() && !state.panelIAabierto() && !comentarioActivoBloque()) {
+      <div class="flex flex-col" style="width:300px;min-width:300px;background:#FFFBEB;border-left:1px solid #FEF3C7;">
+        <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid #FDE68A;">
+          <p class="text-sm font-semibold" style="color:#92400E;">Notas personales</p>
+          <button (click)="panelNotasAbierto.set(false)" class="p-1.5 rounded-lg"
+            (mouseenter)="$event.currentTarget.style.background='#FEF3C7'"
+            (mouseleave)="$event.currentTarget.style.background='transparent'">
+            <ph-icon name="X" [size]="14" style="color:#92400E;" />
+          </button>
+        </div>
+        <div class="flex-1 overflow-y-auto px-4 py-3 space-y-3">
+          @if (notasState().length === 0) {
+            <p class="text-xs text-center py-8" style="color:#A16207;">Sin notas. Selecciona texto y añade una nota.</p>
+          }
+          @for (nota of notasState(); track nota.id) {
+            <div class="rounded-xl p-3" style="background:#FFFFFF;border:1px solid #FDE68A;">
+              @if (notaEditandoId() === nota.id) {
+                <textarea [(ngModel)]="notaEditandoTexto" class="w-full text-sm rounded-lg p-2 resize-none outline-none" style="border:1px solid #FDE68A;min-height:60px;" rows="3"></textarea>
+                <div class="flex gap-2 mt-2">
+                  <button (click)="saveEditNota(nota.id)" class="text-xs px-2 py-1 rounded-lg text-white" style="background:#D97706;">Guardar</button>
+                  <button (click)="notaEditandoId.set(null)" class="text-xs px-2 py-1 rounded-lg" style="color:#6B7280;">Cancelar</button>
+                </div>
+              } @else {
+                <p class="text-sm" style="color:#374151;">{{ nota.contenido }}</p>
+                <div class="flex gap-2 mt-2">
+                  <button (click)="notaEditandoId.set(nota.id); notaEditandoTexto.set(nota.contenido)" class="text-xs" style="color:#D97706;">Editar</button>
+                  <button (click)="deleteNota(nota.id)" class="text-xs" style="color:#EF4444;">Eliminar</button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+        <div class="px-4 py-3" style="border-top:1px solid #FDE68A;">
+          <textarea [(ngModel)]="nuevaNotaTexto"
+            class="w-full text-sm px-3 py-2 rounded-xl resize-none outline-none mb-2"
+            style="background:#FFFFFF;border:1px solid #FDE68A;min-height:64px;"
+            placeholder="Nueva nota…" rows="3"></textarea>
+          <button (click)="addNota()" class="px-3 py-1.5 rounded-lg text-xs font-medium text-white" style="background:#D97706;">Añadir nota</button>
+        </div>
+      </div>
+    }
+
+  </div><!-- end main flex row -->
+
+  <!-- Chatbar (fixed bottom) -->
+  <div class="flex-shrink-0" style="background:#FFFFFF;border-top:1px solid #E5E7EB;padding:12px 24px;">
+    <app-chatbar
+      [placeholder]="'Pregunta sobre este contenido…'"
+      [chatHistorial]="state.chatHistorial()"
+      [conectoresHaciaArriba]="true"
+      (chatHistorialChange)="onChatHistorialChange($event)"
+    />
+  </div>
+
+  <!-- Toasts -->
+  @if (savedToast()) {
+    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:#1A1A1A;z-index:100;">
+      <ph-icon name="FloppyDisk" [size]="14" /> Guardado
+    </div>
+  }
+  @if (sentToast()) {
+    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:#10B981;z-index:100;">
+      <ph-icon name="PaperPlaneTilt" [size]="14" /> Enviado a revisión
+    </div>
+  }
+  @if (correctionToast()) {
+    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:#D97706;z-index:100;">
+      <ph-icon name="Chat" [size]="14" /> Correcciones enviadas
+    </div>
+  }
+  @if (approvedToast()) {
+    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:#10B981;z-index:100;">
+      <ph-icon name="Check" [size]="14" /> Sección aprobada
+    </div>
+  }
+
+</div>

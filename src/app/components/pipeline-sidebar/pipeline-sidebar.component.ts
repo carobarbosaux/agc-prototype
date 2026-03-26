@@ -57,6 +57,10 @@ export class PipelineSidebarComponent implements OnDestroy {
     return ESTADO_CLICKABLE.includes(estado);
   }
 
+  isTemaActive(etapa: any): boolean {
+    return !!(this.seccionActiva && etapa.secciones && etapa.secciones.some((s: any) => s.id === this.seccionActiva));
+  }
+
   toggleTema(id: string): void {
     this.temasExpandidos.update(prev => ({ ...prev, [id]: !prev[id] }));
   }

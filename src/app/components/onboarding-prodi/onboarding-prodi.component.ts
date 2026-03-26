@@ -8,12 +8,14 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PhIconComponent } from '../../icons/ph-icon.component';
+import { ProdiMarkComponent } from '../prodi-logo/prodi-logo.component';
 import { onboardingSlides, OnboardingSlide } from '../../data/onboarding-prodi.data';
 
 @Component({
   selector: 'app-onboarding-prodi',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PhIconComponent, ProdiMarkComponent],
   templateUrl: './onboarding-prodi.component.html',
 })
 export class OnboardingProdiComponent implements OnInit, OnDestroy {

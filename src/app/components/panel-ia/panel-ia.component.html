@@ -272,7 +272,7 @@
                     height: inputHeight() + 'px',
                     'max-height': '63px',
                     'overflow-y': inputHeight() >= 63 ? 'auto' : 'hidden',
-                    'font-family': '\\'Proeduca Sans\\', system-ui, sans-serif',
+                    'font-family': 'Proeduca Sans, system-ui, sans-serif',
                     'font-size': '0.875rem',
                     'font-weight': 400,
                     'line-height': '21px'
@@ -326,7 +326,7 @@
                     height: inputHeight() + 'px',
                     'max-height': '63px',
                     'overflow-y': inputHeight() >= 63 ? 'auto' : 'hidden',
-                    'font-family': '\\'Proeduca Sans\\', system-ui, sans-serif',
+                    'font-family': 'Proeduca Sans, system-ui, sans-serif',
                     'font-size': '0.875rem',
                     'font-weight': 400,
                     'line-height': '21px'
@@ -357,8 +357,8 @@
         color: conectoresAbierto() ? '#367CFF' : '#0A5CF5',
         'flex-shrink': 0
       }"
-      (mouseenter)="if (!conectoresAbierto()) { hoverBg($event, '#F1F5F9'); $event.currentTarget.style.borderColor='#E2E8F0' }"
-      (mouseleave)="if (!conectoresAbierto()) { hoverBg($event, 'transparent'); $event.currentTarget.style.borderColor='transparent' }"
+      (mouseenter)="hoverConectorBtn(conectoresAbierto(), $event, '#F1F5F9', '#E2E8F0')"
+      (mouseleave)="hoverConectorBtn(conectoresAbierto(), $event, 'transparent', 'transparent')"
       (click)="toggleConectoresAbierto($event)"
       title="Conectores"
     >
@@ -408,8 +408,8 @@
                 class="w-full flex items-center gap-2.5 py-1 pl-3 rounded-lg text-left"
                 [ngStyle]="{background: isConectorActive(c.id) ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer'}"
                 (click)="toggleConector(c.id, $event)"
-                (mouseenter)="if (!isConectorActive(c.id)) hoverBg($event, '#F1F5F9')"
-                (mouseleave)="if (!isConectorActive(c.id)) hoverBg($event, 'transparent')"
+                (mouseenter)="hoverBgIf(!isConectorActive(c.id), $event, '#F1F5F9')"
+                (mouseleave)="hoverBgIf(!isConectorActive(c.id), $event, 'transparent')"
               >
                 <div class="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 text-white font-bold"
                   [ngStyle]="{background: c.color, 'font-size': '6px'}">{{ c.letter }}</div>
@@ -438,8 +438,8 @@
               class="w-full flex items-center gap-2.5 py-1 rounded-lg text-left"
               [ngStyle]="{background: isConectorActive(c.id) ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer'}"
               (click)="toggleConector(c.id, $event)"
-              (mouseenter)="if (!isConectorActive(c.id)) hoverBg($event, '#F1F5F9')"
-              (mouseleave)="if (!isConectorActive(c.id)) hoverBg($event, 'transparent')"
+              (mouseenter)="hoverBgIf(!isConectorActive(c.id), $event, '#F1F5F9')"
+              (mouseleave)="hoverBgIf(!isConectorActive(c.id), $event, 'transparent')"
             >
               <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold"
                 [ngStyle]="{background: c.color, 'font-size': '7px'}">{{ c.letter }}</div>
@@ -469,7 +469,7 @@
       border: 'none',
       cursor: canSend ? 'pointer' : 'default'
     }"
-    (mouseenter)="if (canSend) hoverBg($event, '#0039A3')"
+    (mouseenter)="hoverBgIf(canSend, $event, '#0039A3')"
     (mouseleave)="hoverBg($event, canSend ? '#0A5CF5' : '#E6E6E6')"
   >
     <ph-icon name="PaperPlaneTilt" [size]="14"
