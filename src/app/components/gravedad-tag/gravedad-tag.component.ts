@@ -20,6 +20,11 @@ import { gravedadConfig } from '../../mock-data';
     </span>
   `,
 })
+/**
+ * Inline tag displaying the gravity level of a comment.
+ *
+ * Supported values: `crítico` | `importante` | `sugerencia` | `nota` | `alertaNormativa`.
+ */
 export class GravedadTagComponent {
   @Input() gravedad: string = 'nota';
   @Input() size: 'sm' | 'md' = 'md';

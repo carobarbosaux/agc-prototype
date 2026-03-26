@@ -44,9 +44,24 @@ const AREAS = ['Inteligencia Artificial', 'Ingeniería de Software', 'Ciencias d
   imports: [CommonModule, FormsModule, PhIconComponent, PanelIAComponent, ProdiMarkComponent],
   templateUrl: './crear-asignatura.component.html',
 })
+/**
+ * Subject-creation wizard screen (Crear asignatura).
+ *
+ * A 3-step wizard whose content varies by active role:
+ * - **Autor** (steps: Información → Descriptor → Vista previa): fixed subject data,
+ *   difficulty / topic / approach selectors, AI-generated summary preview.
+ * - **Coordinador** (steps: Contexto → Temática → Vista previa): free-form context
+ *   form, thematic selectors, same preview step.
+ *
+ * Generation is simulated with `setTimeout` chains using {@link DEEP_LEARNING_SUMMARY}
+ * as the hardcoded AI output.
+ */
 export class CrearAsignaturaComponent implements OnInit {
   readonly state = inject(AppStateService);
 
+  // ── Wizard state ──────────────────────────────────────────
+
+  /** Current wizard step (1–3). */
   readonly paso = signal(1);
   readonly generando = signal(false);
   readonly generandoResumen = signal(false);
@@ -55,12 +70,15 @@ export class CrearAsignaturaComponent implements OnInit {
   readonly panelIAAbierto = signal(true);
   readonly quotePendiente = signal<any>(null);
 
-  // Form data
+  // ── Form data ─────────────────────────────────────────────
+
   readonly datos = signal<Record<string,any>>({});
-  // Autor step 1 fixed data
+  // Fixed datos shown to the Autor on step 1 (read-only, pre-assigned by coordinator).
   readonly asigNombre = 'Deep Learning y Redes Neuronales';
   readonly asigCodigo = 'IA-302';
   readonly asigCreditos = 6;
+
+  // ── Computed ─────────────────────────────────────────────
 
   readonly breadcrumb = computed(() => [
     { label: 'Generación de Asignaturas', route: '/herramientas' },
@@ -72,6 +90,8 @@ export class CrearAsignaturaComponent implements OnInit {
   readonly totalPasos = 3;
   readonly progressPct = computed(() => (this.paso() / this.totalPasos) * 100);
 
+  // ── Selector option lists (exposed to template) ───────────
+
   readonly niveles = NIVELES;
   readonly idiomas = IDIOMAS;
   readonly modalidades = MODALIDADES;
@@ -79,10 +99,15 @@ export class CrearAsignaturaComponent implements OnInit {
   readonly enfoques = ENFOQUES;
   readonly areas = AREAS;
 
+  // ── Lifecycle ─────────────────────────────────────────────
+
   ngOnInit(): void {
     this.datos.set({ titulacionId: this.state.titulaciones()[0]?.id || 'master-ia' });
   }
 
+  // ── Form helpers ──────────────────────────────────────────
+
+  /** Merge a single key/value pair into the wizard form data signal. */
   updateDatos(key: string, val: any): void {
     this.datos.update(prev => ({ ...prev, [key]: val }));
   }
@@ -101,6 +126,12 @@ export class CrearAsignaturaComponent implements OnInit {
     }
   }
 
+  // ── Navigation ────────────────────────────────────────────
+
+  /**
+   * Advance to the next step.
+   * Step 2 → triggers AI summary generation; step 3 → finalises creation.
+   */
   handleSiguiente(): void {
     if (this.paso() === 2) {
       this.handleGenerarResumen();
@@ -144,14 +175,17 @@ export class CrearAsignaturaComponent implements OnInit {
     }, 1000);
   }
 
+  /** Open the "volver" confirmation modal. */
   handleVolver(): void {
     this.modalVolver.set('volver');
   }
 
+  /** Open the "cancelar" confirmation modal. */
   handleCancelar(): void {
     this.modalVolver.set('cancelar');
   }
 
+  /** Execute the pending modal action (navigate away or step back) and close the modal. */
   confirmModal(): void {
     if (this.modalVolver() === 'cancelar') {
       this.state.navigate('dashboard');
@@ -175,7 +209,9 @@ export class CrearAsignaturaComponent implements OnInit {
     return this.paso() === 3 ? '#008660' : '#0A5CF5';
   }
 
-  // Resumen editing
+  // ── Resumen editing ───────────────────────────────────────
+
+  /** Patch a top-level field on the generated resumen signal. */
   updateResumenField(key: string, val: any): void {
     this.resumen.update(prev => prev ? { ...prev, [key]: val } : prev);
   }
@@ -192,7 +228,9 @@ export class CrearAsignaturaComponent implements OnInit {
   trackByIndex(i: number): number { return i; }
   trackByKey(_: number, item: any): any { return item; }
 
-  // For coordinador step 1 titulacion selector
+  // ── Lookup helpers ────────────────────────────────────────
+
+  /** Resolve a titulación ID to its display name. */
   getTitulacionNombre(id: string): string {
     return this.state.titulaciones().find((t: any) => t.id === id)?.nombre || id;
   }

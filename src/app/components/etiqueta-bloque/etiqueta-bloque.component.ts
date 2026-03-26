@@ -87,6 +87,13 @@ const SEVERITY_CONFIG: Record<string, { background: string; color: string; iconB
     </div>
   `,
 })
+/**
+ * Inline comment-gravity badge rendered inside a content block.
+ *
+ * Shows the count of unresolved comments with a colour-coded severity indicator
+ * (crítico, importante, sugerencia, nota, alertaNormativa).
+ * Clicking it opens the full comment thread in the Canvas right panel.
+ */
 export class EtiquetaBloqueComponent {
   @Input() label: string = '';
   @Input() severity: string = 'Primary';

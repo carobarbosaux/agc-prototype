@@ -14,9 +14,13 @@ import { PhIconComponent } from '../../icons/ph-icon.component';
 import { ProdiWordmarkComponent } from '../prodi-logo/prodi-logo.component';
 import { roles } from '../../mock-data';
 
+/** A single crumb rendered in the Topbar breadcrumb trail. */
 export interface BreadcrumbItem {
+  /** Display text. */
   label: string;
+  /** Optional Angular router path to navigate to on click. */
   route?: string;
+  /** Custom click handler — takes precedence over `route`. */
   onClick?: () => void;
 }
 
@@ -34,9 +38,19 @@ interface RolColorSet {
   templateUrl: './topbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * Application-wide top navigation bar.
+ *
+ * Displays the Prodi wordmark, a breadcrumb trail, a role-switching button,
+ * and a notification bell. Emits output events instead of navigating directly
+ * so that parent screens retain control over side-effects.
+ */
 export class TopbarComponent implements OnChanges {
+  /** Breadcrumb items to render. Updated via `ngOnChanges` to reset hover state. */
   @Input() breadcrumb: BreadcrumbItem[] = [];
+  /** Currently active role ID; drives button colour and dropdown selection. */
   @Input() rolActivo: string = 'autor';
+  /** Number of unread notifications shown on the bell badge. */
   @Input() notifCount: number = 0;
 
   @Output() rolChange = new EventEmitter<string>();
@@ -67,6 +81,7 @@ export class TopbarComponent implements OnChanges {
     this.breadcrumbHover = this.breadcrumb.map(() => false);
   }
 
+  /** Compute inline styles for the role button, taking hover state into account. */
   getRolButtonStyle(): Record<string, string> {
     const rc = this.rolColors[this.rolActivo] ?? this.rolColors['autor'];
     const bg = this.rolBtnHover ? rc.hoverBg : rc.bg;
@@ -77,11 +92,13 @@ export class TopbarComponent implements OnChanges {
     };
   }
 
+  /** Emit the new role and close the dropdown. */
   selectRol(rolId: string): void {
     this.rolChange.emit(rolId);
     this.rolMenuAbierto.set(false);
   }
 
+  /** Handle a breadcrumb click: invoke custom handler or navigate by route. */
   onBreadcrumbClick(item: BreadcrumbItem): void {
     if (item.onClick) {
       item.onClick();

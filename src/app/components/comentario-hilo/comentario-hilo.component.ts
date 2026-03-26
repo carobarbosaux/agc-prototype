@@ -132,6 +132,13 @@ export interface Comentario {
     </div>
   `,
 })
+/**
+ * Renders a comment thread for a single content block.
+ *
+ * Displays all comments with their gravity badges, supports inline replies,
+ * and provides a "marcar resuelto" action per comment.
+ * Unresolved critical comments are highlighted.
+ */
 export class ComentarioHiloComponent {
   @Input() comentario!: Comentario;
   @Input() compact: boolean = false;

@@ -18,6 +18,14 @@ import { onboardingSlides, OnboardingSlide } from '../../data/onboarding-prodi.d
   imports: [CommonModule, PhIconComponent, ProdiMarkComponent],
   templateUrl: './onboarding-prodi.component.html',
 })
+/**
+ * Onboarding modal for first-time Canvas users.
+ *
+ * A 5-slide carousel introducing the key Canvas features with animated
+ * visual panels. Each slide has a distinct `visualType` that drives the
+ * right-side animation: editor-zoom, canvas-overview, contextual-selection,
+ * side-panel, and final-state capability summary.
+ */
 export class OnboardingProdiComponent implements OnInit, OnDestroy {
   @Output() close = new EventEmitter<void>();
   @Output() openAssistant = new EventEmitter<void>();

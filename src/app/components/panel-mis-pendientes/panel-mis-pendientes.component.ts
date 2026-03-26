@@ -68,6 +68,12 @@ const GRAVEDAD_ICON: Record<string, string> = {
     </div>
   `,
 })
+/**
+ * Sidebar panel listing the current user's pending review items.
+ *
+ * Items are grouped by type (secciones, comentarios, aprobaciones) and
+ * link back to the relevant Canvas section via the AppStateService navigator.
+ */
 export class PanelMisPendientesComponent {
   @Input() rolActivo: string = 'autor';
   @Output() onNavigate = new EventEmitter<{ destino: string; params?: any }>();

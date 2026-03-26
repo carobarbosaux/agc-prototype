@@ -176,6 +176,13 @@ const TIPO_BG: Record<string, string> = {
     </div>
   `,
 })
+/**
+ * Sliding notifications drawer.
+ *
+ * Aggregates all system notifications, groups them by date, and allows
+ * filtering by type (comentarios, aprobaciones, alertas…).
+ * Navigates directly to the relevant Canvas section on item click.
+ */
 export class PanelNotificacionesComponent implements OnInit {
   @Output() onClose = new EventEmitter<void>();
   @Output() onNavigate = new EventEmitter<{ destino: string; params?: any }>();

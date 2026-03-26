@@ -63,14 +63,28 @@ const SECCION_CONFIG: Record<string, any> = {
   ],
   templateUrl: './canvas.component.html',
 })
+/**
+ * Main content editor screen (Canvas).
+ *
+ * Hosts the full authoring experience: section navigation via the pipeline sidebar,
+ * rich-text block editing, AI inline suggestions, comment threads, notes, and
+ * a floating chatbar. All mutable state is held as Angular Signals so the template
+ * reacts without manual change-detection calls.
+ *
+ * @see SECCION_CONFIG  Static metadata (label, initial estado, seed blocks) per section ID.
+ */
 export class CanvasComponent implements OnInit, OnDestroy {
   readonly state = inject(AppStateService);
   readonly toStatusKey = toStatusKey;
+
+  // ── New-subject mode ─────────────────────────────────────────
 
   readonly esAsignaturaNueva = signal(false);
   readonly bloquesState = signal<Record<string, any[]>>({});
   readonly estadosSeccion = signal<Record<string, string>>({});
   readonly instruccionesData = signal<Record<string, any>>({});
+
+  // ── Toast / feedback signals ──────────────────────────────
 
   readonly savedToast = signal(false);
   readonly sentToast = signal(false);
@@ -98,6 +112,8 @@ export class CanvasComponent implements OnInit, OnDestroy {
   readonly panelContextoTemaAbierto = signal(false);
   readonly resumen = signal<any>(null);
   readonly generandoResumen = signal(false);
+
+  // ── Computed ─────────────────────────────────────────────
 
   readonly seccion = computed(() => SECCION_CONFIG[this.state.seccionActiva()] || SECCION_CONFIG['t2']);
   readonly breadcrumb = computed(() => this.state.getBreadcrumb('canvas'));
@@ -148,6 +164,8 @@ export class CanvasComponent implements OnInit, OnDestroy {
 
   private menuHandler?: (e: MouseEvent) => void;
 
+  // ── Lifecycle ─────────────────────────────────────────────────
+
   ngOnInit(): void {
     if (!this.state.seccionActiva()) this.state.seccionActiva.set('t2');
     const isDL = this.state.asignaturaActiva()?.asignaturaId === 'deep-learning';
@@ -185,6 +203,9 @@ export class CanvasComponent implements OnInit, OnDestroy {
     if (this.menuHandler) document.removeEventListener('mousedown', this.menuHandler);
   }
 
+  // ── Instrucciones helpers ─────────────────────────────────
+
+  /** Set the `resumenGenerado` flag for the active instrucciones section. */
   setInstrResumenGenerado(val: boolean): void {
     const sec = this.state.seccionActiva();
     this.instruccionesData.update(p => ({ ...p, [sec]: { ...p[sec], resumenGenerado: val } }));
@@ -200,6 +221,9 @@ export class CanvasComponent implements OnInit, OnDestroy {
     this.instruccionesData.update(p => ({ ...p, [sec]: { ...p[sec], notasPedagogicas: val } }));
   }
 
+  // ── Section & content mutations ───────────────────────────
+
+  /** Navigate to a different Canvas section and clear the active comment. */
   onSeccionChange(id: string): void {
     this.state.seccionActiva.set(id);
     this.comentarioActivoBloque.set(null);
@@ -219,6 +243,9 @@ export class CanvasComponent implements OnInit, OnDestroy {
     }));
   }
 
+  // ── Comment interactions ──────────────────────────────────
+
+  /** Open the comment thread for a block (collapses AI panel and notes). */
   onComentarioClick(bloque: any): void {
     if (bloque.comentarios?.length > 0) {
       this.comentarioActivoBloque.set(bloque);
@@ -259,17 +286,30 @@ export class CanvasComponent implements OnInit, OnDestroy {
     const sec = this.state.seccionActiva();
     this.bloquesState.update(prev => ({ ...prev, [sec]: (prev[sec]||[]).map((b: any) => b.id===ab.id ? {...b,comentarios:[...(b.comentarios||[]),c]} : b) }));
     this.comentarioActivoBloque.update((prev: any) => prev ? {...prev, comentarios:[...(prev.comentarios||[]),c]} : null);
-    this.nuevoComentarioTexto.set(''); this.nuevoComentarioAnchor.set(null);
+    this.nuevoComentarioTexto.set('');
+    this.nuevoComentarioAnchor.set(null);
   }
 
+  // ── AI inline & chat actions ──────────────────────────────
+
+  /**
+   * Dispatch a contextual AI action triggered from the floating toolbar.
+   * Routes to: comment creation, chat quote, inline rewrite, or panel open.
+   */
   onAccionIA(args: { texto: string; accion: string; bloque: any }): void {
     const { texto, accion, bloque } = args;
     if (accion === 'Añadir comentario') {
-      this.comentarioActivoBloque.set(bloque); this.nuevoComentarioAnchor.set(texto); this.nuevoComentarioTexto.set('');
-      this.state.panelIAabierto.set(false); return;
+      this.comentarioActivoBloque.set(bloque);
+      this.nuevoComentarioAnchor.set(texto);
+      this.nuevoComentarioTexto.set('');
+      this.state.panelIAabierto.set(false);
+      return;
     }
     if (accion === 'Llevar al chat') {
-      this.quotePendiente.set({texto, accion:'Consultar'}); this.state.panelIAabierto.set(true); this.comentarioActivoBloque.set(null); return;
+      this.quotePendiente.set({ texto, accion: 'Consultar' });
+      this.state.panelIAabierto.set(true);
+      this.comentarioActivoBloque.set(null);
+      return;
     }
     if (['Expandir','Resumir','Regenerar'].includes(accion) && bloque) {
       this.iaInline.set({bloqueId:bloque.id,accion,textoOriginal:texto,textoGenerado:null,generando:true});
@@ -287,7 +327,8 @@ export class CanvasComponent implements OnInit, OnDestroy {
   }
 
   acceptIaInline(): void {
-    const il = this.iaInline(); if (!il) return;
+    const il = this.iaInline();
+    if (!il) return;
     const sec = this.state.seccionActiva();
     this.bloquesState.update(prev => ({
       ...prev, [sec]: (prev[sec]||this.bloques()).map((b: any) => b.id===il.bloqueId ? {...b,contenido:il.textoGenerado} : b)
@@ -303,55 +344,103 @@ export class CanvasComponent implements OnInit, OnDestroy {
   }
 
   handleRevisarCalidad(): void {
-    this.revisandoCalidad.set(true); this.comentarioActivoBloque.set(null); this.state.panelIAabierto.set(true);
+    this.revisandoCalidad.set(true);
+    this.comentarioActivoBloque.set(null);
+    this.state.panelIAabierto.set(true);
     setTimeout(() => { this.revisandoCalidad.set(false); this.quotePendiente.set({texto:`[Revisar calidad] ${this.seccion().label}`, accion:'Revisar calidad'}); }, 1800);
   }
 
-  showSavedToast(): void { this.savedToast.set(true); setTimeout(()=>this.savedToast.set(false),2000); }
+  // ── Toasts & autosave ─────────────────────────────────────
+
+  /** Flash the "guardado" confirmation toast for 2 s. */
+  showSavedToast(): void {
+    this.savedToast.set(true);
+    setTimeout(() => this.savedToast.set(false), 2000);
+  }
 
   showSentToast(): void {
     if (this.esAsignaturaNueva()) {
-      const order = ['indice','instrucciones-t1','t1','referencias-t1','recursos-t1','instrucciones-t2','t2','referencias-t2','recursos-t2','instrucciones-t3','t3','referencias-t3','recursos-t3','instrucciones-t4','t4','referencias-t4','recursos-t4','instrucciones-t5','t5','referencias-t5','recursos-t5','instrucciones-t6','t6','referencias-t6','recursos-t6'];
+      const order = [
+        'indice',
+        'instrucciones-t1', 't1', 'referencias-t1', 'recursos-t1',
+        'instrucciones-t2', 't2', 'referencias-t2', 'recursos-t2',
+        'instrucciones-t3', 't3', 'referencias-t3', 'recursos-t3',
+        'instrucciones-t4', 't4', 'referencias-t4', 'recursos-t4',
+        'instrucciones-t5', 't5', 'referencias-t5', 'recursos-t5',
+        'instrucciones-t6', 't6', 'referencias-t6', 'recursos-t6',
+      ];
       const sec = this.state.seccionActiva();
       const idx = order.indexOf(sec);
       const next = order[idx+1];
-      this.estadosSeccion.update(prev => ({...prev,[sec]:'aprobado',...(next?{[next]:'borrador'}:{})}));
-      if (next) setTimeout(()=>this.state.seccionActiva.set(next),300);
+      this.estadosSeccion.update(prev => ({ ...prev, [sec]: 'aprobado', ...(next ? { [next]: 'borrador' } : {}) }));
+      if (next) setTimeout(() => this.state.seccionActiva.set(next), 300);
     }
     this.sentToast.set(true); setTimeout(()=>this.sentToast.set(false),2500);
   }
 
-  showCorrectionToast(): void { this.correctionToast.set(true); setTimeout(()=>this.correctionToast.set(false),2500); }
-  showApprovedToast(): void { this.approvedToast.set(true); setTimeout(()=>this.approvedToast.set(false),2500); }
+  showCorrectionToast(): void {
+    this.correctionToast.set(true);
+    setTimeout(() => this.correctionToast.set(false), 2500);
+  }
+  showApprovedToast(): void {
+    this.approvedToast.set(true);
+    setTimeout(() => this.approvedToast.set(false), 2500);
+  }
 
   toggleAutosave(): void {
-    const next = !this.autosaveOn(); this.autosaveOn.set(next);
-    if (next) { this.autosaveStatus.set('saving'); setTimeout(()=>this.autosaveStatus.set('saved'),900); }
-    else this.autosaveStatus.set('unsaved');
+    const next = !this.autosaveOn();
+    this.autosaveOn.set(next);
+    if (next) {
+      this.autosaveStatus.set('saving');
+      setTimeout(() => this.autosaveStatus.set('saved'), 900);
+    } else {
+      this.autosaveStatus.set('unsaved');
+    }
   }
 
+  // ── Notes panel ───────────────────────────────────────────
+
+  /** Append a new note anchored to the current text selection. */
   addNota(): void {
-    const texto = this.nuevaNotaTexto().trim(); if (!texto) return;
-    this.notasState.update(prev=>[...prev,{id:`nota-${Date.now()}`,anchor:this.selectionAnchor(),contenido:texto,bloqueId:this.state.seccionActiva()}]);
-    this.nuevaNotaTexto.set(''); this.selectionAnchor.set(null); this.panelNotasAbierto.set(true);
+    const texto = this.nuevaNotaTexto().trim();
+    if (!texto) return;
+    this.notasState.update(prev => [
+      ...prev,
+      { id: `nota-${Date.now()}`, anchor: this.selectionAnchor(), contenido: texto, bloqueId: this.state.seccionActiva() },
+    ]);
+    this.nuevaNotaTexto.set('');
+    this.selectionAnchor.set(null);
+    this.panelNotasAbierto.set(true);
   }
 
-  deleteNota(id: string): void { this.notasState.update(prev=>prev.filter((n:any)=>n.id!==id)); }
+  deleteNota(id: string): void {
+    this.notasState.update(prev => prev.filter((n: any) => n.id !== id));
+  }
 
   saveEditNota(id: string): void {
-    this.notasState.update(prev=>prev.map((n:any)=>n.id===id?{...n,contenido:this.notaEditandoTexto()}:n));
-    this.notaEditandoId.set(null); this.notaEditandoTexto.set('');
+    this.notasState.update(prev => prev.map((n: any) => n.id === id ? { ...n, contenido: this.notaEditandoTexto() } : n));
+    this.notaEditandoId.set(null);
+    this.notaEditandoTexto.set('');
   }
 
   onTextSelection(): void {
     const sel = window.getSelection()?.toString().trim();
-    if (sel && sel.length>2) this.selectionAnchor.set(sel); else this.selectionAnchor.set(null);
+    if (sel && sel.length > 2) {
+      this.selectionAnchor.set(sel);
+    } else {
+      this.selectionAnchor.set(null);
+    }
   }
 
+  // ── AI generation ─────────────────────────────────────────
+
+  /** Simulate AI summarisation of the current instrucciones section (1.5 s delay). */
   generarResumenInstrucciones(): void {
     const sec = this.state.seccionActiva();
-    this.instruccionesData.update(prev=>({...prev,[sec]:{...prev[sec],generando:true}}));
-    setTimeout(()=>{this.instruccionesData.update(prev=>({...prev,[sec]:{...prev[sec],generando:false,resumenGenerado:true}}));},1500);
+    this.instruccionesData.update(prev => ({ ...prev, [sec]: { ...prev[sec], generando: true } }));
+    setTimeout(() => {
+      this.instruccionesData.update(prev => ({ ...prev, [sec]: { ...prev[sec], generando: false, resumenGenerado: true } }));
+    }, 1500);
   }
 
   generarContenidoTema(): void {
@@ -360,17 +449,23 @@ export class CanvasComponent implements OnInit, OnDestroy {
     if (tNum===1) {
       this.dlGenerandoContenido.set(true);
       setTimeout(()=>{
-        this.bloquesState.update(prev=>({...prev,t1:dlBloquesTema1 as any[]}));
-        this.estadosSeccion.update(prev=>({...prev,t1:prev['t1']??'borrador',[sec]:'aprobado'}));
-        this.dlGenerandoContenido.set(false); this.state.seccionActiva.set('t1');
-      },1600);
+        this.bloquesState.update(prev => ({ ...prev, t1: dlBloquesTema1 as any[] }));
+        this.estadosSeccion.update(prev => ({ ...prev, t1: prev['t1'] ?? 'borrador', [sec]: 'aprobado' }));
+        this.dlGenerandoContenido.set(false);
+        this.state.seccionActiva.set('t1');
+      }, 1600);
     } else {
       this.estadosSeccion.update(prev=>({...prev,[sec]:'aprobado'}));
       this.state.seccionActiva.set(`t${tNum}`);
     }
   }
 
-  onChatHistorialChange(h: any[]): void { this.state.chatHistorial.set(h); }
+  // ── Chat & track helpers ──────────────────────────────────
+
+  /** Propagate updated chat history from Chatbar up to AppStateService. */
+  onChatHistorialChange(h: any[]): void {
+    this.state.chatHistorial.set(h);
+  }
 
   getInstrData(secId: string): any {
     return this.instruccionesData()[secId] || { indicacionesIA:'', notasPedagogicas:'', archivos:[], urls:[''], resumenGenerado:false, generando:false };

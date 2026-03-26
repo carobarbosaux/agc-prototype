@@ -55,6 +55,14 @@ const herramientas = [
   imports: [CommonModule, PhIconComponent],
   templateUrl: './herramientas.component.html',
 })
+/**
+ * Tools-hub landing page (Herramientas).
+ *
+ * Shows the catalogue of available AGC tools as interactive cards.
+ * Only "Generación de Asignaturas" is currently active; the remaining
+ * cards are rendered as disabled placeholders for future features.
+ * Also provides the global role selector for demo switching.
+ */
 export class HerramientasComponent {
   readonly state = inject(AppStateService);
   readonly router = inject(Router);
@@ -70,14 +78,17 @@ export class HerramientasComponent {
     disenador: { bg: '#E7EFFE', text: '#073676', border: '#BAD2FF', hoverBg: '#D1E3FF' },
   };
 
+  /** Current role colour tokens (shorthand alias). */
   get rc() {
     return this.rolColors[this.state.rolActivo()] || this.rolColors['autor'];
   }
 
+  /** Display label for the currently active role. */
   get rolActualLabel(): string {
     return (this.roles as any[]).find(r => r.id === this.state.rolActivo())?.label || 'Autor';
   }
 
+  /** Change the active role and close the role menu. */
   selectRol(id: string): void {
     this.state.rolActivo.set(id);
     this.rolMenuAbierto.set(false);
@@ -86,6 +97,7 @@ export class HerramientasComponent {
   rolBtnHover = false;
   cardHover: Record<string, boolean> = {};
 
+  /** Apply hover styles to a clickable tool card on mouse-enter. */
   onCardEnter(id: string, el: HTMLElement, h: any): void {
     if (h.clickable) {
       el.style.background = '#F4F6FD';
@@ -94,6 +106,7 @@ export class HerramientasComponent {
     }
   }
 
+  /** Restore default styles on a clickable tool card on mouse-leave. */
   onCardLeave(id: string, el: HTMLElement, h: any): void {
     if (h.clickable) {
       el.style.background = '#FBFCFF';
@@ -102,6 +115,7 @@ export class HerramientasComponent {
     }
   }
 
+  /** Navigate to the tool destination when a clickable card is pressed. */
   onCardClick(h: any): void {
     if (h.clickable) {
       this.state.navigate('dashboard');

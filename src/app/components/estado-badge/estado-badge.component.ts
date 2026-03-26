@@ -25,6 +25,12 @@ import { estadoConfig } from '../../mock-data';
     </span>
   `,
 })
+/**
+ * Small inline pill badge for pipeline `estado` values.
+ *
+ * Accepts a raw estado string (borrador, revision, comentarios, aprobado…)
+ * and renders it with the appropriate background / foreground colours.
+ */
 export class EstadoBadgeComponent {
   @Input() estado: string = 'porComenzar';
   @Input() size: 'sm' | 'md' | 'lg' = 'md';

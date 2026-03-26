@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PhIconComponent } from '../../icons/ph-icon.component';
 
+/** Visual configuration for a single content status. */
 export interface StatusConfig {
   label: string;
   iconName: string;
@@ -9,6 +10,7 @@ export interface StatusConfig {
   color: string;
 }
 
+/** Mapping of canonical status keys to their badge / icon configuration. */
 export const STATUS_CONFIG: Record<string, StatusConfig> = {
   sin_comenzar: { label: 'Asignado', iconName: 'Clock', bg: '#EEF2F7', color: '#64748B' },
   editando: { label: 'Editando', iconName: 'Pencil', bg: '#EAF2FF', color: '#0A5CF5' },
@@ -18,6 +20,12 @@ export const STATUS_CONFIG: Record<string, StatusConfig> = {
   en_borrador: { label: 'En borrador', iconName: 'BookmarkSimple', bg: '#FFF7ED', color: '#C2500A' },
 };
 
+/**
+ * Normalise a legacy pipeline-estado string to a canonical `STATUS_CONFIG` key.
+ *
+ * Legacy values (`borrador`, `revision`, `comentarios`, …) come from mock-data;
+ * this mapping keeps the indicator component decoupled from those raw values.
+ */
 export function toStatusKey(legacy: string): string {
   const map: Record<string, string> = {
     porComenzar: 'sin_comenzar',
@@ -83,10 +91,21 @@ export function toStatusKey(legacy: string): string {
     }
   `,
 })
+/**
+ * Renders a content-status as either a pill badge (`variant='badge'`)
+ * or a circular icon (`variant='icon'`).
+ *
+ * Use {@link toStatusKey} to convert raw pipeline estados before passing
+ * the `status` input.
+ */
 export class StatusIndicatorComponent {
+  /** Canonical status key from {@link STATUS_CONFIG}. */
   @Input() status: string = 'sin_comenzar';
+  /** `'badge'` renders a labelled pill; `'icon'` renders only the status icon. */
   @Input() variant: 'badge' | 'icon' = 'badge';
+  /** Controls icon container dimensions (sm = 20 px, md = 28 px). */
   @Input() size: 'sm' | 'md' = 'md';
+  /** When `true` on `variant='icon'`, renders the icon without the circular background. */
   @Input() noBg: boolean = false;
   @Input() className: string = '';
 

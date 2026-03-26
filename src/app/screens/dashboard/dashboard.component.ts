@@ -18,16 +18,20 @@ import { ChatbarComponent } from '../../components/chatbar/chatbar.component';
 
 const TODAY_TRACKING = new Date('2026-03-05');
 
+/** Calculate how many full days have elapsed since `date` relative to `TODAY_TRACKING`. */
 function calcDaysOld(date: string): number {
   return Math.floor((TODAY_TRACKING.getTime() - new Date(date).getTime()) / 86400000);
 }
+/** Return the obsolescence percentage (0–100+) for `days` old content with a `years`-year cycle. */
 function calcObsPct(days: number, years: number): number {
   return Math.round((days / (years * 365)) * 1000) / 10;
 }
+/** Map an obsolescence percentage to a tracking-status key. */
 function calcStatus(pct: number): string {
   return pct <= 60 ? 'healthy' : pct <= 90 ? 'approaching' : pct <= 100 ? 'critical' : 'overdue';
 }
 
+/** Visual configuration for content-obsolescence tracking statuses. */
 export const TRACKING_STATUS_CONFIG: Record<string, any> = {
   healthy:    { label: 'Saludable',  bg: '#DCFCE7', color: '#16A34A', border: '#BBF7D0', dot: '#16A34A', icon: 'CheckCircle' },
   approaching:{ label: 'Próximo',    bg: '#FFFBEB', color: '#D97706', border: '#FDE68A', dot: '#D97706', icon: 'Clock' },
@@ -35,6 +39,7 @@ export const TRACKING_STATUS_CONFIG: Record<string, any> = {
   overdue:    { label: 'Caducado',   bg: '#F5F3FF', color: '#7C3AED', border: '#DDD6FE', dot: '#7C3AED', icon: 'XCircle' },
 };
 
+/** Label and accent colour for each alarm type shown in the coordinator view. */
 export const ALARM_CONFIG: Record<string, any> = {
   'version-mismatch':         { label: 'Desajuste de versión',     color: '#D97706' },
   'approaching-obsolescence': { label: 'Obsolescencia próxima',    color: '#D97706' },
@@ -43,10 +48,12 @@ export const ALARM_CONFIG: Record<string, any> = {
   'pending-update':           { label: 'Actualización pendiente',  color: '#367CFF' },
 };
 
+/** Human-readable label for each campus / filial code. */
 export const FILIAL_LABELS: Record<string, string> = {
   espana: 'España', colombia: 'Colombia', mexico: 'México', ecuador: 'Ecuador',
 };
 
+/** Badge style for each obsolescence level. */
 export const OBSOLESCENCIA_CONFIG: Record<string, any> = {
   ok:              { label: 'OK',               bg: '#DCFCE7', color: '#16A34A', border: '#BBF7D0' },
   requiereRevision:{ label: 'Requiere revisión', bg: '#FFFBEB', color: '#D97706', border: '#FDE68A' },
@@ -54,6 +61,7 @@ export const OBSOLESCENCIA_CONFIG: Record<string, any> = {
   obsoleta:        { label: 'Obsoleta',          bg: '#FEF2F2', color: '#DC2626', border: '#FECACA' },
 };
 
+/** Badge style for designer-role section statuses. */
 export const ESTADO_DISENADOR_CONFIG: Record<string, any> = {
   aprobado:    { label: 'Disponible',    bg: '#F0FDF4', color: '#10B981', border: '#A7F3D0' },
   disenado:    { label: 'Diseñado',      bg: '#F5F3FF', color: '#7C3AED', border: '#DDD6FE' },
@@ -83,6 +91,17 @@ const ROL_LABEL: Record<string, string> = {
   ],
   templateUrl: './dashboard.component.html',
 })
+/**
+ * Content-tracking dashboard screen.
+ *
+ * Renders different table layouts depending on the active role:
+ * - **Autor** / **Editor**: personal assignments list with pipeline-estado badges.
+ * - **Coordinador**: full asignatura grid with obsolescence tracking and alarm column;
+ *   includes a secondary "Seguimiento" tab with quality cards and IA chat.
+ * - **Diseñador**: design-status view.
+ *
+ * All filtering (status, tag, filial) is handled locally via signals; no server calls.
+ */
 export class DashboardComponent {
   readonly state = inject(AppStateService);
 

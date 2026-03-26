@@ -125,6 +125,12 @@ const CARDS_CONFIG: CardConfig[] = [
     </div>
   `,
 })
+/**
+ * Quality-metrics card grid shown in the Dashboard "Seguimiento" tab.
+ *
+ * Each card summarises a quality dimension (readability, sources, coherence…)
+ * with a score, trend indicator, and an AI review button.
+ */
 export class CalidadContenidosCardsComponent {
   @Output() onCardClick = new EventEmitter<string>();
 
