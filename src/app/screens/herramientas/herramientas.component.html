@@ -1,15 +1,15 @@
-<div class="min-h-screen" style="background:#F8F9FA;font-family:'Proeduca Sans',system-ui,sans-serif">
+<div class="min-h-screen" style="background:var(--color-bg-neutral);font-family:'Proeduca Sans',system-ui,sans-serif">
 
   <!-- Topbar -->
   <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5"
-    style="height:56px;background:#FFFFFF;border-bottom:1px solid #E5E7EB">
+    style="height:56px;background:var(--color-surface);border-bottom:1px solid var(--color-border-neutral)">
     <div class="flex items-center gap-2">
-      <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#367CFF">
+      <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:var(--color-primary-500)">
         <span class="text-white text-xs font-bold" style="font-family:'Proeduca Sans',system-ui,sans-serif">A</span>
       </div>
-      <span class="text-sm font-semibold" style="color:#1A1A1A">AGC</span>
-      <span class="ml-1 mr-1" style="color:#E5E7EB">·</span>
-      <span class="text-sm" style="color:#6B7280">Herramientas</span>
+      <span class="text-sm font-semibold" style="color:var(--color-text-near-black)">AGC</span>
+      <span class="ml-1 mr-1" style="color:var(--color-border-neutral)">·</span>
+      <span class="text-sm" style="color:var(--color-text-subtle)">Herramientas</span>
     </div>
     <div class="flex items-center gap-3">
       <!-- Role selector -->
@@ -24,19 +24,19 @@
         @if (rolMenuAbierto()) {
           <div class="fixed inset-0 z-40" (click)="rolMenuAbierto.set(false)"></div>
           <div class="absolute right-0 top-full mt-1 w-52 rounded-xl shadow-xl py-1 z-50 animate-fade-in"
-            style="background:#FFFFFF;border:1px solid #E5E7EB">
-            <div class="px-3 py-2 mb-1" style="border-bottom:1px solid #F1F5F9">
-              <p class="text-xs font-medium" style="color:#4B5563">Vista de demo — cambiar rol</p>
+            style="background:var(--color-surface);border:1px solid var(--color-border-neutral)">
+            <div class="px-3 py-2 mb-1" style="border-bottom:1px solid var(--color-surface-100)">
+              <p class="text-xs font-medium" style="color:var(--color-neutral-600)">Vista de demo — cambiar rol</p>
             </div>
             @for (rol of roles; track rol.id) {
               <button (click)="selectRol(rol.id)"
                 class="w-full text-left px-3 py-2 transition-colors flex items-center justify-between"
                 style="font-family:'Proeduca Sans',system-ui,sans-serif"
-                (mouseenter)="$event.currentTarget.style.background='#F8F9FA'"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral)'"
                 (mouseleave)="$event.currentTarget.style.background='transparent'">
                 <div>
-                  <p class="text-sm font-medium" style="color:#1A1A1A">{{rol.label}}</p>
-                  <p class="text-xs" style="color:#4B5563">{{rol.description}}</p>
+                  <p class="text-sm font-medium" style="color:var(--color-text-near-black)">{{rol.label}}</p>
+                  <p class="text-xs" style="color:var(--color-neutral-600)">{{rol.description}}</p>
                 </div>
                 @if (state.rolActivo() === rol.id) {
                   <div class="w-1.5 h-1.5 rounded-full" [style.background]="rc.text"></div>
@@ -49,21 +49,21 @@
       <!-- Bell -->
       <button (click)="state.notifAbiertas.set(true)"
         class="relative p-2 rounded-lg transition-colors"
-        (mouseenter)="$event.currentTarget.style.background='#F8F9FA'"
+        (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral)'"
         (mouseleave)="$event.currentTarget.style.background='transparent'">
-        <ph-icon name="Bell" [size]="18" style="color:#4B5563" />
+        <ph-icon name="Bell" [size]="18" style="color:var(--color-neutral-600)" />
       </button>
       <!-- Avatar -->
       <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold"
-        style="background:#E7EFFE">AL</div>
+        style="background:var(--color-ai-light)">AL</div>
     </div>
   </header>
 
   <!-- Page content -->
   <div class="pt-14 px-4 pb-8 max-w-[960px] mx-auto">
     <div class="pt-10 pb-6">
-      <h1 class="text-2xl font-semibold mb-1" style="color:#1A1A1A">Herramientas</h1>
-      <p class="text-sm mb-6" style="color:#4B5563">
+      <h1 class="text-2xl font-semibold mb-1" style="color:var(--color-text-near-black)">Herramientas</h1>
+      <p class="text-sm mb-6" style="color:var(--color-neutral-600)">
         Selecciona una herramienta o usa el Asistente IA de Contenidos para empezar
       </p>
     </div>
@@ -77,36 +77,36 @@
           (mouseleave)="onCardLeave(h.id, $any($event.currentTarget), h)"
           class="relative rounded-2xl p-6 transition-all flex flex-col"
           [ngStyle]="{
-            'background': h.clickable ? '#FBFCFF' : '#F4F6FD',
-            'border': h.activa ? '1.5px solid #DCDFEB' : 'none',
+            'background': h.clickable ? '#FBFCFF' : 'var(--color-primary-50)',
+            'border': h.activa ? '1.5px solid var(--color-surface-300)' : 'none',
             'box-shadow': h.activa ? '0 4px 16px rgba(0,152,205,0.10)' : 'none',
             'cursor': h.clickable ? 'pointer' : 'default'
           }">
 
           @if (h.badge) {
             <span class="absolute top-4 right-4 text-xs font-semibold px-2 py-0.5 rounded-md"
-              style="background:#E7EFFE;color:#367CFF;font-family:'Proeduca Sans',system-ui,sans-serif">
+              style="background:var(--color-ai-light);color:var(--color-primary-500);font-family:'Proeduca Sans',system-ui,sans-serif">
               {{h.badge}}
             </span>
           }
 
           <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-            [style.background]="h.activa ? '#E7EFFE' : 'transparent'">
+            [style.background]="h.activa ? 'var(--color-ai-light)' : 'transparent'">
             <ph-icon [name]="h.iconName" [size]="20"
-              [style.color]="h.activa ? '#367CFF' : '#868FA9'" />
+              [style.color]="h.activa ? 'var(--color-primary-500)' : '#868FA9'" />
           </div>
 
           <h3 class="text-sm font-semibold mb-1.5"
-            [style.color]="h.activa ? '#1A1A1A' : '#6B7280'">{{h.label}}</h3>
+            [style.color]="h.activa ? 'var(--color-text-near-black)' : 'var(--color-text-subtle)'">{{h.label}}</h3>
           <p class="text-xs leading-relaxed"
-            [style.color]="h.activa ? '#6B7280' : '#4B5563'">{{h.descripcion}}</p>
+            [style.color]="h.activa ? 'var(--color-text-subtle)' : 'var(--color-neutral-600)'">{{h.descripcion}}</p>
 
           @if (h.activa) {
             <div class="mt-auto pt-5">
               <span class="inline-flex items-center gap-2 transition-all"
-                style="padding:8px;color:#0A5CF5;font-size:14px;font-weight:500;border-radius:10px;background:transparent;margin-left:-8px">
+                style="padding:8px;color:var(--color-primary);font-size:14px;font-weight:500;border-radius:10px;background:transparent;margin-left:-8px">
                 <span>Acceder</span>
-                <ph-icon name="ArrowRight" [size]="16" style="color:#0A5CF5" />
+                <ph-icon name="ArrowRight" [size]="16" style="color:var(--color-primary)" />
               </span>
             </div>
           }

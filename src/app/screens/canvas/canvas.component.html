@@ -10,9 +10,9 @@
   />
 
   <!-- Sub-header: section title + status + autosave + action bar -->
-  <div class="flex-shrink-0" style="background:#FFFFFF;border-bottom:1px solid #E5E7EB;">
+  <div class="flex-shrink-0" style="background:var(--color-surface);border-bottom:1px solid var(--color-border-neutral);">
     <div class="flex items-center gap-2 py-2.5 min-w-0" style="padding-left:20px;padding-right:68px;">
-      <span class="truncate min-w-0 flex-shrink" style="font-size:13px;font-weight:500;color:#6B7280;">
+      <span class="truncate min-w-0 flex-shrink" style="font-size:13px;font-weight:500;color:var(--color-text-subtle);">
         {{ asignaturaData()?.nombre ?? 'Deep Learning y Redes Neuronales' }}
         @if (!isResumen()) { · {{ seccion().label }} }
         @else { · Resumen general }
@@ -21,12 +21,12 @@
       <!-- Autosave toggle -->
       <button (click)="toggleAutosave()" class="flex items-center gap-1.5 flex-shrink-0 rounded" style="background:none;border:none;padding:2px 4px;cursor:pointer;">
         <span style="display:inline-flex;align-items:center;width:40px;height:24px;border-radius:30px;flex-shrink:0;padding:0 4px 0 0;"
-          [style.background]="autosaveOn() ? '#0A5CF5' : '#DCDFEB'"
+          [style.background]="autosaveOn() ? 'var(--color-primary)' : 'var(--color-surface-300)'"
           [style.justify-content]="autosaveOn() ? 'flex-end' : 'flex-start'">
-          <span style="width:16px;height:16px;border-radius:8px;background:#FFFFFF;display:block;flex-shrink:0;"></span>
+          <span style="width:16px;height:16px;border-radius:8px;background:var(--color-surface);display:block;flex-shrink:0;"></span>
         </span>
         <span style="font-size:12px;font-weight:500;font-family:'Proeduca Sans',system-ui,sans-serif;"
-          [style.color]="autosaveOn() ? '#374151' : '#6B7280'">
+          [style.color]="autosaveOn() ? 'var(--color-text-neutral)' : 'var(--color-text-subtle)'">
           {{ autosaveStatus() === 'saving' ? 'Guardando…' : autosaveOn() ? 'Autoguardado' : 'Sin guardar' }}
         </span>
       </button>
@@ -36,8 +36,8 @@
         @if (isResumen() && editable()) {
           <button (click)="editarResumenWarning.set(true)"
             class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-            style="background:transparent;color:#6B7280;border:1px solid #E5E7EB;"
-            (mouseenter)="$event.currentTarget.style.background='#F3F4F6'"
+            style="background:transparent;color:var(--color-text-subtle);border:1px solid var(--color-border-neutral);"
+            (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral-alt)'"
             (mouseleave)="$event.currentTarget.style.background='transparent'">
             <ph-icon name="Pencil" [size]="13" /> Editar resumen
           </button>
@@ -51,24 +51,24 @@
             } @else if (instrDataActual().resumenGenerado) {
               <button (click)="setInstrResumenGenerado(false)"
                 class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-                style="background:#F1F5F9;color:#374151;border:1px solid #E5E7EB;"
-                (mouseenter)="$event.currentTarget.style.background='#E5E7EB'"
-                (mouseleave)="$event.currentTarget.style.background='#F1F5F9'">
+                style="background:var(--color-surface-100);color:var(--color-text-neutral);border:1px solid var(--color-border-neutral);"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-border-neutral)'"
+                (mouseleave)="$event.currentTarget.style.background='var(--color-surface-100)'">
                 Volver
               </button>
               <button (click)="generarContenidoTema()"
                 class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
-                style="background:#0A5CF5;"
-                (mouseenter)="$event.currentTarget.style.background='#0047CC'"
-                (mouseleave)="$event.currentTarget.style.background='#0A5CF5'">
+                style="background:var(--color-primary);"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-primary-active)'"
+                (mouseleave)="$event.currentTarget.style.background='var(--color-primary)'">
                 Generar temario <ph-icon name="CaretRight" [size]="13" />
               </button>
             } @else {
               <button (click)="generarResumenInstrucciones()"
                 class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
-                style="background:#0A5CF5;"
-                (mouseenter)="$event.currentTarget.style.background='#0047CC'"
-                (mouseleave)="$event.currentTarget.style.background='#0A5CF5'">
+                style="background:var(--color-primary);"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-primary-active)'"
+                (mouseleave)="$event.currentTarget.style.background='var(--color-primary)'">
                 Generar resumen del tema
               </button>
             }
@@ -81,21 +81,21 @@
               <div class="relative herramientas-menu">
                 <button (click)="herramientasMenuAbierto.set(!herramientasMenuAbierto())"
                   class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-                  [style.background]="herramientasMenuAbierto() ? '#E7EFFE' : '#F8F9FA'"
-                  [style.color]="herramientasMenuAbierto() ? '#367CFF' : '#6B7280'"
-                  [style.border]="herramientasMenuAbierto() ? '1px solid #BAD2FF' : '1px solid #E5E7EB'">
+                  [style.background]="herramientasMenuAbierto() ? 'var(--color-ai-light)' : 'var(--color-bg-neutral)'"
+                  [style.color]="herramientasMenuAbierto() ? 'var(--color-primary-500)' : 'var(--color-text-subtle)'"
+                  [style.border]="herramientasMenuAbierto() ? '1px solid var(--color-ai-border)' : '1px solid var(--color-border-neutral)'">
                   <span style="background:linear-gradient(90deg,#A956D5 0%,#066EE0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Herramientas IA</span>
                   <ph-icon name="CaretDown" [size]="12" />
                 </button>
                 @if (herramientasMenuAbierto()) {
-                  <div class="absolute left-0 top-full mt-1" style="width:200px;padding:10px 8px 4px;background:#FFFFFF;border-radius:10px;outline:1px solid #DCDFEB;box-shadow:0 8px 24px rgba(0,0,0,0.10);z-index:50;">
+                  <div class="absolute left-0 top-full mt-1" style="width:200px;padding:10px 8px 4px;background:var(--color-surface);border-radius:10px;outline:1px solid var(--color-surface-300);box-shadow:0 8px 24px rgba(0,0,0,0.10);z-index:50;">
                     <div style="padding-left:8px;padding-right:8px;margin-bottom:6px;">
                       <span style="font-size:12px;font-weight:500;background:linear-gradient(90deg,#A956D5 0%,#066EE0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Herramientas IA</span>
                     </div>
                     <button (click)="herramientasMenuAbierto.set(false); handleRevisarCalidad()"
                       class="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md text-sm transition-colors"
                       style="background:transparent;border:none;color:#566077;cursor:pointer;"
-                      (mouseenter)="$event.currentTarget.style.background='#F3F4F6'"
+                      (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral-alt)'"
                       (mouseleave)="$event.currentTarget.style.background='transparent'">
                       <ph-icon name="MagicWand" [size]="16" />
                       {{ revisandoCalidad() ? 'Analizando…' : 'Revisar calidad' }}
@@ -105,25 +105,25 @@
               </div>
               <button (click)="showSentToast()"
                 class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
-                style="background:#0A5CF5;"
-                (mouseenter)="$event.currentTarget.style.background='#0047CC'"
-                (mouseleave)="$event.currentTarget.style.background='#0A5CF5'">
+                style="background:var(--color-primary);"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-primary-active)'"
+                (mouseleave)="$event.currentTarget.style.background='var(--color-primary)'">
                 Enviar a revisión <ph-icon name="CaretRight" [size]="13" />
               </button>
             }
             @if (estadoMostrado() === 'revision') {
               <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-                style="background:#FFFBEB;color:#F59E0B;border:1px solid #FDE68A;"
-                (mouseenter)="$event.currentTarget.style.background='#FEF3C7'"
-                (mouseleave)="$event.currentTarget.style.background='#FFFBEB'">
+                style="background:var(--color-warning-bg);color:var(--color-amber-500);border:1px solid var(--color-warning-border);"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-amber-100)'"
+                (mouseleave)="$event.currentTarget.style.background='var(--color-warning-bg)'">
                 <ph-icon name="Pencil" [size]="13" /> Solicitar permiso de edición
               </button>
             }
             @if (estadoMostrado() === 'aprobado' && !state.seccionActiva().startsWith('instrucciones-')) {
               <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-                style="background:#F8F9FA;color:#6B7280;border:1px solid #E5E7EB;"
-                (mouseenter)="$event.currentTarget.style.background='#F1F5F9'"
-                (mouseleave)="$event.currentTarget.style.background='#F8F9FA'">
+                style="background:var(--color-bg-neutral);color:var(--color-text-subtle);border:1px solid var(--color-border-neutral);"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-surface-100)'"
+                (mouseleave)="$event.currentTarget.style.background='var(--color-bg-neutral)'">
                 Solicitar permiso de edición
               </button>
             }
@@ -134,25 +134,25 @@
             @if (estadoMostrado() === 'revision') {
               <button (click)="showCorrectionToast()"
                 class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-                style="background:#FFFBEB;color:#D97706;border:1px solid #FDE68A;"
-                (mouseenter)="$event.currentTarget.style.background='#FEF3C7'"
-                (mouseleave)="$event.currentTarget.style.background='#FFFBEB'">
+                style="background:var(--color-warning-bg);color:var(--color-warning);border:1px solid var(--color-warning-border);"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-amber-100)'"
+                (mouseleave)="$event.currentTarget.style.background='var(--color-warning-bg)'">
                 <ph-icon name="Chat" [size]="13" /> Enviar correcciones
               </button>
               <button (click)="showApprovedToast()"
                 class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all"
-                style="background:#10B981;"
-                (mouseenter)="$event.currentTarget.style.background='#059669'"
-                (mouseleave)="$event.currentTarget.style.background='#10B981'">
+                style="background:var(--color-green-700);"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-green-800)'"
+                (mouseleave)="$event.currentTarget.style.background='var(--color-green-700)'">
                 <ph-icon name="Check" [size]="13" /> Aprobar
               </button>
             }
             @if (estadoMostrado() === 'aprobado') {
               <button (click)="showSavedToast()"
                 class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-                style="background:#F8F9FA;color:#6B7280;border:1px solid #E5E7EB;"
-                (mouseenter)="$event.currentTarget.style.background='#F1F5F9'"
-                (mouseleave)="$event.currentTarget.style.background='#F8F9FA'">
+                style="background:var(--color-bg-neutral);color:var(--color-text-subtle);border:1px solid var(--color-border-neutral);"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-surface-100)'"
+                (mouseleave)="$event.currentTarget.style.background='var(--color-bg-neutral)'">
                 <ph-icon name="Eye" [size]="13" /> Comprobar actualizaciones
               </button>
             }
@@ -175,7 +175,7 @@
   </div>
 
   <!-- Main layout: sidebar + content + panels + chatbar -->
-  <div class="flex flex-1 overflow-hidden" style="background:#F8F9FA;">
+  <div class="flex flex-1 overflow-hidden" style="background:var(--color-bg-neutral);">
 
     <!-- Pipeline sidebar -->
     <div class="flex-shrink-0 flex flex-col self-stretch">
@@ -189,17 +189,17 @@
     </div>
 
     <!-- Content area -->
-    <main class="flex-1 overflow-y-auto flex flex-col" style="background:#FFFFFF;" (mouseup)="onTextSelection()" (keyup)="onTextSelection()">
+    <main class="flex-1 overflow-y-auto flex flex-col" style="background:var(--color-surface);" (mouseup)="onTextSelection()" (keyup)="onTextSelection()">
 
       <!-- Resumen section -->
       @if (isResumen()) {
         <div class="max-w-[960px] mx-auto py-12 px-12 w-full">
-          <div class="mb-8" style="border-bottom:1px solid #F1F5F9;padding-bottom:24px;">
-            <p class="mb-2" style="font-size:12px;color:#9CA3AF;letter-spacing:0.03em;">{{ asignaturaData()?.nombre ?? 'Deep Learning y Redes Neuronales' }} · Máster en IA</p>
-            <h1 style="font-size:26px;font-weight:600;color:#111827;">Resumen general</h1>
+          <div class="mb-8" style="border-bottom:1px solid var(--color-surface-100);padding-bottom:24px;">
+            <p class="mb-2" style="font-size:12px;color:var(--color-text-faint);letter-spacing:0.03em;">{{ asignaturaData()?.nombre ?? 'Deep Learning y Redes Neuronales' }} · Máster en IA</p>
+            <h1 style="font-size:26px;font-weight:600;color:var(--color-text-strong);">Resumen general</h1>
           </div>
-          <div class="rounded-xl p-6" style="background:#F8FAFC;border:1px solid #E5E7EB;">
-            <p class="text-sm leading-relaxed" style="color:#374151;">
+          <div class="rounded-xl p-6" style="background:var(--color-bg);border:1px solid var(--color-border-neutral);">
+            <p class="text-sm leading-relaxed" style="color:var(--color-text-neutral);">
               Este es el resumen general de la asignatura. Aquí se presenta una visión global del contenido, los objetivos de aprendizaje y la estructura del curso.
             </p>
           </div>
@@ -210,23 +210,23 @@
         <div class="max-w-[960px] mx-auto py-12 w-full" style="padding-left:96px;padding-right:48px;padding-bottom:64px;">
 
           <!-- Section header -->
-          <div class="mb-10" style="border-bottom:1px solid #F1F5F9;padding-bottom:24px;">
-            <p class="mb-2" style="font-size:12px;color:#9CA3AF;letter-spacing:0.03em;">
+          <div class="mb-10" style="border-bottom:1px solid var(--color-surface-100);padding-bottom:24px;">
+            <p class="mb-2" style="font-size:12px;color:var(--color-text-faint);letter-spacing:0.03em;">
               {{ asignaturaData()?.nombre ?? 'Deep Learning y Redes Neuronales' }} · Máster en IA
             </p>
-            <h1 style="font-size:26px;font-weight:600;line-height:1.25;color:#111827;">{{ seccion().label }}</h1>
+            <h1 style="font-size:26px;font-weight:600;line-height:1.25;color:var(--color-text-strong);">{{ seccion().label }}</h1>
             <!-- AI tags for revision temas (coordinador) -->
             @if (isTemaSection() && seccion().estado === 'revision' && state.rolActivo() === 'coordinador') {
               <div class="mt-4">
                 <div class="flex items-center gap-2 mb-2">
-                  <span class="text-xs font-medium" style="color:#367CFF;">Etiquetas sugeridas por IA</span>
+                  <span class="text-xs font-medium" style="color:var(--color-primary-500);">Etiquetas sugeridas por IA</span>
                 </div>
                 <div class="flex flex-wrap gap-1.5">
                   @for (tag of aiTags; track tag) {
                     <button class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded transition-all"
-                      style="background:#E7EFFE;color:#367CFF;border:1px solid #BAD2FF;"
-                      (mouseenter)="$event.currentTarget.style.background='#BAD2FF'"
-                      (mouseleave)="$event.currentTarget.style.background='#E7EFFE'">
+                      style="background:var(--color-ai-light);color:var(--color-primary-500);border:1px solid var(--color-ai-border);"
+                      (mouseenter)="$event.currentTarget.style.background='var(--color-ai-border)'"
+                      (mouseleave)="$event.currentTarget.style.background='var(--color-ai-light)'">
                       + {{ tag }}
                     </button>
                   }
@@ -238,11 +238,11 @@
           <!-- Blocked state -->
           @if (estadoMostrado() === 'bloqueado') {
             <div class="flex flex-col items-center justify-center py-24 text-center">
-              <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:#F1F5F9;">
-                <ph-icon name="Lock" [size]="22" style="color:#6B7280;" />
+              <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:var(--color-surface-100);">
+                <ph-icon name="Lock" [size]="22" style="color:var(--color-text-subtle);" />
               </div>
-              <p class="text-base font-medium mb-1.5" style="color:#4B5563;">Sección bloqueada</p>
-              <p class="text-sm leading-relaxed max-w-xs" style="color:#6B7280;">
+              <p class="text-base font-medium mb-1.5" style="color:var(--color-neutral-600);">Sección bloqueada</p>
+              <p class="text-sm leading-relaxed max-w-xs" style="color:var(--color-text-subtle);">
                 Esta sección se desbloqueará automáticamente cuando se aprueben las etapas previas del tema.
               </p>
             </div>
@@ -252,21 +252,21 @@
             @if (instrDataActual().generando) {
               <!-- Loading -->
               <div class="flex flex-col items-center justify-center py-24 gap-4">
-                <div class="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style="background:#E7EFFE;">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style="background:var(--color-ai-light);">
                   <prodi-mark [size]="28" />
                 </div>
-                <p class="text-sm font-semibold" style="color:#1A1A1A;">Generando resumen del tema…</p>
+                <p class="text-sm font-semibold" style="color:var(--color-text-near-black);">Generando resumen del tema…</p>
                 <div class="flex gap-1.5">
                   @for (i of [0,1,2]; track i) {
-                    <div class="w-1.5 h-1.5 rounded-full animate-bounce" style="background:#367CFF;" [style.animation-delay]="i*0.15+'s'"></div>
+                    <div class="w-1.5 h-1.5 rounded-full animate-bounce" style="background:var(--color-primary-500);" [style.animation-delay]="i*0.15+'s'"></div>
                   }
                 </div>
               </div>
             } @else if (instrDataActual().resumenGenerado) {
               <!-- Resumen generado view -->
-              <div class="rounded-xl p-5 mb-6" style="background:#F8FAFC;border:1px solid #E5E7EB;">
-                <p class="text-xs font-semibold mb-3" style="color:#367CFF;">Resumen del tema generado por IA</p>
-                <p class="text-sm leading-relaxed" style="color:#374151;">
+              <div class="rounded-xl p-5 mb-6" style="background:var(--color-bg);border:1px solid var(--color-border-neutral);">
+                <p class="text-xs font-semibold mb-3" style="color:var(--color-primary-500);">Resumen del tema generado por IA</p>
+                <p class="text-sm leading-relaxed" style="color:var(--color-text-neutral);">
                   Se ha generado un resumen de las instrucciones didácticas y notas pedagógicas. El sistema está listo para generar el temario completo del tema.
                 </p>
               </div>
@@ -274,24 +274,24 @@
               <!-- Instrucciones form -->
               <div class="space-y-6">
                 <div>
-                  <label class="block text-sm font-semibold mb-2" style="color:#374151;">Indicaciones para la IA</label>
+                  <label class="block text-sm font-semibold mb-2" style="color:var(--color-text-neutral);">Indicaciones para la IA</label>
                   <textarea
                     [value]="instrDataActual().indicacionesIA"
                     (input)="setInstrIndicacionesIA($any($event.target).value)"
                     class="w-full resize-none rounded-xl px-4 py-3 text-sm outline-none"
-                    style="border:1px solid #CBD5E1;background:#FFFFFF;min-height:120px;font-family:'Proeduca Sans',system-ui,sans-serif;"
+                    style="border:1px solid var(--color-surface-300);background:var(--color-surface);min-height:120px;font-family:'Proeduca Sans',system-ui,sans-serif;"
                     placeholder="Describe los objetivos didácticos, enfoque pedagógico..."
                     rows="5"
                     [disabled]="estadoMostrado() === 'aprobado'"
                   ></textarea>
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold mb-2" style="color:#374151;">Notas pedagógicas</label>
+                  <label class="block text-sm font-semibold mb-2" style="color:var(--color-text-neutral);">Notas pedagógicas</label>
                   <textarea
                     [value]="instrDataActual().notasPedagogicas"
                     (input)="setInstrNotasPedagogicas($any($event.target).value)"
                     class="w-full resize-none rounded-xl px-4 py-3 text-sm outline-none"
-                    style="border:1px solid #CBD5E1;background:#FFFFFF;min-height:100px;font-family:'Proeduca Sans',system-ui,sans-serif;"
+                    style="border:1px solid var(--color-surface-300);background:var(--color-surface);min-height:100px;font-family:'Proeduca Sans',system-ui,sans-serif;"
                     placeholder="Notas adicionales para el proceso de generación..."
                     rows="4"
                     [disabled]="estadoMostrado() === 'aprobado'"
@@ -304,7 +304,7 @@
           } @else {
             @if (!editable()) {
               <div class="flex items-center gap-2 mb-8 text-sm animate-fade-in"
-                [style.color]="state.rolActivo() === 'disenador' ? '#7C3AED' : '#6B7280'">
+                [style.color]="state.rolActivo() === 'disenador' ? '#7C3AED' : 'var(--color-text-subtle)'">
                 <ph-icon [name]="state.rolActivo() === 'disenador' ? 'StackSimple' : 'Eye'" [size]="13" />
                 <span>
                   @if (state.rolActivo() === 'disenador') { Contenido aprobado · Solo lectura }
@@ -315,11 +315,11 @@
 
             @if (bloques().length === 0 && editable()) {
               <div class="flex flex-col items-center justify-center py-20 text-center">
-                <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:#F1F5F9;">
-                  <ph-icon name="BookOpen" [size]="20" style="color:#6B7280;" />
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:var(--color-surface-100);">
+                  <ph-icon name="BookOpen" [size]="20" style="color:var(--color-text-subtle);" />
                 </div>
-                <p class="text-sm font-medium mb-1" style="color:#6B7280;">Sección vacía</p>
-                <p class="text-xs leading-relaxed max-w-xs" style="color:#6B7280;">Empieza a escribir o usa el Asistente de contenidos para generar.</p>
+                <p class="text-sm font-medium mb-1" style="color:var(--color-text-subtle);">Sección vacía</p>
+                <p class="text-xs leading-relaxed max-w-xs" style="color:var(--color-text-subtle);">Empieza a escribir o usa el Asistente de contenidos para generar.</p>
               </div>
             }
 
@@ -328,7 +328,7 @@
               @for (bloque of bloques(); track bloque.id; let i = $index) {
                 <div [style.padding-top]="i === 0 ? '0' : '20px'"
                   [style.padding-bottom]="'20px'"
-                  [style.border-bottom]="i < bloques().length - 1 ? '1px solid #F3F4F6' : 'none'">
+                  [style.border-bottom]="i < bloques().length - 1 ? '1px solid var(--color-bg-neutral-alt)' : 'none'">
                   <app-bloque-contenido
                     [bloque]="bloque"
                     [index]="i"
@@ -361,8 +361,8 @@
                           {{ iaInline().textoGenerado }}
                         </div>
                         <div class="flex items-center gap-2 mt-2.5">
-                          <button (click)="iaInline.set(null)" class="px-3 py-1.5 rounded-lg text-xs transition-colors" style="color:#6B7280;"
-                            (mouseenter)="$event.currentTarget.style.background='#F3F4F6'"
+                          <button (click)="iaInline.set(null)" class="px-3 py-1.5 rounded-lg text-xs transition-colors" style="color:var(--color-text-subtle);"
+                            (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral-alt)'"
                             (mouseleave)="$event.currentTarget.style.background='transparent'">Descartar</button>
                           <button (click)="retryIaInline()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
                             style="background:#EFF6FF;color:#3B82F6;border:1px solid #BFDBFE;"
@@ -372,13 +372,13 @@
                           </button>
                           <button (click)="quotePendiente.set({texto:iaInline().textoOriginal,accion:iaInline().accion}); state.panelIAabierto.set(true); iaInline.set(null);"
                             class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
-                            style="color:#6B7280;border:1px solid #E5E7EB;"
-                            (mouseenter)="$event.currentTarget.style.background='#F3F4F6'"
+                            style="color:var(--color-text-subtle);border:1px solid var(--color-border-neutral);"
+                            (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral-alt)'"
                             (mouseleave)="$event.currentTarget.style.background='transparent'">
                             <ph-icon name="ArrowUpRight" [size]="11" /> Llevar al chat
                           </button>
                           <button (click)="acceptIaInline()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold"
-                            style="background:#3B82F6;color:#FFFFFF;"
+                            style="background:#3B82F6;color:var(--color-surface);"
                             (mouseenter)="$event.currentTarget.style.background='#2563EB'"
                             (mouseleave)="$event.currentTarget.style.background='#3B82F6'">
                             <ph-icon name="Check" [size]="12" /> Aceptar cambios
@@ -414,13 +414,13 @@
     }
 
     @if (comentarioActivoBloque() && !state.panelIAabierto()) {
-      <div class="flex flex-col" style="width:320px;min-width:320px;background:#FAFAFA;border-left:1px solid #E5E7EB;">
-        <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid #E5E7EB;">
-          <p class="text-sm font-semibold" style="color:#1A1A1A;">Comentarios</p>
+      <div class="flex flex-col" style="width:320px;min-width:320px;background:#FAFAFA;border-left:1px solid var(--color-border-neutral);">
+        <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid var(--color-border-neutral);">
+          <p class="text-sm font-semibold" style="color:var(--color-text-near-black);">Comentarios</p>
           <button (click)="comentarioActivoBloque.set(null)" class="p-1.5 rounded-lg"
-            (mouseenter)="$event.currentTarget.style.background='#F1F5F9'"
+            (mouseenter)="$event.currentTarget.style.background='var(--color-surface-100)'"
             (mouseleave)="$event.currentTarget.style.background='transparent'">
-            <ph-icon name="X" [size]="14" style="color:#6B7280;" />
+            <ph-icon name="X" [size]="14" style="color:var(--color-text-subtle);" />
           </button>
         </div>
         <div class="flex-1 overflow-y-auto px-4 py-3 space-y-3">
@@ -433,28 +433,28 @@
           }
         </div>
         <!-- Add comment -->
-        <div class="px-4 py-3" style="border-top:1px solid #E5E7EB;">
+        <div class="px-4 py-3" style="border-top:1px solid var(--color-border-neutral);">
           <textarea [(ngModel)]="nuevoComentarioTexto"
             class="w-full text-sm px-3 py-2 rounded-xl resize-none outline-none mb-2"
-            style="background:#FFFFFF;border:1px solid #CBD5E1;min-height:72px;font-family:'Proeduca Sans',system-ui,sans-serif;"
+            style="background:var(--color-surface);border:1px solid var(--color-surface-300);min-height:72px;font-family:'Proeduca Sans',system-ui,sans-serif;"
             placeholder="Añadir comentario…" rows="3"
-            (focus)="$event.target.style.borderColor='#0A5CF5'"
-            (blur)="$event.target.style.borderColor='#CBD5E1'"></textarea>
+            (focus)="$event.target.style.borderColor='var(--color-primary)'"
+            (blur)="$event.target.style.borderColor='var(--color-surface-300)'"></textarea>
           <button (click)="addComentario()"
             class="px-3 py-1.5 rounded-lg text-xs font-medium text-white"
-            style="background:#0A5CF5;">Enviar</button>
+            style="background:var(--color-primary);">Enviar</button>
         </div>
       </div>
     }
 
     @if (panelNotasAbierto() && !state.panelIAabierto() && !comentarioActivoBloque()) {
-      <div class="flex flex-col" style="width:300px;min-width:300px;background:#FFFBEB;border-left:1px solid #FEF3C7;">
-        <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid #FDE68A;">
-          <p class="text-sm font-semibold" style="color:#92400E;">Notas personales</p>
+      <div class="flex flex-col" style="width:300px;min-width:300px;background:var(--color-warning-bg);border-left:1px solid var(--color-amber-100);">
+        <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid var(--color-warning-border);">
+          <p class="text-sm font-semibold" style="color:var(--color-amber-900);">Notas personales</p>
           <button (click)="panelNotasAbierto.set(false)" class="p-1.5 rounded-lg"
-            (mouseenter)="$event.currentTarget.style.background='#FEF3C7'"
+            (mouseenter)="$event.currentTarget.style.background='var(--color-amber-100)'"
             (mouseleave)="$event.currentTarget.style.background='transparent'">
-            <ph-icon name="X" [size]="14" style="color:#92400E;" />
+            <ph-icon name="X" [size]="14" style="color:var(--color-amber-900);" />
           </button>
         </div>
         <div class="flex-1 overflow-y-auto px-4 py-3 space-y-3">
@@ -462,29 +462,29 @@
             <p class="text-xs text-center py-8" style="color:#A16207;">Sin notas. Selecciona texto y añade una nota.</p>
           }
           @for (nota of notasState(); track nota.id) {
-            <div class="rounded-xl p-3" style="background:#FFFFFF;border:1px solid #FDE68A;">
+            <div class="rounded-xl p-3" style="background:var(--color-surface);border:1px solid var(--color-warning-border);">
               @if (notaEditandoId() === nota.id) {
-                <textarea [(ngModel)]="notaEditandoTexto" class="w-full text-sm rounded-lg p-2 resize-none outline-none" style="border:1px solid #FDE68A;min-height:60px;" rows="3"></textarea>
+                <textarea [(ngModel)]="notaEditandoTexto" class="w-full text-sm rounded-lg p-2 resize-none outline-none" style="border:1px solid var(--color-warning-border);min-height:60px;" rows="3"></textarea>
                 <div class="flex gap-2 mt-2">
-                  <button (click)="saveEditNota(nota.id)" class="text-xs px-2 py-1 rounded-lg text-white" style="background:#D97706;">Guardar</button>
-                  <button (click)="notaEditandoId.set(null)" class="text-xs px-2 py-1 rounded-lg" style="color:#6B7280;">Cancelar</button>
+                  <button (click)="saveEditNota(nota.id)" class="text-xs px-2 py-1 rounded-lg text-white" style="background:var(--color-warning);">Guardar</button>
+                  <button (click)="notaEditandoId.set(null)" class="text-xs px-2 py-1 rounded-lg" style="color:var(--color-text-subtle);">Cancelar</button>
                 </div>
               } @else {
-                <p class="text-sm" style="color:#374151;">{{ nota.contenido }}</p>
+                <p class="text-sm" style="color:var(--color-text-neutral);">{{ nota.contenido }}</p>
                 <div class="flex gap-2 mt-2">
-                  <button (click)="notaEditandoId.set(nota.id); notaEditandoTexto.set(nota.contenido)" class="text-xs" style="color:#D97706;">Editar</button>
+                  <button (click)="notaEditandoId.set(nota.id); notaEditandoTexto.set(nota.contenido)" class="text-xs" style="color:var(--color-warning);">Editar</button>
                   <button (click)="deleteNota(nota.id)" class="text-xs" style="color:#EF4444;">Eliminar</button>
                 </div>
               }
             </div>
           }
         </div>
-        <div class="px-4 py-3" style="border-top:1px solid #FDE68A;">
+        <div class="px-4 py-3" style="border-top:1px solid var(--color-warning-border);">
           <textarea [(ngModel)]="nuevaNotaTexto"
             class="w-full text-sm px-3 py-2 rounded-xl resize-none outline-none mb-2"
-            style="background:#FFFFFF;border:1px solid #FDE68A;min-height:64px;"
+            style="background:var(--color-surface);border:1px solid var(--color-warning-border);min-height:64px;"
             placeholder="Nueva nota…" rows="3"></textarea>
-          <button (click)="addNota()" class="px-3 py-1.5 rounded-lg text-xs font-medium text-white" style="background:#D97706;">Añadir nota</button>
+          <button (click)="addNota()" class="px-3 py-1.5 rounded-lg text-xs font-medium text-white" style="background:var(--color-warning);">Añadir nota</button>
         </div>
       </div>
     }
@@ -492,7 +492,7 @@
   </div><!-- end main flex row -->
 
   <!-- Chatbar (fixed bottom) -->
-  <div class="flex-shrink-0" style="background:#FFFFFF;border-top:1px solid #E5E7EB;padding:12px 24px;">
+  <div class="flex-shrink-0" style="background:var(--color-surface);border-top:1px solid var(--color-border-neutral);padding:12px 24px;">
     <app-chatbar
       [placeholder]="'Pregunta sobre este contenido…'"
       [chatHistorial]="state.chatHistorial()"
@@ -503,22 +503,22 @@
 
   <!-- Toasts -->
   @if (savedToast()) {
-    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:#1A1A1A;z-index:100;">
+    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:var(--color-text-near-black);z-index:100;">
       <ph-icon name="FloppyDisk" [size]="14" /> Guardado
     </div>
   }
   @if (sentToast()) {
-    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:#10B981;z-index:100;">
+    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:var(--color-green-700);z-index:100;">
       <ph-icon name="PaperPlaneTilt" [size]="14" /> Enviado a revisión
     </div>
   }
   @if (correctionToast()) {
-    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:#D97706;z-index:100;">
+    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:var(--color-warning);z-index:100;">
       <ph-icon name="Chat" [size]="14" /> Correcciones enviadas
     </div>
   }
   @if (approvedToast()) {
-    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:#10B981;z-index:100;">
+    <div class="fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-xl text-sm font-medium text-white animate-fade-in" style="background:var(--color-green-700);z-index:100;">
       <ph-icon name="Check" [size]="14" /> Sección aprobada
     </div>
   }

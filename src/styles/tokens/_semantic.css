@@ -1,0 +1,70 @@
+/**
+ * Design Token Layer 2 — Semantic / Alias Tokens
+ *
+ * Maps primitive scale values to usage-intent names.
+ * These are the tokens that components and utilities SHOULD reference.
+ * Never reference _base.css primitives directly from component code.
+ *
+ * Mirrors the Figma "Value" token file (src/assets/Value.tokens.json).
+ */
+:root {
+  /* ── Brand / Primary ─────────────────────────── */
+  --color-primary:         var(--color-primary-600);
+  --color-primary-hover:   var(--color-primary-800);
+  --color-primary-active:  var(--color-primary-700);
+
+  /* ── Layout surfaces ─────────────────────────── */
+  --color-bg:              var(--color-surface-50);
+  --color-surface:         var(--color-surface-0);
+  --color-border:          var(--color-surface-200);
+  --color-border-subtle:   var(--color-surface-100);
+  --color-border-strong:   var(--color-surface-300);
+
+  /* ── Text ────────────────────────────────────── */
+  --color-text:            var(--color-surface-700);
+  --color-text-hover:      var(--color-surface-950);
+  --color-text-muted:      var(--color-surface-500);
+  --color-text-muted-hover: var(--color-surface-600);
+  --color-text-on-dark:    var(--color-surface-0);
+  --color-text-disabled:   var(--color-surface-400);
+
+  /* ── Status — Success ────────────────────────── */
+  --color-success:         var(--color-green-800);
+  --color-success-hover:   var(--color-green-900);
+  --color-success-bg:      var(--color-green-50);
+  --color-success-border:  var(--color-green-100);
+
+  /* ── Status — Error / Critical ───────────────── */
+  --color-error:           var(--color-red-700);
+  --color-error-hover:     var(--color-red-800);
+  --color-error-bg:        var(--color-red-50);
+  --color-error-border:    var(--color-red-100);
+
+  /* ── Status — Warning / Important ───────────── */
+  --color-warning:         var(--color-amber-600);
+  --color-warning-hover:   var(--color-amber-700);
+  --color-warning-bg:      var(--color-amber-50);
+  --color-warning-border:  var(--color-amber-200);
+
+  /* ── Status — Disabled ───────────────────────── */
+  --color-disabled:        var(--color-surface-400);
+  --color-disabled-bg:     var(--color-surface-100);
+  --color-disabled-border: var(--color-surface-200);
+  --color-disabled-text:   var(--color-surface-400);
+
+  /* ── Neutral UI (Tailwind gray aliases) ─────── */
+  --color-border-neutral:  var(--color-neutral-200);
+  --color-text-neutral:    var(--color-neutral-700);
+  --color-text-subtle:     var(--color-neutral-500);
+  --color-text-faint:      var(--color-neutral-400);
+  --color-text-strong:     var(--color-neutral-900);
+  --color-text-near-black: var(--color-neutral-950);
+  --color-bg-neutral:      var(--color-neutral-50);
+  --color-bg-neutral-alt:  var(--color-neutral-100);
+
+  /* ── AI accent ───────────────────────────────── */
+  --color-ai:              var(--color-primary-600);
+  --color-ai-light:        var(--color-primary-100);
+  --color-ai-border:       var(--color-primary-200);
+  --color-ai-hover:        var(--color-primary-700);
+}

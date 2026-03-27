@@ -8,13 +8,13 @@ import {
   coordinatorTrackingData,
   shortcutsDashboard,
 } from '../../mock-data';
-import { toStatusKey } from '../../components/status-indicator/status-indicator.component';
+import { toStatusKey } from '../../shared/ui/atoms/status-indicator/status-indicator.component';
 import { PhIconComponent } from '../../icons/ph-icon.component';
-import { TopbarComponent } from '../../components/topbar/topbar.component';
-import { StatusIndicatorComponent } from '../../components/status-indicator/status-indicator.component';
-import { CalidadContenidosCardsComponent } from '../../components/calidad-contenidos-cards/calidad-contenidos-cards.component';
-import { PanelMisPendientesComponent } from '../../components/panel-mis-pendientes/panel-mis-pendientes.component';
-import { ChatbarComponent } from '../../components/chatbar/chatbar.component';
+import { TopbarComponent } from '../../shared/ui/organisms/topbar/topbar.component';
+import { StatusIndicatorComponent } from '../../shared/ui/atoms/status-indicator/status-indicator.component';
+import { CalidadContenidosCardsComponent } from '../../shared/ui/molecules/calidad-contenidos-cards/calidad-contenidos-cards.component';
+import { PanelMisPendientesComponent } from '../../shared/ui/molecules/panel-mis-pendientes/panel-mis-pendientes.component';
+import { ChatbarComponent } from '../../shared/ui/organisms/chatbar/chatbar.component';
 
 const TODAY_TRACKING = new Date('2026-03-05');
 
@@ -34,18 +34,18 @@ function calcStatus(pct: number): string {
 /** Visual configuration for content-obsolescence tracking statuses. */
 export const TRACKING_STATUS_CONFIG: Record<string, any> = {
   healthy:    { label: 'Saludable',  bg: '#DCFCE7', color: '#16A34A', border: '#BBF7D0', dot: '#16A34A', icon: 'CheckCircle' },
-  approaching:{ label: 'Próximo',    bg: '#FFFBEB', color: '#D97706', border: '#FDE68A', dot: '#D97706', icon: 'Clock' },
-  critical:   { label: 'Crítico',    bg: '#FEF2F2', color: '#DC2626', border: '#FECACA', dot: '#DC2626', icon: 'Warning' },
+  approaching:{ label: 'Próximo',    bg: 'var(--color-warning-bg)', color: 'var(--color-warning)', border: 'var(--color-warning-border)', dot: 'var(--color-warning)', icon: 'Clock' },
+  critical:   { label: 'Crítico',    bg: 'var(--color-error-bg)', color: '#DC2626', border: 'var(--color-error-border)', dot: '#DC2626', icon: 'Warning' },
   overdue:    { label: 'Caducado',   bg: '#F5F3FF', color: '#7C3AED', border: '#DDD6FE', dot: '#7C3AED', icon: 'XCircle' },
 };
 
 /** Label and accent colour for each alarm type shown in the coordinator view. */
 export const ALARM_CONFIG: Record<string, any> = {
-  'version-mismatch':         { label: 'Desajuste de versión',     color: '#D97706' },
-  'approaching-obsolescence': { label: 'Obsolescencia próxima',    color: '#D97706' },
+  'version-mismatch':         { label: 'Desajuste de versión',     color: 'var(--color-warning)' },
+  'approaching-obsolescence': { label: 'Obsolescencia próxima',    color: 'var(--color-warning)' },
   'critical-obsolescence':    { label: 'Obsolescencia crítica',    color: '#DC2626' },
   'expired-content':          { label: 'Contenido caducado',       color: '#7C3AED' },
-  'pending-update':           { label: 'Actualización pendiente',  color: '#367CFF' },
+  'pending-update':           { label: 'Actualización pendiente',  color: 'var(--color-primary-500)' },
 };
 
 /** Human-readable label for each campus / filial code. */
@@ -56,16 +56,16 @@ export const FILIAL_LABELS: Record<string, string> = {
 /** Badge style for each obsolescence level. */
 export const OBSOLESCENCIA_CONFIG: Record<string, any> = {
   ok:              { label: 'OK',               bg: '#DCFCE7', color: '#16A34A', border: '#BBF7D0' },
-  requiereRevision:{ label: 'Requiere revisión', bg: '#FFFBEB', color: '#D97706', border: '#FDE68A' },
-  mantenimiento:   { label: 'Mantenimiento',     bg: '#FFF7ED', color: '#EA580C', border: '#FED7AA' },
-  obsoleta:        { label: 'Obsoleta',          bg: '#FEF2F2', color: '#DC2626', border: '#FECACA' },
+  requiereRevision:{ label: 'Requiere revisión', bg: 'var(--color-warning-bg)', color: 'var(--color-warning)', border: 'var(--color-warning-border)' },
+  mantenimiento:   { label: 'Mantenimiento',     bg: 'var(--color-warning-bg)', color: '#EA580C', border: 'var(--color-warning-border)' },
+  obsoleta:        { label: 'Obsoleta',          bg: 'var(--color-error-bg)', color: '#DC2626', border: 'var(--color-error-border)' },
 };
 
 /** Badge style for designer-role section statuses. */
 export const ESTADO_DISENADOR_CONFIG: Record<string, any> = {
-  aprobado:    { label: 'Disponible',    bg: '#F0FDF4', color: '#10B981', border: '#A7F3D0' },
+  aprobado:    { label: 'Disponible',    bg: 'var(--color-success-bg)', color: 'var(--color-green-700)', border: '#A7F3D0' },
   disenado:    { label: 'Diseñado',      bg: '#F5F3FF', color: '#7C3AED', border: '#DDD6FE' },
-  porComenzar: { label: 'No disponible', bg: '#F8FAFC', color: '#64748B', border: '#E2E8F0' },
+  porComenzar: { label: 'No disponible', bg: 'var(--color-bg)', color: 'var(--color-text-muted)', border: 'var(--color-border)' },
 };
 
 const ROL_LABEL: Record<string, string> = {
@@ -116,14 +116,14 @@ export class DashboardComponent {
   // ── Constants ────────────────────────────────────────────────
   readonly HDR_STYLE = {
     padding: '10px 16px',
-    background: '#E6EFFF',
-    borderBottom: '1px solid #DCDFEB',
+    background: 'var(--color-ai-light)',
+    borderBottom: '1px solid var(--color-surface-300)',
     display: 'flex',
     alignItems: 'center',
   };
   readonly CELL_STYLE = {
     padding: '12px 16px',
-    borderBottom: '1px solid #F1F5F9',
+    borderBottom: '1px solid var(--color-surface-100)',
     display: 'flex',
     alignItems: 'center',
     minWidth: '0',
@@ -137,7 +137,7 @@ export class DashboardComponent {
     letterSpacing: '0.04em',
   };
   readonly txtstyle = {
-    color: '#334155',
+    color: 'var(--color-text)',
     fontSize: '13px',
     fontFamily: "'Proeduca Sans', system-ui, sans-serif",
     fontWeight: '500',
@@ -327,7 +327,7 @@ export class DashboardComponent {
 
   barColor(status: string): string {
     const map: Record<string, string> = {
-      healthy: '#16A34A', approaching: '#D97706', critical: '#DC2626', overdue: '#7C3AED',
+      healthy: '#16A34A', approaching: 'var(--color-warning)', critical: '#DC2626', overdue: '#7C3AED',
     };
     return map[status] || '#16A34A';
   }
@@ -339,12 +339,12 @@ export class DashboardComponent {
   // ── Event handlers ────────────────────────────────────────────
   onRowHover(el: EventTarget | null, enter: boolean, clickable: boolean): void {
     if (!clickable || !el) return;
-    (el as HTMLElement).style.background = enter ? '#F4F6FD' : '';
+    (el as HTMLElement).style.background = enter ? 'var(--color-primary-50)' : '';
   }
 
   onDetailHover(el: EventTarget | null, enter: boolean): void {
     if (!el) return;
-    (el as HTMLElement).style.background = enter ? '#E5E7EB' : 'transparent';
+    (el as HTMLElement).style.background = enter ? 'var(--color-border-neutral)' : 'transparent';
   }
 
   onBtnHover(el: EventTarget | null, enter: boolean, onColor: string, offColor: string): void {
@@ -355,14 +355,14 @@ export class DashboardComponent {
   onSidebarHover(el: EventTarget | null, enter: boolean, selected: boolean, navegable: boolean): void {
     if (!el) return;
     if (!selected && navegable) {
-      (el as HTMLElement).style.background = enter ? '#F4F6FD' : 'transparent';
+      (el as HTMLElement).style.background = enter ? 'var(--color-primary-50)' : 'transparent';
     }
   }
 
   onTrackingRowHover(el: EventTarget | null, enter: boolean, isSelected: boolean): void {
     if (!el) return;
     if (!isSelected) {
-      (el as HTMLElement).style.background = enter ? '#F4F6FD' : '';
+      (el as HTMLElement).style.background = enter ? 'var(--color-primary-50)' : '';
     }
   }
 

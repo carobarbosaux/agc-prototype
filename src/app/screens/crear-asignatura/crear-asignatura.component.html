@@ -1,21 +1,21 @@
-<div class="h-screen flex flex-col overflow-hidden" style="background:#F8F9FA;font-family:'Proeduca Sans',system-ui,sans-serif;">
+<div class="h-screen flex flex-col overflow-hidden" style="background:var(--color-bg-neutral);font-family:'Proeduca Sans',system-ui,sans-serif;">
 
   <!-- Confirm modal -->
   @if (modalVolver()) {
     <div class="fixed inset-0 z-50 flex items-center justify-center" style="background:rgba(15,23,42,0.5);">
       <div class="bg-white rounded-2xl p-6 shadow-xl" style="width:380px;">
-        <h3 class="text-base font-semibold mb-2" style="color:#1A1A1A;">
+        <h3 class="text-base font-semibold mb-2" style="color:var(--color-text-near-black);">
           {{ modalVolver() === 'cancelar' ? '¿Cancelar creación?' : '¿Volver al paso anterior?' }}
         </h3>
-        <p class="text-sm mb-5" style="color:#6B7280;">
+        <p class="text-sm mb-5" style="color:var(--color-text-subtle);">
           {{ modalVolver() === 'cancelar' ? 'Se perderán todos los datos introducidos.' : 'Se perderán los datos del paso actual.' }}
         </p>
         <div class="flex justify-end gap-3">
           <button (click)="modalVolver.set(null)"
             class="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
-            style="border:1px solid #E5E7EB;color:#374151;"
-            (mouseenter)="$event.currentTarget.style.background='#F8F9FA'"
-            (mouseleave)="$event.currentTarget.style.background='#FFFFFF'">Cancelar</button>
+            style="border:1px solid var(--color-border-neutral);color:var(--color-text-neutral);"
+            (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral)'"
+            (mouseleave)="$event.currentTarget.style.background='var(--color-surface)'">Cancelar</button>
           <button (click)="confirmModal()"
             class="px-4 py-2 rounded-xl text-sm font-semibold text-white"
             style="background:#EF4444;">Confirmar</button>
@@ -26,32 +26,32 @@
 
   <!-- Top bar -->
   <div class="flex items-center justify-between px-6 py-3 flex-shrink-0"
-    style="background:#FFFFFF;border-bottom:1px solid #E5E7EB;height:56px;">
+    style="background:var(--color-surface);border-bottom:1px solid var(--color-border-neutral);height:56px;">
     <div class="flex items-center gap-2">
       <prodi-mark [size]="24" />
-      <span class="text-sm font-semibold" style="color:#1A1A1A;">Nueva asignatura</span>
+      <span class="text-sm font-semibold" style="color:var(--color-text-near-black);">Nueva asignatura</span>
     </div>
     @if (!generando() && !generandoResumen()) {
       <div class="flex items-center gap-2">
         @if (paso() === 1) {
           <button (click)="handleCancelar()"
             class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
-            style="color:#374151;background:#FFFFFF;border:1px solid #E5E7EB;"
-            (mouseenter)="$event.currentTarget.style.background='#F8F9FA'"
-            (mouseleave)="$event.currentTarget.style.background='#FFFFFF'">Cancelar</button>
+            style="color:var(--color-text-neutral);background:var(--color-surface);border:1px solid var(--color-border-neutral);"
+            (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral)'"
+            (mouseleave)="$event.currentTarget.style.background='var(--color-surface)'">Cancelar</button>
         }
         @if (paso() > 1) {
           <button (click)="handleVolver()"
             class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
-            style="color:#374151;background:#FFFFFF;border:1px solid #E5E7EB;"
-            (mouseenter)="$event.currentTarget.style.background='#F8F9FA'"
-            (mouseleave)="$event.currentTarget.style.background='#FFFFFF'">{{ getBackLabel() }}</button>
+            style="color:var(--color-text-neutral);background:var(--color-surface);border:1px solid var(--color-border-neutral);"
+            (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral)'"
+            (mouseleave)="$event.currentTarget.style.background='var(--color-surface)'">{{ getBackLabel() }}</button>
         }
         <button (click)="handleSiguiente()"
           [disabled]="!puedeAvanzar()"
           class="px-4 py-1.5 rounded-xl text-sm font-medium text-white transition-all"
-          [style.background]="puedeAvanzar() ? getForwardColor() : '#E5E7EB'"
-          [style.color]="puedeAvanzar() ? '#FFFFFF' : '#9CA3AF'"
+          [style.background]="puedeAvanzar() ? getForwardColor() : 'var(--color-border-neutral)'"
+          [style.color]="puedeAvanzar() ? 'var(--color-surface)' : 'var(--color-text-faint)'"
           [style.cursor]="puedeAvanzar() ? 'pointer' : 'not-allowed'">
           {{ getForwardLabel() }}
         </button>
@@ -60,9 +60,9 @@
   </div>
 
   <!-- Progress bar + step indicators -->
-  <div class="flex-shrink-0" style="background:#FFFFFF;border-bottom:1px solid #F1F5F9;">
-    <div class="h-1" style="background:#E5E7EB;">
-      <div class="h-full rounded-r-full" [style.width]="progressPct() + '%'" style="background:#367CFF;transition:width 400ms ease;"></div>
+  <div class="flex-shrink-0" style="background:var(--color-surface);border-bottom:1px solid var(--color-surface-100);">
+    <div class="h-1" style="background:var(--color-border-neutral);">
+      <div class="h-full rounded-r-full" [style.width]="progressPct() + '%'" style="background:var(--color-primary-500);transition:width 400ms ease;"></div>
     </div>
     <div class="flex items-center justify-center gap-2 py-3">
       @for (n of [1,2,3]; track n; let idx = $index) {
@@ -70,21 +70,21 @@
           <div class="flex items-center gap-1.5">
             <div class="flex items-center justify-center rounded-full flex-shrink-0 transition-all"
               style="width:22px;height:22px;"
-              [style.background]="n < paso() ? '#008660' : n === paso() ? '#367CFF' : '#F1F5F9'">
+              [style.background]="n < paso() ? 'var(--color-success-hover)' : n === paso() ? 'var(--color-primary-500)' : 'var(--color-surface-100)'">
               @if (n < paso()) {
-                <ph-icon name="Check" [size]="11" style="color:#FFFFFF;" />
+                <ph-icon name="Check" [size]="11" style="color:var(--color-surface);" />
               } @else {
-                <span style="font-size:10px;font-weight:700;" [style.color]="n === paso() ? '#FFFFFF' : '#CBD5E1'">{{ n }}</span>
+                <span style="font-size:10px;font-weight:700;" [style.color]="n === paso() ? 'var(--color-surface)' : 'var(--color-surface-300)'">{{ n }}</span>
               }
             </div>
             <span class="text-xs font-medium"
-              [style.color]="n < paso() ? '#008660' : n === paso() ? '#367CFF' : '#CBD5E1'">
+              [style.color]="n < paso() ? 'var(--color-success-hover)' : n === paso() ? 'var(--color-primary-500)' : 'var(--color-surface-300)'">
               {{ pasoLabels()[n] }}
             </span>
           </div>
           @if (idx < 2) {
             <div class="h-px" style="width:28px;transition:background 400ms ease;"
-              [style.background]="n < paso() ? '#008660' : '#E5E7EB'"></div>
+              [style.background]="n < paso() ? 'var(--color-success-hover)' : 'var(--color-border-neutral)'"></div>
           }
         </div>
       }
@@ -97,80 +97,80 @@
     <!-- Loading -->
     @if (generando() || generandoResumen()) {
       <div class="flex-1 flex flex-col items-center justify-center py-16 gap-4 w-full">
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style="background:#E7EFFE;">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center animate-pulse" style="background:var(--color-ai-light);">
           <prodi-mark [size]="28" />
         </div>
         <div class="text-center">
-          <p class="text-sm font-semibold mb-1" style="color:#1A1A1A;">
+          <p class="text-sm font-semibold mb-1" style="color:var(--color-text-near-black);">
             {{ generandoResumen() ? 'Generando resumen de la asignatura…' : 'Generando índice de temas…' }}
           </p>
-          <p class="text-xs" style="color:#6B7280;">La IA está procesando tu solicitud…</p>
+          <p class="text-xs" style="color:var(--color-text-subtle);">La IA está procesando tu solicitud…</p>
         </div>
         <div class="flex gap-1.5 mt-2">
           @for (i of [0,1,2]; track i) {
-            <div class="w-1.5 h-1.5 rounded-full animate-bounce" style="background:#367CFF;" [style.animation-delay]="i*0.15+'s'"></div>
+            <div class="w-1.5 h-1.5 rounded-full animate-bounce" style="background:var(--color-primary-500);" [style.animation-delay]="i*0.15+'s'"></div>
           }
         </div>
       </div>
 
     <!-- Paso 1: Fixed metadata (Autor) or Context form (Coordinador) -->
     } @else if (paso() === 1) {
-      <div class="overflow-y-auto w-full" style="background:#FFFFFF;">
+      <div class="overflow-y-auto w-full" style="background:var(--color-surface);">
         <div class="py-8 px-8 mx-auto" style="max-width:680px;">
 
           @if (esAutor()) {
             <!-- Autor paso 1: show fixed asignatura info -->
             <div class="mb-8">
-              <h2 class="text-xl font-semibold mb-1" style="color:#1A1A1A;">Información de la asignatura</h2>
-              <p class="text-sm" style="color:#6B7280;">Verifica los datos de la asignatura antes de continuar.</p>
+              <h2 class="text-xl font-semibold mb-1" style="color:var(--color-text-near-black);">Información de la asignatura</h2>
+              <p class="text-sm" style="color:var(--color-text-subtle);">Verifica los datos de la asignatura antes de continuar.</p>
             </div>
             <div class="space-y-5">
               <div>
-                <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Nombre</label>
-                <div class="w-full px-4 py-3 rounded-xl text-sm" style="background:#F8FAFC;border:1px solid #E5E7EB;color:#1A1A1A;">{{ asigNombre }}</div>
+                <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Nombre</label>
+                <div class="w-full px-4 py-3 rounded-xl text-sm" style="background:var(--color-bg);border:1px solid var(--color-border-neutral);color:var(--color-text-near-black);">{{ asigNombre }}</div>
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Código</label>
-                  <div class="w-full px-4 py-3 rounded-xl text-sm" style="background:#F8FAFC;border:1px solid #E5E7EB;color:#1A1A1A;">{{ asigCodigo }}</div>
+                  <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Código</label>
+                  <div class="w-full px-4 py-3 rounded-xl text-sm" style="background:var(--color-bg);border:1px solid var(--color-border-neutral);color:var(--color-text-near-black);">{{ asigCodigo }}</div>
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Créditos ECTS</label>
-                  <div class="w-full px-4 py-3 rounded-xl text-sm" style="background:#F8FAFC;border:1px solid #E5E7EB;color:#1A1A1A;">{{ asigCreditos }}</div>
+                  <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Créditos ECTS</label>
+                  <div class="w-full px-4 py-3 rounded-xl text-sm" style="background:var(--color-bg);border:1px solid var(--color-border-neutral);color:var(--color-text-near-black);">{{ asigCreditos }}</div>
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Titulación</label>
-                <div class="w-full px-4 py-3 rounded-xl text-sm" style="background:#F8FAFC;border:1px solid #E5E7EB;color:#1A1A1A;">Máster Universitario en Inteligencia Artificial</div>
+                <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Titulación</label>
+                <div class="w-full px-4 py-3 rounded-xl text-sm" style="background:var(--color-bg);border:1px solid var(--color-border-neutral);color:var(--color-text-near-black);">Máster Universitario en Inteligencia Artificial</div>
               </div>
-              <div class="rounded-xl p-4" style="background:#E7EFFE;border:1px solid #BAD2FF;">
-                <p class="text-xs" style="color:#0047CC;">Esta información ha sido asignada por la coordinación. Continúa para personalizar el descriptor y enfoque pedagógico de la asignatura.</p>
+              <div class="rounded-xl p-4" style="background:var(--color-ai-light);border:1px solid var(--color-ai-border);">
+                <p class="text-xs" style="color:var(--color-primary-active);">Esta información ha sido asignada por la coordinación. Continúa para personalizar el descriptor y enfoque pedagógico de la asignatura.</p>
               </div>
             </div>
 
           } @else {
             <!-- Coordinador paso 1: context form -->
             <div class="mb-8">
-              <h2 class="text-xl font-semibold mb-1" style="color:#1A1A1A;">Contexto académico</h2>
-              <p class="text-sm" style="color:#6B7280;">Define la información básica de la nueva asignatura.</p>
+              <h2 class="text-xl font-semibold mb-1" style="color:var(--color-text-near-black);">Contexto académico</h2>
+              <p class="text-sm" style="color:var(--color-text-subtle);">Define la información básica de la nueva asignatura.</p>
             </div>
             <div class="space-y-5">
               <div>
-                <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Nombre de la asignatura *</label>
+                <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Nombre de la asignatura *</label>
                 <input type="text" [value]="datos()['nombre'] || ''"
                   (input)="updateDatos('nombre', $any($event.target).value)"
                   class="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                  style="border:1px solid #CBD5E1;background:#FFFFFF;"
+                  style="border:1px solid var(--color-surface-300);background:var(--color-surface);"
                   placeholder="Ej: Análisis de Datos con Python"
-                  (focus)="$event.target.style.borderColor='#367CFF'"
-                  (blur)="$event.target.style.borderColor='#CBD5E1'" />
+                  (focus)="$event.target.style.borderColor='var(--color-primary-500)'"
+                  (blur)="$event.target.style.borderColor='var(--color-surface-300)'" />
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Titulación *</label>
+                <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Titulación *</label>
                 <select [value]="datos()['titulacionId'] || ''"
                   (change)="updateDatos('titulacionId', $any($event.target).value)"
                   class="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                  style="border:1px solid #CBD5E1;background:#FFFFFF;">
+                  style="border:1px solid var(--color-surface-300);background:var(--color-surface);">
                   <option value="">Selecciona una titulación</option>
                   @for (t of state.titulaciones(); track t.id) {
                     <option [value]="t.id">{{ t.nombre }}</option>
@@ -179,44 +179,44 @@
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Nivel *</label>
+                  <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Nivel *</label>
                   <select [value]="datos()['nivel'] || ''"
                     (change)="updateDatos('nivel', $any($event.target).value)"
                     class="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                    style="border:1px solid #CBD5E1;background:#FFFFFF;">
+                    style="border:1px solid var(--color-surface-300);background:var(--color-surface);">
                     <option value="">Selecciona</option>
                     @for (n of niveles; track n) { <option [value]="n">{{ n }}</option> }
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Créditos ECTS</label>
+                  <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Créditos ECTS</label>
                   <input type="number" [value]="datos()['creditos'] || ''"
                     (input)="updateDatos('creditos', $any($event.target).value)"
                     class="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                    style="border:1px solid #CBD5E1;background:#FFFFFF;"
+                    style="border:1px solid var(--color-surface-300);background:var(--color-surface);"
                     placeholder="6"
                     min="1" max="30"
-                    (focus)="$event.target.style.borderColor='#367CFF'"
-                    (blur)="$event.target.style.borderColor='#CBD5E1'" />
+                    (focus)="$event.target.style.borderColor='var(--color-primary-500)'"
+                    (blur)="$event.target.style.borderColor='var(--color-surface-300)'" />
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Idioma</label>
+                  <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Idioma</label>
                   <select [value]="datos()['idioma'] || ''"
                     (change)="updateDatos('idioma', $any($event.target).value)"
                     class="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                    style="border:1px solid #CBD5E1;background:#FFFFFF;">
+                    style="border:1px solid var(--color-surface-300);background:var(--color-surface);">
                     <option value="">Selecciona</option>
                     @for (i of idiomas; track i) { <option [value]="i">{{ i }}</option> }
                   </select>
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Modalidad</label>
+                  <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Modalidad</label>
                   <select [value]="datos()['modalidad'] || ''"
                     (change)="updateDatos('modalidad', $any($event.target).value)"
                     class="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                    style="border:1px solid #CBD5E1;background:#FFFFFF;">
+                    style="border:1px solid var(--color-surface-300);background:var(--color-surface);">
                     <option value="">Selecciona</option>
                     @for (m of modalidades; track m) { <option [value]="m">{{ m }}</option> }
                   </select>
@@ -230,120 +230,120 @@
 
     <!-- Paso 2: Descriptor (Autor) / Temática (Coordinador) -->
     } @else if (paso() === 2) {
-      <div class="flex-1 overflow-y-auto" style="background:#FFFFFF;">
+      <div class="flex-1 overflow-y-auto" style="background:var(--color-surface);">
         <div class="py-8 px-10 mx-auto" style="max-width:640px;">
 
           @if (esAutor()) {
-            <h2 class="text-xl font-semibold mb-1" style="color:#1A1A1A;">Descriptor y enfoque pedagógico</h2>
-            <p class="text-sm mb-6" style="color:#6B7280;">Define el nivel, estructura y enfoque de la asignatura.</p>
+            <h2 class="text-xl font-semibold mb-1" style="color:var(--color-text-near-black);">Descriptor y enfoque pedagógico</h2>
+            <p class="text-sm mb-6" style="color:var(--color-text-subtle);">Define el nivel, estructura y enfoque de la asignatura.</p>
             <div class="space-y-5">
               <div>
-                <label class="block text-sm font-semibold mb-2" style="color:#374151;">Nivel de conocimiento previo requerido *</label>
+                <label class="block text-sm font-semibold mb-2" style="color:var(--color-text-neutral);">Nivel de conocimiento previo requerido *</label>
                 <div class="grid grid-cols-3 gap-2">
                   @for (lvl of ['Básico','Intermedio','Avanzado']; track lvl) {
                     <button (click)="updateDatos('nivelConocimiento', lvl)"
                       class="px-3 py-2 rounded-xl text-sm font-medium transition-all"
-                      [style.background]="datos()['nivelConocimiento'] === lvl ? '#E7EFFE' : '#F8FAFC'"
-                      [style.color]="datos()['nivelConocimiento'] === lvl ? '#367CFF' : '#6B7280'"
-                      [style.border]="datos()['nivelConocimiento'] === lvl ? '1px solid #BAD2FF' : '1px solid #E5E7EB'">
+                      [style.background]="datos()['nivelConocimiento'] === lvl ? 'var(--color-ai-light)' : 'var(--color-bg)'"
+                      [style.color]="datos()['nivelConocimiento'] === lvl ? 'var(--color-primary-500)' : 'var(--color-text-subtle)'"
+                      [style.border]="datos()['nivelConocimiento'] === lvl ? '1px solid var(--color-ai-border)' : '1px solid var(--color-border-neutral)'">
                       {{ lvl }}
                     </button>
                   }
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-2" style="color:#374151;">Número de temas *</label>
+                <label class="block text-sm font-semibold mb-2" style="color:var(--color-text-neutral);">Número de temas *</label>
                 <div class="grid grid-cols-4 gap-2">
                   @for (n of [4,5,6,8]; track n) {
                     <button (click)="updateDatos('numTemas', n)"
                       class="px-3 py-2 rounded-xl text-sm font-medium transition-all"
-                      [style.background]="datos()['numTemas'] === n ? '#E7EFFE' : '#F8FAFC'"
-                      [style.color]="datos()['numTemas'] === n ? '#367CFF' : '#6B7280'"
-                      [style.border]="datos()['numTemas'] === n ? '1px solid #BAD2FF' : '1px solid #E5E7EB'">
+                      [style.background]="datos()['numTemas'] === n ? 'var(--color-ai-light)' : 'var(--color-bg)'"
+                      [style.color]="datos()['numTemas'] === n ? 'var(--color-primary-500)' : 'var(--color-text-subtle)'"
+                      [style.border]="datos()['numTemas'] === n ? '1px solid var(--color-ai-border)' : '1px solid var(--color-border-neutral)'">
                       {{ n }} temas
                     </button>
                   }
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-2" style="color:#374151;">Enfoque pedagógico *</label>
+                <label class="block text-sm font-semibold mb-2" style="color:var(--color-text-neutral);">Enfoque pedagógico *</label>
                 <div class="grid grid-cols-3 gap-2">
                   @for (enf of enfoques; track enf) {
                     <button (click)="updateDatos('enfoque', enf)"
                       class="px-3 py-2 rounded-xl text-sm font-medium transition-all"
-                      [style.background]="datos()['enfoque'] === enf ? '#E7EFFE' : '#F8FAFC'"
-                      [style.color]="datos()['enfoque'] === enf ? '#367CFF' : '#6B7280'"
-                      [style.border]="datos()['enfoque'] === enf ? '1px solid #BAD2FF' : '1px solid #E5E7EB'">
+                      [style.background]="datos()['enfoque'] === enf ? 'var(--color-ai-light)' : 'var(--color-bg)'"
+                      [style.color]="datos()['enfoque'] === enf ? 'var(--color-primary-500)' : 'var(--color-text-subtle)'"
+                      [style.border]="datos()['enfoque'] === enf ? '1px solid var(--color-ai-border)' : '1px solid var(--color-border-neutral)'">
                       {{ enf }}
                     </button>
                   }
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Indicaciones adicionales</label>
+                <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Indicaciones adicionales</label>
                 <textarea [value]="datos()['indicaciones'] || ''"
                   (input)="updateDatos('indicaciones', $any($event.target).value)"
                   class="w-full px-4 py-3 rounded-xl text-sm outline-none resize-none"
-                  style="border:1px solid #CBD5E1;background:#FFFFFF;min-height:100px;font-family:'Proeduca Sans',system-ui,sans-serif;"
+                  style="border:1px solid var(--color-surface-300);background:var(--color-surface);min-height:100px;font-family:'Proeduca Sans',system-ui,sans-serif;"
                   placeholder="Describe el contexto, objetivos específicos u otras consideraciones..."
                   rows="4"
-                  (focus)="$event.target.style.borderColor='#367CFF'"
-                  (blur)="$event.target.style.borderColor='#CBD5E1'"></textarea>
+                  (focus)="$event.target.style.borderColor='var(--color-primary-500)'"
+                  (blur)="$event.target.style.borderColor='var(--color-surface-300)'"></textarea>
               </div>
             </div>
 
           } @else {
             <!-- Coordinador paso 2: Temática -->
-            <h2 class="text-xl font-semibold mb-1" style="color:#1A1A1A;">Definición temática</h2>
-            <p class="text-sm mb-6" style="color:#6B7280;">Define el área y características del contenido.</p>
+            <h2 class="text-xl font-semibold mb-1" style="color:var(--color-text-near-black);">Definición temática</h2>
+            <p class="text-sm mb-6" style="color:var(--color-text-subtle);">Define el área y características del contenido.</p>
             <div class="space-y-5">
               <div>
-                <label class="block text-sm font-semibold mb-2" style="color:#374151;">Área de conocimiento *</label>
+                <label class="block text-sm font-semibold mb-2" style="color:var(--color-text-neutral);">Área de conocimiento *</label>
                 <select [value]="datos()['areaConocimiento'] || ''"
                   (change)="updateDatos('areaConocimiento', $any($event.target).value)"
                   class="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                  style="border:1px solid #CBD5E1;background:#FFFFFF;"
-                  (focus)="$event.target.style.borderColor='#367CFF'"
-                  (blur)="$event.target.style.borderColor='#CBD5E1'">
+                  style="border:1px solid var(--color-surface-300);background:var(--color-surface);"
+                  (focus)="$event.target.style.borderColor='var(--color-primary-500)'"
+                  (blur)="$event.target.style.borderColor='var(--color-surface-300)'">
                   <option value="">Selecciona un área</option>
                   @for (a of areas; track a) { <option [value]="a">{{ a }}</option> }
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-2" style="color:#374151;">Tipo de asignatura *</label>
+                <label class="block text-sm font-semibold mb-2" style="color:var(--color-text-neutral);">Tipo de asignatura *</label>
                 <select [value]="datos()['tipoAsignatura'] || ''"
                   (change)="updateDatos('tipoAsignatura', $any($event.target).value)"
                   class="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                  style="border:1px solid #CBD5E1;background:#FFFFFF;"
-                  (focus)="$event.target.style.borderColor='#367CFF'"
-                  (blur)="$event.target.style.borderColor='#CBD5E1'">
+                  style="border:1px solid var(--color-surface-300);background:var(--color-surface);"
+                  (focus)="$event.target.style.borderColor='var(--color-primary-500)'"
+                  (blur)="$event.target.style.borderColor='var(--color-surface-300)'">
                   <option value="">Selecciona</option>
                   @for (t of tiposAsig; track t) { <option [value]="t">{{ t }}</option> }
                 </select>
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-2" style="color:#374151;">Enfoque pedagógico *</label>
+                <label class="block text-sm font-semibold mb-2" style="color:var(--color-text-neutral);">Enfoque pedagógico *</label>
                 <div class="grid grid-cols-3 gap-2">
                   @for (enf of enfoques; track enf) {
                     <button (click)="updateDatos('enfoque', enf)"
                       class="px-3 py-2 rounded-xl text-sm font-medium transition-all"
-                      [style.background]="datos()['enfoque'] === enf ? '#E7EFFE' : '#F8FAFC'"
-                      [style.color]="datos()['enfoque'] === enf ? '#367CFF' : '#6B7280'"
-                      [style.border]="datos()['enfoque'] === enf ? '1px solid #BAD2FF' : '1px solid #E5E7EB'">
+                      [style.background]="datos()['enfoque'] === enf ? 'var(--color-ai-light)' : 'var(--color-bg)'"
+                      [style.color]="datos()['enfoque'] === enf ? 'var(--color-primary-500)' : 'var(--color-text-subtle)'"
+                      [style.border]="datos()['enfoque'] === enf ? '1px solid var(--color-ai-border)' : '1px solid var(--color-border-neutral)'">
                       {{ enf }}
                     </button>
                   }
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Número de temas</label>
+                <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Número de temas</label>
                 <div class="grid grid-cols-4 gap-2">
                   @for (n of [4,5,6,8]; track n) {
                     <button (click)="updateDatos('numTemas', n)"
                       class="px-3 py-2 rounded-xl text-sm font-medium transition-all"
-                      [style.background]="datos()['numTemas'] === n ? '#E7EFFE' : '#F8FAFC'"
-                      [style.color]="datos()['numTemas'] === n ? '#367CFF' : '#6B7280'"
-                      [style.border]="datos()['numTemas'] === n ? '1px solid #BAD2FF' : '1px solid #E5E7EB'">
+                      [style.background]="datos()['numTemas'] === n ? 'var(--color-ai-light)' : 'var(--color-bg)'"
+                      [style.color]="datos()['numTemas'] === n ? 'var(--color-primary-500)' : 'var(--color-text-subtle)'"
+                      [style.border]="datos()['numTemas'] === n ? '1px solid var(--color-ai-border)' : '1px solid var(--color-border-neutral)'">
                       {{ n }} temas
                     </button>
                   }
@@ -368,10 +368,10 @@
         />
       } @else {
         <!-- Collapsed IA panel -->
-        <div class="flex-shrink-0 flex flex-col items-center pt-4 gap-2" style="width:52px;background:#FAFAFA;border-left:1px solid #E5E7EB;">
-          <button (click)="panelIAAbierto.set(true)" class="p-2 rounded-xl" style="background:#E7EFFE;"
-            (mouseenter)="$event.currentTarget.style.background='#BAD2FF'"
-            (mouseleave)="$event.currentTarget.style.background='#E7EFFE'">
+        <div class="flex-shrink-0 flex flex-col items-center pt-4 gap-2" style="width:52px;background:#FAFAFA;border-left:1px solid var(--color-border-neutral);">
+          <button (click)="panelIAAbierto.set(true)" class="p-2 rounded-xl" style="background:var(--color-ai-light);"
+            (mouseenter)="$event.currentTarget.style.background='var(--color-ai-border)'"
+            (mouseleave)="$event.currentTarget.style.background='var(--color-ai-light)'">
             <prodi-mark [size]="18" />
           </button>
         </div>
@@ -379,54 +379,54 @@
 
     <!-- Paso 3: Vista previa / resumen -->
     } @else if (paso() === 3) {
-      <div class="flex-1 overflow-y-auto" style="background:#FFFFFF;">
+      <div class="flex-1 overflow-y-auto" style="background:var(--color-surface);">
         <div class="py-8 px-10 mx-auto" style="max-width:700px;">
           <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-1" style="color:#1A1A1A;">Vista previa del resumen</h2>
-            <p class="text-sm" style="color:#6B7280;">Revisa y ajusta el resumen generado antes de crear el índice.</p>
+            <h2 class="text-xl font-semibold mb-1" style="color:var(--color-text-near-black);">Vista previa del resumen</h2>
+            <p class="text-sm" style="color:var(--color-text-subtle);">Revisa y ajusta el resumen generado antes de crear el índice.</p>
           </div>
 
           @if (resumen()) {
             <div class="space-y-6">
               <!-- Nombre -->
               <div>
-                <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Nombre de la asignatura</label>
+                <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Nombre de la asignatura</label>
                 <input type="text" [value]="resumen().nombre"
                   (input)="updateResumenField('nombre', $any($event.target).value)"
                   class="w-full px-4 py-3 rounded-xl text-sm font-semibold outline-none"
-                  style="border:1px solid #CBD5E1;background:#FFFFFF;color:#1A1A1A;"
-                  (focus)="$event.target.style.borderColor='#367CFF'"
-                  (blur)="$event.target.style.borderColor='#CBD5E1'" />
+                  style="border:1px solid var(--color-surface-300);background:var(--color-surface);color:var(--color-text-near-black);"
+                  (focus)="$event.target.style.borderColor='var(--color-primary-500)'"
+                  (blur)="$event.target.style.borderColor='var(--color-surface-300)'" />
               </div>
 
               <!-- Descripción -->
               <div>
-                <label class="block text-sm font-semibold mb-1.5" style="color:#374151;">Descripción</label>
+                <label class="block text-sm font-semibold mb-1.5" style="color:var(--color-text-neutral);">Descripción</label>
                 <textarea [value]="resumen().descripcion"
                   (input)="updateResumenField('descripcion', $any($event.target).value)"
                   class="w-full px-4 py-3 rounded-xl text-sm outline-none resize-none"
-                  style="border:1px solid #CBD5E1;background:#FFFFFF;min-height:120px;font-family:'Proeduca Sans',system-ui,sans-serif;line-height:1.6;"
+                  style="border:1px solid var(--color-surface-300);background:var(--color-surface);min-height:120px;font-family:'Proeduca Sans',system-ui,sans-serif;line-height:1.6;"
                   rows="5"
-                  (focus)="$event.target.style.borderColor='#367CFF'"
-                  (blur)="$event.target.style.borderColor='#CBD5E1'"></textarea>
+                  (focus)="$event.target.style.borderColor='var(--color-primary-500)'"
+                  (blur)="$event.target.style.borderColor='var(--color-surface-300)'"></textarea>
               </div>
 
               <!-- Objetivos -->
               <div>
-                <label class="block text-sm font-semibold mb-3" style="color:#374151;">Objetivos de aprendizaje</label>
+                <label class="block text-sm font-semibold mb-3" style="color:var(--color-text-neutral);">Objetivos de aprendizaje</label>
                 <div class="space-y-2">
                   @for (obj of resumen().objetivos; track $index; let i = $index) {
                     <div class="flex items-start gap-2">
                       <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-2.5"
-                        style="background:#E7EFFE;">
-                        <span style="font-size:10px;font-weight:700;color:#367CFF;">{{ i+1 }}</span>
+                        style="background:var(--color-ai-light);">
+                        <span style="font-size:10px;font-weight:700;color:var(--color-primary-500);">{{ i+1 }}</span>
                       </div>
                       <input type="text" [value]="obj"
                         (input)="updateResumenObjetivo(i, $any($event.target).value)"
                         class="flex-1 px-3 py-2 rounded-xl text-sm outline-none"
-                        style="border:1px solid #E5E7EB;background:#F8FAFC;"
-                        (focus)="$event.target.style.borderColor='#367CFF';$event.target.style.background='#FFFFFF'"
-                        (blur)="$event.target.style.borderColor='#E5E7EB';$event.target.style.background='#F8FAFC'" />
+                        style="border:1px solid var(--color-border-neutral);background:var(--color-bg);"
+                        (focus)="$event.target.style.borderColor='var(--color-primary-500)';$event.target.style.background='var(--color-surface)'"
+                        (blur)="$event.target.style.borderColor='var(--color-border-neutral)';$event.target.style.background='var(--color-bg)'" />
                     </div>
                   }
                 </div>
@@ -434,11 +434,11 @@
 
               <!-- Tags -->
               <div>
-                <label class="block text-sm font-semibold mb-2" style="color:#374151;">Etiquetas temáticas</label>
+                <label class="block text-sm font-semibold mb-2" style="color:var(--color-text-neutral);">Etiquetas temáticas</label>
                 <div class="flex flex-wrap gap-1.5">
                   @for (tag of resumen().tags; track tag) {
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
-                      style="background:#E7EFFE;color:#367CFF;border:1px solid #BAD2FF;">
+                      style="background:var(--color-ai-light);color:var(--color-primary-500);border:1px solid var(--color-ai-border);">
                       {{ tag }}
                     </span>
                   }
@@ -446,9 +446,9 @@
               </div>
 
               <!-- AI hint -->
-              <div class="flex items-start gap-2.5 px-3 py-3 rounded-xl" style="background:#E7EFFE;border:1px solid #BAD2FF;">
+              <div class="flex items-start gap-2.5 px-3 py-3 rounded-xl" style="background:var(--color-ai-light);border:1px solid var(--color-ai-border);">
                 <prodi-mark [size]="16" />
-                <p class="text-xs" style="color:#0047CC;line-height:1.5;">
+                <p class="text-xs" style="color:var(--color-primary-active);line-height:1.5;">
                   El resumen se ha generado a partir de la información proporcionada. Puedes editarlo directamente o usar el asistente para ajustes.
                 </p>
               </div>
@@ -469,8 +469,8 @@
           (quotePendienteChange)="quotePendiente.set($event)"
         />
       } @else {
-        <div class="flex-shrink-0 flex flex-col items-center pt-4 gap-2" style="width:52px;background:#FAFAFA;border-left:1px solid #E5E7EB;">
-          <button (click)="panelIAAbierto.set(true)" class="p-2 rounded-xl" style="background:#E7EFFE;">
+        <div class="flex-shrink-0 flex flex-col items-center pt-4 gap-2" style="width:52px;background:#FAFAFA;border-left:1px solid var(--color-border-neutral);">
+          <button (click)="panelIAAbierto.set(true)" class="p-2 rounded-xl" style="background:var(--color-ai-light);">
             <prodi-mark [size]="18" />
           </button>
         </div>

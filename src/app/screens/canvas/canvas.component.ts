@@ -13,14 +13,14 @@ import {
   dlResumenTema1, citacionesPorTema, citacionesPorTemaDL,
 } from '../../mock-data';
 import { PhIconComponent } from '../../icons/ph-icon.component';
-import { TopbarComponent } from '../../components/topbar/topbar.component';
-import { PipelineSidebarComponent } from '../../components/pipeline-sidebar/pipeline-sidebar.component';
-import { ChatbarComponent } from '../../components/chatbar/chatbar.component';
-import { PanelIAComponent } from '../../components/panel-ia/panel-ia.component';
-import { BloqueContenidoComponent } from '../../components/bloque-contenido/bloque-contenido.component';
-import { ComentarioHiloComponent } from '../../components/comentario-hilo/comentario-hilo.component';
-import { StatusIndicatorComponent, toStatusKey } from '../../components/status-indicator/status-indicator.component';
-import { ProdiMarkComponent } from '../../components/prodi-logo/prodi-logo.component';
+import { TopbarComponent } from '../../shared/ui/organisms/topbar/topbar.component';
+import { PipelineSidebarComponent } from '../../shared/ui/organisms/pipeline-sidebar/pipeline-sidebar.component';
+import { ChatbarComponent } from '../../shared/ui/organisms/chatbar/chatbar.component';
+import { PanelIAComponent } from '../../shared/ui/organisms/panel-ia/panel-ia.component';
+import { BloqueContenidoComponent } from '../../shared/ui/organisms/bloque-contenido/bloque-contenido.component';
+import { ComentarioHiloComponent } from '../../shared/ui/molecules/comentario-hilo/comentario-hilo.component';
+import { StatusIndicatorComponent, toStatusKey } from '../../shared/ui/atoms/status-indicator/status-indicator.component';
+import { ProdiMarkComponent } from '../../shared/ui/atoms/prodi-logo/prodi-logo.component';
 
 const SECCION_CONFIG: Record<string, any> = {
   resumen: { label: 'Resumen general', estado: 'aprobado', bloques: [], chat: [] },

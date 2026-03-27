@@ -72,10 +72,10 @@ export class HerramientasComponent {
   readonly rolMenuAbierto = signal(false);
 
   readonly rolColors: Record<string, any> = {
-    autor: { bg: '#F9FCFF', text: '#0A5CF5', border: '#0A5CF5', hoverBg: '#E6EFFF' },
-    coordinador: { bg: '#F0FDF4', text: '#10B981', border: '#A7F3D0', hoverBg: '#DCFCE7' },
-    editor: { bg: '#FFFBEB', text: '#F59E0B', border: '#FDE68A', hoverBg: '#FEF3C7' },
-    disenador: { bg: '#E7EFFE', text: '#073676', border: '#BAD2FF', hoverBg: '#D1E3FF' },
+    autor: { bg: 'var(--color-primary-50)', text: 'var(--color-primary)', border: 'var(--color-primary)', hoverBg: 'var(--color-ai-light)' },
+    coordinador: { bg: 'var(--color-success-bg)', text: 'var(--color-green-700)', border: '#A7F3D0', hoverBg: '#DCFCE7' },
+    editor: { bg: 'var(--color-warning-bg)', text: 'var(--color-amber-500)', border: 'var(--color-warning-border)', hoverBg: 'var(--color-amber-100)' },
+    disenador: { bg: 'var(--color-ai-light)', text: '#073676', border: 'var(--color-ai-border)', hoverBg: '#D1E3FF' },
   };
 
   /** Current role colour tokens (shorthand alias). */
@@ -100,8 +100,8 @@ export class HerramientasComponent {
   /** Apply hover styles to a clickable tool card on mouse-enter. */
   onCardEnter(id: string, el: HTMLElement, h: any): void {
     if (h.clickable) {
-      el.style.background = '#F4F6FD';
-      el.style.outline = '1px solid #0A5CF5';
+      el.style.background = 'var(--color-primary-50)';
+      el.style.outline = '1px solid var(--color-primary)';
       el.style.boxShadow = 'none';
     }
   }

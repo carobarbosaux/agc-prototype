@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppStateService } from '../../services/app-state.service';
 import { PhIconComponent } from '../../icons/ph-icon.component';
-import { PanelIAComponent } from '../../components/panel-ia/panel-ia.component';
-import { ProdiMarkComponent } from '../../components/prodi-logo/prodi-logo.component';
+import { PanelIAComponent } from '../../shared/ui/organisms/panel-ia/panel-ia.component';
+import { ProdiMarkComponent } from '../../shared/ui/atoms/prodi-logo/prodi-logo.component';
 
 const DEEP_LEARNING_SUMMARY = {
   nombre: 'Deep Learning y Redes Neuronales',
@@ -206,7 +206,7 @@ export class CrearAsignaturaComponent implements OnInit {
   }
 
   getForwardColor(): string {
-    return this.paso() === 3 ? '#008660' : '#0A5CF5';
+    return this.paso() === 3 ? 'var(--color-success-hover)' : 'var(--color-primary)';
   }
 
   // ── Resumen editing ───────────────────────────────────────

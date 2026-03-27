@@ -1,0 +1,78 @@
+/**
+ * Design Token Layer 3 — Component Tokens
+ *
+ * Per-component customisation hooks built on top of semantic tokens.
+ * Override these to theme a specific component without touching
+ * semantic or primitive layers.
+ *
+ * Pattern: --[component]-[part]-[state]
+ */
+:root {
+  /* ── Button — Primary ────────────────────────── */
+  --btn-primary-bg:        var(--color-primary);
+  --btn-primary-hover-bg:  var(--color-primary-hover);
+  --btn-primary-text:      var(--color-text-on-dark);
+  --btn-primary-border:    var(--color-primary);
+
+  /* ── Button — Secondary / Ghost ──────────────── */
+  --btn-ghost-bg:          transparent;
+  --btn-ghost-hover-bg:    var(--color-primary-100);
+  --btn-ghost-text:        var(--color-primary);
+  --btn-ghost-border:      var(--color-border);
+
+  /* ── Button — Danger ─────────────────────────── */
+  --btn-danger-bg:         var(--color-error);
+  --btn-danger-hover-bg:   var(--color-error-hover);
+  --btn-danger-text:       var(--color-text-on-dark);
+
+  /* ── Input / Textarea ────────────────────────── */
+  --input-bg:              var(--color-surface);
+  --input-border:          var(--color-border);
+  --input-border-focus:    var(--color-primary);
+  --input-border-error:    var(--color-error);
+  --input-text:            var(--color-text);
+  --input-placeholder:     var(--color-text-disabled);
+  --input-radius:          6px;
+
+  /* ── Status badge ────────────────────────────── */
+  --status-sin-comenzar-bg:    #EEF2F7;
+  --status-sin-comenzar-color: var(--color-surface-500);
+  --status-editando-bg:        var(--color-primary-100);
+  --status-editando-color:     var(--color-primary);
+  --status-revisando-bg:       var(--color-warning-bg);
+  --status-revisando-color:    var(--color-amber-700);
+  --status-aprobado-bg:        #EAF8EF;
+  --status-aprobado-color:     #1F8F4C;
+  --status-bloqueado-bg:       var(--color-surface-100);
+  --status-bloqueado-color:    var(--color-surface-600);
+  --status-en-borrador-bg:     #FFF7ED;
+  --status-en-borrador-color:  #C2500A;
+
+  /* ── Tooltip ─────────────────────────────────── */
+  --tooltip-bg:            var(--color-surface-800);
+  --tooltip-text:          var(--color-surface-50);
+  --tooltip-radius:        4px;
+  --tooltip-font-size:     11px;
+
+  /* ── Scrollbar ───────────────────────────────── */
+  --scrollbar-thumb:       var(--color-surface-300);
+  --scrollbar-thumb-hover: var(--color-surface-400);
+  --scrollbar-size:        6px;
+
+  /* ── Cita / highlight animation ──────────────── */
+  --cita-start-bg:         #FEF9C3;
+  --cita-start-border:     #FDE047;
+  --cita-end-bg:           var(--color-primary-100);
+  --cita-end-border:       var(--color-primary-200);
+
+  /* ── Pipeline sidebar ────────────────────────── */
+  --pipeline-item-bg:             var(--color-surface);
+  --pipeline-item-border:         var(--color-border);
+  --pipeline-item-active-bg:      var(--color-primary-100);
+  --pipeline-item-active-border:  var(--color-primary);
+
+  /* ── Panel IA ────────────────────────────────── */
+  --panel-ia-bg:           var(--color-surface);
+  --panel-ia-border:       var(--color-border);
+  --panel-ia-header-bg:    var(--color-primary-100);
+}

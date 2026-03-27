@@ -1,0 +1,98 @@
+/**
+ * Design Token Layer 1 — Primitive / Base Tokens
+ *
+ * Raw colour scales and the UI font stack.
+ * These values MUST NOT be used directly in components.
+ * Components consume semantic aliases defined in _semantic.css instead.
+ *
+ * Scale naming mirrors the Figma "Light" token file exported from the
+ * Prodi Design System (src/assets/Light.tokens.json).
+ */
+:root {
+  /* ── Typography ──────────────────────────────── */
+  --font-ui: 'Proeduca Sans', system-ui, -apple-system, sans-serif;
+
+  /* ── Primary (blue) ──────────────────────────── */
+  --color-primary-50:     #F9FCFF;
+  --color-primary-100:    #E6EFFF;
+  --color-primary-200:    #BAD2FF;
+  --color-primary-300:    #8FB6FF;
+  --color-primary-400:    #6299FF;
+  --color-primary-500:    #367CFF;
+  --color-primary-600:    #0A5CF5;
+  --color-primary-700:    #0047CC;
+  --color-primary-800:    #0039A3;
+  --color-primary-900:    #002B7B;
+  --color-primary-950:    #001D52;
+
+  /* ── Surface (neutral blue-grey) ─────────────── */
+  --color-surface-0:      #FFFFFF;
+  --color-surface-50:     #F8FAFC;
+  --color-surface-100:    #F1F5F9;
+  --color-surface-200:    #E2E8F0;
+  --color-surface-300:    #CBD5E1;
+  --color-surface-400:    #94A3B8;
+  --color-surface-500:    #64748B;
+  --color-surface-600:    #475569;
+  --color-surface-700:    #334155;
+  --color-surface-800:    #1E293B;
+  --color-surface-900:    #0F172A;
+  --color-surface-950:    #020617;
+
+  /* ── Green ───────────────────────────────────── */
+  --color-green-50:       #F0FDF4;
+  --color-green-100:      #E9FFF8;
+  --color-green-200:      #C2FFED;
+  --color-green-500:      #4DFFCC;
+  --color-green-700:      #0FD89E;
+  --color-green-800:      #00AF7D;
+  --color-green-900:      #008660;
+  --color-green-950:      #005E43;
+
+  /* ── Red ─────────────────────────────────────── */
+  --color-red-50:         #FEF2F2;
+  --color-red-100:        #FFEEEC;
+  --color-red-200:        #FFCAC1;
+  --color-red-500:        #FF5C41;
+  --color-red-700:        #C8351D;
+  --color-red-800:        #A6240F;
+  --color-red-900:        #841605;
+  --color-red-950:        #620E00;
+
+  /* ── Gray (true neutral / Prodi custom) ─────────── */
+  --color-gray-50:        #F9FAFB;
+  --color-gray-100:       #F5F5F5;
+  --color-gray-200:       #E6E6E6;
+  --color-gray-300:       #D8D8D8;
+  --color-gray-400:       #C8C8C8;
+  --color-gray-500:       #B9B9B9;
+  --color-gray-600:       #8F8F8F;
+  --color-gray-700:       #7A7A7A;
+  --color-gray-800:       #666666;
+  --color-gray-900:       #525050;
+  --color-gray-950:       #0A0A0A;
+
+  /* ── Neutral (Tailwind-compatible gray scale) ── */
+  /* Used throughout the prototype for text and UI chrome */
+  --color-neutral-50:     #F8F9FA;
+  --color-neutral-100:    #F3F4F6;
+  --color-neutral-200:    #E5E7EB;
+  --color-neutral-300:    #D1D5DB;
+  --color-neutral-400:    #9CA3AF;
+  --color-neutral-500:    #6B7280;
+  --color-neutral-600:    #4B5563;
+  --color-neutral-700:    #374151;
+  --color-neutral-800:    #1F2937;
+  --color-neutral-900:    #111827;
+  --color-neutral-950:    #1A1A1A;
+
+  /* ── Amber / Warning scale ───────────────────── */
+  --color-amber-50:       #FFFBEB;
+  --color-amber-100:      #FEF3C7;
+  --color-amber-200:      #FDE68A;
+  --color-amber-500:      #F59E0B;
+  --color-amber-600:      #D97706;
+  --color-amber-700:      #C88700;
+  --color-amber-800:      #B45309;
+  --color-amber-900:      #92400E;
+}
