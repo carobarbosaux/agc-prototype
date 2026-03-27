@@ -1,6 +1,6 @@
 <!-- HR block: rendered as a standalone rule -->
 @if (tipo === 'hr') {
-  <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 8px 0;" />
+  <hr style="border: none; border-top: 1px solid var(--color-border-neutral); margin: 8px 0;" />
 } @else {
 
 <div
@@ -21,7 +21,7 @@
   <!-- Block number in gutter -->
   <div
     class="absolute text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity select-none"
-    style="color: #D1D5DB; top: 2px; left: -32px; font-variant-numeric: tabular-nums;"
+    style="color: var(--color-neutral-300); top: 2px; left: -32px; font-variant-numeric: tabular-nums;"
   >
     {{ index + 1 }}
   </div>
@@ -43,18 +43,18 @@
           alignItems: 'center',
           gap: '5px',
           borderRadius: '7px',
-          outline: '1px #0A5CF5 solid',
+          outline: '1px var(--color-primary) solid',
           outlineOffset: '-1px',
           border: 'none',
-          background: menuFormato() ? '#0A5CF5' : '#F9FCFF',
-          color: menuFormato() ? '#FFFFFF' : '#0A5CF5',
+          background: menuFormato() ? 'var(--color-primary)' : 'var(--color-primary-50)',
+          color: menuFormato() ? 'var(--color-surface)' : 'var(--color-primary)',
           cursor: 'pointer',
           fontSize: '11px',
           fontWeight: '600',
           whiteSpace: 'nowrap'
         }"
-        (mouseenter)="!menuFormato() && ($event.currentTarget['style'].background = '#E6EFFF')"
-        (mouseleave)="!menuFormato() && ($event.currentTarget['style'].background = '#F9FCFF')"
+        (mouseenter)="!menuFormato() && ($event.currentTarget['style'].background = 'var(--color-ai-light)')"
+        (mouseleave)="!menuFormato() && ($event.currentTarget['style'].background = 'var(--color-primary-50)')"
       >
         <!-- TextAa icon placeholder — replace with ph-icon or inline SVG -->
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
@@ -67,12 +67,12 @@
           class="animate-fade-in"
           style="
             position: absolute; top: 0; left: 80px; z-index: 50;
-            background: #FFFFFF; border: 1px solid #E5E7EB;
+            background: var(--color-surface); border: 1px solid var(--color-border-neutral);
             border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
             padding: 5px; width: 170px;
           "
         >
-          <p style="font-size: 10px; font-weight: 600; color: #6B7280; padding: 2px 6px 4px; text-transform: uppercase; letter-spacing: 0.05em;">
+          <p style="font-size: 10px; font-weight: 600; color: var(--color-text-subtle); padding: 2px 6px 4px; text-transform: uppercase; letter-spacing: 0.05em;">
             Tipo de bloque
           </p>
 
@@ -89,14 +89,14 @@
                 padding: '5px 8px',
                 borderRadius: '5px',
                 fontSize: '12px',
-                background: tipo === t ? '#E7EFFE' : 'transparent',
-                color: tipo === t ? '#367CFF' : '#374151',
+                background: tipo === t ? 'var(--color-ai-light)' : 'transparent',
+                color: tipo === t ? 'var(--color-primary-500)' : 'var(--color-text-neutral)',
                 fontWeight: tipo === t ? '600' : '400',
                 textAlign: 'left',
                 cursor: 'pointer',
                 border: 'none'
               }"
-              (mouseenter)="tipo !== t && ($event.currentTarget['style'].background = '#F3F4F6')"
+              (mouseenter)="tipo !== t && ($event.currentTarget['style'].background = 'var(--color-bg-neutral-alt)')"
               (mouseleave)="tipo !== t && ($event.currentTarget['style'].background = 'transparent')"
             >
               <span [ngStyle]="{
@@ -108,8 +108,8 @@
                 fontSize: '10px',
                 fontWeight: '700',
                 borderRadius: '3px',
-                background: tipo === t ? '#367CFF' : '#F3F4F6',
-                color: tipo === t ? '#FFFFFF' : '#6B7280',
+                background: tipo === t ? 'var(--color-primary-500)' : 'var(--color-bg-neutral-alt)',
+                color: tipo === t ? 'var(--color-surface)' : 'var(--color-text-subtle)',
                 flexShrink: 0
               }">
                 @switch (t) {
@@ -140,16 +140,16 @@
             </button>
           }
 
-          <div style="height: 1px; background: #F3F4F6; margin: 4px 0;"></div>
+          <div style="height: 1px; background: var(--color-bg-neutral-alt); margin: 4px 0;"></div>
 
           <div style="display: flex; gap: 4px; padding: 2px 4px;">
             <!-- Bold -->
             <button
               title="Negrita"
               (mousedown)="$event.preventDefault(); applyMark('bold'); menuFormato.set(false)"
-              style="width: 28px; height: 28px; border-radius: 5px; background: #F3F4F6; color: #374151; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;"
-              (mouseenter)="$event.currentTarget['style'].background = '#E5E7EB'"
-              (mouseleave)="$event.currentTarget['style'].background = '#F3F4F6'"
+              style="width: 28px; height: 28px; border-radius: 5px; background: var(--color-bg-neutral-alt); color: var(--color-text-neutral); display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;"
+              (mouseenter)="$event.currentTarget['style'].background = 'var(--color-border-neutral)'"
+              (mouseleave)="$event.currentTarget['style'].background = 'var(--color-bg-neutral-alt)'"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 256 256" fill="currentColor">
                 <path d="M170.48,115.7A44,44,0,0,0,128,48H72a8,8,0,0,0-8,8V192a8,8,0,0,0,8,8h72a48,48,0,0,0,26.48-88.3ZM80,64h48a28,28,0,0,1,0,56H80Zm64,120H80V136h64a32,32,0,0,1,0,64Z"/>
@@ -159,9 +159,9 @@
             <button
               title="Cursiva"
               (mousedown)="$event.preventDefault(); applyMark('italic'); menuFormato.set(false)"
-              style="width: 28px; height: 28px; border-radius: 5px; background: #F3F4F6; color: #374151; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;"
-              (mouseenter)="$event.currentTarget['style'].background = '#E5E7EB'"
-              (mouseleave)="$event.currentTarget['style'].background = '#F3F4F6'"
+              style="width: 28px; height: 28px; border-radius: 5px; background: var(--color-bg-neutral-alt); color: var(--color-text-neutral); display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;"
+              (mouseenter)="$event.currentTarget['style'].background = 'var(--color-border-neutral)'"
+              (mouseleave)="$event.currentTarget['style'].background = 'var(--color-bg-neutral-alt)'"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 256 256" fill="currentColor">
                 <path d="M200,56a8,8,0,0,1-8,8H157l-38,128H136a8,8,0,0,1,0,16H64a8,8,0,0,1,0-16H99L137,64H120a8,8,0,0,1,0-16h72A8,8,0,0,1,200,56Z"/>
@@ -205,13 +205,13 @@
       style="
         right: -44px; top: 0px; height: 26px; padding: 0 8px;
         display: flex; align-items: center; gap: 5px;
-        border-radius: 7px; outline: 1px #0A5CF5 solid; outline-offset: -1px;
-        border: none; background: #F9FCFF; color: #0A5CF5;
+        border-radius: 7px; outline: 1px var(--color-primary) solid; outline-offset: -1px;
+        border: none; background: var(--color-primary-50); color: var(--color-primary);
         cursor: pointer; font-size: 11px; font-weight: 600; white-space: nowrap;
       "
       title="Añadir comentario"
-      (mouseenter)="$event.currentTarget['style'].background = '#E6EFFF'"
-      (mouseleave)="$event.currentTarget['style'].background = '#F9FCFF'"
+      (mouseenter)="$event.currentTarget['style'].background = 'var(--color-ai-light)'"
+      (mouseleave)="$event.currentTarget['style'].background = 'var(--color-primary-50)'"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 256 256" fill="currentColor">
         <path d="M216,48H40A16,16,0,0,0,24,64V224a15.85,15.85,0,0,0,9.24,14.5A16.13,16.13,0,0,0,40,240a15.89,15.89,0,0,0,10.25-3.78.69.69,0,0,0,.13-.11L82.5,208H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48Z"/>
@@ -243,18 +243,18 @@
       @if (tipo === 'ul') {
         <ul class="list-disc pl-5">
           <p [class]="tipoConf.className" [ngStyle]="tipoConf.style">
-            {{ bloque.contenido.slice(0, bloque.contenido.indexOf(textoReemplazando)) }}<span style="color: #6B7280; text-decoration: line-through;">{{ textoReemplazando }}</span>{{ bloque.contenido.slice(bloque.contenido.indexOf(textoReemplazando) + textoReemplazando.length) }}
+            {{ bloque.contenido.slice(0, bloque.contenido.indexOf(textoReemplazando)) }}<span style="color: var(--color-text-subtle); text-decoration: line-through;">{{ textoReemplazando }}</span>{{ bloque.contenido.slice(bloque.contenido.indexOf(textoReemplazando) + textoReemplazando.length) }}
           </p>
         </ul>
       } @else if (tipo === 'ol') {
         <ol class="list-decimal pl-5">
           <p [class]="tipoConf.className" [ngStyle]="tipoConf.style">
-            {{ bloque.contenido.slice(0, bloque.contenido.indexOf(textoReemplazando)) }}<span style="color: #6B7280; text-decoration: line-through;">{{ textoReemplazando }}</span>{{ bloque.contenido.slice(bloque.contenido.indexOf(textoReemplazando) + textoReemplazando.length) }}
+            {{ bloque.contenido.slice(0, bloque.contenido.indexOf(textoReemplazando)) }}<span style="color: var(--color-text-subtle); text-decoration: line-through;">{{ textoReemplazando }}</span>{{ bloque.contenido.slice(bloque.contenido.indexOf(textoReemplazando) + textoReemplazando.length) }}
           </p>
         </ol>
       } @else {
         <p [class]="tipoConf.className" [ngStyle]="tipoConf.style">
-          {{ bloque.contenido.slice(0, bloque.contenido.indexOf(textoReemplazando)) }}<span style="color: #6B7280; text-decoration: line-through;">{{ textoReemplazando }}</span>{{ bloque.contenido.slice(bloque.contenido.indexOf(textoReemplazando) + textoReemplazando.length) }}
+          {{ bloque.contenido.slice(0, bloque.contenido.indexOf(textoReemplazando)) }}<span style="color: var(--color-text-subtle); text-decoration: line-through;">{{ textoReemplazando }}</span>{{ bloque.contenido.slice(bloque.contenido.indexOf(textoReemplazando) + textoReemplazando.length) }}
         </p>
       }
 
@@ -331,7 +331,7 @@
         paddingRight: '8px',
         background: 'white',
         borderRadius: '10px',
-        outline: '1px #DCDFEB solid',
+        outline: '1px var(--color-surface-300) solid',
         outlineOffset: '-1px',
         boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
         display: 'flex',
@@ -364,7 +364,7 @@
                 background: transparent; display: inline-flex; align-items: center; gap: 8px;
                 cursor: pointer; width: 100%; text-align: left;
               "
-              (mouseenter)="$event.currentTarget['style'].background = '#F3F4F6'"
+              (mouseenter)="$event.currentTarget['style'].background = 'var(--color-bg-neutral-alt)'"
               (mouseleave)="$event.currentTarget['style'].background = 'transparent'"
             >
               <span style="color: #566077; flex-shrink: 0; font-size: 14px;">●</span>
@@ -387,7 +387,7 @@
               background: transparent; display: inline-flex; align-items: center; gap: 8px;
               cursor: pointer; width: 100%; text-align: left;
             "
-            (mouseenter)="$event.currentTarget['style'].background = '#F3F4F6'"
+            (mouseenter)="$event.currentTarget['style'].background = 'var(--color-bg-neutral-alt)'"
             (mouseleave)="$event.currentTarget['style'].background = 'transparent'"
           >
             <span style="color: #566077; flex-shrink: 0; font-size: 14px;">●</span>
@@ -396,7 +396,7 @@
             </span>
           </button>
           @if (action.isSeparatorAfter) {
-            <div style="height: 1px; background: #DCDFEB; margin: 2px 8px;"></div>
+            <div style="height: 1px; background: var(--color-surface-300); margin: 2px 8px;"></div>
           }
         }
       </div>

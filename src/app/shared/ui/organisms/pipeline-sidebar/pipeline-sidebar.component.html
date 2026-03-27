@@ -2,15 +2,15 @@
 @if (collapsed()) {
   <aside
     class="flex flex-col items-center flex-shrink-0"
-    style="width: 40px; min-width: 40px; background: #F8FAFC; border-right: 1px solid #E5E7EB;"
+    style="width: 40px; min-width: 40px; background: var(--color-bg); border-right: 1px solid var(--color-border-neutral);"
   >
     <app-tooltip text="Expandir flujo de contenido" side="right">
       <button
         (click)="collapsed.set(false)"
         class="w-full flex items-center justify-center py-3 transition-colors"
-        style="color: #9CA3AF;"
-        (mouseenter)="$event.currentTarget.style.color = '#374151'; $event.currentTarget.style.background = '#EEF2F7'"
-        (mouseleave)="$event.currentTarget.style.color = '#9CA3AF'; $event.currentTarget.style.background = 'transparent'"
+        style="color: var(--color-text-faint);"
+        (mouseenter)="$event.currentTarget.style.color = 'var(--color-text-neutral)'; $event.currentTarget.style.background = '#EEF2F7'"
+        (mouseleave)="$event.currentTarget.style.color = 'var(--color-text-faint)'; $event.currentTarget.style.background = 'transparent'"
       >
         <ph-icon name="SidebarSimple" [size]="15" />
       </button>
@@ -22,7 +22,7 @@
     >
       <span
         class="select-none whitespace-nowrap"
-        style="font-size: 10px; font-weight: 600; color: #9CA3AF; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Proeduca Sans', system-ui, sans-serif;"
+        style="font-size: 10px; font-weight: 600; color: var(--color-text-faint); letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Proeduca Sans', system-ui, sans-serif;"
       >
         Flujo de contenido
       </span>
@@ -34,23 +34,23 @@
 @if (!collapsed()) {
   <aside
     class="flex flex-col overflow-hidden flex-shrink-0 h-full"
-    style="width: 208px; min-width: 208px; background: #F8FAFC; border-right: 1px solid #E5E7EB; font-family: 'Proeduca Sans', system-ui, sans-serif;"
+    style="width: 208px; min-width: 208px; background: var(--color-bg); border-right: 1px solid var(--color-border-neutral); font-family: 'Proeduca Sans', system-ui, sans-serif;"
   >
     <!-- Header -->
     <div
       class="px-3.5 py-3 flex items-center justify-between flex-shrink-0"
-      style="border-bottom: 1px solid #E5E7EB;"
+      style="border-bottom: 1px solid var(--color-border-neutral);"
     >
-      <p style="font-size: 10px; font-weight: 600; color: #9CA3AF; letter-spacing: 0.06em; text-transform: uppercase; font-family: 'Proeduca Sans', system-ui, sans-serif;">
+      <p style="font-size: 10px; font-weight: 600; color: var(--color-text-faint); letter-spacing: 0.06em; text-transform: uppercase; font-family: 'Proeduca Sans', system-ui, sans-serif;">
         Flujo de contenido
       </p>
       <app-tooltip text="Colapsar" side="bottom">
         <button
           (click)="collapsed.set(true)"
           class="p-1 rounded-md transition-colors"
-          style="color: #9CA3AF;"
-          (mouseenter)="$event.currentTarget.style.color = '#6B7280'; $event.currentTarget.style.background = '#F3F4F6'"
-          (mouseleave)="$event.currentTarget.style.color = '#9CA3AF'; $event.currentTarget.style.background = 'transparent'"
+          style="color: var(--color-text-faint);"
+          (mouseenter)="$event.currentTarget.style.color = 'var(--color-text-subtle)'; $event.currentTarget.style.background = 'var(--color-bg-neutral-alt)'"
+          (mouseleave)="$event.currentTarget.style.color = 'var(--color-text-faint)'; $event.currentTarget.style.background = 'transparent'"
         >
           <ph-icon name="SidebarSimple" [size]="14" />
         </button>
@@ -68,9 +68,9 @@
               (click)="handleClick(etapa.id, getEstado(etapa.id, etapa.estado))"
               class="flex items-center gap-2.5 px-3 py-2.5 transition-all"
               [style.cursor]="isClickable(getEstado(etapa.id, etapa.estado)) ? 'pointer' : 'default'"
-              [style.background]="seccionActiva === etapa.id ? '#F4F6FD' : 'transparent'"
+              [style.background]="seccionActiva === etapa.id ? 'var(--color-primary-50)' : 'transparent'"
               [style.border-radius.px]="12"
-              (mouseenter)="seccionActiva !== etapa.id && isClickable(getEstado(etapa.id, etapa.estado)) && ($event.currentTarget.style.background = '#F4F6FD')"
+              (mouseenter)="seccionActiva !== etapa.id && isClickable(getEstado(etapa.id, etapa.estado)) && ($event.currentTarget.style.background = 'var(--color-primary-50)')"
               (mouseleave)="seccionActiva !== etapa.id && ($event.currentTarget.style.background = 'transparent')"
             >
               <app-status-indicator
@@ -83,7 +83,7 @@
                 class="leading-snug"
                 [style.font-size]="'13px'"
                 [style.font-weight]="seccionActiva === etapa.id ? 600 : 500"
-                [style.color]="seccionActiva === etapa.id ? '#272A3F' : isClickable(getEstado(etapa.id, etapa.estado)) ? '#374151' : '#9CA3AF'"
+                [style.color]="seccionActiva === etapa.id ? '#272A3F' : isClickable(getEstado(etapa.id, etapa.estado)) ? 'var(--color-text-neutral)' : 'var(--color-text-faint)'"
                 style="font-family: 'Proeduca Sans', system-ui, sans-serif;"
               >
                 {{ etapa.label }}
@@ -91,7 +91,7 @@
               @if (seccionActiva === etapa.id) {
                 <div
                   class="ml-auto w-1.5 h-1.5 rounded-full flex-shrink-0"
-                  style="background: #367CFF;"
+                  style="background: var(--color-primary-500);"
                 ></div>
               }
             </div>
@@ -105,9 +105,9 @@
                 (click)="toggleTema(etapa.id)"
                 class="w-full flex items-center gap-2.5 px-3 py-2.5 transition-colors"
                 [style.border-radius.px]="12"
-                [style.background]="isTemaActive(etapa) && !temasExpandidos()[etapa.id] ? '#F4F6FD' : 'transparent'"
-                (mouseenter)="$event.currentTarget.style.background = '#F4F6FD'"
-                (mouseleave)="$event.currentTarget.style.background = isTemaActive(etapa) && !temasExpandidos()[etapa.id] ? '#F4F6FD' : 'transparent'"
+                [style.background]="isTemaActive(etapa) && !temasExpandidos()[etapa.id] ? 'var(--color-primary-50)' : 'transparent'"
+                (mouseenter)="$event.currentTarget.style.background = 'var(--color-primary-50)'"
+                (mouseleave)="$event.currentTarget.style.background = isTemaActive(etapa) && !temasExpandidos()[etapa.id] ? 'var(--color-primary-50)' : 'transparent'"
               >
                 <app-status-indicator
                   [status]="toStatusKey(getTemaEstado(etapa))"
@@ -120,14 +120,14 @@
                     class="leading-snug"
                     [style.font-size]="'13px'"
                     [style.font-weight]="600"
-                    [style.color]="getTemaEstado(etapa) === 'bloqueado' || getTemaEstado(etapa) === 'sin_comenzar' ? '#9CA3AF' : '#272A3F'"
+                    [style.color]="getTemaEstado(etapa) === 'bloqueado' || getTemaEstado(etapa) === 'sin_comenzar' ? 'var(--color-text-faint)' : '#272A3F'"
                     style="font-family: 'Proeduca Sans', system-ui, sans-serif;"
                   >
                     {{ etapa.label }}
                   </p>
                   <p
                     class="leading-tight truncate"
-                    style="font-size: 11px; font-weight: 400; color: #9CA3AF; font-family: 'Proeduca Sans', system-ui, sans-serif;"
+                    style="font-size: 11px; font-weight: 400; color: var(--color-text-faint); font-family: 'Proeduca Sans', system-ui, sans-serif;"
                   >
                     {{ etapa.labelCorto }}
                   </p>
@@ -138,18 +138,18 @@
                       #infoBtn
                       (click)="togglePopover(etapa, $event)"
                       class="flex items-center justify-center w-5 h-5 rounded-md transition-colors"
-                      [style.color]="popoverAbierto() === etapa.id ? '#367CFF' : '#9CA3AF'"
-                      [style.background]="popoverAbierto() === etapa.id ? '#E7EFFE' : 'transparent'"
-                      (mouseenter)="$event.stopPropagation(); $event.currentTarget.style.color = '#367CFF'; $event.currentTarget.style.background = '#E7EFFE'"
-                      (mouseleave)="$event.stopPropagation(); popoverAbierto() !== etapa.id && ($event.currentTarget.style.color = '#9CA3AF') && ($event.currentTarget.style.background = 'transparent')"
+                      [style.color]="popoverAbierto() === etapa.id ? 'var(--color-primary-500)' : 'var(--color-text-faint)'"
+                      [style.background]="popoverAbierto() === etapa.id ? 'var(--color-ai-light)' : 'transparent'"
+                      (mouseenter)="$event.stopPropagation(); $event.currentTarget.style.color = 'var(--color-primary-500)'; $event.currentTarget.style.background = 'var(--color-ai-light)'"
+                      (mouseleave)="$event.stopPropagation(); popoverAbierto() !== etapa.id && ($event.currentTarget.style.color = 'var(--color-text-faint)') && ($event.currentTarget.style.background = 'transparent')"
                     >
                       <ph-icon name="Info" [size]="12" />
                     </span>
                   }
                   @if (temasExpandidos()[etapa.id]) {
-                    <ph-icon name="CaretDown" [size]="12" [ngStyle]="{ color: '#9CA3AF' }" />
+                    <ph-icon name="CaretDown" [size]="12" [ngStyle]="{ color: 'var(--color-text-faint)' }" />
                   } @else {
-                    <ph-icon name="CaretRight" [size]="12" [ngStyle]="{ color: '#9CA3AF' }" />
+                    <ph-icon name="CaretRight" [size]="12" [ngStyle]="{ color: 'var(--color-text-faint)' }" />
                   }
                 </div>
               </button>
@@ -158,24 +158,24 @@
               @if (popoverAbierto() === etapa.id && getTemaDesc(etapa)) {
                 <div
                   class="pipeline-popover absolute z-50 left-full ml-2 top-0 w-64 rounded-xl p-3.5"
-                  style="background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 8px 24px rgba(0,0,0,0.12);"
+                  style="background: var(--color-surface); border: 1px solid var(--color-border-neutral); box-shadow: 0 8px 24px rgba(0,0,0,0.12);"
                 >
                   <div class="flex items-start justify-between gap-2 mb-2">
                     <span
                       class="text-xs font-semibold leading-tight"
-                      style="color: #1A1A1A;"
+                      style="color: var(--color-text-near-black);"
                     >
                       T{{ etapa.id.split('-')[1] }} — {{ getTemaDesc(etapa).titulo }}
                     </span>
                     <button
                       (click)="closePopover()"
                       class="flex-shrink-0 mt-0.5"
-                      style="color: #6B7280;"
+                      style="color: var(--color-text-subtle);"
                     >
                       <ph-icon name="X" [size]="12" />
                     </button>
                   </div>
-                  <p class="text-xs leading-relaxed" style="color: #4B5563;">
+                  <p class="text-xs leading-relaxed" style="color: var(--color-neutral-600);">
                     {{ getTemaDesc(etapa).descripcion }}
                   </p>
                 </div>
@@ -185,17 +185,17 @@
               @if (temasExpandidos()[etapa.id]) {
                 <div
                   class="mt-0.5 mb-1 ml-4 space-y-0.5 pl-2"
-                  style="border-left: 1.5px solid #E5E7EB;"
+                  style="border-left: 1.5px solid var(--color-border-neutral);"
                 >
                   @for (sec of etapa.secciones; track sec.id) {
                     <div
                       (click)="handleClick(sec.id, getEstado(sec.id, sec.estado))"
                       class="flex items-center gap-2 px-2.5 py-2 transition-all"
                       [style.cursor]="isClickable(getEstado(sec.id, sec.estado)) ? 'pointer' : 'default'"
-                      [style.background]="seccionActiva === sec.id ? '#F4F6FD' : 'transparent'"
+                      [style.background]="seccionActiva === sec.id ? 'var(--color-primary-50)' : 'transparent'"
                       [style.border-radius.px]="10"
                       [title]="!isClickable(getEstado(sec.id, sec.estado)) ? 'Bloqueado hasta aprobar la etapa anterior' : ''"
-                      (mouseenter)="seccionActiva !== sec.id && isClickable(getEstado(sec.id, sec.estado)) && ($event.currentTarget.style.background = '#F4F6FD')"
+                      (mouseenter)="seccionActiva !== sec.id && isClickable(getEstado(sec.id, sec.estado)) && ($event.currentTarget.style.background = 'var(--color-primary-50)')"
                       (mouseleave)="seccionActiva !== sec.id && ($event.currentTarget.style.background = 'transparent')"
                     >
                       <app-status-indicator
@@ -208,7 +208,7 @@
                         class="flex-1"
                         [style.font-size]="'12px'"
                         [style.font-weight]="seccionActiva === sec.id ? 600 : 400"
-                        [style.color]="seccionActiva === sec.id ? '#272A3F' : isClickable(getEstado(sec.id, sec.estado)) ? '#4B5563' : '#9CA3AF'"
+                        [style.color]="seccionActiva === sec.id ? '#272A3F' : isClickable(getEstado(sec.id, sec.estado)) ? 'var(--color-neutral-600)' : 'var(--color-text-faint)'"
                         style="font-family: 'Proeduca Sans', system-ui, sans-serif;"
                       >
                         {{ sec.label }}
@@ -216,7 +216,7 @@
                       @if (seccionActiva === sec.id) {
                         <div
                           class="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                          style="background: #367CFF;"
+                          style="background: var(--color-primary-500);"
                         ></div>
                       }
                     </div>
@@ -233,20 +233,20 @@
     <!-- Progress indicator -->
     <div
       class="px-3.5 py-3 flex-shrink-0"
-      style="border-top: 1px solid #E5E7EB; font-family: 'Proeduca Sans', system-ui, sans-serif;"
+      style="border-top: 1px solid var(--color-border-neutral); font-family: 'Proeduca Sans', system-ui, sans-serif;"
     >
       <div class="flex items-center justify-between mb-1.5">
-        <p style="font-size: 10px; font-weight: 400; color: #9CA3AF;">Progreso</p>
-        <p style="font-size: 10px; font-weight: 600; color: #374151;">{{ pct }}%</p>
+        <p style="font-size: 10px; font-weight: 400; color: var(--color-text-faint);">Progreso</p>
+        <p style="font-size: 10px; font-weight: 600; color: var(--color-text-neutral);">{{ pct }}%</p>
       </div>
-      <div class="w-full h-1 rounded-full" style="background: #E5E7EB;">
+      <div class="w-full h-1 rounded-full" style="background: var(--color-border-neutral);">
         <div
           class="h-full rounded-full transition-all"
           [style.width]="pct + '%'"
-          style="background: #367CFF;"
+          style="background: var(--color-primary-500);"
         ></div>
       </div>
-      <p style="font-size: 10px; font-weight: 400; color: #9CA3AF; margin-top: 6px;">
+      <p style="font-size: 10px; font-weight: 400; color: var(--color-text-faint); margin-top: 6px;">
         {{ aprobadas }} de {{ total }} secciones aprobadas
       </p>
     </div>

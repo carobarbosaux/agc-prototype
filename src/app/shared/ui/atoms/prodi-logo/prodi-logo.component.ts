@@ -67,6 +67,14 @@ import { CommonModule } from '@angular/common';
     </svg>
   `,
 })
+/**
+ * @source      Figma — Prodi DS / Brand / Logo
+ * @type        atom
+ * @tokens      --color-primary
+ * @figma       TBD
+ *
+ * Brand assets: ProdiMarkComponent (icon only) and ProdiWordmarkComponent (icon + wordmark).
+ */
 export class ProdiMarkComponent {
   /** Pixel size for width and height. Default matches React source default. */
   @Input() size: number = 24;
@@ -86,7 +94,7 @@ export class ProdiMarkComponent {
       <prodi-mark [size]="height" />
       <span
         [style.font-size.px]="labelSize"
-        style="font-weight:600;color:#1A1A1A;white-space:nowrap;font-family:'Proeduca Sans',system-ui,sans-serif"
+        style="font-weight:600;color:var(--color-text-near-black);white-space:nowrap;font-family:'Proeduca Sans',system-ui,sans-serif"
       >
         Asistente de contenidos
       </span>

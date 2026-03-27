@@ -1,6 +1,6 @@
 <header
   class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5"
-  style="height:56px;background:#FFFFFF;border-bottom:1px solid #E5E7EB;font-family:'Proeduca Sans',system-ui,sans-serif"
+  style="height:56px;background:var(--color-surface);border-bottom:1px solid var(--color-border-neutral);font-family:'Proeduca Sans',system-ui,sans-serif"
 >
   <!-- Left: logo + divider + breadcrumb -->
   <div class="flex items-center gap-2">
@@ -18,12 +18,12 @@
       @for (item of breadcrumb; track item.label; let i = $index) {
         <div class="flex items-center gap-1">
           @if (i > 0) {
-            <ph-icon name="CaretRight" [size]="12" style="color:#94A3B8" />
+            <ph-icon name="CaretRight" [size]="12" style="color:var(--color-surface-400)" />
           }
           @if (item.onClick || item.route) {
             <button
               class="text-sm transition-colors bg-transparent border-0 p-0 cursor-pointer"
-              [style.color]="breadcrumbHover[i] ? '#1A1A1A' : '#4B5563'"
+              [style.color]="breadcrumbHover[i] ? 'var(--color-text-near-black)' : 'var(--color-neutral-600)'"
               (click)="onBreadcrumbClick(item)"
               (mouseenter)="breadcrumbHover[i] = true"
               (mouseleave)="breadcrumbHover[i] = false"
@@ -31,7 +31,7 @@
               {{ item.label }}
             </button>
           } @else {
-            <span class="text-sm font-medium" style="color:#1A1A1A">{{ item.label }}</span>
+            <span class="text-sm font-medium" style="color:var(--color-text-near-black)">{{ item.label }}</span>
           }
         </div>
       }
@@ -57,22 +57,22 @@
       @if (rolMenuAbierto()) {
         <div
           class="absolute right-0 top-full mt-1 w-52 rounded-xl shadow-xl py-1 z-50"
-          style="background:#FFFFFF;border:1px solid #E5E7EB"
+          style="background:var(--color-surface);border:1px solid var(--color-border-neutral)"
         >
-          <div class="px-3 py-2 mb-1" style="border-bottom:1px solid #F1F5F9">
-            <p class="text-xs font-medium" style="color:#4B5563">Vista de demo — cambiar rol</p>
+          <div class="px-3 py-2 mb-1" style="border-bottom:1px solid var(--color-surface-100)">
+            <p class="text-xs font-medium" style="color:var(--color-neutral-600)">Vista de demo — cambiar rol</p>
           </div>
           @for (rol of roles; track rol.id) {
             <button
               class="w-full text-left px-3 py-2 transition-colors flex items-center justify-between border-0 bg-transparent cursor-pointer"
               style="font-family:'Proeduca Sans',system-ui,sans-serif"
               (click)="selectRol(rol.id)"
-              (mouseenter)="$event.currentTarget.style.background='#F8F9FA'"
+              (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral)'"
               (mouseleave)="$event.currentTarget.style.background='transparent'"
             >
               <div>
-                <p class="text-sm font-medium" style="color:#1A1A1A">{{ rol.label }}</p>
-                <p class="text-xs" style="color:#4B5563">{{ rol.description }}</p>
+                <p class="text-sm font-medium" style="color:var(--color-text-near-black)">{{ rol.label }}</p>
+                <p class="text-xs" style="color:var(--color-neutral-600)">{{ rol.description }}</p>
               </div>
               @if (rolActivo === rol.id) {
                 <div
@@ -90,10 +90,10 @@
     <button
       class="relative p-2 rounded-lg transition-colors border-0 bg-transparent cursor-pointer"
       (click)="notifClick.emit()"
-      (mouseenter)="$event.currentTarget.style.background='#F8F9FA'"
+      (mouseenter)="$event.currentTarget.style.background='var(--color-bg-neutral)'"
       (mouseleave)="$event.currentTarget.style.background='transparent'"
     >
-      <ph-icon name="Bell" [size]="18" style="color:#4B5563" />
+      <ph-icon name="Bell" [size]="18" style="color:var(--color-neutral-600)" />
       @if (notifCount > 0) {
         <span
           class="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-white"

@@ -8,9 +8,9 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PhIconComponent } from '../../icons/ph-icon.component';
-import { ProdiMarkComponent } from '../prodi-logo/prodi-logo.component';
-import { onboardingSlides, OnboardingSlide } from '../../data/onboarding-prodi.data';
+import { PhIconComponent } from '../../../../icons/ph-icon.component';
+import { ProdiMarkComponent } from '../../atoms/prodi-logo/prodi-logo.component';
+import { onboardingSlides, OnboardingSlide } from '../../../../data/onboarding-prodi.data';
 
 @Component({
   selector: 'app-onboarding-prodi',
@@ -18,6 +18,15 @@ import { onboardingSlides, OnboardingSlide } from '../../data/onboarding-prodi.d
   imports: [CommonModule, PhIconComponent, ProdiMarkComponent],
   templateUrl: './onboarding-prodi.component.html',
 })
+/**
+ * @source      Figma — Prodi DS / Organisms / OnboardingModal
+ * @type        organism
+ * @composedOf  ProdiMarkComponent (atom), PhIconComponent
+ * @tokens      --color-primary, --color-ai-light, --color-ai-border, --color-surface
+ * @figma       TBD
+ *
+ * 5-slide onboarding carousel introducing Canvas features to first-time users.
+ */
 /**
  * Onboarding modal for first-time Canvas users.
  *
@@ -51,11 +60,11 @@ export class OnboardingProdiComponent implements OnInit, OnDestroy {
 
   // VisualContextualSelection actions data
   readonly contextualActions = [
-    { label: 'Corregir redacción',    color: '#367CFF' },
-    { label: 'Expandir o resumir',     color: '#367CFF' },
+    { label: 'Corregir redacción',    color: 'var(--color-primary-500)' },
+    { label: 'Expandir o resumir',     color: 'var(--color-primary-500)' },
     { label: 'Regenerar texto',        color: '#7C3AED' },
-    { label: 'Buscar bibliografía',    color: '#24A859' },
-    { label: 'Deep research',          color: '#D97706' },
+    { label: 'Buscar bibliografía',    color: 'var(--color-green-500)' },
+    { label: 'Deep research',          color: 'var(--color-warning)' },
   ];
 
   // VisualFinalState caps data

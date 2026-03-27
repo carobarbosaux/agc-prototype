@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { gravedadConfig } from '../../mock-data';
+import { gravedadConfig } from '../../../../mock-data';
 
 @Component({
   selector: 'app-gravedad-tag',
@@ -20,6 +20,14 @@ import { gravedadConfig } from '../../mock-data';
     </span>
   `,
 })
+/**
+ * @source      Figma — Prodi DS / Atoms / GravedadTag
+ * @type        atom
+ * @tokens      --color-error, --color-warning, --color-success, --color-text-muted
+ * @figma       TBD
+ *
+ * Emoji + label chip indicating comment severity (crítico, importante, sugerencia, nota, alertaNormativa).
+ */
 /**
  * Inline tag displaying the gravity level of a comment.
  *

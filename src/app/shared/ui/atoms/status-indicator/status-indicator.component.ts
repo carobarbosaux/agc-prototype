@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PhIconComponent } from '../../icons/ph-icon.component';
+import { PhIconComponent } from '../../../../icons/ph-icon.component';
 
 /** Visual configuration for a single content status. */
 export interface StatusConfig {
@@ -12,12 +12,12 @@ export interface StatusConfig {
 
 /** Mapping of canonical status keys to their badge / icon configuration. */
 export const STATUS_CONFIG: Record<string, StatusConfig> = {
-  sin_comenzar: { label: 'Asignado', iconName: 'Clock', bg: '#EEF2F7', color: '#64748B' },
-  editando: { label: 'Editando', iconName: 'Pencil', bg: '#EAF2FF', color: '#0A5CF5' },
-  revisando: { label: 'Revisando', iconName: 'Eye', bg: '#FFF4DB', color: '#C88700' },
-  aprobado: { label: 'Aprobado', iconName: 'CheckCircle', bg: '#EAF8EF', color: '#1F8F4C' },
-  bloqueado: { label: 'Bloqueado', iconName: 'Lock', bg: '#F3F4F6', color: '#4B5563' },
-  en_borrador: { label: 'En borrador', iconName: 'BookmarkSimple', bg: '#FFF7ED', color: '#C2500A' },
+  sin_comenzar: { label: 'Asignado', iconName: 'Clock', bg: '#EEF2F7', color: 'var(--color-text-muted)' },
+  editando: { label: 'Editando', iconName: 'Pencil', bg: 'var(--color-ai-light)', color: 'var(--color-primary)' },
+  revisando: { label: 'Revisando', iconName: 'Eye', bg: '#FFF4DB', color: 'var(--color-amber-700)' },
+  aprobado: { label: 'Aprobado', iconName: 'CheckCircle', bg: 'var(--color-success-bg)', color: 'var(--status-aprobado-color)' },
+  bloqueado: { label: 'Bloqueado', iconName: 'Lock', bg: 'var(--color-bg-neutral-alt)', color: 'var(--color-neutral-600)' },
+  en_borrador: { label: 'En borrador', iconName: 'BookmarkSimple', bg: 'var(--color-warning-bg)', color: '#C2500A' },
 };
 
 /**
@@ -91,6 +91,14 @@ export function toStatusKey(legacy: string): string {
     }
   `,
 })
+/**
+ * @source      Figma — Prodi DS / Atoms / StatusBadge
+ * @type        atom
+ * @tokens      --status-*-bg, --status-*-color (via STATUS_CONFIG)
+ * @figma       TBD
+ *
+ * Renders a content-status as either a pill badge (variant=badge) or circular icon (variant=icon).
+ */
 /**
  * Renders a content-status as either a pill badge (`variant='badge'`)
  * or a circular icon (`variant='icon'`).

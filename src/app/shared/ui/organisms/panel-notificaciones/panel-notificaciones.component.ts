@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PhIconComponent } from '../../icons/ph-icon.component';
-import { notificaciones } from '../../mock-data';
+import { PhIconComponent } from '../../../../icons/ph-icon.component';
+import { notificaciones } from '../../../../mock-data';
 
 type FilterTab = 'todas' | 'accion' | 'info';
 
@@ -26,18 +26,18 @@ const TIPO_ICON: Record<string, string> = {
 
 const TIPO_COLOR: Record<string, string> = {
   comentarios: '#F97316',
-  aprobado: '#10B981',
-  info: '#367CFF',
-  revision: '#C88700',
-  bloqueado: '#64748B',
+  aprobado: 'var(--color-green-700)',
+  info: 'var(--color-primary-500)',
+  revision: 'var(--color-amber-700)',
+  bloqueado: 'var(--color-text-muted)',
 };
 
 const TIPO_BG: Record<string, string> = {
-  comentarios: '#FFF7ED',
-  aprobado: '#F0FDF4',
-  info: '#E7EFFE',
+  comentarios: 'var(--color-warning-bg)',
+  aprobado: 'var(--color-success-bg)',
+  info: 'var(--color-ai-light)',
   revision: '#FFF4DB',
-  bloqueado: '#F3F4F6',
+  bloqueado: 'var(--color-bg-neutral-alt)',
 };
 
 @Component({
@@ -57,18 +57,18 @@ const TIPO_BG: Record<string, string> = {
       class="fixed right-0 top-0 bottom-0 z-50 flex flex-col"
       [ngStyle]="{
         width: '380px',
-        background: '#FFFFFF',
-        borderLeft: '1px solid #E2E8F0',
+        background: 'var(--color-surface)',
+        borderLeft: '1px solid var(--color-border)',
         boxShadow: '-4px 0 24px rgba(0,0,0,0.08)'
       }"
     >
       <!-- Header -->
       <div
         class="flex items-center justify-between px-5 py-4 flex-shrink-0"
-        [ngStyle]="{ borderBottom: '1px solid #F1F5F9' }"
+        [ngStyle]="{ borderBottom: '1px solid var(--color-surface-100)' }"
       >
         <div class="flex items-center gap-2">
-          <ph-icon name="Bell" [size]="18" [ngStyle]="{ color: '#0A5CF5' }" />
+          <ph-icon name="Bell" [size]="18" [ngStyle]="{ color: 'var(--color-primary)' }" />
           <span
             class="font-semibold text-slate-800"
             [ngStyle]="{ fontFamily: '\\'Proeduca Sans\\', system-ui, sans-serif', fontSize: '15px' }"
@@ -78,7 +78,7 @@ const TIPO_BG: Record<string, string> = {
           @if (unreadCount > 0) {
             <span
               class="text-xs font-bold text-white px-1.5 py-0.5 rounded-full"
-              [ngStyle]="{ background: '#0A5CF5', minWidth: '20px', textAlign: 'center' }"
+              [ngStyle]="{ background: 'var(--color-primary)', minWidth: '20px', textAlign: 'center' }"
             >
               {{ unreadCount }}
             </span>
@@ -86,7 +86,7 @@ const TIPO_BG: Record<string, string> = {
         </div>
         <button
           class="p-1.5 rounded-lg text-slate-500 transition-colors"
-          [ngStyle]="closeHovered ? { background: '#F1F5F9', color: '#334155' } : {}"
+          [ngStyle]="closeHovered ? { background: 'var(--color-surface-100)', color: 'var(--color-text)' } : {}"
           (click)="onClose.emit()"
           (mouseenter)="closeHovered = true"
           (mouseleave)="closeHovered = false"
@@ -98,14 +98,14 @@ const TIPO_BG: Record<string, string> = {
       <!-- Filter tabs -->
       <div
         class="flex items-center gap-1 px-4 py-3 flex-shrink-0"
-        [ngStyle]="{ borderBottom: '1px solid #F1F5F9' }"
+        [ngStyle]="{ borderBottom: '1px solid var(--color-surface-100)' }"
       >
         @for (tab of tabs; track tab.id) {
           <button
             class="text-xs font-medium px-3 py-1.5 rounded-full transition-all"
             [ngStyle]="activeTab === tab.id
-              ? { background: '#0A5CF5', color: '#FFFFFF' }
-              : { background: '#F1F5F9', color: '#64748B' }"
+              ? { background: 'var(--color-primary)', color: 'var(--color-surface)' }
+              : { background: 'var(--color-surface-100)', color: 'var(--color-text-muted)' }"
             (click)="activeTab = tab.id"
           >
             {{ tab.label }}
@@ -130,8 +130,8 @@ const TIPO_BG: Record<string, string> = {
               <div
                 class="flex items-start gap-3 px-3 py-3 rounded-xl mb-1.5 cursor-pointer transition-all"
                 [ngStyle]="{
-                  background: hoveredItem === n.id ? '#F8FAFC' : 'transparent',
-                  border: '1px solid ' + (hoveredItem === n.id ? '#E2E8F0' : 'transparent')
+                  background: hoveredItem === n.id ? 'var(--color-bg)' : 'transparent',
+                  border: '1px solid ' + (hoveredItem === n.id ? 'var(--color-border)' : 'transparent')
                 }"
                 (mouseenter)="hoveredItem = n.id"
                 (mouseleave)="hoveredItem = null"
@@ -159,7 +159,7 @@ const TIPO_BG: Record<string, string> = {
                 @if (n.accionRequerida) {
                   <div
                     class="w-2 h-2 rounded-full flex-shrink-0 mt-1.5"
-                    [ngStyle]="{ background: '#0A5CF5' }"
+                    [ngStyle]="{ background: 'var(--color-primary)' }"
                   ></div>
                 }
               </div>
@@ -176,6 +176,15 @@ const TIPO_BG: Record<string, string> = {
     </div>
   `,
 })
+/**
+ * @source      Figma — Prodi DS / Organisms / PanelNotificaciones
+ * @type        organism
+ * @composedOf  PhIconComponent
+ * @tokens      --color-primary, --color-warning, --color-border, --color-text-muted
+ * @figma       TBD
+ *
+ * Dropdown notification centre listing unread system and review alerts.
+ */
 /**
  * Sliding notifications drawer.
  *
@@ -231,11 +240,11 @@ export class PanelNotificacionesComponent implements OnInit {
   }
 
   getTipoColor(tipo: string): string {
-    return TIPO_COLOR[tipo] ?? '#64748B';
+    return TIPO_COLOR[tipo] ?? 'var(--color-text-muted)';
   }
 
   getTipoBg(tipo: string): string {
-    return TIPO_BG[tipo] ?? '#F1F5F9';
+    return TIPO_BG[tipo] ?? 'var(--color-surface-100)';
   }
 
   handleNotifClick(n: Notificacion): void {

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PhIconComponent } from '../../icons/ph-icon.component';
-import { calidadContenidosIndicadores } from '../../mock-data';
+import { PhIconComponent } from '../../../../icons/ph-icon.component';
+import { calidadContenidosIndicadores } from '../../../../mock-data';
 
 interface CardConfig {
   id: string;
@@ -22,8 +22,8 @@ const CARDS_CONFIG: CardConfig[] = [
     label: 'Alertas normativas',
     icon: 'Warning',
     color: '#F97316',
-    bgColor: '#FFF7ED',
-    borderColor: '#FED7AA',
+    bgColor: 'var(--color-warning-bg)',
+    borderColor: 'var(--color-warning-border)',
     getValue: (d) => d.alertasNormativas,
     suffix: '',
     description: 'requieren revisión',
@@ -33,9 +33,9 @@ const CARDS_CONFIG: CardConfig[] = [
     id: 'revision',
     label: 'Revisión profunda',
     icon: 'ArrowsClockwise',
-    color: '#367CFF',
-    bgColor: '#E7EFFE',
-    borderColor: '#BAD2FF',
+    color: 'var(--color-primary-500)',
+    bgColor: 'var(--color-ai-light)',
+    borderColor: 'var(--color-ai-border)',
     getValue: (d) => `${d.revisionProfunda}%`,
     suffix: '',
     description: 'completado',
@@ -45,8 +45,8 @@ const CARDS_CONFIG: CardConfig[] = [
     id: 'ise',
     label: 'ISE medio ponderado',
     icon: 'ChartBar',
-    color: '#10B981',
-    bgColor: '#F0FDF4',
+    color: 'var(--color-green-700)',
+    bgColor: 'var(--color-success-bg)',
     borderColor: '#A7F3D0',
     getValue: (d) => d.iseMediaPonderado.toFixed(1),
     suffix: '/5',
@@ -58,8 +58,8 @@ const CARDS_CONFIG: CardConfig[] = [
     label: 'Estado crítico',
     icon: 'Fire',
     color: '#EF4444',
-    bgColor: '#FEF2F2',
-    borderColor: '#FECACA',
+    bgColor: 'var(--color-error-bg)',
+    borderColor: 'var(--color-error-border)',
     getValue: (d) => d.asignaturasEstadoCritico,
     suffix: '',
     description: 'asignaturas bloqueadas',
@@ -125,6 +125,15 @@ const CARDS_CONFIG: CardConfig[] = [
     </div>
   `,
 })
+/**
+ * @source      Figma — Prodi DS / Molecules / CalidadContenidosCards
+ * @type        molecule
+ * @composedOf  PhIconComponent
+ * @tokens      --color-success, --color-error, --color-warning, --color-text-muted
+ * @figma       TBD
+ *
+ * Dashboard widget displaying AI-generated content quality KPI cards with trend indicators.
+ */
 /**
  * Quality-metrics card grid shown in the Dashboard "Seguimiento" tab.
  *

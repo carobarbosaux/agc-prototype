@@ -32,7 +32,7 @@ type TooltipSide = 'top' | 'bottom' | 'left' | 'right';
           [style]="getTooltipStyle()"
           style="position:absolute;z-index:99999;pointer-events:none;white-space:nowrap"
         >
-          <div style="background:#001D52;border-radius:8px;padding:6px 10px;color:#FFFFFF;font-size:12px;font-family:'Proeduca Sans',system-ui,sans-serif;font-weight:400">
+          <div style="background:#001D52;border-radius:8px;padding:6px 10px;color:var(--color-surface);font-size:12px;font-family:'Proeduca Sans',system-ui,sans-serif;font-weight:400">
             {{ text }}
           </div>
         </div>
@@ -40,6 +40,14 @@ type TooltipSide = 'top' | 'bottom' | 'left' | 'right';
     </div>
   `,
 })
+/**
+ * @source      Figma — Prodi DS / Atoms / Tooltip
+ * @type        atom
+ * @tokens      --tooltip-bg, --tooltip-text, --tooltip-radius, --tooltip-font-size
+ * @figma       TBD
+ *
+ * Icon-triggered tooltip overlay with configurable label and arrow direction.
+ */
 export class TooltipComponent {
   @Input() text: string = '';
   @Input() side: TooltipSide = 'right';

@@ -8,10 +8,10 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PhIconComponent } from '../../icons/ph-icon.component';
-import { StatusIndicatorComponent, toStatusKey } from '../status-indicator/status-indicator.component';
-import { TooltipComponent } from '../tooltip/tooltip.component';
-import { pipeline } from '../../mock-data';
+import { PhIconComponent } from '../../../../icons/ph-icon.component';
+import { StatusIndicatorComponent, toStatusKey } from '../../atoms/status-indicator/status-indicator.component';
+import { TooltipComponent } from '../../atoms/tooltip/tooltip.component';
+import { pipeline } from '../../../../mock-data';
 
 const ESTADO_CLICKABLE = ['aprobado', 'borrador', 'revision', 'comentarios', 'sin_comenzar'];
 
@@ -21,6 +21,15 @@ const ESTADO_CLICKABLE = ['aprobado', 'borrador', 'revision', 'comentarios', 'si
   imports: [CommonModule, PhIconComponent, StatusIndicatorComponent, TooltipComponent],
   templateUrl: './pipeline-sidebar.component.html',
 })
+/**
+ * @source      Figma — Prodi DS / Organisms / PipelineSidebar
+ * @type        organism
+ * @composedOf  StatusIndicatorComponent (atom), TooltipComponent (atom), PhIconComponent
+ * @tokens      --pipeline-item-bg, --pipeline-item-border, --pipeline-item-active-bg, --pipeline-item-active-border
+ * @figma       TBD
+ *
+ * Left-rail navigation for Canvas showing all pipeline sections with status indicators.
+ */
 export class PipelineSidebarComponent implements OnDestroy {
   @Input() seccionActiva: any = null;
   @Input() creacionData: any = null;

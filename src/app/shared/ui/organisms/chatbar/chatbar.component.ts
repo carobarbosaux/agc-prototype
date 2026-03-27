@@ -14,11 +14,11 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PhIconComponent } from '../../icons/ph-icon.component';
-import { ProdiMarkComponent } from '../prodi-logo/prodi-logo.component';
-import { TooltipComponent } from '../tooltip/tooltip.component';
-import { shortcutsComandos, respuestasIAChatbar } from '../../mock-data';
-import { AppStateService } from '../../services/app-state.service';
+import { PhIconComponent } from '../../../../icons/ph-icon.component';
+import { ProdiMarkComponent } from '../../atoms/prodi-logo/prodi-logo.component';
+import { TooltipComponent } from '../../atoms/tooltip/tooltip.component';
+import { shortcutsComandos, respuestasIAChatbar } from '../../../../mock-data';
+import { AppStateService } from '../../../../services/app-state.service';
 
 const SUGERENCIAS: Record<string, string[]> = {
   teams:      ['Resumir comentarios del coordinador', 'Identificar cambios solicitados'],
@@ -55,6 +55,15 @@ export const ALL_CONECTORES: ConectorItem[] = [
   imports: [CommonModule, FormsModule, PhIconComponent, ProdiMarkComponent],
   templateUrl: './chatbar.component.html',
 })
+/**
+ * @source      Figma — Prodi DS / Organisms / Chatbar
+ * @type        organism
+ * @composedOf  ProdiMarkComponent (atom), TooltipComponent (atom), PhIconComponent
+ * @tokens      --color-primary, --color-ai-light, --color-ai-border, --color-text-muted
+ * @figma       TBD
+ *
+ * Floating AI chat panel with command shortcuts, message history, and AI response streaming.
+ */
 export class ChatbarComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() placeholder: string = 'Mensaje';
   @Input() chatHistorial: any[] = [];
@@ -323,8 +332,8 @@ export class ChatbarComponent implements OnInit, OnDestroy, AfterViewChecked {
   // ── Hover helpers for inline-style hover effects ───────────────────────────
   onPlusBtnEnter(el: HTMLElement): void {
     if (!this.conectoresAbierto()) {
-      el.style.background = '#F1F5F9';
-      el.style.borderColor = '#E2E8F0';
+      el.style.background = 'var(--color-surface-100)';
+      el.style.borderColor = 'var(--color-border)';
     }
   }
 
@@ -337,16 +346,16 @@ export class ChatbarComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   onSendBtnEnter(el: HTMLElement): void {
     if (this.canSend) {
-      el.style.background = '#0039A3';
+      el.style.background = 'var(--color-primary-hover)';
     }
   }
 
   onSendBtnLeave(el: HTMLElement): void {
-    el.style.background = this.canSend ? '#0A5CF5' : '#E6E6E6';
+    el.style.background = this.canSend ? 'var(--color-primary)' : '#E6E6E6';
   }
 
   onConectorBtnEnter(el: HTMLElement, active: boolean): void {
-    if (!active) el.style.background = '#F3F4F6';
+    if (!active) el.style.background = 'var(--color-bg-neutral-alt)';
   }
 
   onConectorBtnLeave(el: HTMLElement, active: boolean, color: string): void {
@@ -354,19 +363,19 @@ export class ChatbarComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   onChipEnter(el: HTMLElement): void {
-    el.style.background = '#E7EFFE';
-    el.style.borderColor = '#BAD2FF';
-    el.style.color = '#367CFF';
+    el.style.background = 'var(--color-ai-light)';
+    el.style.borderColor = 'var(--color-ai-border)';
+    el.style.color = 'var(--color-primary-500)';
   }
 
   onChipLeave(el: HTMLElement): void {
-    el.style.background = '#F1F5F9';
-    el.style.borderColor = '#E2E8F0';
-    el.style.color = '#374151';
+    el.style.background = 'var(--color-surface-100)';
+    el.style.borderColor = 'var(--color-border)';
+    el.style.color = 'var(--color-text-neutral)';
   }
 
   onHistoryCloseBtnEnter(el: HTMLElement): void {
-    el.style.background = '#F8F9FA';
+    el.style.background = 'var(--color-bg-neutral)';
   }
 
   onHistoryCloseBtnLeave(el: HTMLElement): void {
@@ -374,10 +383,10 @@ export class ChatbarComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   onHistoryCountBtnEnter(el: HTMLElement): void {
-    el.style.background = '#F1F5F9';
+    el.style.background = 'var(--color-surface-100)';
   }
 
   onHistoryCountBtnLeave(el: HTMLElement): void {
-    el.style.background = '#F8F9FA';
+    el.style.background = 'var(--color-bg-neutral)';
   }
 }

@@ -1,9 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PhIconComponent } from '../../icons/ph-icon.component';
-import { GravedadTagComponent } from '../gravedad-tag/gravedad-tag.component';
-import { gravedadConfig } from '../../mock-data';
+import { PhIconComponent } from '../../../../icons/ph-icon.component';
+import { GravedadTagComponent } from '../../atoms/gravedad-tag/gravedad-tag.component';
+import { gravedadConfig } from '../../../../mock-data';
 
 export interface ComentarioRespuesta {
   autor: string;
@@ -31,8 +31,8 @@ export interface Comentario {
       class="rounded-xl p-4 transition-all"
       [class.opacity-60]="comentario.resuelto"
       [ngStyle]="{
-        background: comentario.resuelto ? '#F8FAFC' : (gravedadBg || '#FFFFFF'),
-        border: '1px solid ' + (comentario.resuelto ? '#E2E8F0' : (gravedadBorder || '#E2E8F0'))
+        background: comentario.resuelto ? 'var(--color-bg)' : (gravedadBg || 'var(--color-surface)'),
+        border: '1px solid ' + (comentario.resuelto ? 'var(--color-border)' : (gravedadBorder || 'var(--color-border)'))
       }"
     >
       <!-- Header -->
@@ -40,7 +40,7 @@ export interface Comentario {
         <div class="flex items-center gap-2">
           <div
             class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-            [ngStyle]="{ background: '#64748B' }"
+            [ngStyle]="{ background: 'var(--color-text-muted)' }"
           >
             {{ comentario.avatar }}
           </div>
@@ -57,7 +57,7 @@ export interface Comentario {
 
       <!-- Respuestas -->
       @if (comentario.respuestas && comentario.respuestas.length > 0) {
-        <div class="mt-3 pl-3 space-y-2" [ngStyle]="{ borderLeft: '2px solid #E2E8F0' }">
+        <div class="mt-3 pl-3 space-y-2" [ngStyle]="{ borderLeft: '2px solid var(--color-border)' }">
           @for (r of comentario.respuestas; track $index) {
             <div class="text-sm text-slate-600">
               <span class="font-medium text-slate-700 mr-1">{{ r.autor }}:</span>
@@ -69,11 +69,11 @@ export interface Comentario {
 
       <!-- Actions (not resolved) -->
       @if (!comentario.resuelto) {
-        <div class="flex items-center gap-2 mt-3 pt-3" [ngStyle]="{ borderTop: '1px solid #F1F5F9' }">
+        <div class="flex items-center gap-2 mt-3 pt-3" [ngStyle]="{ borderTop: '1px solid var(--color-surface-100)' }">
           <button
             (click)="onMarcarResuelto.emit(comentario.id)"
             class="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-all"
-            [ngStyle]="{ background: '#F0FDF4', color: '#10B981', border: '1px solid #A7F3D0' }"
+            [ngStyle]="{ background: 'var(--color-success-bg)', color: 'var(--color-green-700)', border: '1px solid #A7F3D0' }"
           >
             <ph-icon name="CheckCircle" [size]="13" />
             Marcar como resuelto
@@ -81,7 +81,7 @@ export interface Comentario {
           <button
             (click)="toggleMostrarRespuesta()"
             class="text-xs text-slate-600 px-2 py-1.5 rounded-lg transition-colors"
-            [ngStyle]="mostrarRespuesta ? { background: '#F8FAFC' } : {}"
+            [ngStyle]="mostrarRespuesta ? { background: 'var(--color-bg)' } : {}"
           >
             Responder
           </button>
@@ -104,9 +104,9 @@ export interface Comentario {
             placeholder="Escribe tu respuesta..."
             class="w-full text-sm px-[13px] py-[9px] rounded-[10px] resize-none outline-none"
             [ngStyle]="{
-              background: '#FFFFFF',
-              border: '1px solid #CBD5E1',
-              color: '#334155',
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-surface-300)',
+              color: 'var(--color-text)',
               minHeight: '72px',
               fontFamily: '\\'Proeduca Sans\\', system-ui, sans-serif'
             }"
@@ -116,7 +116,7 @@ export interface Comentario {
             <button
               (click)="handleResponder()"
               class="text-xs font-medium px-3 py-1.5 rounded-lg text-white"
-              [ngStyle]="{ background: '#0A5CF5' }"
+              [ngStyle]="{ background: 'var(--color-primary)' }"
             >
               Enviar
             </button>
@@ -132,6 +132,15 @@ export interface Comentario {
     </div>
   `,
 })
+/**
+ * @source      Figma — Prodi DS / Molecules / ComentarioHilo
+ * @type        molecule
+ * @composedOf  GravedadTag (atom)
+ * @tokens      --color-error, --color-warning, --color-text-muted, --color-border
+ * @figma       TBD
+ *
+ * Threaded comment card with gravedad indicator, author avatar, reply thread, and resolve action.
+ */
 /**
  * Renders a comment thread for a single content block.
  *

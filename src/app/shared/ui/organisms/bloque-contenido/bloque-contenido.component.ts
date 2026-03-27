@@ -26,13 +26,13 @@ interface TipoConf {
 }
 
 const TIPO_CONFIG: Record<string, TipoConf> = {
-  p:     { label: 'p',  title: 'Párrafo',        className: 'text-base leading-8',                style: { color: '#1F2937' } },
-  h1:    { label: 'H1', title: 'Título 1',        className: 'text-3xl font-bold leading-tight',   style: { color: '#111827' } },
-  h2:    { label: 'H2', title: 'Título 2',        className: 'text-xl font-semibold leading-snug', style: { color: '#111827' } },
-  h3:    { label: 'H3', title: 'Título 3',        className: 'text-lg font-semibold leading-snug', style: { color: '#1F2937' } },
-  quote: { label: '"',  title: 'Cita',            className: 'text-base leading-8 italic',         style: { color: '#4B5563', borderLeft: '3px solid #367CFF', paddingLeft: '16px', marginLeft: '4px' } },
-  ul:    { label: '•',  title: 'Lista',           className: 'text-base leading-7',                style: { color: '#1F2937' } },
-  ol:    { label: '1.', title: 'Lista numerada',  className: 'text-base leading-7',                style: { color: '#1F2937' } },
+  p:     { label: 'p',  title: 'Párrafo',        className: 'text-base leading-8',                style: { color: 'var(--color-neutral-800)' } },
+  h1:    { label: 'H1', title: 'Título 1',        className: 'text-3xl font-bold leading-tight',   style: { color: 'var(--color-text-strong)' } },
+  h2:    { label: 'H2', title: 'Título 2',        className: 'text-xl font-semibold leading-snug', style: { color: 'var(--color-text-strong)' } },
+  h3:    { label: 'H3', title: 'Título 3',        className: 'text-lg font-semibold leading-snug', style: { color: 'var(--color-neutral-800)' } },
+  quote: { label: '"',  title: 'Cita',            className: 'text-base leading-8 italic',         style: { color: 'var(--color-neutral-600)', borderLeft: '3px solid var(--color-primary-500)', paddingLeft: '16px', marginLeft: '4px' } },
+  ul:    { label: '•',  title: 'Lista',           className: 'text-base leading-7',                style: { color: 'var(--color-neutral-800)' } },
+  ol:    { label: '1.', title: 'Lista numerada',  className: 'text-base leading-7',                style: { color: 'var(--color-neutral-800)' } },
 };
 
 export const TIPO_ORDER = ['p', 'h1', 'h2', 'h3', 'quote', 'ul', 'ol'];
@@ -46,6 +46,15 @@ export const TIPO_ORDER = ['p', 'h1', 'h2', 'h3', 'quote', 'ul', 'ol'];
   changeDetection: ChangeDetectionStrategy.Default,
   templateUrl: './bloque-contenido.component.html',
 })
+/**
+ * @source      Figma — Prodi DS / Organisms / BloqueContenido
+ * @type        organism
+ * @composedOf  PhIconComponent
+ * @tokens      --color-primary, --color-border, --color-surface, --color-text
+ * @figma       TBD
+ *
+ * Rich-text content block editor supporting h1-h4, p, ul, ol, blockquote, code, hr, and img block types.
+ */
 export class BloqueContenidoComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() bloque: any = null;
   @Input() index: number = 0;
@@ -108,7 +117,7 @@ export class BloqueContenidoComponent implements OnChanges, AfterViewInit, OnDes
   }
 
   getEditableStyle(): Record<string, string> {
-    return { ...this.tipoConf.style, caretColor: this.editable ? '#367CFF' : 'transparent', outline: 'none' };
+    return { ...this.tipoConf.style, caretColor: this.editable ? 'var(--color-primary-500)' : 'transparent', outline: 'none' };
   }
 
   getToolbarLeft(): string {
@@ -117,10 +126,10 @@ export class BloqueContenidoComponent implements OnChanges, AfterViewInit, OnDes
 
   getGravedadConfig(gravedad: string): any {
     const configs: Record<string, any> = {
-      critico:         { bg: '#FEF2F2', color: '#DC2626', border: '#FECACA', emoji: '🔴' },
-      importante:      { bg: '#FFF7ED', color: '#EA580C', border: '#FED7AA', emoji: '🟠' },
-      sugerencia:      { bg: '#F0FDF4', color: '#16A34A', border: '#BBF7D0', emoji: '🟢' },
-      nota:            { bg: '#F8FAFC', color: '#475569', border: '#E2E8F0', emoji: '📝' },
+      critico:         { bg: 'var(--color-error-bg)', color: '#DC2626', border: 'var(--color-error-border)', emoji: '🔴' },
+      importante:      { bg: 'var(--color-warning-bg)', color: '#EA580C', border: 'var(--color-warning-border)', emoji: '🟠' },
+      sugerencia:      { bg: 'var(--color-success-bg)', color: '#16A34A', border: '#BBF7D0', emoji: '🟢' },
+      nota:            { bg: 'var(--color-bg)', color: 'var(--color-surface-600)', border: 'var(--color-border)', emoji: '📝' },
       alertaNormativa: { bg: '#FEFCE8', color: '#CA8A04', border: '#FEF08A', emoji: '⚠️' },
     };
     return configs[gravedad] || configs['nota'];
@@ -245,17 +254,17 @@ export class BloqueContenidoComponent implements OnChanges, AfterViewInit, OnDes
             'line-height:1',
             'cursor:pointer',
             'user-select:none',
-            'background:#E7EFFE',
-            'color:#367CFF',
-            'border:1px solid #BAD2FF',
+            'background:var(--color-ai-light)',
+            'color:var(--color-primary-500)',
+            'border:1px solid var(--color-ai-border)',
             'transition:background 0.12s',
           ].join(';');
           span.addEventListener('mouseenter', () => {
-            span.style.background = '#BAD2FF';
+            span.style.background = 'var(--color-ai-border)';
             this.citaInteraction.emit({ type: 'hover', num, anchorEl: span });
           });
           span.addEventListener('mouseleave', () => {
-            span.style.background = '#E7EFFE';
+            span.style.background = 'var(--color-ai-light)';
             this.citaInteraction.emit({ type: 'leave', num, anchorEl: span });
           });
           span.addEventListener('click', (e) => {

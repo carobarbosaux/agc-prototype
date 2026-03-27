@@ -13,9 +13,9 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PhIconComponent } from '../../icons/ph-icon.component';
-import { ProdiMarkComponent } from '../prodi-logo/prodi-logo.component';
-import { respuestasIA, respuestasCalidadIA } from '../../mock-data';
+import { PhIconComponent } from '../../../../icons/ph-icon.component';
+import { ProdiMarkComponent } from '../../atoms/prodi-logo/prodi-logo.component';
+import { respuestasIA, respuestasCalidadIA } from '../../../../mock-data';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -161,6 +161,15 @@ const CK_CHILDREN_IDS = ['teams', 'sharepoint', 'outlook', 'onedrive'];
   imports: [CommonModule, FormsModule, PhIconComponent, ProdiMarkComponent],
   templateUrl: './panel-ia.component.html',
 })
+/**
+ * @source      Figma — Prodi DS / Organisms / PanelIA
+ * @type        organism
+ * @composedOf  ProdiMarkComponent (atom), PhIconComponent
+ * @tokens      --panel-ia-bg, --panel-ia-border, --panel-ia-header-bg, --color-primary
+ * @figma       TBD
+ *
+ * Right-rail AI assistant panel with content quality analysis, suggestions, and action triggers.
+ */
 export class PanelIAComponent implements OnChanges, AfterViewChecked {
   // ── Inputs ──────────────────────────────────────────────────────────────
   @Input() abierto = false;

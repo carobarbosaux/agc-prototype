@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 
 const SEVERITY_CONFIG: Record<string, { background: string; color: string; iconBg: string }> = {
   Primary: {
-    background: 'var(--primary-primary-100, #E7EFFE)',
-    color: 'var(--primary-primary-600, #0A5CF5)',
-    iconBg: 'var(--primary-primary-600, #0A5CF5)',
+    background: 'var(--primary-primary-100, var(--color-ai-light))',
+    color: 'var(--primary-primary-600, var(--color-primary))',
+    iconBg: 'var(--primary-primary-600, var(--color-primary))',
   },
   Secondary: {
     background: 'var(--neutrals-old-white, white)',
-    color: 'var(--primary-primary-600, #0A5CF5)',
-    iconBg: 'var(--primary-primary-600, #0A5CF5)',
+    color: 'var(--primary-primary-600, var(--color-primary))',
+    iconBg: 'var(--primary-primary-600, var(--color-primary))',
   },
   Success: {
     background: 'var(--tag-success-background, #DCFCE7)',
@@ -24,12 +24,12 @@ const SEVERITY_CONFIG: Record<string, { background: string; color: string; iconB
   },
   Warning: {
     background: 'var(--tag-warn-background, #FFEDD5)',
-    color: '#C2410C',
+    color: 'var(--color-amber-800)',
     iconBg: '#343330',
   },
   Error: {
     background: 'var(--tag-danger-background, #FEE2E2)',
-    color: 'var(--tag-danger-color, #B91C1C)',
+    color: 'var(--tag-danger-color, var(--color-error))',
     iconBg: '#343330',
   },
   Contrast: {
@@ -87,6 +87,14 @@ const SEVERITY_CONFIG: Record<string, { background: string; color: string; iconB
     </div>
   `,
 })
+/**
+ * @source      Figma — Prodi DS / Atoms / EtiquetaBloque
+ * @type        atom
+ * @tokens      --color-primary-500, --color-ai-light, --color-ai-border
+ * @figma       TBD
+ *
+ * Small label chip used to tag content blocks with AI-suggested or manual labels.
+ */
 /**
  * Inline comment-gravity badge rendered inside a content block.
  *

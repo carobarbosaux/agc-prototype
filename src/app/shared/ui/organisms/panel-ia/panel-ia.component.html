@@ -1,21 +1,21 @@
 <div
   class="flex flex-col h-full animate-slide-in-right"
-  style="width:320px;min-width:320px;background:#FAFAFA;border-left:1px solid #E5E7EB;font-family:'Proeduca Sans',system-ui,sans-serif;"
+  style="width:320px;min-width:320px;background:#FAFAFA;border-left:1px solid var(--color-border-neutral);font-family:'Proeduca Sans',system-ui,sans-serif;"
 >
 
   <!-- ── Header ──────────────────────────────────────────────────────────── -->
   <div
     class="flex items-center justify-between px-4 py-3 flex-shrink-0"
-    style="background:#FFFFFF;border-bottom:1px solid #E5E7EB;"
+    style="background:var(--color-surface);border-bottom:1px solid var(--color-border-neutral);"
   >
     <div class="flex items-center gap-2">
       <prodi-mark [size]="22" />
       <div>
-        <p class="text-sm font-semibold" style="color:#1A1A1A;">
+        <p class="text-sm font-semibold" style="color:var(--color-text-near-black);">
           {{ vistaHistorial() ? 'Historial' : 'Asistente de contenidos' }}
         </p>
         @if (!vistaHistorial()) {
-          <p class="text-xs" style="color:#6B7280;">{{ temaLabel }}</p>
+          <p class="text-xs" style="color:var(--color-text-subtle);">{{ temaLabel }}</p>
         }
       </div>
     </div>
@@ -26,24 +26,24 @@
         class="p-1.5 rounded-lg transition-colors"
         style="background:transparent;"
         (click)="nuevaConversacion()"
-        (mouseenter)="hoverBg($event, '#F8F9FA')"
+        (mouseenter)="hoverBg($event, 'var(--color-bg-neutral)')"
         (mouseleave)="hoverBg($event, 'transparent')"
         title="Nueva conversación"
       >
-        <ph-icon name="NotePencil" [size]="14" style="color:#6B7280;" />
+        <ph-icon name="NotePencil" [size]="14" style="color:var(--color-text-subtle);" />
       </button>
 
       <!-- Historial toggle -->
       <button
         class="p-1.5 rounded-lg transition-colors"
-        [style.background]="vistaHistorial() ? '#F3F4F6' : 'transparent'"
+        [style.background]="vistaHistorial() ? 'var(--color-bg-neutral-alt)' : 'transparent'"
         (click)="toggleHistorial()"
-        (mouseenter)="hoverBg($event, '#F3F4F6')"
-        (mouseleave)="hoverBg($event, vistaHistorial() ? '#F3F4F6' : 'transparent')"
+        (mouseenter)="hoverBg($event, 'var(--color-bg-neutral-alt)')"
+        (mouseleave)="hoverBg($event, vistaHistorial() ? 'var(--color-bg-neutral-alt)' : 'transparent')"
         title="Historial de conversaciones"
       >
         <ph-icon name="ClockCounterClockwise" [size]="14"
-          [style.color]="vistaHistorial() ? '#374151' : '#6B7280'" />
+          [style.color]="vistaHistorial() ? 'var(--color-text-neutral)' : 'var(--color-text-subtle)'" />
       </button>
 
       <!-- Collapse / cerrar -->
@@ -51,11 +51,11 @@
         class="p-1.5 rounded-lg transition-colors"
         style="background:transparent;"
         (click)="onCerrar()"
-        (mouseenter)="hoverBg($event, '#F8F9FA')"
+        (mouseenter)="hoverBg($event, 'var(--color-bg-neutral)')"
         (mouseleave)="hoverBg($event, 'transparent')"
         title="Cerrar"
       >
-        <ph-icon name="CaretRight" [size]="16" style="color:#6B7280;" />
+        <ph-icon name="CaretRight" [size]="16" style="color:var(--color-text-subtle);" />
       </button>
     </div>
   </div>
@@ -68,23 +68,23 @@
       <div class="px-3 pt-3 pb-2 flex-shrink-0">
         <div
           class="flex items-center gap-2"
-          style="padding:12px 16px;background:#FFFFFF;box-shadow:0px 1px 2px rgba(18,18,23,0.05);border-radius:12px;outline:1px #CBD5E1 solid;outline-offset:-1px;"
-          (mouseenter)="$event.currentTarget.style.outline='1px #0A5CF5 solid'; $event.currentTarget.style.background='#F1F5F9'"
-          (mouseleave)="$event.currentTarget.style.outline='1px #CBD5E1 solid'; $event.currentTarget.style.background='#FFFFFF'"
+          style="padding:12px 16px;background:var(--color-surface);box-shadow:0px 1px 2px rgba(18,18,23,0.05);border-radius:12px;outline:1px var(--color-surface-300) solid;outline-offset:-1px;"
+          (mouseenter)="$event.currentTarget.style.outline='1px var(--color-primary) solid'; $event.currentTarget.style.background='var(--color-surface-100)'"
+          (mouseleave)="$event.currentTarget.style.outline='1px var(--color-surface-300) solid'; $event.currentTarget.style.background='var(--color-surface)'"
         >
-          <ph-icon name="MagnifyingGlass" [size]="16" style="color:#0A5CF5;flex-shrink:0;" />
+          <ph-icon name="MagnifyingGlass" [size]="16" style="color:var(--color-primary);flex-shrink:0;" />
           <input
             [ngModel]="busqueda()"
             (ngModelChange)="onBusquedaChange($event)"
             placeholder="Buscar conversaciones..."
             class="flex-1 bg-transparent outline-none"
-            style="color:#1E293B;font-size:16px;font-family:'Proeduca Sans';line-height:20px;"
-            (focus)="$event.currentTarget.parentElement!.style.outline='1px #0A5CF5 solid'; $event.currentTarget.parentElement!.style.background='#F1F5F9'"
-            (blur)="$event.currentTarget.parentElement!.style.outline='1px #CBD5E1 solid'; $event.currentTarget.parentElement!.style.background='#FFFFFF'"
+            style="color:var(--color-surface-800);font-size:16px;font-family:'Proeduca Sans';line-height:20px;"
+            (focus)="$event.currentTarget.parentElement!.style.outline='1px var(--color-primary) solid'; $event.currentTarget.parentElement!.style.background='var(--color-surface-100)'"
+            (blur)="$event.currentTarget.parentElement!.style.outline='1px var(--color-surface-300) solid'; $event.currentTarget.parentElement!.style.background='var(--color-surface)'"
           />
           @if (busqueda()) {
             <button (click)="clearBusqueda()">
-              <ph-icon name="X" [size]="12" style="color:#6B7280;" />
+              <ph-icon name="X" [size]="12" style="color:var(--color-text-subtle);" />
             </button>
           }
         </div>
@@ -94,26 +94,26 @@
       <div class="flex-1 overflow-y-auto px-2 pb-2">
         @if (visibleHistorial.length === 0) {
           <div class="flex flex-col items-center justify-center py-10 gap-2">
-            <ph-icon name="MagnifyingGlass" [size]="20" style="color:#D1D5DB;" />
-            <p class="text-xs" style="color:#6B7280;">Sin resultados</p>
+            <ph-icon name="MagnifyingGlass" [size]="20" style="color:var(--color-neutral-300);" />
+            <p class="text-xs" style="color:var(--color-text-subtle);">Sin resultados</p>
           </div>
         } @else {
           @for (grupo of historialGrupos; track grupo) {
             <div class="mb-1">
               <p
                 class="text-xs font-medium px-2 py-1.5 sticky top-0"
-                style="color:#6B7280;background:#FAFAFA;letter-spacing:0.03em;"
+                style="color:var(--color-text-subtle);background:#FAFAFA;letter-spacing:0.03em;"
               >{{ grupo }}</p>
               @for (conv of getHistorialByGrupo(grupo); track conv.id) {
                 <button
                   class="w-full text-left flex items-center gap-2.5 px-2.5 py-2 rounded-lg transition-colors"
                   style="background:transparent;"
                   (click)="reanudarConversacion(conv)"
-                  (mouseenter)="hoverBg($event, '#F3F4F6')"
+                  (mouseenter)="hoverBg($event, 'var(--color-bg-neutral-alt)')"
                   (mouseleave)="hoverBg($event, 'transparent')"
                 >
-                  <ph-icon name="Chat" [size]="13" style="color:#D1D5DB;flex-shrink:0;" />
-                  <span class="text-xs truncate flex-1" style="color:#374151;">{{ conv.titulo }}</span>
+                  <ph-icon name="Chat" [size]="13" style="color:var(--color-neutral-300);flex-shrink:0;" />
+                  <span class="text-xs truncate flex-1" style="color:var(--color-text-neutral);">{{ conv.titulo }}</span>
                 </button>
               }
             </div>
@@ -122,9 +122,9 @@
           @if (!busqueda().trim() && !mostrarTodo() && HISTORIAL_CONVERSACIONES.length > RECENT_LIMIT) {
             <button
               class="w-full mt-1 py-2 rounded-lg text-xs font-medium transition-colors"
-              style="color:#6B7280;background:transparent;"
+              style="color:var(--color-text-subtle);background:transparent;"
               (click)="mostrarTodo.set(true)"
-              (mouseenter)="hoverBg($event, '#F3F4F6')"
+              (mouseenter)="hoverBg($event, 'var(--color-bg-neutral-alt)')"
               (mouseleave)="hoverBg($event, 'transparent')"
             >
               Ver todo el historial ({{ HISTORIAL_CONVERSACIONES.length }})
@@ -143,9 +143,9 @@
           <div
             class="max-w-[85%] rounded-xl px-3 py-2.5 text-sm leading-relaxed"
             [ngStyle]="{
-              background: msg.rol === 'usuario' ? '#367CFF' : '#FFFFFF',
-              color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151',
-              border: msg.rol === 'ia' ? '1px solid #E5E7EB' : 'none',
+              background: msg.rol === 'usuario' ? 'var(--color-primary-500)' : 'var(--color-surface)',
+              color: msg.rol === 'usuario' ? 'var(--color-surface)' : 'var(--color-text-neutral)',
+              border: msg.rol === 'ia' ? '1px solid var(--color-border-neutral)' : 'none',
               'box-shadow': msg.rol === 'ia' ? '0 1px 2px rgba(0,0,0,0.04)' : 'none',
               'white-space': 'pre-wrap'
             }"
@@ -156,10 +156,10 @@
       <!-- Typing indicator -->
       @if (esperando()) {
         <div class="flex items-center gap-2 animate-fade-in">
-          <div class="px-3 py-2.5 rounded-xl flex items-center gap-1" style="background:#FFFFFF;border:1px solid #E5E7EB;">
-            <span class="w-1.5 h-1.5 rounded-full animate-pulse-dot" style="background:#367CFF;animation-delay:0s;"></span>
-            <span class="w-1.5 h-1.5 rounded-full animate-pulse-dot" style="background:#367CFF;animation-delay:0.2s;"></span>
-            <span class="w-1.5 h-1.5 rounded-full animate-pulse-dot" style="background:#367CFF;animation-delay:0.4s;"></span>
+          <div class="px-3 py-2.5 rounded-xl flex items-center gap-1" style="background:var(--color-surface);border:1px solid var(--color-border-neutral);">
+            <span class="w-1.5 h-1.5 rounded-full animate-pulse-dot" style="background:var(--color-primary-500);animation-delay:0s;"></span>
+            <span class="w-1.5 h-1.5 rounded-full animate-pulse-dot" style="background:var(--color-primary-500);animation-delay:0.2s;"></span>
+            <span class="w-1.5 h-1.5 rounded-full animate-pulse-dot" style="background:var(--color-primary-500);animation-delay:0.4s;"></span>
           </div>
         </div>
       }
@@ -174,23 +174,23 @@
       @if (showChips) {
         <div
           class="absolute left-0 right-0 overflow-hidden"
-          style="bottom:100%;background:#FFFFFF;border-top:1px solid #E5E7EB;border-left:1px solid #E5E7EB;border-right:1px solid #E5E7EB;border-radius:12px 12px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,0.06);z-index:10;"
+          style="bottom:100%;background:var(--color-surface);border-top:1px solid var(--color-border-neutral);border-left:1px solid var(--color-border-neutral);border-right:1px solid var(--color-border-neutral);border-radius:12px 12px 0 0;box-shadow:0 -4px 16px rgba(0,0,0,0.06);z-index:10;"
         >
           <div class="flex items-center gap-1.5 px-3 py-2 overflow-x-auto" style="scrollbar-width:none;">
             @for (chip of allChips; track chip.text) {
               <button
                 class="flex-shrink-0 px-2 py-0.5 rounded-full whitespace-nowrap transition-colors"
-                style="font-size:10px;background:#F1F5F9;color:#374151;border:1px solid #E2E8F0;"
+                style="font-size:10px;background:var(--color-surface-100);color:var(--color-text-neutral);border:1px solid var(--color-border);"
                 (click)="onChipClick(chip)"
-                (mouseenter)="$event.currentTarget.style.background='#E7EFFE'; $event.currentTarget.style.borderColor='#BAD2FF'; $event.currentTarget.style.color='#367CFF'"
-                (mouseleave)="$event.currentTarget.style.background='#F1F5F9'; $event.currentTarget.style.borderColor='#E2E8F0'; $event.currentTarget.style.color='#374151'"
+                (mouseenter)="$event.currentTarget.style.background='var(--color-ai-light)'; $event.currentTarget.style.borderColor='var(--color-ai-border)'; $event.currentTarget.style.color='var(--color-primary-500)'"
+                (mouseleave)="$event.currentTarget.style.background='var(--color-surface-100)'; $event.currentTarget.style.borderColor='var(--color-border)'; $event.currentTarget.style.color='var(--color-text-neutral)'"
               >{{ chip.text }}</button>
             }
           </div>
         </div>
       }
 
-      <div class="px-3 py-3" style="border-top:1px solid #E5E7EB;background:#FFFFFF;">
+      <div class="px-3 py-3" style="border-top:1px solid var(--color-border-neutral);background:var(--color-surface);">
 
         <!-- Quote block -->
         @if (quote()) {
@@ -201,9 +201,9 @@
             <div class="flex-1 min-w-0">
               <span
                 class="inline-block text-xs font-semibold px-1.5 py-0.5 rounded mb-1"
-                style="background:#367CFF;color:#FFFFFF;font-family:'Proeduca Sans',system-ui,sans-serif;"
+                style="background:var(--color-primary-500);color:var(--color-surface);font-family:'Proeduca Sans',system-ui,sans-serif;"
               >{{ quote()!.accion }}</span>
-              <p class="text-xs leading-relaxed line-clamp-3" style="color:#374151;font-style:italic;">
+              <p class="text-xs leading-relaxed line-clamp-3" style="color:var(--color-text-neutral);font-style:italic;">
                 "{{ quote()!.texto }}"
               </p>
             </div>
@@ -214,7 +214,7 @@
               (mouseenter)="hoverBg($event, '#E0F2FE')"
               (mouseleave)="hoverBg($event, 'transparent')"
             >
-              <ph-icon name="X" [size]="12" style="color:#6B7280;" />
+              <ph-icon name="X" [size]="12" style="color:var(--color-text-subtle);" />
             </button>
           </div>
         }
@@ -223,10 +223,10 @@
         <div
           class="w-full flex flex-col py-2 px-3"
           [ngStyle]="{
-            background: '#FFFFFF',
+            background: 'var(--color-surface)',
             'box-shadow': '0px 9px 20px -2px rgba(0,0,0,0.10)',
             'border-radius': inputExpanded() ? '28px' : '40px',
-            outline: '1px solid #DCDFEB',
+            outline: '1px solid var(--color-surface-300)',
             'outline-offset': '-1px',
             transition: 'outline-color 150ms ease',
             gap: 0
@@ -268,7 +268,7 @@
                   class="w-full bg-transparent outline-none resize-none"
                   [ngStyle]="{
                     color: '#272A3F',
-                    'caret-color': '#0A5CF5',
+                    'caret-color': 'var(--color-primary)',
                     height: inputHeight() + 'px',
                     'max-height': '63px',
                     'overflow-y': inputHeight() >= 63 ? 'auto' : 'hidden',
@@ -322,7 +322,7 @@
                   class="w-full bg-transparent outline-none resize-none"
                   [ngStyle]="{
                     color: '#272A3F',
-                    'caret-color': '#0A5CF5',
+                    'caret-color': 'var(--color-primary)',
                     height: inputHeight() + 'px',
                     'max-height': '63px',
                     'overflow-y': inputHeight() >= 63 ? 'auto' : 'hidden',
@@ -352,12 +352,12 @@
       class="flex items-center justify-center transition-colors"
       [ngStyle]="{
         width: '28px', height: '28px', 'border-radius': '80px',
-        border: conectoresAbierto() ? '1px solid #BAD2FF' : '1px solid transparent',
-        background: conectoresAbierto() ? '#E7EFFE' : 'transparent',
-        color: conectoresAbierto() ? '#367CFF' : '#0A5CF5',
+        border: conectoresAbierto() ? '1px solid var(--color-ai-border)' : '1px solid transparent',
+        background: conectoresAbierto() ? 'var(--color-ai-light)' : 'transparent',
+        color: conectoresAbierto() ? 'var(--color-primary-500)' : 'var(--color-primary)',
         'flex-shrink': 0
       }"
-      (mouseenter)="hoverConectorBtn(conectoresAbierto(), $event, '#F1F5F9', '#E2E8F0')"
+      (mouseenter)="hoverConectorBtn(conectoresAbierto(), $event, 'var(--color-surface-100)', 'var(--color-border)')"
       (mouseleave)="hoverConectorBtn(conectoresAbierto(), $event, 'transparent', 'transparent')"
       (click)="toggleConectoresAbierto($event)"
       title="Conectores"
@@ -369,28 +369,28 @@
     @if (conectoresAbierto()) {
       <div
         class="absolute bottom-full mb-2 left-0 rounded-xl overflow-hidden"
-        style="background:#FFFFFF;border:1px solid #E5E7EB;box-shadow:0 -8px 24px rgba(0,0,0,0.12);min-width:280px;z-index:50;"
+        style="background:var(--color-surface);border:1px solid var(--color-border-neutral);box-shadow:0 -8px 24px rgba(0,0,0,0.12);min-width:280px;z-index:50;"
       >
         <!-- Header -->
-        <div class="px-3 py-2" style="border-bottom:1px solid #F3F4F6;">
-          <p class="text-xs font-semibold tracking-wide" style="color:#6B7280;">Conectores</p>
+        <div class="px-3 py-2" style="border-bottom:1px solid var(--color-bg-neutral-alt);">
+          <p class="text-xs font-semibold tracking-wide" style="color:var(--color-text-subtle);">Conectores</p>
         </div>
 
         <!-- Company Knowledge section -->
-        <div class="px-3 pt-1.5 pb-1" style="border-bottom:1px solid #F3F4F6;">
+        <div class="px-3 pt-1.5 pb-1" style="border-bottom:1px solid var(--color-bg-neutral-alt);">
           <div class="flex items-center gap-2.5 py-1">
             <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold"
               style="background:#0078D4;font-size:7px;">CK</div>
             <div class="flex-1 min-w-0">
-              <p class="text-xs font-medium" style="color:#111827;">Company Knowledge</p>
-              <p style="font-size:10px;color:#6B7280;margin-top:1px;">Fuentes institucionales de tu organización</p>
+              <p class="text-xs font-medium" style="color:var(--color-text-strong);">Company Knowledge</p>
+              <p style="font-size:10px;color:var(--color-text-subtle);margin-top:1px;">Fuentes institucionales de tu organización</p>
             </div>
             <!-- Toggle switch -->
             <button
               (click)="toggleCompanyKnowledge($event)"
               [ngStyle]="{
                 width: '40px', height: '24px', 'border-radius': '30px',
-                background: companyKnowledgeOn() ? '#0A5CF5' : '#DCDFEB',
+                background: companyKnowledgeOn() ? 'var(--color-primary)' : 'var(--color-surface-300)',
                 'flex-shrink': 0, border: 'none', cursor: 'pointer',
                 display: 'flex', 'align-items': 'center',
                 'justify-content': companyKnowledgeOn() ? 'flex-end' : 'flex-start',
@@ -408,14 +408,14 @@
                 class="w-full flex items-center gap-2.5 py-1 pl-3 rounded-lg text-left"
                 [ngStyle]="{background: isConectorActive(c.id) ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer'}"
                 (click)="toggleConector(c.id, $event)"
-                (mouseenter)="hoverBgIf(!isConectorActive(c.id), $event, '#F1F5F9')"
+                (mouseenter)="hoverBgIf(!isConectorActive(c.id), $event, 'var(--color-surface-100)')"
                 (mouseleave)="hoverBgIf(!isConectorActive(c.id), $event, 'transparent')"
               >
                 <div class="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 text-white font-bold"
                   [ngStyle]="{background: c.color, 'font-size': '6px'}">{{ c.letter }}</div>
                 <div class="flex-1 min-w-0">
-                  <p class="text-xs font-medium" [ngStyle]="{color: isConectorActive(c.id) ? c.color : '#374151'}">{{ c.label }}</p>
-                  <p style="font-size:10px;color:#6B7280;margin-top:1px;">{{ c.desc }}</p>
+                  <p class="text-xs font-medium" [ngStyle]="{color: isConectorActive(c.id) ? c.color : 'var(--color-text-neutral)'}">{{ c.label }}</p>
+                  <p style="font-size:10px;color:var(--color-text-subtle);margin-top:1px;">{{ c.desc }}</p>
                 </div>
                 @if (isConectorActive(c.id)) {
                   <div class="w-1.5 h-1.5 rounded-full flex-shrink-0" [ngStyle]="{background: c.color}"></div>
@@ -425,7 +425,7 @@
           </div>
 
           @if (!companyKnowledgeOn()) {
-            <p class="pb-1 pl-3" style="font-size:10px;color:#6B7280;font-style:italic;">
+            <p class="pb-1 pl-3" style="font-size:10px;color:var(--color-text-subtle);font-style:italic;">
               Activa para acceder a Teams, SharePoint, Outlook y OneDrive.
             </p>
           }
@@ -438,14 +438,14 @@
               class="w-full flex items-center gap-2.5 py-1 rounded-lg text-left"
               [ngStyle]="{background: isConectorActive(c.id) ? c.color + '12' : 'transparent', border: 'none', cursor: 'pointer'}"
               (click)="toggleConector(c.id, $event)"
-              (mouseenter)="hoverBgIf(!isConectorActive(c.id), $event, '#F1F5F9')"
+              (mouseenter)="hoverBgIf(!isConectorActive(c.id), $event, 'var(--color-surface-100)')"
               (mouseleave)="hoverBgIf(!isConectorActive(c.id), $event, 'transparent')"
             >
               <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-white font-bold"
                 [ngStyle]="{background: c.color, 'font-size': '7px'}">{{ c.letter }}</div>
               <div class="flex-1 min-w-0">
-                <p class="text-xs font-medium" [ngStyle]="{color: isConectorActive(c.id) ? c.color : '#111827'}">{{ c.label }}</p>
-                <p style="font-size:10px;color:#6B7280;margin-top:1px;">{{ c.desc }}</p>
+                <p class="text-xs font-medium" [ngStyle]="{color: isConectorActive(c.id) ? c.color : 'var(--color-text-strong)'}">{{ c.label }}</p>
+                <p style="font-size:10px;color:var(--color-text-subtle);margin-top:1px;">{{ c.desc }}</p>
               </div>
               @if (isConectorActive(c.id)) {
                 <div class="w-1.5 h-1.5 rounded-full flex-shrink-0" [ngStyle]="{background: c.color}"></div>
@@ -465,14 +465,14 @@
     class="flex items-center justify-center transition-all flex-shrink-0"
     [ngStyle]="{
       width: '28px', height: '28px', 'border-radius': '80px',
-      background: canSend ? '#0A5CF5' : '#E6E6E6',
+      background: canSend ? 'var(--color-primary)' : '#E6E6E6',
       border: 'none',
       cursor: canSend ? 'pointer' : 'default'
     }"
-    (mouseenter)="hoverBgIf(canSend, $event, '#0039A3')"
-    (mouseleave)="hoverBg($event, canSend ? '#0A5CF5' : '#E6E6E6')"
+    (mouseenter)="hoverBgIf(canSend, $event, 'var(--color-primary-hover)')"
+    (mouseleave)="hoverBg($event, canSend ? 'var(--color-primary)' : '#E6E6E6')"
   >
     <ph-icon name="PaperPlaneTilt" [size]="14"
-      [ngStyle]="{color: canSend ? '#FFFFFF' : '#666666'}" />
+      [ngStyle]="{color: canSend ? 'var(--color-surface)' : '#666666'}" />
   </button>
 </ng-template>

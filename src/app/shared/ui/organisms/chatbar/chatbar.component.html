@@ -8,8 +8,8 @@
     <div
       class="absolute top-full mt-2 left-0 right-0 rounded-2xl overflow-hidden"
       style="
-        background: #FFFFFF;
-        border: 1px solid #E5E7EB;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border-neutral);
         box-shadow: 0 8px 24px rgba(0,0,0,0.08);
         max-height: 240px;
         overflow-y: auto;
@@ -18,10 +18,10 @@
       <!-- Header -->
       <div
         class="flex items-center justify-between px-4 py-2.5"
-        style="border-bottom: 1px solid #F1F5F9;"
+        style="border-bottom: 1px solid var(--color-surface-100);"
       >
         <div class="flex items-center gap-2">
-          <span class="text-xs font-semibold" style="color: #367CFF;">Asistente AGC</span>
+          <span class="text-xs font-semibold" style="color: var(--color-primary-500);">Asistente AGC</span>
         </div>
         <button
           class="p-1 rounded"
@@ -30,7 +30,7 @@
           (mouseenter)="onHistoryCloseBtnEnter($event.currentTarget)"
           (mouseleave)="onHistoryCloseBtnLeave($event.currentTarget)"
         >
-          <ph-icon name="X" [size]="12" style="color: #6B7280;" />
+          <ph-icon name="X" [size]="12" style="color: var(--color-text-subtle);" />
         </button>
       </div>
 
@@ -41,7 +41,7 @@
             @if (msg.rol === 'ia') {
               <div
                 class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mr-2 mt-0.5"
-                style="background: #E7EFFE;"
+                style="background: var(--color-ai-light);"
               >
                 <prodi-mark [size]="12" />
               </div>
@@ -49,8 +49,8 @@
             <div
               class="max-w-xs rounded-xl px-3 py-2 text-xs leading-relaxed"
               [ngStyle]="{
-                background: msg.rol === 'usuario' ? '#0A5CF5' : '#F8F9FA',
-                color: msg.rol === 'usuario' ? '#FFFFFF' : '#374151',
+                background: msg.rol === 'usuario' ? 'var(--color-primary)' : 'var(--color-bg-neutral)',
+                color: msg.rol === 'usuario' ? 'var(--color-surface)' : 'var(--color-text-neutral)',
                 borderRadius: msg.rol === 'usuario' ? '12px 12px 4px 12px' : '12px 12px 12px 4px'
               }"
             >
@@ -68,14 +68,14 @@
       #dropdownRef
       class="absolute top-full mt-1 left-0 right-0 rounded-xl overflow-hidden"
       style="
-        background: #FFFFFF;
-        border: 1px solid #E5E7EB;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border-neutral);
         box-shadow: 0 8px 24px rgba(0,0,0,0.10);
         z-index: 50;
       "
     >
-      <div class="px-3 py-2" style="border-bottom: 1px solid #F1F5F9;">
-        <span class="text-xs font-semibold" style="color: #6B7280;">Comandos disponibles</span>
+      <div class="px-3 py-2" style="border-bottom: 1px solid var(--color-surface-100);">
+        <span class="text-xs font-semibold" style="color: var(--color-text-subtle);">Comandos disponibles</span>
       </div>
 
       @for (s of dropdownFiltrado(); track s.id) {
@@ -83,25 +83,25 @@
           class="w-full text-left flex items-center gap-3 px-3 py-2.5 transition-colors"
           style="background: transparent;"
           (click)="handleSelectShortcut(s)"
-          (mouseenter)="$event.currentTarget.style.background = '#F8F9FA'"
+          (mouseenter)="$event.currentTarget.style.background = 'var(--color-bg-neutral)'"
           (mouseleave)="$event.currentTarget.style.background = 'transparent'"
         >
           <div
             class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-            [ngStyle]="{ background: s.accion === 'crearAsignatura' ? '#E7EFFE' : '#F8F9FA' }"
+            [ngStyle]="{ background: s.accion === 'crearAsignatura' ? 'var(--color-ai-light)' : 'var(--color-bg-neutral)' }"
           >
             <ph-icon
               [name]="s.icon"
               [size]="14"
-              [ngStyle]="{ color: s.accion === 'crearAsignatura' ? '#367CFF' : '#6B7280' }"
+              [ngStyle]="{ color: s.accion === 'crearAsignatura' ? 'var(--color-primary-500)' : 'var(--color-text-subtle)' }"
             />
           </div>
           <div>
             <span
               class="text-sm font-medium"
-              style="color: #1A1A1A; font-family: 'JetBrains Mono', monospace;"
+              style="color: var(--color-text-near-black); font-family: 'JetBrains Mono', monospace;"
             >{{ s.comando }}</span>
-            <p class="text-xs" style="color: #6B7280; margin: 0;">{{ s.descripcion }}</p>
+            <p class="text-xs" style="color: var(--color-text-subtle); margin: 0;">{{ s.descripcion }}</p>
           </div>
         </button>
       }
@@ -112,9 +112,9 @@
   <div
     class="w-full flex flex-col py-2 px-3"
     style="
-      background: #FFFFFF;
+      background: var(--color-surface);
       box-shadow: 0px 9px 20px -2px rgba(0,0,0,0.10);
-      outline: 1px solid #DCDFEB;
+      outline: 1px solid var(--color-surface-300);
       outline-offset: -1px;
       transition: outline-color 150ms ease, border-radius 150ms ease;
     "
@@ -156,7 +156,7 @@
             class="w-full bg-transparent outline-none resize-none overflow-y-auto"
             style="
               color: #272A3F;
-              caret-color: #0A5CF5;
+              caret-color: var(--color-primary);
               max-height: 144px;
               font-family: 'Proeduca Sans', system-ui, sans-serif;
               font-size: 0.875rem;
@@ -218,7 +218,7 @@
             class="w-full bg-transparent outline-none resize-none overflow-y-auto"
             style="
               color: #272A3F;
-              caret-color: #0A5CF5;
+              caret-color: var(--color-primary);
               max-height: 144px;
               font-family: 'Proeduca Sans', system-ui, sans-serif;
               font-size: 0.875rem;
@@ -246,9 +246,9 @@
       class="absolute left-0 right-0 overflow-hidden"
       style="
         top: 100%;
-        background: #FFFFFF;
-        border: 1px solid #DCDFEB;
-        border-top: 1px solid #F1F5F9;
+        background: var(--color-surface);
+        border: 1px solid var(--color-surface-300);
+        border-top: 1px solid var(--color-surface-100);
         border-radius: 0 0 24px 24px;
         box-shadow: 0 8px 20px rgba(0,0,0,0.07);
         z-index: 30;
@@ -258,7 +258,7 @@
         @for (chip of suggestedChips; track chip.text) {
           <button
             class="flex-shrink-0 px-2.5 py-1 rounded-full text-xs whitespace-nowrap"
-            style="background: #F1F5F9; color: #374151; border: 1px solid #E2E8F0;"
+            style="background: var(--color-surface-100); color: var(--color-text-neutral); border: 1px solid var(--color-border);"
             (click)="selectChip(chip.text)"
             (mouseenter)="onChipEnter($event.currentTarget)"
             (mouseleave)="onChipLeave($event.currentTarget)"
@@ -288,14 +288,14 @@
           border-radius: 80px;
           border: 1px solid transparent;
           background: transparent;
-          color: #0A5CF5;
+          color: var(--color-primary);
           flex-shrink: 0;
           cursor: pointer;
         "
         [ngStyle]="{
-          border: conectoresAbierto() ? '1px solid #BAD2FF' : '1px solid transparent',
-          background: conectoresAbierto() ? '#E7EFFE' : 'transparent',
-          color: conectoresAbierto() ? '#367CFF' : '#0A5CF5'
+          border: conectoresAbierto() ? '1px solid var(--color-ai-border)' : '1px solid transparent',
+          background: conectoresAbierto() ? 'var(--color-ai-light)' : 'transparent',
+          color: conectoresAbierto() ? 'var(--color-primary-500)' : 'var(--color-primary)'
         }"
         (click)="toggleConectoresDropdown($event)"
         (mouseenter)="onPlusBtnEnter($event.currentTarget)"
@@ -318,7 +318,7 @@
           padding: 10px 8px 4px;
           background: white;
           border-radius: 10px;
-          outline: 1px solid #DCDFEB;
+          outline: 1px solid var(--color-surface-300);
           outline-offset: -1px;
           display: flex;
           flex-direction: column;
@@ -339,7 +339,7 @@
         </div>
 
         <!-- Company Knowledge section -->
-        <div style="display: flex; flex-direction: column; padding-bottom: 4px; border-bottom: 1px solid #F3F4F6;">
+        <div style="display: flex; flex-direction: column; padding-bottom: 4px; border-bottom: 1px solid var(--color-bg-neutral-alt);">
 
           <!-- CK toggle row -->
           <div style="padding: 6px 10px; border-radius: 6px; display: flex; align-items: center; gap: 8px;">
@@ -350,7 +350,7 @@
               <p style="font-size: 14px; font-family: 'Proeduca Sans', system-ui, sans-serif; font-weight: 500; line-height: 20px; color: #566077; margin: 0;">
                 Company Knowledge
               </p>
-              <p style="font-size: 11px; color: #9CA3AF; margin: 0; line-height: 14px;">
+              <p style="font-size: 11px; color: var(--color-text-faint); margin: 0; line-height: 14px;">
                 Fuentes institucionales
               </p>
             </div>
@@ -366,7 +366,7 @@
                 flex-shrink: 0;
               "
               [ngStyle]="{
-                background: companyKnowledgeOn() ? '#0A5CF5' : '#DCDFEB',
+                background: companyKnowledgeOn() ? 'var(--color-primary)' : 'var(--color-surface-300)',
                 'justify-content': companyKnowledgeOn() ? 'flex-end' : 'flex-start',
                 padding: companyKnowledgeOn() ? '0 3px 0 0' : '0 0 0 3px'
               }"
@@ -424,7 +424,7 @@
           </div>
 
           @if (!companyKnowledgeOn()) {
-            <p style="font-size: 10px; color: #9CA3AF; font-style: italic; margin: 2px 10px 4px; line-height: 14px;">
+            <p style="font-size: 10px; color: var(--color-text-faint); font-style: italic; margin: 2px 10px 4px; line-height: 14px;">
               Activa para acceder a Teams, SharePoint, Outlook y OneDrive.
             </p>
           }
@@ -484,7 +484,7 @@
     @if (chatHistorial.length > 0 && !historialVisible()) {
       <button
         class="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs transition-colors"
-        style="color: #6B7280; background: #F8F9FA;"
+        style="color: var(--color-text-subtle); background: var(--color-bg-neutral);"
         (click)="showHistorial($event)"
         (mouseenter)="onHistoryCountBtnEnter($event.currentTarget)"
         (mouseleave)="onHistoryCountBtnLeave($event.currentTarget)"
@@ -502,7 +502,7 @@
         width: '30px',
         height: '30px',
         borderRadius: '80px',
-        background: canSend ? '#0A5CF5' : '#E6E6E6',
+        background: canSend ? 'var(--color-primary)' : '#E6E6E6',
         cursor: canSend ? 'pointer' : 'default'
       }"
       [disabled]="!canSend"
@@ -510,7 +510,7 @@
       (mouseenter)="onSendBtnEnter($event.currentTarget)"
       (mouseleave)="onSendBtnLeave($event.currentTarget)"
     >
-      <ph-icon name="PaperPlaneTilt" [size]="16" [ngStyle]="{ color: canSend ? '#FFFFFF' : '#666666' }" />
+      <ph-icon name="PaperPlaneTilt" [size]="16" [ngStyle]="{ color: canSend ? 'var(--color-surface)' : '#666666' }" />
     </button>
 
   </div>

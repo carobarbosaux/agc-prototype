@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PhIconComponent } from '../../icons/ph-icon.component';
-import { misPendientes, gravedadConfig } from '../../mock-data';
+import { PhIconComponent } from '../../../../icons/ph-icon.component';
+import { misPendientes, gravedadConfig } from '../../../../mock-data';
 
 const GRAVEDAD_ICON: Record<string, string> = {
   critico: 'Warning',
@@ -21,7 +21,7 @@ const GRAVEDAD_ICON: Record<string, string> = {
         <div
           class="flex items-start gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-all"
           [ngStyle]="{
-            background: hoveredItem === item.id ? '#F1F5F9' : 'transparent',
+            background: hoveredItem === item.id ? 'var(--color-surface-100)' : 'transparent',
             opacity: item.activo ? 1 : 0.6
           }"
           (mouseenter)="hoveredItem = item.id"
@@ -69,6 +69,15 @@ const GRAVEDAD_ICON: Record<string, string> = {
   `,
 })
 /**
+ * @source      Figma — Prodi DS / Molecules / PanelMisPendientes
+ * @type        molecule
+ * @composedOf  GravedadTag (atom), PhIconComponent
+ * @tokens      --color-primary, --color-error, --color-border, --color-text-muted
+ * @figma       TBD
+ *
+ * Sidebar panel listing pending tasks for the current user with priority and deadline indicators.
+ */
+/**
  * Sidebar panel listing the current user's pending review items.
  *
  * Items are grouped by type (secciones, comentarios, aprobaciones) and
@@ -88,11 +97,11 @@ export class PanelMisPendientesComponent {
   }
 
   getGravedadBg(gravedad: string): string {
-    return this.gc[gravedad]?.bg ?? '#F8FAFC';
+    return this.gc[gravedad]?.bg ?? 'var(--color-bg)';
   }
 
   getGravedadColor(gravedad: string): string {
-    return this.gc[gravedad]?.color ?? '#64748B';
+    return this.gc[gravedad]?.color ?? 'var(--color-text-muted)';
   }
 
   handleClick(item: any): void {

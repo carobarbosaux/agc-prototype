@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { estadoConfig } from '../../mock-data';
+import { estadoConfig } from '../../../../mock-data';
 
 @Component({
   selector: 'app-estado-badge',
@@ -30,6 +30,14 @@ import { estadoConfig } from '../../mock-data';
  *
  * Accepts a raw estado string (borrador, revision, comentarios, aprobado…)
  * and renders it with the appropriate background / foreground colours.
+ */
+/**
+ * @source      Figma — Prodi DS / Atoms / EstadoBadge
+ * @type        atom
+ * @tokens      --color-primary, --color-warning, --color-success, --color-error, --color-surface-*
+ * @figma       TBD
+ *
+ * Pill badge rendering a pipeline estado with colour-coded background and dot indicator.
  */
 export class EstadoBadgeComponent {
   @Input() estado: string = 'porComenzar';

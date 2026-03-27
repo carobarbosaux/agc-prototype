@@ -8,7 +8,7 @@
   <div
     class="relative flex rounded-2xl overflow-hidden"
     [class.animate-fade-in]="!exiting()"
-    style="width:760px;max-width:95vw;max-height:90vh;background:#FFFFFF;box-shadow:0 25px 60px rgba(0,0,0,0.25);font-family:'Proeduca Sans',system-ui,sans-serif;"
+    style="width:760px;max-width:95vw;max-height:90vh;background:var(--color-surface);box-shadow:0 25px 60px rgba(0,0,0,0.25);font-family:'Proeduca Sans',system-ui,sans-serif;"
   >
     <!-- Close button -->
     <button
@@ -18,11 +18,11 @@
       (mouseenter)="$event.currentTarget.style.background='rgba(0,0,0,0.1)'"
       (mouseleave)="$event.currentTarget.style.background='rgba(0,0,0,0.05)'"
     >
-      <ph-icon name="X" [size]="16" style="color:#1A1A1A;" />
+      <ph-icon name="X" [size]="16" style="color:var(--color-text-near-black);" />
     </button>
 
     <!-- Left: Steps sidebar -->
-    <div class="flex flex-col py-8 px-5 flex-shrink-0" style="width:200px;background:#F8F9FA;border-right:1px solid #E5E7EB;">
+    <div class="flex flex-col py-8 px-5 flex-shrink-0" style="width:200px;background:var(--color-bg-neutral);border-right:1px solid var(--color-border-neutral);">
       <div class="mb-6">
         <prodi-mark [size]="28" />
       </div>
@@ -31,12 +31,12 @@
           <button
             (click)="onSlideChange(i)"
             class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all w-full"
-            [style.background]="isActive(i) ? '#FFFFFF' : 'transparent'"
+            [style.background]="isActive(i) ? 'var(--color-surface)' : 'transparent'"
           >
             <!-- Step indicator -->
             <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold"
-              [style.background]="isActive(i) ? '#367CFF' : isPast(i) ? '#10B981' : '#E5E7EB'"
-              [style.color]="isActive(i) || isPast(i) ? '#FFFFFF' : '#9CA3AF'"
+              [style.background]="isActive(i) ? 'var(--color-primary-500)' : isPast(i) ? 'var(--color-green-700)' : 'var(--color-border-neutral)'"
+              [style.color]="isActive(i) || isPast(i) ? 'var(--color-surface)' : 'var(--color-text-faint)'"
             >
               @if (isPast(i)) {
                 <ph-icon name="Check" [size]="10" />
@@ -45,7 +45,7 @@
               }
             </div>
             <span class="text-xs font-medium leading-tight"
-              [style.color]="isActive(i) ? '#1A1A1A' : isPast(i) ? '#10B981' : '#6B7280'">
+              [style.color]="isActive(i) ? 'var(--color-text-near-black)' : isPast(i) ? 'var(--color-green-700)' : 'var(--color-text-subtle)'">
               {{ getStepLabel(slide, i) }}
             </span>
           </button>
@@ -53,10 +53,10 @@
       </div>
       <!-- Progress bar -->
       <div class="mt-4">
-        <div class="h-1 rounded-full" style="background:#E5E7EB;">
-          <div class="h-1 rounded-full transition-all" style="background:#367CFF;" [style.width]="progressPercent() + '%'"></div>
+        <div class="h-1 rounded-full" style="background:var(--color-border-neutral);">
+          <div class="h-1 rounded-full transition-all" style="background:var(--color-primary-500);" [style.width]="progressPercent() + '%'"></div>
         </div>
-        <p class="text-xs mt-2" style="color:#9CA3AF;">{{ slideIndex() + 1 }} de {{ slides.length }}</p>
+        <p class="text-xs mt-2" style="color:var(--color-text-faint);">{{ slideIndex() + 1 }} de {{ slides.length }}</p>
       </div>
     </div>
 
@@ -68,28 +68,28 @@
         <!-- Slide text -->
         <div class="flex-1">
           @if (slide().title) {
-            <h2 class="text-xl font-semibold mb-3 leading-tight" style="color:#1A1A1A;">{{ slide().title }}</h2>
+            <h2 class="text-xl font-semibold mb-3 leading-tight" style="color:var(--color-text-near-black);">{{ slide().title }}</h2>
           }
           @if (slide().body) {
-            <p class="text-sm leading-relaxed mb-4 whitespace-pre-line" style="color:#4B5563;">{{ slide().body }}</p>
+            <p class="text-sm leading-relaxed mb-4 whitespace-pre-line" style="color:var(--color-neutral-600);">{{ slide().body }}</p>
           }
           @if (slide().bullets.length > 0) {
             <ul class="space-y-2 mb-4">
               @for (bullet of slide().bullets; track bullet) {
-                <li class="flex items-start gap-2 text-sm" style="color:#334155;">
-                  <span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#367CFF;"></span>
+                <li class="flex items-start gap-2 text-sm" style="color:var(--color-text);">
+                  <span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:var(--color-primary-500);"></span>
                   {{ bullet }}
                 </li>
               }
             </ul>
           }
           @if (slide().additionalSection) {
-            <div class="mt-4 pt-4" style="border-top:1px solid #F1F5F9;">
-              <p class="text-xs font-semibold mb-2" style="color:#6B7280;">{{ slide().additionalSection!.label }}</p>
+            <div class="mt-4 pt-4" style="border-top:1px solid var(--color-surface-100);">
+              <p class="text-xs font-semibold mb-2" style="color:var(--color-text-subtle);">{{ slide().additionalSection!.label }}</p>
               <ul class="space-y-1.5">
                 @for (item of slide().additionalSection!.items; track item) {
-                  <li class="flex items-start gap-2 text-sm" style="color:#334155;">
-                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#9CA3AF;"></span>
+                  <li class="flex items-start gap-2 text-sm" style="color:var(--color-text);">
+                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:var(--color-text-faint);"></span>
                     {{ item }}
                   </li>
                 }
@@ -99,14 +99,14 @@
         </div>
 
         <!-- Navigation -->
-        <div class="flex items-center justify-between pt-6" style="border-top:1px solid #F1F5F9;">
+        <div class="flex items-center justify-between pt-6" style="border-top:1px solid var(--color-surface-100);">
           <button
             (click)="goBack()"
             class="text-sm font-medium px-4 py-2 rounded-xl transition-all"
-            style="color:#6B7280;"
+            style="color:var(--color-text-subtle);"
             [style.opacity]="isFirst() ? '0' : '1'"
             [style.pointer-events]="isFirst() ? 'none' : 'auto'"
-            (mouseenter)="$event.currentTarget.style.background='#F1F5F9'"
+            (mouseenter)="$event.currentTarget.style.background='var(--color-surface-100)'"
             (mouseleave)="$event.currentTarget.style.background='transparent'"
           >Atrás</button>
 
@@ -114,17 +114,17 @@
             <button
               (click)="handleCta()"
               class="text-sm font-semibold px-6 py-2 rounded-xl text-white transition-all"
-              style="background:#367CFF;"
+              style="background:var(--color-primary-500);"
               (mouseenter)="$event.currentTarget.style.background='#2563EB'"
-              (mouseleave)="$event.currentTarget.style.background='#367CFF'"
+              (mouseleave)="$event.currentTarget.style.background='var(--color-primary-500)'"
             >{{ slide().cta || 'Comenzar' }}</button>
           } @else {
             <button
               (click)="goNext()"
               class="flex items-center gap-2 text-sm font-semibold px-5 py-2 rounded-xl text-white transition-all"
-              style="background:#367CFF;"
+              style="background:var(--color-primary-500);"
               (mouseenter)="$event.currentTarget.style.background='#2563EB'"
-              (mouseleave)="$event.currentTarget.style.background='#367CFF'"
+              (mouseleave)="$event.currentTarget.style.background='var(--color-primary-500)'"
             >
               Siguiente
               <ph-icon name="ArrowRight" [size]="14" />
@@ -134,26 +134,26 @@
       </div>
 
       <!-- Visual panel -->
-      <div class="flex-shrink-0 flex items-center justify-center" style="width:220px;background:linear-gradient(135deg,#F0F4FF 0%,#E8F0FE 100%);border-left:1px solid #E5E7EB;">
+      <div class="flex-shrink-0 flex items-center justify-center" style="width:220px;background:linear-gradient(135deg,#F0F4FF 0%,#E8F0FE 100%);border-left:1px solid var(--color-border-neutral);">
 
         @switch (slide().visualType) {
 
           @case ('editor-zoom') {
             <!-- Editor zoom illustration -->
             <div class="flex flex-col items-center justify-center gap-3 p-4 w-full">
-              <div class="w-full rounded-xl overflow-hidden" style="background:#FFFFFF;border:1px solid #E5E7EB;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
-                <div class="px-3 py-2" style="background:#F8F9FA;border-bottom:1px solid #E5E7EB;">
+              <div class="w-full rounded-xl overflow-hidden" style="background:var(--color-surface);border:1px solid var(--color-border-neutral);box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+                <div class="px-3 py-2" style="background:var(--color-bg-neutral);border-bottom:1px solid var(--color-border-neutral);">
                   <div class="flex gap-1">
-                    <div class="w-2 h-2 rounded-full" style="background:#FECACA;"></div>
-                    <div class="w-2 h-2 rounded-full" style="background:#FED7AA;"></div>
+                    <div class="w-2 h-2 rounded-full" style="background:var(--color-error-border);"></div>
+                    <div class="w-2 h-2 rounded-full" style="background:var(--color-warning-border);"></div>
                     <div class="w-2 h-2 rounded-full" style="background:#A7F3D0;"></div>
                   </div>
                 </div>
                 <div class="px-3 py-3 space-y-2">
-                  <div class="h-2 rounded-full" style="background:#E5E7EB;width:80%;"></div>
-                  <div class="h-2 rounded-full" style="background:#E5E7EB;width:60%;"></div>
-                  <div class="h-2 rounded-full" style="background:#BAD2FF;width:70%;"></div>
-                  <div class="h-2 rounded-full" style="background:#E5E7EB;width:55%;"></div>
+                  <div class="h-2 rounded-full" style="background:var(--color-border-neutral);width:80%;"></div>
+                  <div class="h-2 rounded-full" style="background:var(--color-border-neutral);width:60%;"></div>
+                  <div class="h-2 rounded-full" style="background:var(--color-ai-border);width:70%;"></div>
+                  <div class="h-2 rounded-full" style="background:var(--color-border-neutral);width:55%;"></div>
                 </div>
               </div>
               <prodi-mark [size]="32" />
@@ -167,19 +167,19 @@
               <div class="flex flex-col gap-1 flex-shrink-0" style="width:48px;">
                 @for (item of canvasSidebarItems; track item; let i = $index) {
                   <div class="text-xs px-1.5 py-1 rounded-lg text-center"
-                    [style.background]="i === 0 ? '#E7EFFE' : '#F1F5F9'"
-                    [style.color]="i === 0 ? '#367CFF' : '#9CA3AF'"
+                    [style.background]="i === 0 ? 'var(--color-ai-light)' : 'var(--color-surface-100)'"
+                    [style.color]="i === 0 ? 'var(--color-primary-500)' : 'var(--color-text-faint)'"
                     style="font-size:8px;font-weight:500;">{{ item }}</div>
                 }
               </div>
               <!-- Content area -->
               <div class="flex-1 flex flex-col gap-1.5">
-                <div class="h-3 rounded" style="background:#E5E7EB;width:90%;"></div>
-                <div class="h-2 rounded" style="background:#E5E7EB;width:70%;"></div>
-                <div class="h-2 rounded" style="background:#BAD2FF;width:85%;"></div>
-                <div class="h-2 rounded" style="background:#E5E7EB;width:60%;"></div>
-                <div class="mt-1 h-2 rounded" style="background:#E5E7EB;width:75%;"></div>
-                <div class="h-2 rounded" style="background:#E5E7EB;width:50%;"></div>
+                <div class="h-3 rounded" style="background:var(--color-border-neutral);width:90%;"></div>
+                <div class="h-2 rounded" style="background:var(--color-border-neutral);width:70%;"></div>
+                <div class="h-2 rounded" style="background:var(--color-ai-border);width:85%;"></div>
+                <div class="h-2 rounded" style="background:var(--color-border-neutral);width:60%;"></div>
+                <div class="mt-1 h-2 rounded" style="background:var(--color-border-neutral);width:75%;"></div>
+                <div class="h-2 rounded" style="background:var(--color-border-neutral);width:50%;"></div>
               </div>
             </div>
           }
@@ -188,18 +188,18 @@
             <!-- Contextual selection animation -->
             <div class="flex flex-col items-center justify-center p-4 w-full gap-3">
               <!-- Text with selection highlight -->
-              <div class="w-full rounded-lg p-3" style="background:#FFFFFF;border:1px solid #E5E7EB;">
-                <div class="h-2 rounded mb-1.5" style="background:#E5E7EB;width:90%;"></div>
-                <div class="h-2 rounded mb-1.5" style="background:#BAD2FF;width:70%;"></div>
-                <div class="h-2 rounded" style="background:#E5E7EB;width:80%;"></div>
+              <div class="w-full rounded-lg p-3" style="background:var(--color-surface);border:1px solid var(--color-border-neutral);">
+                <div class="h-2 rounded mb-1.5" style="background:var(--color-border-neutral);width:90%;"></div>
+                <div class="h-2 rounded mb-1.5" style="background:var(--color-ai-border);width:70%;"></div>
+                <div class="h-2 rounded" style="background:var(--color-border-neutral);width:80%;"></div>
               </div>
               <!-- Context menu (animated) -->
               @if (showMenu()) {
-                <div class="w-full rounded-xl overflow-hidden animate-fade-in" style="background:#FFFFFF;border:1px solid #E5E7EB;box-shadow:0 4px 12px rgba(0,0,0,0.12);">
+                <div class="w-full rounded-xl overflow-hidden animate-fade-in" style="background:var(--color-surface);border:1px solid var(--color-border-neutral);box-shadow:0 4px 12px rgba(0,0,0,0.12);">
                   @for (action of contextualActions; track action.label; let i = $index) {
                     <div class="flex items-center gap-2 px-3 py-1.5 text-xs transition-colors"
-                      [style.background]="activeAction() === i ? '#E7EFFE' : 'transparent'"
-                      [style.color]="activeAction() === i ? '#367CFF' : '#374151'"
+                      [style.background]="activeAction() === i ? 'var(--color-ai-light)' : 'transparent'"
+                      [style.color]="activeAction() === i ? 'var(--color-primary-500)' : 'var(--color-text-neutral)'"
                       style="font-size:10px;">
                       <div class="w-1 h-1 rounded-full" [style.background]="action.color"></div>
                       {{ action.label }}
@@ -215,19 +215,19 @@
             <div class="flex gap-1.5 p-4 w-full h-full">
               <!-- Main content area -->
               <div class="flex-1 flex flex-col gap-1.5">
-                <div class="h-2 rounded" style="background:#E5E7EB;width:90%;"></div>
-                <div class="h-2 rounded" style="background:#E5E7EB;width:70%;"></div>
-                <div class="h-2 rounded" style="background:#E5E7EB;width:80%;"></div>
-                <div class="h-2 rounded mt-2" style="background:#BAD2FF;width:60%;"></div>
+                <div class="h-2 rounded" style="background:var(--color-border-neutral);width:90%;"></div>
+                <div class="h-2 rounded" style="background:var(--color-border-neutral);width:70%;"></div>
+                <div class="h-2 rounded" style="background:var(--color-border-neutral);width:80%;"></div>
+                <div class="h-2 rounded mt-2" style="background:var(--color-ai-border);width:60%;"></div>
               </div>
               <!-- IA panel -->
-              <div class="flex-shrink-0 rounded-lg p-2 flex flex-col gap-1.5" style="width:64px;background:#FFFFFF;border:1px solid #E5E7EB;">
+              <div class="flex-shrink-0 rounded-lg p-2 flex flex-col gap-1.5" style="width:64px;background:var(--color-surface);border:1px solid var(--color-border-neutral);">
                 <prodi-mark [size]="14" />
-                <div class="h-1.5 rounded-full" style="background:#BAD2FF;width:100%;"></div>
-                <div class="h-1.5 rounded-full" style="background:#E5E7EB;width:80%;"></div>
-                <div class="h-1.5 rounded-full" style="background:#E5E7EB;width:90%;"></div>
-                <div class="mt-auto rounded-lg px-2 py-1" style="background:#E7EFFE;">
-                  <div class="h-1.5 rounded-full" style="background:#367CFF;"></div>
+                <div class="h-1.5 rounded-full" style="background:var(--color-ai-border);width:100%;"></div>
+                <div class="h-1.5 rounded-full" style="background:var(--color-border-neutral);width:80%;"></div>
+                <div class="h-1.5 rounded-full" style="background:var(--color-border-neutral);width:90%;"></div>
+                <div class="mt-auto rounded-lg px-2 py-1" style="background:var(--color-ai-light);">
+                  <div class="h-1.5 rounded-full" style="background:var(--color-primary-500);"></div>
                 </div>
               </div>
             </div>
@@ -239,11 +239,11 @@
               <prodi-mark [size]="40" />
               <div class="flex flex-col gap-2 w-full">
                 @for (cap of finalCaps; track cap.label) {
-                  <div class="flex items-center gap-2 px-3 py-2 rounded-xl" style="background:#FFFFFF;border:1px solid #E5E7EB;">
-                    <div class="w-2 h-2 rounded-full flex-shrink-0" style="background:#367CFF;"></div>
+                  <div class="flex items-center gap-2 px-3 py-2 rounded-xl" style="background:var(--color-surface);border:1px solid var(--color-border-neutral);">
+                    <div class="w-2 h-2 rounded-full flex-shrink-0" style="background:var(--color-primary-500);"></div>
                     <div>
-                      <p style="font-size:10px;font-weight:600;color:#1A1A1A;">{{ cap.label }}</p>
-                      <p style="font-size:9px;color:#6B7280;">{{ cap.desc }}</p>
+                      <p style="font-size:10px;font-weight:600;color:var(--color-text-near-black);">{{ cap.label }}</p>
+                      <p style="font-size:9px;color:var(--color-text-subtle);">{{ cap.desc }}</p>
                     </div>
                   </div>
                 }

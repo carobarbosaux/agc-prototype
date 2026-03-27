@@ -10,9 +10,9 @@ import {
 } from '@angular/core';
 import { CommonModule, NgStyle } from '@angular/common';
 import { Router } from '@angular/router';
-import { PhIconComponent } from '../../icons/ph-icon.component';
-import { ProdiWordmarkComponent } from '../prodi-logo/prodi-logo.component';
-import { roles } from '../../mock-data';
+import { PhIconComponent } from '../../../../icons/ph-icon.component';
+import { ProdiWordmarkComponent } from '../../atoms/prodi-logo/prodi-logo.component';
+import { roles } from '../../../../mock-data';
 
 /** A single crumb rendered in the Topbar breadcrumb trail. */
 export interface BreadcrumbItem {
@@ -39,6 +39,15 @@ interface RolColorSet {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 /**
+ * @source      Figma — Prodi DS / Organisms / Topbar
+ * @type        organism
+ * @composedOf  ProdiWordmarkComponent (atom), PhIconComponent
+ * @tokens      --color-primary, --color-border, --color-text-muted, --color-bg
+ * @figma       TBD
+ *
+ * Application-wide top navigation bar with breadcrumbs, role-switcher, and notification bell.
+ */
+/**
  * Application-wide top navigation bar.
  *
  * Displays the Prodi wordmark, a breadcrumb trail, a role-switching button,
@@ -64,10 +73,10 @@ export class TopbarComponent implements OnChanges {
   breadcrumbHover: boolean[] = [];
 
   readonly rolColors: Record<string, RolColorSet> = {
-    autor: { bg: '#F9FCFF', text: '#0A5CF5', border: '#0A5CF5', hoverBg: '#E6EFFF' },
-    coordinador: { bg: '#F0FDF4', text: '#10B981', border: '#A7F3D0', hoverBg: '#DCFCE7' },
-    editor: { bg: '#FFFBEB', text: '#F59E0B', border: '#FDE68A', hoverBg: '#FEF3C7' },
-    disenador: { bg: '#E7EFFE', text: '#073676', border: '#BAD2FF', hoverBg: '#D1E3FF' },
+    autor: { bg: 'var(--color-primary-50)', text: 'var(--color-primary)', border: 'var(--color-primary)', hoverBg: 'var(--color-ai-light)' },
+    coordinador: { bg: 'var(--color-success-bg)', text: 'var(--color-green-700)', border: '#A7F3D0', hoverBg: '#DCFCE7' },
+    editor: { bg: 'var(--color-warning-bg)', text: 'var(--color-amber-500)', border: 'var(--color-warning-border)', hoverBg: 'var(--color-amber-100)' },
+    disenador: { bg: 'var(--color-ai-light)', text: '#073676', border: 'var(--color-ai-border)', hoverBg: '#D1E3FF' },
   };
 
   get rolActualLabel(): string {
